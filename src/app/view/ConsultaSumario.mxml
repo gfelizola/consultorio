@@ -116,7 +116,7 @@
 				{
 					//TODO - MOVER PARA NOVA CONSULTA
 					trace( "ir para nova consulta" );
-					
+					if( General.consultaAtual == null ) General.consultaAtual = new app.model.Consulta();
 					ViewStack(this.parent).selectedIndex = 3 ;
 				}
 			}

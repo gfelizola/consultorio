@@ -12,12 +12,13 @@
 			import app.util.General;
 			
 			import mx.controls.Alert;
-			import mx.core.UIComponent;
 			import mx.events.FlexEvent;
 			import mx.events.ValidationResultEvent;
 			import mx.validators.Validator;
 			
 			private var focusedFormControl:DisplayObject;
+
+			private var pergsTriagem:Array;
 			
 			[Bindable]
 			private var formIsValid:Boolean = false;
@@ -27,17 +28,72 @@
 			
 			private function init(e:FlexEvent):void
 			{
-				for each( var validator:Validator in validators )
-					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
+				/*
+				for each( var validator:Validator in validators ){
+					RadioButtonGroup(validator.source).addEventListener(Event.CHANGE, validateForm);
+				}
+				*/
+				
+				pergsTriagem = new Array();
+				pergsTriagem.push(PerguntaA);
+				pergsTriagem.push(PerguntaB);
+				pergsTriagem.push(PerguntaC);
+				pergsTriagem.push(PerguntaD);
+				pergsTriagem.push(PerguntaE);
+				pergsTriagem.push(PerguntaIMC);
+				pergsTriagem.push('');
 			}
 			
-			private function validateForm(event:Event):void
+			private function tentaCalcularTriagem():void
 			{
-				focusedFormControl = event.target as DisplayObject;
+				var p:int = 0 ;
+				
+				for (var i:int = 0; i < pergsTriagem.length; i++) 
+				{
+					var rbg:RadioButtonGroup = pergsTriagem[i] ;
+					if( rbg.selectedValue != null )
+					{
+						p += int( rbg.selectedValue );
+					}
+				}
+				
+				if( p < 12 )
+				{
+					vgGlobal.visible = vgGlobal.includeInLayout = true ;
+					var resultado:String = p + ( p > 1 ? ' pontos' : ' ponto') + ' - Estado nutricional: ' ;
+					
+					if( p < 8 ){
+						resultado += 'DESNUTRIDO' ;
+					} else if( p >= 8 && p < 12 ){
+						resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
+					} else {
+						resultado += 'NORMAL' ;
+					}
+					
+					txtResultadoTriagem.text = resultado ;
+					scResultadoTriagem.visible = true ;
+				}
+			}
+			
+			private function validateForm(e:Event):void
+			{
+				focusedFormControl = e.target as DisplayObject;
 				formIsValid = true;
 				
-				for each( var validator:Validator in validators )
-					validate(validator);
+				for( var i:int = 0; i < validators.length ; i++  ){
+					var validator:Validator = validators[i] ;
+					if( ! validate(validator) ){
+						trace( i, validator, validator.source );
+					}
+				}
+				
+				if( e.target == PerguntaIMC ){
+					pergsTriagem[6] = PerguntaIMC.selectedValue == "0" ? PerguntaF1 : PerguntaF2 ;
+				}
+				
+				if( formIsValid ){
+					tentaCalcularTriagem();
+				}
 			}
 			
 			private function validate(validator:Validator):Boolean
@@ -70,32 +126,51 @@
 	
 	<fx:Declarations>
 		<fx:Array id="validators">
-			<!-- mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valCampo" source="{}" />
-			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valEstatura" source="{}" / -->
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="true" id="valPerguntaA" source="{PerguntaA}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="true" id="valPerguntaB" source="{PerguntaB}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="true" id="valPerguntaC" source="{PerguntaC}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="true" id="valPerguntaD" source="{PerguntaD}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="true" id="valPerguntaE" source="{PerguntaE}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="true" id="valPerguntaIMC" source="{PerguntaIMC}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="true" id="valPerguntaF" source="{PerguntaIMC.selectedValue==0?PerguntaF1:PerguntaF2}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaG" source="{PerguntaG}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaH" source="{PerguntaH}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaI" source="{PerguntaI}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaJ" source="{PerguntaJ}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaK1" source="{PerguntaK1}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaK2" source="{PerguntaK2}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaK3" source="{PerguntaK3}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaL" source="{PerguntaL}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaM" source="{PerguntaM}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaN" source="{PerguntaN}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaO" source="{PerguntaO}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaP" source="{PerguntaP}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaQ" source="{PerguntaQ}" />
+			<mx:Validator property="selectedValue" requiredFieldError="Selecione uma opção" required="{vgGlobal.visible}" id="valPerguntaR" source="{PerguntaR}" />
 		</fx:Array>
 		
-		<s:RadioButtonGroup id="PerguntaA"/>
-		<s:RadioButtonGroup id="PerguntaB"/>
-		<s:RadioButtonGroup id="PerguntaC"/>
-		<s:RadioButtonGroup id="PerguntaD"/>
-		<s:RadioButtonGroup id="radiogroup1"/>
-		<s:RadioButtonGroup id="PerguntaIMC"/>
-		<s:RadioButtonGroup id="PerguntaF1"/>
-		<s:RadioButtonGroup id="PerguntaF2"/>
-		<s:RadioButtonGroup id="PerguntaG"/>
-		<s:RadioButtonGroup id="PerguntaH"/>
-		<s:RadioButtonGroup id="PerguntaI"/>
-		<s:RadioButtonGroup id="PerguntaJ"/>
-		<s:RadioButtonGroup id="PerguntaK1"/>
-		<s:RadioButtonGroup id="PerguntaK2"/>
-		<s:RadioButtonGroup id="PerguntaK3"/>
-		<s:RadioButtonGroup id="PerguntaL"/>
-		<s:RadioButtonGroup id="PerguntaM"/>
-		<s:RadioButtonGroup id="PerguntaN"/>
-		<s:RadioButtonGroup id="PerguntaO"/>
-		<s:RadioButtonGroup id="PerguntaP"/>
-		<s:RadioButtonGroup id="PerguntaQ"/>
-		<s:RadioButtonGroup id="PerguntaR"/>
+		<s:RadioButtonGroup id="PerguntaA" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaB" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaC" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaD" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaE" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaIMC" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaF1" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaF2" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaG" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaH" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaI" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaJ" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaK1" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaK2" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaK3" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaL" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaM" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaN" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaO" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaP" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaQ" change="validateForm(event)" />
+		<s:RadioButtonGroup id="PerguntaR" change="validateForm(event)" />
 	</fx:Declarations>
 	<s:Scroller x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
 		<s:VGroup width="994" height="390" gap="20" paddingBottom="10" paddingLeft="10"
@@ -141,11 +216,11 @@
 			</s:HGroup>
 			<s:Label x="10" y="484" text="E) Problemas neuropsicológicos"/>
 			<s:VGroup x="10" y="505" width="435">
-				<s:RadioButton label="Demência ou depressão graves" value="0" groupName="radiogroup1"
+				<s:RadioButton label="Demência ou depressão graves" value="0" groupName="PerguntaE"
 							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Demência leve" value="1" groupName="radiogroup1"
+				<s:RadioButton label="Demência leve" value="1" groupName="PerguntaE"
 							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Sem problemas psicológicos" value="2" groupName="radiogroup1"
+				<s:RadioButton label="Sem problemas psicológicos" value="2" groupName="PerguntaE"
 							   skinClass="app.skin.RadioButton"/>
 			</s:VGroup>
 			<s:SkinnableContainer x="10" y="582" width="189" height="63" backgroundColor="#F6FAFE">
@@ -157,7 +232,7 @@
 								   skinClass="app.skin.RadioButton"/>
 				</s:HGroup>
 			</s:SkinnableContainer>
-			<s:Group id="containerF1" x="10" y="662" width="435" height="115" visible="{PerguntaIMC.selectedValue}">
+			<s:Group id="containerF1" x="10" y="662" width="435" height="115" visible="{PerguntaIMC.selectedValue==0}" includeInLayout="{PerguntaIMC.selectedValue==0}">
 				<s:Label x="-1" y="0" text="F) Índice de Massa Corporea (IMC = peso [kg] / estatura [m]²)"/>
 				<s:VGroup x="0" y="21">
 					<s:RadioButton label="IMC &lt; 19&#xa;" value="0" groupName="PerguntaF1"
@@ -170,7 +245,7 @@
 								   skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
 			</s:Group>
-			<s:Group id="contiainerF2" x="453" y="662" width="435" height="65">
+			<s:Group id="contiainerF2" x="453" y="662" width="435" height="65" visible="{PerguntaIMC.selectedValue==2}" includeInLayout="{PerguntaIMC.selectedValue==2}">
 				<s:Label x="0" y="0" text="F) Circunferência da panturrilha (CP) em cm"/>
 				<s:VGroup x="0" y="21">
 					<s:RadioButton label="CP menor que 31" value="0" groupName="PerguntaF2"
@@ -180,7 +255,7 @@
 				</s:VGroup>
 			</s:Group>
 			
-			<s:SkinnableContainer x="10" y="853" width="435" height="86" backgroundColor="#F6FAFE">
+			<s:SkinnableContainer id="scResultadoTriagem" visible="false" x="10" y="853" width="435" height="86" backgroundColor="#F6FAFE">
 				<s:Label x="10" y="10" fontSize="16" text="Pontos da triagem"/>
 				<s:Label x="150" y="14" fontSize="11" styleName="light"
 						 text="(subtotal máximo de 14 pontos)"/>
@@ -188,7 +263,8 @@
 				<s:Label id="txtResultadoTriagem" x="10" y="46" width="415" fontSize="20"
 						 styleName="bold" text="8 pontos - Estado nutricional: DESNUTRIDO"/>
 			</s:SkinnableContainer>
-			<s:VGroup x="10" y="947" width="435" gap="20">
+			
+			<s:VGroup id="vgGlobal" visible="false" includeInLayout="false" x="10" y="947" width="435" gap="20">
 				<s:Label x="0" y="10" styleName="light"
 						 text="Para uma avaliação mas detalhada , continue com as perguntas G-R"/>
 				<mx:HRule x="0" y="31" width="435"/>

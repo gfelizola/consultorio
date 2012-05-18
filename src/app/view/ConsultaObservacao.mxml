@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="400" creationComplete="init(event)">
+	<fx:Script>
+		<![CDATA[
+			import app.model.Antropometria;
+			import app.util.General;
+			
+			import mx.controls.Alert;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.Validator;
+			
+			private var focusedFormControl:DisplayObject;
+			
+			[Bindable]
+			private var formIsValid:Boolean = false;
+			
+			private function init(event:FlexEvent):void
+			{
+				for each( var validator:Validator in validators )
+				UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
+			}
+			
+			private function validateForm(event:Event):void
+			{
+				focusedFormControl = event.target as DisplayObject;
+				formIsValid = true;
+				
+				for each( var validator:Validator in validators )
+				validate(validator);
+			}
+			
+			private function validate(validator:Validator):Boolean
+			{
+				var validatorSource:DisplayObject = validator.source as DisplayObject;
+				var supressEvents:Boolean = validatorSource != focusedFormControl;
+				var event:ValidationResultEvent = validator.validate(null, supressEvents)
+				var currentControlIsValid:Boolean = event.type == ValidationResultEvent.VALID;
+				
+				formIsValid = formIsValid && currentControlIsValid;
+				return currentControlIsValid;
+			}
+			
+			private function onSalvar(e:MouseEvent):void
+			{
+				if( Validator.validateAll(validators).length > 0 )
+				{
+					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
+				}
+				else
+				{
+					General.consultaAtual.observacao = txtObservacao;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<fx:Array id="validators">
+			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valCampo" source="{txtPeso}" />
+			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valEstatura" source="{txtEstatura}" />
+		</fx:Array>
+	</fx:Declarations>
+	<s:Scroller x="0" y="0" width="994" height="390">
+		<s:Group width="100%" height="100%">
+			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="OBSERVAÇÃO"/>
+			<s:Label x="10" y="48" width="481"
+					 text="Texto explicativo de como este campo deve ser preenchido loasda Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "/>
+			<s:TextArea id="txtObservacao" x="9" y="112" skinClass="app.skin.TextInput" width="481" height="170"/>
+			
+			<s:Button id="btnSalvar" x="10" y="300" enabled="{formIsValid}" alpha="{formIsValid ? 1 : 0.5}"
+					  label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" click="onSalvar(event)"/>
+			
+			
+		</s:Group>
+	</s:Scroller>
+	
+	
+</s:NavigatorContent>

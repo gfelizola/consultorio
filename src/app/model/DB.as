@@ -32,6 +32,7 @@ package app.model
 		private static function openConn():void
 		{
 			var db:File = File.applicationStorageDirectory.resolvePath("nutrisaude_co.db");
+			// trace(db.nativePath); // Imprime o caminho do DB
 			_con = new SQLConnection();
 			
 			if( db.exists ) _first = false ;

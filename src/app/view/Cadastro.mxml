@@ -49,6 +49,7 @@
 			[Bindable]
 			private var regionais:ArrayCollection = new ArrayCollection();
 			
+			[Bindable]
 			private var sexos:ArrayCollection = new ArrayCollection( new Array(
 				{nome: 'Masculino', valor: 'M'},
 				{nome: 'Feminino', valor: 'F'}
@@ -168,9 +169,12 @@
 				
 				u.redesSociais = redesSociais ;
 				
-				var logoName:String = "logo_" + u.id + "." + logo.extension ;
-				u.logo = logoName ;
-				logo.copyToAsync( File.applicationStorageDirectory.resolvePath("images/" + u.logo ) );
+				if(logo != null)
+				{
+					var logoName:String = "logo_" + u.id + "." + logo.extension ;
+					u.logo = logoName ;
+					logo.copyToAsync( File.applicationStorageDirectory.resolvePath("images/" + u.logo ) );	
+				}
 				
 				DB.em.save(u);
 				

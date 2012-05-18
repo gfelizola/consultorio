@@ -85,7 +85,7 @@
 			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valEstatura" source="{txtEstatura}" />
 		</fx:Array>
 	</fx:Declarations>
-	<s:Scroller x="0" y="0" width="994" height="390">
+	<s:Scroller x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
 		<s:Group width="100%" height="100%">
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
 			
@@ -157,7 +157,7 @@
 			<s:TextInput id="txtDobraPanturrilha" x="279" y="700" width="175" skinClass="app.skin.TextInput" text="" />
 			<s:Label x="459" y="715" color="#999999" styleName="light" text="(mm)"/>
 			
-			<s:Button id="btnSalvar" x="10" y="760" enabled="{formIsValid}" alpha="{formIsValid ? 1 : 0.5}"
+			<s:Button id="btnSalvar" x="10" y="760" skinClass="app.skin.Button" enabled="{formIsValid}" alpha="{formIsValid ? 1 : 0.5}"
 					  label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" click="onSalvar(event)"/>
 		</s:Group>
 	</s:Scroller>

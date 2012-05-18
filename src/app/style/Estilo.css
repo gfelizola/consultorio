@@ -1,0 +1,32 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+@font-face {
+	src:url("../../assets/fonts/DIN Black.ttf");
+	fontFamily: DinBlack;
+	embedAsCFF: true;
+}
+
+@font-face {
+	src:url("../../assets/fonts/DIN Bold.ttf");
+	fontFamily: DinBold;
+	embedAsCFF: true;
+}
+
+@font-face {
+	src:url("../../assets/fonts/DIN Medium.ttf");
+	fontFamily: DinRegular;
+	embedAsCFF: true;
+}
+
+@font-face {
+	src:url("../../assets/fonts/DIN Light.ttf");
+	fontFamily: DinLight;
+	embedAsCFF: true;
+}
+
+Application { locale: 'pt-BR'; }
+s|TextInput, s|Label, s|RichText, s|TextArea, s|Button, s|DataGrid { fontFamily:DinRegular; fontSize:13; color:#475766; }
+.light { fontFamily:DinLight; }
+.bold { fontFamily:DinBold; }

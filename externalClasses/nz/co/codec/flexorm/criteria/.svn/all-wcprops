@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria
+END
+NullCondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/NullCondition.as
+END
+NotEqualsCondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/NotEqualsCondition.as
+END
+Condition.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/Condition.as
+END
+Sort.as
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/Sort.as
+END
+LessThanCondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/LessThanCondition.as
+END
+Junction.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/Junction.as
+END
+LikeCondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/LikeCondition.as
+END
+ParameterisedCondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/ParameterisedCondition.as
+END
+IFilter.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/IFilter.as
+END
+ICondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/ICondition.as
+END
+EqualsCondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/EqualsCondition.as
+END
+NotNullCondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/NotNullCondition.as
+END
+Criteria.as
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/Criteria.as
+END
+SQLCondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/SQLCondition.as
+END
+GreaterThanCondition.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/flexorm/!svn/ver/39/trunk/flexorm/src/nz/co/codec/flexorm/criteria/GreaterThanCondition.as
+END

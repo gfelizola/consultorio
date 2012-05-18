@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500" creationComplete="init(event)">
+	<fx:Script>
+		<![CDATA[
+			import app.controller.Navigation;
+			import app.enums.EAreas;
+			import app.model.Historico;
+			import app.model.Paciente;
+			import app.model.Patologia;
+			import app.util.General;
+			
+			import mx.events.FlexEvent;
+			
+			[Bindable]
+			private var textoDadosPessoais:String = "";
+			
+			private function init(e:FlexEvent):void
+			{
+				var p:Paciente = General.pacienteAtual ;
+				
+				if( p == null )
+				{
+					return;
+				}
+				
+				txtNome.text = String( p.nome + " " + p.sobrenome ).toUpperCase() ;
+				txtSexo.text = p.sexo == 'M' ? 'MASCULINO' : 'FEMININO' ;
+				txtDataNascimento.text = General.getFormattedDate( p.dataNascimento.toString() );
+				txtEstadoCivil.text = p.estadoCivil.nome ;
+				txtProfissao.text = p.profissao ;
+				
+				var endereco:String = p.endereco ;
+					if( p.complemento.length > 0 ) endereco += ' - ' + p.complemento ;
+					endereco += ' - ' + p.cidade + ', ' + p.estado
+				
+				txtEndereco.text = endereco.toUpperCase() ;
+				txtTelRes.text = p.telefone ;
+				txtTelCom.text = p.comercial ;
+				txtCelular.text = p.celular ;
+				txtEmail.text = p.email ;
+				
+				txtSemanaGestacao.text = p.gestante ? p.semanaGestacional + ' SEMANA GESTACIONAL' : 'NÃO GESTANTE' ;
+				
+				txtHistorico.text = p.historico ;
+				
+				var hf:String = '';
+				for (var i:int = 0; i < p.historicos.length; i++) 
+				{
+					hf += Historico(p.historicos[i]).nome.toUpperCase() + ', ' ;
+				}
+				txtHistoricoFamiliar.text = hf.substr(0, hf.length - 2 );
+				
+				hf = '';
+				for ( i = 0; i < p.patologias.length; i++) 
+				{
+					hf += Patologia(p.patologias[i]).nome.toUpperCase() + ', ' ;
+				}
+				txtPatologias.text = hf.substr(0, hf.length - 2 );
+				
+				txtConvenio.text = p.tipo.nome.indexOf('Part') > -1 ? 'PARTICULAR' : p.convenio ;
+				txtNCarteira.text = p.carteira ;
+				txtIndicacao.text = p.indicacao ;
+				txtObjetivo.text = p.objetivo ;
+			}
+			
+			private function onEditar(e:MouseEvent):void
+			{
+				Navigation.navega(EAreas.CADASTRO_PACIENTE);
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:Scroller x="10" y="10" width="984" height="470">
+		<s:Group width="100%" height="100%">
+			<s:Label x="10" y="10" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS PESSOAIS"/>
+			<s:Label x="10" y="168" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS GESTACIONAIS"/>
+			
+			<s:Label x="10" y="41" width="50" height="20" text="NOME:"
+						/>
+			<s:Label id="txtNome" x="60" y="40" width="899" height="20"
+						styleName="light" text="NOME TESTE BLA BLA BLA"
+						/>
+			<s:Label x="10" y="198" width="150" height="20" text="SEMANA DE GESTAÇÃO:"
+						/>
+			<s:Label x="10" y="248" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICOS E PATOLOGIAS"/>
+			<s:Label x="10" y="278" width="138" height="20" text="HISTÓRICO FAMILIAR:"
+						/>
+			<s:Label id="txtHistoricoFamiliar" x="147" y="277" width="812" height="20"
+					 styleName="light" text="NOME TESTE BLA BLA BLA"/>
+			<s:Label x="10" y="368" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
+			<s:Label x="10" y="398" width="72" height="20" text="CONVÊNIO:"
+						/>
+			<s:Label id="txtConvenio" x="90" y="397" width="303" height="20"
+						styleName="light" text="NOME TESTE BLA BLA BLA"
+						/>
+			<s:Label x="324" y="397" width="80" height="20" text="INDICAÇÃO:"
+						/>
+			<s:Label id="txtIndicacao" x="402" y="396" width="250" height="20"
+						styleName="light" text="NOME TESTE BLA BLA BLA"
+						/>
+			<s:Label x="604" y="397" width="110" height="20" text="Nº DA CARTEIRA:"
+						/>
+			<s:Label id="txtNCarteira" x="717" y="396" width="250" height="20"
+						styleName="light" text="NOME TESTE BLA BLA BLA"
+						/>
+			<s:Label x="10" y="298" width="82" height="20" text="PATOLOGIAS:"
+						/>
+			<s:Label id="txtPatologias" x="100" y="297" width="859" height="20"
+						styleName="light" text="NOME TESTE BLA BLA BLA"
+						/>
+			<s:Label x="10" y="318" width="82" height="20" text="HISTÓRICO:"
+						/>
+			<s:Label id="txtHistorico" x="90" y="317" width="869" height="20"
+						styleName="light" text="NOME TESTE BLA BLA BLA"
+						/>
+			<s:Label id="txtObjetivo" x="177" y="417" width="782" height="20"
+						styleName="light" text="NOME TESTE BLA BLA BLA"
+						/>
+			<s:Label id="txtSemanaGestacao" x="158" y="197" width="801" height="20"
+						styleName="light" text="NOME TESTE BLA BLA BLA"
+						/>
+			<s:Label x="10" y="418" width="159" height="20" text="OBJETIVO DA CONSULTA:"
+						/>
+			<s:Label x="10" y="61" width="50" height="20" text="SEXO:"
+						/>
+			<s:Label id="txtSexo" x="60" y="60" width="100" height="20"
+						styleName="light" text="MASCULINO"
+						/>
+			<s:Label x="10" y="81" width="82" height="20" text="ENDEREÇO:"
+						/>
+			<s:Label id="txtEndereco" x="90" y="80" width="869" height="20"
+						styleName="light" text="MASCULINO"
+						/>
+			<s:Label x="10" y="121" width="59" height="20" text="E-MAIL:"
+						/>
+			<s:Label id="txtEmail" x="69" y="120" width="890" height="20"
+						styleName="light" text="MASCULINO"
+						/>
+			<s:Label x="10" y="101" width="120" height="20" text="TEL. RESIDENCIAL:"
+						/>
+			<s:Label id="txtTelRes" x="136" y="100" width="98" height="20"
+						styleName="light" text="(11) 1111-11111"
+						/>
+			<s:Label x="250" y="101" width="120" height="20" text="TEL. COMERCIAL:"
+						/>
+			<s:Label x="480" y="101" width="120" height="20" text="TEL. CELULAR:"
+						/>
+			<s:Label id="txtCelular" x="578" y="100" width="111" height="20"
+						styleName="light" text="(11) 1111-11111"
+						/>
+			<s:Label id="txtTelCom" x="368" y="100" width="104" height="20"
+						styleName="light" text="(11) 1111-11111"
+						/>
+			<s:Label x="170" y="61" width="142" height="20" text="DATA DE NASCIMENTO:"
+						/>
+			<s:Label x="410" y="61" width="90" height="20" text="ESTADO CIVIL:"
+						/>
+			<s:Label id="txtEstadoCivil" x="500" y="60" width="100" height="20"
+						styleName="light" text="SOLTEIRO"
+						/>
+			<s:Label x="580" y="61" width="82" height="20" text="PROFISSÃO:"
+						/>
+			<s:Label id="txtProfissao" x="660" y="60" width="299" height="20"
+						styleName="light" text="PROGRAMADOR"
+						/>
+			<s:Label id="txtDataNascimento" x="320" y="60" width="100" height="20"
+						styleName="light" text="11/11/2011"
+						/>
+			<mx:HRule x="0" y="148" width="964"/>
+			<mx:HRule x="0" y="229" width="964"/>
+			<mx:HRule x="0" y="349" width="964"/>
+			<s:Button x="772" y="424" label="EDITAR DADOS PESSOAIS" skinClass="app.skin.Button" click="onEditar(event)" />
+			
+		</s:Group>
+	</s:Scroller>
+	
+	
+</s:NavigatorContent>

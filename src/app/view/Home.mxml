@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540"
+					creationComplete="init()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import app.model.DB;
+			import app.model.Paciente;
+			import app.util.General;
+			
+			import mx.collections.ArrayCollection;
+			
+			import nz.co.codec.flexorm.criteria.Criteria;
+			
+			[Bindable]
+			public var pacientes:ArrayCollection =  new ArrayCollection();
+			
+			public function init():void
+			{
+				txtBemVindo.text = "Bem-vind" + ( General.usuario.sexo == "M" ? "o" : "a" ) ;
+				txtNome.text = General.usuario.nome ;
+				
+				var c:Criteria = DB.em.createCriteria( Paciente );
+				c.addEqualsCondition("usuario_id", General.usuario.id );
+				
+				try
+				{
+					var sql:String = "SELECT p.nome, p.id, c.data_consulta FROM Pacientes p, Consultas c WHERE p.usuario_id = :usuario AND c.paciente_id = p.id GROUP BY p.id ORDER BY c.data_consulta" ;
+					var stmt:SQLStatement = new SQLStatement();
+					stmt.sqlConnection = DB.con ;
+					stmt.text = sql ;
+					stmt.parameters["usuario"] = General.usuario.id ;
+					stmt.addEventListener(SQLErrorEvent.ERROR, onPacientesError);
+					stmt.addEventListener(SQLEvent.RESULT, onPacientesResult);
+					stmt.execute(15);
+				} 
+				catch(error:Error) 
+				{
+					trace("Erro na consulta SQL", error.message, error.getStackTrace() );
+					addSemPacientes();
+				}
+				
+			}
+			
+			private function onPacientesError(e:SQLErrorEvent):void
+			{
+				trace( "não tem pacientes" );
+				addSemPacientes();
+			}
+			
+			private function onPacientesResult(e:SQLEvent):void
+			{
+				trace( "tem pacientes" );
+			}
+			
+			private function addSemPacientes():void
+			{
+				var l:Label = new Label();
+				l.text = "Você ainda não possui consultas e/ou pacientes cadastrados." ;
+				l.x = 476 ;
+				l.y = 70 ;
+				
+				addElement(l);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Label id="txtBemVindo" x="39" y="43" color="#83BBEA" fontSize="30" styleName="bold"
+			 text="Bem-vindo"/>
+	<s:Label id="txtNome" x="39" y="76" width="352" color="#83BBEA" fontSize="39" styleName="bold"
+			 text="Ana Maria"/>
+	<s:Label x="476" y="36" width="352" color="#83BBEA" fontSize="19" styleName="bold"
+			 text="ÚLTIMOS PACIENTES ATENDIDOS"/>
+	<s:Label x="39" y="148" width="390" height="370"
+			 text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam ac mauris. Quisque eget metus eget tellus ultrices rhoncus. Phasellus id lacus semper lacus suscipit pretium. Nulla mollis ligula id tellus. Duis ac libero. Nulla facilisi. Lorem ipsum dolor sit.&#xd; &#xd;Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla commodo viverra malesuada. Quisque sodales turpis vulputate enim ornare venenatis. Aliquam scelerisque pretium orci, rutrum commodo lectus placerat vel. Suspendisse porta, orci at ornare porttitor, libero urna sagittis justo, et mollis odio elit sit amet massa. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam ac mauris. Quisque eget metus eget tellus ultrices rhoncus. Phasellus id lacus semper lacus suscipit pretium. Nulla mollis ligula id tellus. Duis ac libero. Nulla facilisi. Lorem ipsum dolor sit."/>
+	
+	<!-- 
+	<s:DataGrid id="dgPacientes" x="476" y="76" width="518" height="442" dataProvider="{pacientes}" requestedMaxRowCount="16"
+				skinClass="app.skin.DataGridSkin">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="nome" headerText="Nome"></s:GridColumn>
+				<s:GridColumn dataField="dataConsulta" headerText="Data" width="150">
+					<s:itemRenderer>
+						<fx:Component>
+							<mx:LinkButton icon="@Embed('assets/images/icoAgenda.png')" label="{data.dataConsulta}" buttonMode="false" />
+						</fx:Component>
+					</s:itemRenderer>
+				</s:GridColumn>
+				<s:GridColumn  headerText="Editar" width="150">
+					<s:itemRenderer>
+						<fx:Component>
+							<mx:LinkButton icon="@Embed('assets/images/icoEditar.png')" label="Editar paciente" />
+						</fx:Component>
+					</s:itemRenderer>
+				</s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	-->
+	
+</s:NavigatorContent>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009"
+					xmlns:s="library://ns.adobe.com/flex/spark"
+					xmlns:mx="library://ns.adobe.com/flex/mx"
+					xmlns:view="app.view.*"
+					width="1024" height="700" backgroundColor="#EFF7FD"
+					contentBackgroundColor="#EFF7FD">
+	
+	<fx:Script>
+		<![CDATA[
+			import app.controller.Navigation;
+			import app.enums.EAreas;
+			import app.model.DB;
+			import app.model.Paciente;
+			import app.model.Usuario;
+			import app.util.General;
+			
+			import flash.net.navigateToURL;
+			
+			import mx.core.UIComponent;
+			import mx.formatters.DateFormatter;
+			
+			import nz.co.codec.flexorm.criteria.Criteria;
+			
+			public function init():void
+			{
+				var usuario:Usuario = General.usuario ;
+				saudacao.text = usuario.nome + " " + usuario.sobrenome ;
+				
+				toogleButtons();
+				
+				var c:Criteria = DB.em.createCriteria(Paciente);
+				c.addEqualsCondition("id", 10);
+				var p:Paciente = DB.em.fetchCriteriaFirstResult(c) as Paciente ;
+				
+				General.pacienteAtual = p ;
+				
+				initNavigation();
+				Navigation.navega( EAreas.CONSULTA );
+			}
+			
+			public function initWithoutUser():void
+			{
+				toogleButtons(false);
+				
+				initNavigation();
+				Navigation.navega( EAreas.CADASTRO );
+			}
+			
+			public function getContainer():SkinnableContainer
+			{
+				return viewsContainer ;
+			}
+			
+			private function initNavigation():void
+			{
+				Navigation.init(this);
+			}
+			
+			private function toogleButtons(show:Boolean = true):void
+			{
+				saudacao.visible = show ;
+				txtOla.visible = show ;
+				btnEditarDados.visible = show ;
+				btnManualUso.visible = show ;
+				btnRequisitos.visible = show ;
+				btnMeusPacientes.visible = show ;
+				btnCadastrarPaciente.visible = show ;
+				separadores.visible = show ;
+			}
+			
+			private function arrastar(e:MouseEvent):void
+			{
+				if( e.currentTarget == barra && this.stage )
+				{
+					this.stage.nativeWindow.startMove();
+				}
+			}
+			
+			private function fechar(e:MouseEvent):void
+			{
+				if( this.stage ) this.stage.nativeWindow.close() ;
+			}
+			
+			private function minimizar(e:MouseEvent):void
+			{
+				if( this.stage ) this.stage.nativeWindow.minimize() ;
+			}
+			
+			private function buscar(e:MouseEvent):void
+			{
+				//TODO - BUSCAR PACIENTES
+			}
+			
+			private function pacientes(e:MouseEvent):void
+			{
+				//TODO - LISTAR PACIENTES
+			}
+			
+			private function cadastrarPaciente(e:MouseEvent):void
+			{
+				General.pacienteAtual = null ;
+				Navigation.navega(EAreas.CADASTRO_PACIENTE);
+			}
+			
+			private function alterarDados(event:MouseEvent):void
+			{
+				Navigation.navega(EAreas.CADASTRO);
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:SkinnableContainer id="barra" x="0" y="0" width="100%" height="25" backgroundColor="#81B9EA" contentBackgroundColor="#81B9EA" mouseDown="arrastar(event)">
+		
+		<!-- NOME DO USUÁRIO -->
+		<s:Label id="txtOla" x="24" y="8" color="0xffffff" text="Olá, " />
+		<s:Label id="saudacao" x="52" y="4" maxWidth="533" color="0xffffff" styleName="bold"
+				 text="Ana Maria"/>
+		
+		<!-- BOTOÕES DA BARRA -->
+		<mx:LinkButton id="btnEditarDados" x="594" y="2" label="Alterar Dados" color="#ffffff" icon="@Embed('assets/images/icoAlterarDados.png')" click="alterarDados(event)" />
+		<mx:LinkButton id="btnManualUso" x="704" y="2" label="Manual de uso" color="#ffffff" icon="@Embed('assets/images/icoManualUso.png')" />
+		<mx:LinkButton id="btnRequisitos" x="814" y="2" label="Requisitos de sistema" color="#ffffff" icon="@Embed('assets/images/icoRequisitos.png')" />
+		
+		<!-- BOTÕES DE SISTEMA -->
+		<mx:LinkButton x="996" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoFechar5.gif')" click="fechar(event)" />
+		<mx:LinkButton x="969" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoMinimize4.gif')" click="minimizar(event)" />
+		
+		<s:Group id="separadores">
+			<mx:VRule id="ruleName" x="593" y="4" height="17" width="1" chromeColor="#FFFFFF" />
+			<mx:VRule x="704" y="4" height="17" width="1" chromeColor="#FFFFFF" />
+			<mx:VRule x="813" y="4" height="17" width="1" chromeColor="#FFFFFF" />
+			<mx:VRule x="964" y="4" height="17" width="1" chromeColor="#FFFFFF" />
+		</s:Group>
+	</s:SkinnableContainer>
+	
+	<s:Image id="bgBarraBusca" x="0" y="18" source="assets/images/barra_topo_bg.png"/>
+	
+	<!-- NOME -->
+	<s:Label x="36" y="65" color="#83BBEA" fontSize="18" text="Consultório"/>
+	<s:Label x="133" y="60" color="#83BBEA" styleName="bold" fontSize="18" text="Nutri Saúde"/>
+	
+	<!-- BOTÕES -->
+	<s:Button id="btnMeusPacientes" x="669" y="52" width="155" height="35" label="MEUS PACIENTES" click="pacientes(event)" skinClass="app.skin.Button" />
+	<s:Button id="btnCadastrarPaciente" x="843" y="52" width="137" height="35" label="CADASTRAR" click="cadastrarPaciente(event)" skinClass="app.skin.Button" />
+	
+	<!-- BUSCA -->
+	<s:TextInput id="txtBusca" x="251" y="55" width="391" prompt="Buscar paciente" skinClass="app.skin.TextInput" paddingRight="3"/>
+	<s:Image id="btnBuscar" x="617" y="60" source="assets/images/btnBuscar.png" click="buscar(event)" />
+	
+	<!-- BG ÁREAS -->
+	
+	<s:Rect id="bgAreas" x="10" y="117" width="1004" height="540" radiusX="10" radiusY="10">
+		<s:fill>
+			<s:SolidColor color="#ffffff" />
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter distance="1" blurX="11" blurY="11" color="#000000" strength="0.11" />
+		</s:filters>
+	</s:Rect>
+	
+	<s:SkinnableContainer id="viewsContainer" x="10" y="117" width="1004" height="540">
+	</s:SkinnableContainer>
+	
+	<!-- FOOTER -->
+	<s:SkinnableContainer x="0" bottom="0" width="100%" height="37" backgroundColor="#81B9EA" contentBackgroundColor="#81B9EA">
+		<s:Label x="19" y="13" color="0xffffff" text="Copyright © Nestlé - Todos os direitos reservados - " />
+		<s:Label x="324" y="14" color="0xffffff" text="Acesse www.nestle.com.br/nutrisaude" click="{navigateToURL(new URLRequest('http://www.nestle.com.br/nutrisaude'))}" buttonMode="true" />
+		<s:Image right="5" y="-1" source="assets/images/logo_nestle_branco.png"/>
+	</s:SkinnableContainer>
+	
+</s:NavigatorContent>

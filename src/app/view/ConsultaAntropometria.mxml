@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="400" creationComplete="init(event)">
+	<fx:Script>
+		<![CDATA[
+			import app.model.Antropometria;
+			import app.util.General;
+			
+			import mx.controls.Alert;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.Validator;
+			
+			private var focusedFormControl:DisplayObject;
+			
+			[Bindable]
+			private var formIsValid:Boolean = false;
+			
+			private function init(event:FlexEvent):void
+			{
+				for each( var validator:Validator in validators )
+					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
+			}
+			
+			private function validateForm(event:Event):void
+			{
+				focusedFormControl = event.target as DisplayObject;
+				formIsValid = true;
+				
+				for each( var validator:Validator in validators )
+					validate(validator);
+			}
+			
+			private function validate(validator:Validator):Boolean
+			{
+				var validatorSource:DisplayObject = validator.source as DisplayObject;
+				var supressEvents:Boolean = validatorSource != focusedFormControl;
+				var event:ValidationResultEvent = validator.validate(null, supressEvents)
+				var currentControlIsValid:Boolean = event.type == ValidationResultEvent.VALID;
+				
+				formIsValid = formIsValid && currentControlIsValid;
+				return currentControlIsValid;
+			}
+			
+			private function onSalvar(e:MouseEvent):void
+			{
+				if( Validator.validateAll(validators).length > 0 )
+				{
+					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
+				}
+				else
+				{
+					var a:Antropometria = new Antropometria();
+					a.peso = Number(txtPeso.text);
+					a.pesoPreGestacional = Number(txtPesoGestacional.text);
+					a.estatura = Number(txtEstatura.text);
+					
+					a.circunferenciaCintura = Number(txtCircCintura.text);
+					a.circunferenciaQuadril = Number(txtCircQuadril.text);
+					a.circunferenciaTriceps = Number(txtCircTriceps.text);
+					a.circunferenciaCoxa = Number(txtCircCoxa.text);
+					a.circunferenciaPanturrilha = Number(txtCircPanturrilha.text);
+					
+					a.dobraCutaneaBiciptal = Number(txtPeso.text);
+					a.dobraCutaneaTriciptal = Number(txtPeso.text);
+					a.dobraCutaneaSubescapular = Number(txtPeso.text);
+					a.dobraCutaneaAxilarMedia = Number(txtPeso.text);
+					a.dobraCutaneaSupraIliaca = Number(txtPeso.text);
+					a.dobraCutaneaToracica = Number(txtPeso.text);
+					a.dobraCutaneaAbdominal = Number(txtPeso.text);
+					a.dobraCutaneaCoxa = Number(txtPeso.text);
+					a.dobraCutaneaPanturrilhaMedial = Number(txtPeso.text);
+					
+					General.consultaAtual.antropometria = a ;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<fx:Array id="validators">
+			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valCampo" source="{txtPeso}" />
+			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valEstatura" source="{txtEstatura}" />
+		</fx:Array>
+	</fx:Declarations>
+	<s:Scroller x="0" y="0" width="994" height="390">
+		<s:Group width="100%" height="100%">
+			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
+			
+			<s:Label x="10" y="50" text="PESO*"/>
+			<s:TextInput id="txtPeso" x="10" y="70" width="120" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="134" y="85" color="#999999" styleName="light" text="(kg)"/>
+			
+			<s:Label x="170" y="50" text="PESO PRÉ-GETACIONAL"/>
+			<s:TextInput id="txtPesoGestacional" x="170" y="70" width="120" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="294" y="85" color="#999999" styleName="light" text="(kg)"/>
+			
+			<s:Label x="335" y="50" text="ESTATURA*"/>
+			<s:TextInput id="txtEstatura" x="335" y="70" width="120" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="459" y="85" color="#999999" styleName="light" text="(cm)"/>
+			
+			<s:Label x="10" y="120" text="CIRCUNFERÊNCIA DA CINTURA"/>
+			<s:TextInput id="txtCircCintura" x="10" y="140" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="155" color="#999999" styleName="light" text="(cm)"/>
+			
+			<s:Label x="10" y="200" text="CIRCUNFERÊNCIA DO TRÍCEPS"/>
+			<s:TextInput id="txtCircTriceps" x="10" y="220" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="235" color="#999999" styleName="light" text="(cm)"/>
+			
+			<s:Label x="279" y="120" text="CIRCUNFERÊNCIA DO QUADRIL"/>
+			<s:TextInput id="txtCircQuadril" x="279" y="140" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="459" y="155" color="#999999" styleName="light" text="(cm)"/>
+			
+			<s:Label x="10" y="280" text="CIRCUNFÊRENCIA DA COXA"/>
+			<s:TextInput id="txtCircCoxa" x="10" y="300" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="315" color="#999999" styleName="light" text="(cm)"/>
+			
+			<s:Label x="279" y="280" text="CIRCUNFERÊNCIA DA PANTURRILHA"/>
+			<s:TextInput id="txtCircPanturrilha" x="279" y="300" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="459" y="315" color="#999999" styleName="light" text="(cm)"/>
+			
+			<s:Label x="10" y="360" text="DOBRA CUTÂNEA BICIPTAL"/>
+			<s:TextInput id="txtDobraBiceps" x="10" y="380" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="395" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Label x="10" y="440" text="DOBRA CUTÂNEA SUBESCAPULAR"/>
+			<s:TextInput id="txtDobraSubescapular" x="10" y="460" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="475" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Label x="279" y="360" text="DOBRA CUTÂNEA TRICIPTAL"/>
+			<s:TextInput id="txtDobraTriceps" x="279" y="380" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="459" y="395" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Label x="10" y="520" text="DOBRA CUTÂNEA AXILAR MÉDIA"/>
+			<s:TextInput id="txtDobraAxilarMedia" x="10" y="540" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="555" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Label x="279" y="520" text="DOBRA CUTÂNEA TORÁCICA"/>
+			<s:TextInput id="txtDobraToracica" x="279" y="540" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="459" y="555" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Label x="10" y="600" text="DOBRA CUTÂNEA SUPRA-ILÍACA"/>
+			<s:TextInput id="txtDobraSupraIliaca" x="10" y="620" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="635" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Label x="279" y="600" text="DOBRA CUTÂNEA ABDOMINAL"/>
+			<s:TextInput id="txtDobraAbdominal" x="279" y="620" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="459" y="635" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Label x="10" y="680" text="DOBRA CUTÂNEA DA COXA"/>
+			<s:TextInput id="txtDobraCoxa" x="10" y="700" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="715" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Label x="279" y="680" text="DOBRA CUTÂNEA PANTURRILHA MEDIAL"/>
+			<s:TextInput id="txtDobraPanturrilha" x="279" y="700" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="459" y="715" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Button id="btnSalvar" x="10" y="760" enabled="{formIsValid}" alpha="{formIsValid ? 1 : 0.5}"
+					  label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" click="onSalvar(event)"/>
+		</s:Group>
+	</s:Scroller>
+	
+	
+</s:NavigatorContent>

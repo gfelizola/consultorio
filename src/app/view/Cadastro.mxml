@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540"
+					creationComplete="init()">
+	<fx:Script>
+		<![CDATA[
+			import app.controller.Navigation;
+			import app.enums.EAreas;
+			import app.events.AppEvent;
+			import app.model.Constantes;
+			import app.model.DB;
+			import app.model.Usuario;
+			import app.model.UsuarioRedeSocial;
+			import app.util.General;
+			
+			import as3.utils.Mask;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.controls.LinkButton;
+			import mx.core.IVisualElement;
+			import mx.core.UIComponent;
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			import mx.managers.IFocusManagerComponent;
+			import mx.validators.Validator;
+			
+			import nz.co.codec.flexorm.criteria.Criteria;
+			
+			import spark.components.FormItem;
+			import spark.events.IndexChangeEvent;
+			import spark.layouts.BasicLayout;
+			
+			[Bindable]
+			private var usuario:Usuario = new Usuario();
+			
+			private var validators:Array;
+			
+			private var logo:File;
+			
+			[Embed("assets/images/remover.png")]
+			private const removerIcon:Class;
+			
+			[Bindable]
+			private var redesSociais:ArrayCollection = new ArrayCollection();
+			
+			[Bindable]
+			private var regionais:ArrayCollection = new ArrayCollection();
+			
+			private var sexos:ArrayCollection = new ArrayCollection( new Array(
+				{nome: 'Masculino', valor: 'M'},
+				{nome: 'Feminino', valor: 'F'}
+			) );
+			
+			public function atualizaUsuario(u:Usuario):void
+			{
+				if( u )
+				{
+					usuario = u;
+					redesSociais = u.redesSociais ;
+					atualizarRedesSociais();
+					
+					if( usuario.logo != "" )
+					{
+						logo = File.applicationStorageDirectory.resolvePath("images/" + usuario.logo );
+						if( logo.exists ) imgLogo.source = logo.url ;
+					}
+				}
+			}
+			
+			private function init():void
+			{
+				new Mask(txtTelefone, "(99) 9999-99999" );
+				new Mask(txtCEP, "99999-999" );
+				
+				validators = new Array();
+				validators.push(valLogin);
+				validators.push(valSenha);
+				validators.push(valConfirmaSenha);
+				validators.push(valNome);
+				validators.push(valSobrenome);
+				validators.push(valSexo);
+				validators.push(valCRN);
+				validators.push(valRegional);
+				validators.push(valEndereco);
+				validators.push(valBairro);
+				validators.push(valCidade);
+				validators.push(valEmail);
+				
+				for (var i:int = 1; i <= 10; i++) 
+				{
+					regionais.addItem(i);
+				}
+				
+				if( General.usuario != null ) atualizaUsuario( General.usuario );
+			}
+			
+			private function onSalvar(e:MouseEvent = null):void
+			{
+				lblResposta.text = "" ;
+				
+				var erros:Array = Validator.validateAll(validators);
+				if (erros.length == 0) {
+					var senha:String = txtSenha.text ;
+					var confirmacao:String = txtConfirmaSenha.text ;
+					
+					if( senha == confirmacao )
+					{
+						var c:Criteria = DB.em.createCriteria(Usuario);
+						c.addEqualsCondition("login", txtLogin.text );
+						
+						var cadastrado:Boolean = DB.em.fetchCriteria(c).length > 0 ;
+						if( cadastrado )
+						{
+							focusManager.setFocus(txtLogin);
+							Alert.show("Esse login já existe. Por favor, escolha outro.", "Aviso");
+						}
+						else 
+						{
+							salvarUsuario();
+						}
+					}
+					else
+					{
+						lblResposta.text = "A confirmação de senha deve ser exatamente igual a senha. Digite novamente" ;
+						txtSenha.text = "" ;
+						txtConfirmaSenha.text = "";
+					}
+				} else {
+					lblResposta.text = "Existem erros no formulário. Verifique os campos vermelhos." ;
+					
+					var campo:IFocusManagerComponent = IFocusManagerComponent( Validator( ValidationResultEvent(erros[0]).target ).source )
+					focusManager.setFocus( campo );
+				}
+			}
+			
+			private function salvarUsuario():void
+			{
+				var u:Usuario = new Usuario();
+				
+				u.login = txtLogin.text ;
+				u.senha = txtSenha.text ;
+				u.nome = txtNome.text ;
+				u.sobrenome = txtSobrenome.text ;
+				u.CRN = txtCrn.text ;
+				u.regional = cmbRegional.selectedItem ;
+				u.sexo = cmbSexo.selectedItem.valor ;
+				u.endereco = txtEndereco.text ;
+				u.complemento = txtComplemento.text ;
+				u.bairro = txtBairro.text ;
+				u.CEP = txtCEP.text ;
+				u.cidade = txtCidade.text ;
+				u.estado = cmbEstados.selectedItem ;
+				u.telefone = txtTelefone.text ;
+				u.site = txtWebsite.text ;
+				u.email = txtEmail.text ;
+				
+				if( ! isNaN( usuario.id ) ) u.id = usuario.id ;
+				DB.em.save(u);
+				
+				for (var i:int = 0; i < redesSociais.length; i++) 
+				{
+					var usr:UsuarioRedeSocial = redesSociais[i] ;
+					usr.usuario = u ;
+				}
+				
+				u.redesSociais = redesSociais ;
+				
+				var logoName:String = "logo_" + u.id + "." + logo.extension ;
+				u.logo = logoName ;
+				logo.copyToAsync( File.applicationStorageDirectory.resolvePath("images/" + u.logo ) );
+				
+				DB.em.save(u);
+				
+				General.usuario = u ;
+				Navigation.reinitEstrutura();
+				Navigation.navega(EAreas.HOME);
+			}
+			
+			private function onAdicionar(e:MouseEvent):void
+			{
+				if( cmbRedeSocial.selectedIndex >= 0 && txtEndRedeSocial.text.length > 0 )
+				{
+					var urs:UsuarioRedeSocial = new UsuarioRedeSocial();
+					urs.rede = cmbRedeSocial.selectedItem ;
+					urs.endereco = txtEndRedeSocial.text;
+					
+					txtEndRedeSocial.text = "" ;
+					cmbRedeSocial.selectedIndex = -1 ;
+					
+					redesSociais.addItem(urs);
+					atualizarRedesSociais()
+				}
+			}
+			
+			private function atualizarRedesSociais():void
+			{
+				rsContainer.removeAllElements();
+				if( redesSociais.length > 0 )
+				{
+					for (var i:int = 0; i < redesSociais.length; i++) 
+					{
+						var usr:UsuarioRedeSocial = redesSociais[i] ;
+						
+						var label:Label = new Label();
+						label.text = usr.rede.nome + " - " + usr.endereco ;
+						label.x = 25 ;
+						label.y = (i * 25) + 5 ;
+						
+						var bt:LinkButton = new LinkButton();
+						bt.label = "" ;
+						bt.setStyle("icon", removerIcon);
+						bt.addEventListener(MouseEvent.CLICK, onRemoverClick);
+						bt.x = 0 ;
+						bt.y = i * 25 ;
+						bt.width = 20 ;
+						bt.height = 20 ;
+						bt.data = usr ;
+						
+						rsContainer.addElement(label);
+						rsContainer.addElement(bt);
+					}
+					
+					rsContainer.visible = true ;
+					rsContainer.height = redesSociais.length * 25 ;
+				} else {
+					rsContainer.height = 0 ;
+					rsContainer.visible = false ;
+				}
+				gpFinal.y = rsContainer.y + rsContainer.height + 50 ;
+			}
+			
+			private function onEscolher(e:MouseEvent):void
+			{
+				if( logo == null ) logo = new File();
+				logo.addEventListener(Event.SELECT, onLogoSelect);
+				
+				var filtro:FileFilter = new FileFilter("imagens", "*.jpg;*.gif;*.png");
+				logo.browseForOpen("Escolha o logo que será utilizado", [filtro] );
+			}
+			
+			private function onLogoSelect(e:Event):void
+			{
+				logo.removeEventListener( Event.SELECT, onLogoSelect );
+				imgLogo.source = logo.url ;
+			}
+			
+			private function onRemoverClick(e:MouseEvent):void
+			{
+				var bt:LinkButton = e.currentTarget as LinkButton ;
+				redesSociais.removeItemAt( redesSociais.getItemIndex(bt.data) );
+				atualizarRedesSociais();
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<mx:StringValidator id="valNome" 			source="{txtNome}" 				property="text" required="true" requiredFieldError="O campo Nome é obrigatório" />
+		<mx:StringValidator id="valSobrenome" 		source="{txtSobrenome}" 		property="text" required="true" requiredFieldError="O campo Sobrenome é obrigatório" />
+		<mx:StringValidator id="valLogin" 			source="{txtLogin}" 			property="text" required="true" requiredFieldError="O campo Nome de usuário é obrigatório" />
+		<mx:StringValidator id="valSenha" 			source="{txtSenha}" 			property="text" required="true" requiredFieldError="O campo Senha é obrigatório" />
+		<mx:StringValidator id="valConfirmaSenha" 	source="{txtConfirmaSenha}" 	property="text" required="true" requiredFieldError="O campo Confirmação de Senha é obrigatório" />
+		<mx:StringValidator id="valCRN" 			source="{txtCrn}" 				property="text" required="true" requiredFieldError="O campo CRN é obrigatório" />
+		<mx:StringValidator id="valTelelefone" 		source="{txtTelefone}" 			property="text" required="true" requiredFieldError="O campo Telefone é obrigatório" />
+		<mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" />
+		<mx:StringValidator id="valEndereco" 		source="{txtEndereco}" 			property="text" required="true" requiredFieldError="O campo Endereco é obrigatório" />
+		<mx:StringValidator id="valBairro" 			source="{txtBairro}" 			property="text" required="true" requiredFieldError="O campo Bairro é obrigatório" />
+		<mx:StringValidator id="valCidade" 			source="{txtCidade}" 			property="text" required="true" requiredFieldError="O campo Cidade é obrigatório" />
+		
+		<s:NumberValidator id="valSexo" 			source="{cmbSexo}" 				property="selectedIndex" minValue="0" lessThanMinError="O campo Sexo é obrigatório" />
+		<s:NumberValidator id="valEstado" 			source="{cmbEstados}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Estado é obrigatório" />
+		<s:NumberValidator id="valRegional" 		source="{cmbRegional}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Regional é obrigatório" />
+	</fx:Declarations>
+	
+	<s:Scroller id="formScroller" x="10" y="10" width="984" height="520" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
+		<s:Group id="formContainer" width="984" height="520">
+			
+			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DE ACESSO" />
+			
+			<s:Label x="10" y="50" text="NOME DE USUARIO*"/>
+			<s:TextInput id="txtLogin" x="10" y="68" width="435" skinClass="app.skin.TextInput" text="{usuario.login}"/>
+			
+			<s:Label x="10" y="114" text="SENHA*"/>
+			<s:TextInput id="txtSenha" x="10" y="135" width="435" displayAsPassword="true" skinClass="app.skin.TextInput"/>
+			
+			<s:Label x="490" y="114" text="CONFIRMAÇÃO DA SENHA*"/>
+			<s:TextInput id="txtConfirmaSenha" x="490" y="135" width="435" displayAsPassword="true" skinClass="app.skin.TextInput"/>
+			
+			
+			
+			<s:Label x="10" y="182" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS PROFISSIONAIS"/>
+			
+			<s:Label x="10" y="219" text="NOME*"/>
+			<s:TextInput id="txtNome" x="10" y="240" width="435" skinClass="app.skin.TextInput" text="{usuario.nome}" />
+			
+			<s:Label x="490" y="219" text="SOBRENOME*"/>
+			<s:TextInput id="txtSobrenome" x="490" y="240" width="435" skinClass="app.skin.TextInput" text="{usuario.sobrenome}" />
+			
+			<s:Label x="490" y="294" text="SEXO*"/>
+			<s:ComboBox id="cmbSexo" x="490" y="315" width="435" dataProvider="{sexos}"
+						labelField="nome" skinClass="app.skin.ComboBox"/>
+			
+			<s:Label x="10" y="295" text="CRN*"/>
+			<s:TextInput id="txtCrn" x="10" y="316" width="309" skinClass="app.skin.TextInput" text="{usuario.CRN}" />
+			
+			<s:Label x="327" y="294" text="REGIONAL*"/>
+			<s:ComboBox id="cmbRegional" x="327" y="315" width="118" dataProvider="{regionais}"
+						selectedItem="{usuario.regional}" skinClass="app.skin.ComboBox"/>
+			
+			
+			
+			<s:Label x="10" y="372" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DO CONSULTÓRIO"/>
+			
+			<s:Label x="10" y="408" text="ENDEREÇO*"/>
+			<s:TextInput id="txtEndereco" x="10" y="429" width="435" skinClass="app.skin.TextInput" text="{usuario.endereco}" />
+			
+			<s:Label x="490" y="408" text="COMPLEMENTO"/>
+			<s:TextInput id="txtComplemento" x="490" y="429" width="435" skinClass="app.skin.TextInput" text="{usuario.complemento}" />
+			
+			<s:Label x="10" y="473" text="BAIRRO*"/>
+			<s:TextInput id="txtBairro" x="10" y="494" width="435" skinClass="app.skin.TextInput" text="{usuario.bairro}" />
+
+			<s:Label x="490" y="473" text="CEP"/>
+			<s:TextInput id="txtCEP" x="490" y="494" width="435" skinClass="app.skin.TextInput" text="{usuario.CEP}" />
+			
+			<s:Label x="10" y="538" text="CIDADE*"/>
+			<s:TextInput id="txtCidade" x="10" y="559" width="435" skinClass="app.skin.TextInput" text="{usuario.cidade}" />
+			
+			<s:Label x="490" y="536" text="ESTADO*"/>
+			<s:ComboBox id="cmbEstados" x="490" y="557" width="155" dataProvider="{Constantes.estados}" skinClass="app.skin.ComboBox" selectedItem="{usuario.estado}" />
+			
+			<s:Label x="664" y="536" text="TELEFONE*"/>
+			<s:TextInput id="txtTelefone" x="664" y="557" width="260" skinClass="app.skin.TextInput" text="{usuario.telefone}" />
+			
+			<s:Label x="10" y="615" text="INCLUIR LOGO"/>
+			<s:Button id="btnEscolherLogo" x="10" y="635" label="ESCOLHER ARQUIVO" skinClass="app.skin.Button" click="onEscolher(event)"/>
+			<s:Image id="imgLogo" x="182" y="615" width="742" height="78" scaleMode="letterbox" horizontalAlign="left" />
+			
+			
+			<s:Label x="10" y="726" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
+			
+			<s:Label x="10" y="758" text="REDE SOCIAL"/>
+			<s:ComboBox id="cmbRedeSocial" x="10" y="779" width="434" labelField="nome" dataProvider="{Constantes.redesSociais}" skinClass="app.skin.ComboBox" />
+			
+			<s:Label x="490" y="758" text="ENDEREÇO"/>
+			<s:TextInput id="txtEndRedeSocial" x="490" y="779" width="301" skinClass="app.skin.TextInput"/>
+				
+			<s:Button id="btnAdicionar" x="802" y="775" width="122" label="ADICIONAR"
+					  click="onAdicionar(event)" skinClass="app.skin.Button"/>
+			
+			<s:Group id="rsContainer" x="10" y="820" visible="false">
+				
+			</s:Group>
+			
+			<s:Group id="gpFinal" x="10" y="820">
+				<s:Label x="0" y="0" text="WEBSITE/BLOG"/>
+				<s:TextInput id="txtWebsite" x="0" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.site}" />
+				
+				<s:Label x="480" y="0" text="E-MAIL*"/>
+				<s:TextInput id="txtEmail" x="480" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.email}" />
+				
+				<s:Button id="btnSalvar" x="792" y="70" label="SALVAR DADOS" skinClass="app.skin.Button" click="onSalvar(event)"/>
+				<s:Label id="lblResposta" x="0" y="70" width="780" height="100" color="#FF0000"/>
+			</s:Group>
+			
+		</s:Group>
+	</s:Scroller>
+	
+</s:NavigatorContent>

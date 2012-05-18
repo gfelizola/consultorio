@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"
+					   xmlns:s="library://ns.adobe.com/flex/spark"
+					   xmlns:mx="library://ns.adobe.com/flex/mx"
+					   xmlns:views="app.view.*"
+					   width="1024" height="700" applicationComplete="init()" showStatusBar="false">
+	<fx:Style source="app/style/Estilo.css" />
+
+	<fx:Script>
+		<![CDATA[
+			import app.events.AppEvent;
+			import app.model.Constantes;
+			import app.util.General;
+			
+			import mx.collections.ArrayCollection;
+			
+			protected function init():void
+			{
+				nativeWindow.x = (Capabilities.screenResolutionX - nativeWindow.width) / 2;
+				nativeWindow.y = (Capabilities.screenResolutionY - nativeWindow.height) / 2;
+				
+				this.nativeWindow.addEventListener(Event.CLOSING,onAppWinClose);
+				
+				General.verificaAtualizacao();
+				Constantes.verificarValoresPadrao();
+				
+				loginView.addEventListener(AppEvent.LOGIN_SUCESSO, onLoginComplete);
+				loginView.addEventListener(AppEvent.CADASTRAR_USUARIO_NOVO, onCadastrar);
+			}
+			
+			protected function onAppActivate(event:Event):void {
+				trace("Handling application activate event");
+			}
+
+			protected function onAppDeactivate(event:Event):void {
+				trace("Handling application deactivate event");
+			}
+			
+			protected function onAppWinClose(e:Event):void
+			{
+				e.preventDefault();
+				for (var i:int = NativeApplication.nativeApplication.openedWindows.length - 1; i>= 0; --i)
+				{
+					NativeWindow(NativeApplication.nativeApplication.openedWindows[i]).close();
+				}
+			}
+			
+			private function onLoginComplete(e:Event):void
+			{
+				loginView.visible = false ;
+				estruturaView.visible = true ;
+				estruturaView.init();
+			}
+			
+			private function onCadastrar(e:Event):void
+			{
+				loginView.visible = false ;
+				estruturaView.visible = true ;
+				estruturaView.initWithoutUser();
+			}
+			
+		]]>
+	</fx:Script>
+	<views:Login id="loginView" x="314" y="141"></views:Login>
+	<views:Estrutura id="estruturaView" x="0" y="0" visible="false"></views:Estrutura>
+</s:WindowedApplication>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500"
+					creationComplete="init()" xmlns:view="app.view.*">
+	<fx:Script>
+		<![CDATA[
+			import app.model.Paciente;
+			import app.util.General;
+			
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			
+			private function init():void
+			{
+				var p:Paciente = General.pacienteAtual ;
+				if( p == null ) return ;
+				
+				var idade:Number = ( new Date().fullYear ) - p.dataNascimento.fullYear ;
+				
+				var tabMAN:UIComponent = tbConsulta.dataGroup.getElementAt(1) as UIComponent;
+				//if(tabMAN){tabMAN.enabled = idade > 65;}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:TabBar id="tbConsulta" x="0" y="10" width="100%" height="40" dataProvider="{vsConsulta}"
+			  skinClass="app.skin.TabBar"/>
+	
+	<s:Rect id="bgVsConsulta" left="0" right="0" top="50" bottom="0">
+		<s:fill>
+			<s:SolidColor color="#ffffff" />
+		</s:fill>
+		<s:filters>
+			<s:GlowFilter color="#000000" alpha="0.15" blurX="0" blurY="10" />
+		</s:filters>
+	</s:Rect>
+
+	<s:Button id="btnSalvarConsulta" y="58" horizontalCenter="0" label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DA CONSULTA" skinClass="app.skin.Button" />
+	
+	<mx:ViewStack id="vsConsulta" x="0" y="100" width="100%" height="100%" backgroundColor="#ffffff" creationPolicy="all">
+		<view:ConsultaAntropometria width="100%" height="100%" label="ANTROPOMETRIA"></view:ConsultaAntropometria>
+		
+		<view:ConsultaMAN id="ncMAN" width="100%" height="100%" label="MAN"></view:ConsultaMAN>
+		<s:NavigatorContent width="100%" height="100%" label="DADOS ALIMENTARES"></s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="ATIVIDADE FÍSICA"></s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="EXAMES BIOQUÍMICOS"></s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="OBSERVAÇÃO"></s:NavigatorContent>
+	</mx:ViewStack>
+</s:NavigatorContent>

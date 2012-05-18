@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540" xmlns:view="app.view.*">
+	<fx:Script>
+		<![CDATA[
+			import app.util.General;
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:TabBar id="tbPaciente" x="0" y="0" width="100%" height="40" dataProvider="{vsPaciente}"
+			  skinClass="app.skin.TabBar"/>
+	
+	<s:Rect id="bgVsPaciente" left="0" right="0" top="40" bottom="0" topLeftRadiusX="10" topLeftRadiusY="10" topRightRadiusX="10" topRightRadiusY="10" >
+		<s:fill>
+			<s:SolidColor color="#ffffff" />
+		</s:fill>
+		<s:filters>
+			<s:GlowFilter color="#000000" alpha="0.3" blurX="10" blurY="10" />
+		</s:filters>
+	</s:Rect>
+	
+	<mx:ViewStack id="vsPaciente" x="0" y="40" width="100%" height="100%" creationPolicy="all">
+		<view:ConsultaSumario width="100%" height="100%" label="{General.pacienteAtual.nome.toUpperCase() + ' ' + General.pacienteAtual.sobrenome.toUpperCase()}">
+		</view:ConsultaSumario>
+		
+		<view:ConsultaDadosPaciente width="100%" height="100%" label="DADOS DO PACIENTE">
+		</view:ConsultaDadosPaciente>
+		
+		<s:NavigatorContent width="100%" height="100%" label="HISTORICO DE CONSULTAS">
+		</s:NavigatorContent>
+		
+		<view:ConsultaNova width="100%" height="100%" label="NOVA CONSULTA">
+		</view:ConsultaNova>
+	</mx:ViewStack>
+	
+</s:NavigatorContent>

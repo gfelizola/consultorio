@@ -5,6 +5,7 @@
 	<fx:Script>
 		<![CDATA[
 			import app.model.Antropometria;
+			import app.model.DB;
 			import app.util.General;
 			
 			import mx.controls.Alert;
@@ -52,7 +53,10 @@
 				}
 				else
 				{
-					General.consultaAtual.observacao = txtObservacao;
+					if(General.consultaAtual){
+						General.consultaAtual.observacao = txtObservacao.text;
+						DB.em.save(General.consultaAtual);
+					}
 				}
 			}
 			
@@ -60,8 +64,8 @@
 	</fx:Script>
 	<fx:Declarations>
 		<fx:Array id="validators">
-			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valCampo" source="{txtPeso}" />
-			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valEstatura" source="{txtEstatura}" />
+			<!-- mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valCampo" source="{txtPeso}" />
+			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valEstatura" source="{txtEstatura}" / -->
 		</fx:Array>
 	</fx:Declarations>
 	<s:Scroller x="0" y="0" width="994" height="390">

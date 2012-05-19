@@ -19,12 +19,16 @@
 			private var focusedFormControl:DisplayObject;
 
 			private var pergsTriagem:Array;
+			private var pergsGlobal:Array;
 			
 			[Bindable]
 			private var formIsValid:Boolean = false;
 			
 			[Bindable]
-			private var pontuacaoTriagem:int = 0 ;
+			private var pontuacaoTriagem:Number = 0 ;
+			
+			[Bindable]
+			private var pontuacaoGlobal:Number = 0 ;
 			
 			private function init(e:FlexEvent):void
 			{
@@ -33,6 +37,22 @@
 					RadioButtonGroup(validator.source).addEventListener(Event.CHANGE, validateForm);
 				}
 				*/
+				
+				pergsGlobal = new Array();
+				pergsGlobal.push(PerguntaG);
+				pergsGlobal.push(PerguntaH);
+				pergsGlobal.push(PerguntaI);
+				pergsGlobal.push(PerguntaJ);
+//				pergsGlobal.push(PerguntaK1);
+//				pergsGlobal.push(PerguntaK2);
+//				pergsGlobal.push(PerguntaK3);
+				pergsGlobal.push(PerguntaL);
+				pergsGlobal.push(PerguntaM);
+				pergsGlobal.push(PerguntaN);
+				pergsGlobal.push(PerguntaO);
+				pergsGlobal.push(PerguntaP);
+				pergsGlobal.push(PerguntaQ);
+				pergsGlobal.push(PerguntaR);
 				
 				pergsTriagem = new Array();
 				pergsTriagem.push(PerguntaA);
@@ -46,33 +66,78 @@
 			
 			private function tentaCalcularTriagem():void
 			{
-				var p:int = 0 ;
+				var p:Number = 0 ;
 				
 				for (var i:int = 0; i < pergsTriagem.length; i++) 
 				{
 					var rbg:RadioButtonGroup = pergsTriagem[i] ;
 					if( rbg.selectedValue != null )
 					{
-						p += int( rbg.selectedValue );
+						p += Number( rbg.selectedValue );
 					}
 				}
 				
-				if( p < 12 )
-				{
-					vgGlobal.visible = vgGlobal.includeInLayout = true ;
-					var resultado:String = p + ( p > 1 ? ' pontos' : ' ponto') + ' - Estado nutricional: ' ;
-					
-					if( p < 8 ){
-						resultado += 'DESNUTRIDO' ;
-					} else if( p >= 8 && p < 12 ){
-						resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
-					} else {
-						resultado += 'NORMAL' ;
-					}
-					
-					txtResultadoTriagem.text = resultado ;
-					scResultadoTriagem.visible = true ;
+				vgGlobal.visible = vgGlobal.includeInLayout = p < 12 ;
+				var resultado:String = sPontos(p) + ' - Estado nutricional: ' ;
+				
+				if( p < 8 ){
+					resultado += 'DESNUTRIDO' ;
+				} else if( p >= 8 && p < 12 ){
+					resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
+				} else {
+					resultado += 'NORMAL' ;
 				}
+				
+				pontuacaoTriagem = p ;
+				
+				txtPontosTriagem.text = sPontos(p) ;
+				txtResultadoTriagem.text = resultado ;
+				scResultadoTriagem.visible = true ;
+			}
+			
+			private function tentaCalcularGlobal():void
+			{
+				var p:Number = 0 ;
+				
+				for (var i:int = 0; i < pergsGlobal.length; i++) 
+				{
+					var rbg:RadioButtonGroup = pergsGlobal[i] ;
+					if( rbg.selectedValue != null )
+					{
+						p += Number( rbg.selectedValue );
+					}
+				}
+				
+				var pK:Number = 0 ;
+				if( PerguntaK1.selectedValue ) pK += Number( PerguntaK1.selectedValue );
+				if( PerguntaK2.selectedValue ) pK += Number( PerguntaK2.selectedValue );
+				if( PerguntaK3.selectedValue ) pK += Number( PerguntaK3.selectedValue );
+				
+				if( pK == 2 ){
+					p += 0.5 ;
+				} else if( pK == 3 ){
+					p += 1 ;
+				}
+				
+				var resultado:String = sPontos(p) + ' - Estado nutricional: ' ;
+				
+				if( p < 8 ){
+					resultado += 'DESNUTRIDO' ;
+				} else if( p >= 8 && p < 12 ){
+					resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
+				} else {
+					resultado += 'NORMAL' ;
+				}
+				
+				pontuacaoGlobal = p ;
+				
+				txtResultadoTriagem.text = resultado ;
+				scResultadoTriagem.visible = true ;
+			}
+			
+			private function sPontos(p:int):String
+			{
+				return p + ( p > 1 ? ' pontos' : ' ponto') ;
 			}
 			
 			private function validateForm(e:Event):void
@@ -93,7 +158,10 @@
 				
 				if( formIsValid ){
 					tentaCalcularTriagem();
+					tentaCalcularGlobal();
 				}
+				
+				trace( formIsValid );
 			}
 			
 			private function validate(validator:Validator):Boolean
@@ -255,7 +323,10 @@
 				</s:VGroup>
 			</s:Group>
 			
-			<s:SkinnableContainer id="scResultadoTriagem" visible="false" x="10" y="853" width="435" height="86" backgroundColor="#F6FAFE">
+			<s:SkinnableContainer id="scResultadoTriagem" visible="false" x="10" y="853" width="435" backgroundColor="#F6FAFE">
+				<s:layout>
+					<s:VerticalLayout paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10" />
+				</s:layout>
 				<s:Label x="10" y="10" fontSize="16" text="Pontos da triagem"/>
 				<s:Label x="150" y="14" fontSize="11" styleName="light"
 						 text="(subtotal máximo de 14 pontos)"/>
@@ -272,27 +343,27 @@
 				<s:Label x="0" y="69" width="435"
 						 text="G) O paciente vive em sua própria casa (não em casa geriátrica ou hospital)"/>
 				<s:HGroup x="0" y="90" gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaG" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaG" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Sim" groupName="PerguntaG" value="1" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não" groupName="PerguntaG" value="0" skinClass="app.skin.RadioButton"/>
 				</s:HGroup>
 				<s:Label text="H) Utiliza mais de três medicamentos diferentes por dia?"/>
 				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaH" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaH" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Sim" groupName="PerguntaH" value="0" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não" groupName="PerguntaH" value="1" skinClass="app.skin.RadioButton"/>
 				</s:HGroup>
 				<s:Label text="I) Lesões de pele ou escaras?"/>
 				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaI" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaI" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Sim" groupName="PerguntaI" value="0" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não" groupName="PerguntaI" value="1" skinClass="app.skin.RadioButton"/>
 				</s:HGroup>
 				
 				<s:Label text="J) Quantas refeições faz por dia?"/>
 				<s:VGroup>
-					<s:RadioButton label="Uma refeição" groupName="PerguntaJ"
+					<s:RadioButton label="Uma refeição" value="0" groupName="PerguntaJ"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Duas refeições" groupName="PerguntaJ"
+					<s:RadioButton label="Duas refeições" value="1" groupName="PerguntaJ"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Três ou mais refeições" groupName="PerguntaJ"
+					<s:RadioButton label="Três ou mais refeições" value="2" groupName="PerguntaJ"
 								   skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
 				
@@ -300,90 +371,90 @@
 				<s:Label styleName="light"
 						 text="Pelo menos uma porção diária de leite ou derivados (leite, queijo, iogurte)?"/>
 				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaK1" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaK1" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Sim" groupName="PerguntaK1" value="1" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não" groupName="PerguntaK1" value="0" skinClass="app.skin.RadioButton"/>
 				</s:HGroup>
 				
 				<s:Label styleName="light"
 						 text="Duas ou mais porções semanais de leguminosas ou ovos?"/>
 				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaK2" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaK2"
+					<s:RadioButton label="Sim" groupName="PerguntaK2" value="1" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não" groupName="PerguntaK2" value="0"
 								   skinClass="app.skin.RadioButton"/>
 				</s:HGroup>
 				<s:Label styleName="light" text="Carne, peixe ou aves todos os dias?"/>
 				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaK3" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaK3" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Sim" groupName="PerguntaK3" value="1" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não" groupName="PerguntaK3" value="0" skinClass="app.skin.RadioButton"/>
 				</s:HGroup>
 				
 				<s:Label width="435"
 						 text="L) O paciente consome duas ou mais porções diárias de fruta ouprodutos hortícolas?"/>
 				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaL" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaL" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Sim" groupName="PerguntaL" value="1" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não" groupName="PerguntaL" value="0" skinClass="app.skin.RadioButton"/>
 				</s:HGroup>
 				
 				<s:Label width="435"
 						 text="M) Quantos copos de líquidos (água, suco, café, chá, leite) o paciente consome por dia?"/>
 				
 				<s:VGroup gap="10">
-					<s:RadioButton label="Menos de três copos" groupName="PerguntaM"
+					<s:RadioButton label="Menos de três copos" value="0" groupName="PerguntaM"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Três a cinco copos" groupName="PerguntaM"
+					<s:RadioButton label="Três a cinco copos" value="0.5" groupName="PerguntaM"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Mais de cinco copos" groupName="PerguntaM"
+					<s:RadioButton label="Mais de cinco copos" value="1" groupName="PerguntaM"
 								   skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
 				
 				<s:Label text="N) Modo de se alimentar"/>
 				<s:VGroup gap="10">
-					<s:RadioButton label="Não é capaz de se alimentar sozinho" groupName="PerguntaN"
+					<s:RadioButton label="Não é capaz de se alimentar sozinho" value="0" groupName="PerguntaN"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Alimenta-se sozinho, porém com dificuldade"
+					<s:RadioButton label="Alimenta-se sozinho, porém com dificuldade" value="0.5"
 								   groupName="PerguntaN" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Alimenta-se sozinho sem dificuldade" groupName="PerguntaN"
+					<s:RadioButton label="Alimenta-se sozinho sem dificuldade" value="1" groupName="PerguntaN"
 								   skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
 				
 				<s:Label text="O) O paciente acredita ter algum problema nutricional?"/>
 				<s:VGroup gap="10">
-					<s:RadioButton label="Acredita estar desnutrido" groupName="PerguntaO"
+					<s:RadioButton label="Acredita estar desnutrido" value="0" groupName="PerguntaO"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não sabe dizer" groupName="PerguntaO"
+					<s:RadioButton label="Não sabe dizer" value="0.5" groupName="PerguntaO"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Acredita não ter um problema nutricional" groupName="PerguntaO"
+					<s:RadioButton label="Acredita não ter um problema nutricional" value="1" groupName="PerguntaO"
 								   skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
 				
 				<s:Label width="435"
 						 text="P) Em comparação a outras pessoas da mesma idade, como o paciente considera a sua própria saúde?"/>
 				<s:VGroup gap="10">
-					<s:RadioButton label="Pior" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não sabe" groupName="PerguntaP"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Igual" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Melhor" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Pior" value="0" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não sabe" value="0.5" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Igual" value="1" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Melhor" value="2" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
 				
 				<s:Label text="Q) Perímetro braquial (PB) em cm"/>
 				<s:VGroup gap="10">
-					<s:RadioButton label="PB &lt; 21" groupName="PerguntaQ"
+					<s:RadioButton label="PB &lt; 21" value="0" groupName="PerguntaQ"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="21 &gt; PB &lt; 22" groupName="PerguntaQ"
+					<s:RadioButton label="21 &gt; PB &lt; 22" value="0.5" groupName="PerguntaQ"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="PB &gt; 22" groupName="PerguntaQ"
+					<s:RadioButton label="PB &gt; 22" value="1" groupName="PerguntaQ"
 								   skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
 				
 				<s:Label text="R) Perímetro da perna (PP) em cm"/>
 				<s:VGroup gap="10">
-					<s:RadioButton label="PP &lt; 31" groupName="PerguntaR"
+					<s:RadioButton label="PP &lt; 31" value="1" groupName="PerguntaR"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="PP &gt; 31" groupName="PerguntaR"
+					<s:RadioButton label="PP &gt; 31" value="0" groupName="PerguntaR"
 								   skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
-				<s:SkinnableContainer width="435" height="200" backgroundColor="#F6FAFE">
+				
+				<s:SkinnableContainer width="435" height="200" visible="false" includeInLayout="false" backgroundColor="#F6FAFE">
 					<s:Label x="10" y="10" text="Pontuação"/>
 					<mx:HRule x="10" y="31" width="415"/>
 					<s:Label x="10" y="41" fontSize="20" styleName="bold" text="Avaliação global"/>
@@ -404,7 +475,7 @@
 							 styleName="bold" text="NORMAL"/>
 				</s:SkinnableContainer>
 			</s:VGroup>
-			<s:Button id="btnSalvar" label="SALVAR E VISUALIZAR DADOS DESSA CONSULTA" skinClass="app.skin.Button"/>
+			<s:Button id="btnSalvar" label="SALVAR E VISUALIZAR DADOS DESSA CONSULTA" skinClass="app.skin.Button" enabled="{formIsValid}" />
 		</s:VGroup>
 	</s:Scroller>
 	

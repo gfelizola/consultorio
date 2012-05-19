@@ -4,7 +4,6 @@
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="400" creationComplete="init(event)">
 	<fx:Script>
 		<![CDATA[
-			import app.model.Antropometria;
 			import app.model.DB;
 			import app.util.General;
 			
@@ -19,46 +18,21 @@
 			private var focusedFormControl:DisplayObject;
 			
 			[Bindable]
-			private var formIsValid:Boolean = false;
+			private var bindObservacao:String = (General.consultaAtual) ? General.consultaAtual.observacao : "";
+			
+			[Bindable]
+			private var formIsValid:Boolean = true;
 			
 			private function init(event:FlexEvent):void
 			{
-				for each( var validator:Validator in validators )
-				UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
-			}
-			
-			private function validateForm(event:Event):void
-			{
-				focusedFormControl = event.target as DisplayObject;
-				formIsValid = true;
-				
-				for each( var validator:Validator in validators )
-				validate(validator);
-			}
-			
-			private function validate(validator:Validator):Boolean
-			{
-				var validatorSource:DisplayObject = validator.source as DisplayObject;
-				var supressEvents:Boolean = validatorSource != focusedFormControl;
-				var event:ValidationResultEvent = validator.validate(null, supressEvents)
-				var currentControlIsValid:Boolean = event.type == ValidationResultEvent.VALID;
-				
-				formIsValid = formIsValid && currentControlIsValid;
-				return currentControlIsValid;
+				//...
 			}
 			
 			private function onSalvar(e:MouseEvent):void
 			{
-				if( Validator.validateAll(validators).length > 0 )
-				{
-					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
-				}
-				else
-				{
-					if(General.consultaAtual){
-						General.consultaAtual.observacao = txtObservacao.text;
-						DB.em.save(General.consultaAtual);
-					}
+				if(General.consultaAtual){
+					General.consultaAtual.observacao = txtObservacao.text;
+					DB.em.save(General.consultaAtual);
 				}
 			}
 			
@@ -75,9 +49,9 @@
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="OBSERVAÇÃO"/>
 			<s:Label x="10" y="48" width="481"
 					 text="Texto explicativo de como este campo deve ser preenchido loasda Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "/>
-			<s:TextArea id="txtObservacao" x="9" y="112" skinClass="app.skin.TextInput" width="481" height="170" text="{General.consultaAtual.observacao}"/>
+			<s:TextArea id="txtObservacao" x="9" y="112" skinClass="app.skin.TextInput" width="481" height="170" text="{bindObservacao}"/>
 			
-			<s:Button id="btnSalvar" x="10" y="300" enabled="{formIsValid}" alpha="{formIsValid ? 1 : 0.5}"
+			<s:Button id="btnSalvar" skinClass="app.skin.Button" x="10" y="300" enabled="{formIsValid}" alpha="{formIsValid ? 1 : 0.5}"
 					  label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" click="onSalvar(event)"/>
 			
 			

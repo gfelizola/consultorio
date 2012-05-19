@@ -36,6 +36,12 @@
 			[Bindable]
 			private var usuario:Usuario = new Usuario();
 			
+			[Bindable]
+			private var bindEstadoArrayCollection:ArrayCollection = Constantes.estados;
+			
+			[Bindable]
+			private var bindEstado:* = usuario.estado;
+			
 			private var validators:Array;
 			
 			private var logo:File;
@@ -333,7 +339,7 @@
 			<s:TextInput id="txtCidade" x="10" y="559" width="435" skinClass="app.skin.TextInput" text="{usuario.cidade}" />
 			
 			<s:Label x="490" y="536" text="ESTADO*"/>
-			<s:ComboBox id="cmbEstados" x="490" y="557" width="155" dataProvider="{Constantes.estados}" skinClass="app.skin.ComboBox" selectedItem="{usuario.estado}" />
+			<s:ComboBox id="cmbEstados" x="490" y="557" width="155" dataProvider="{bindEstadoArrayCollection}" skinClass="app.skin.ComboBox" selectedItem="{bindEstado}" />
 			
 			<s:Label x="664" y="536" text="TELEFONE*"/>
 			<s:TextInput id="txtTelefone" x="664" y="557" width="260" skinClass="app.skin.TextInput" text="{usuario.telefone}" />

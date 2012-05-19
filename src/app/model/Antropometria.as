@@ -53,7 +53,6 @@ package app.model
 			
 			return _imc; 
 		}
-		[Transient]
 		public function set imc(value:Number):void { _imc = value; }
 		
 		

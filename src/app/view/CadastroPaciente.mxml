@@ -32,8 +32,15 @@
 			[Bindable]
 			private var paciente:Paciente = new Paciente();
 			
+			[Bindable]
+			private var bindEstadoArrayCollection:ArrayCollection = Constantes.estados;
+			
+			[Bindable]
+			private var bindEstado:* = paciente.estado;
+			
 			private var validators:Array;
 			
+			[Bindable]
 			private var sexos:ArrayCollection = new ArrayCollection( new Array(
 				{nome: 'Masculino', valor: 'M'},
 				{nome: 'Feminino', valor: 'F'}
@@ -307,7 +314,7 @@
 				<s:TextInput id="txtCidade" x="9" y="93" width="435" skinClass="app.skin.TextInput" text="{paciente.cidade}" />
 				
 				<s:Label x="489" y="70" text="ESTADO*"/>
-				<s:ComboBox id="cmbEstados" x="489" y="91" width="155" dataProvider="{Constantes.estados}" skinClass="app.skin.ComboBox" selectedItem="{paciente.estado}" />
+				<s:ComboBox id="cmbEstados" x="489" y="91" width="155" dataProvider="{bindEstadoArrayCollection}" skinClass="app.skin.ComboBox" selectedItem="{bindEstado}" />
 				
 				<s:Label x="664" y="70" text="CEP"/>
 				<s:TextInput id="txtCEP" x="664" y="91" width="260" skinClass="app.skin.TextInput" text="{paciente.CEP}" />

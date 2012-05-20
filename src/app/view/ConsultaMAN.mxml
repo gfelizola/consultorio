@@ -32,6 +32,8 @@
 			
 			private function init(e:FlexEvent):void
 			{
+				scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
+				
 				/*
 				for each( var validator:Validator in validators ){
 					RadioButtonGroup(validator.source).addEventListener(Event.CHANGE, validateForm);
@@ -225,11 +227,14 @@
 					}
 					
 					General.consultaAtual.man = a ;
+					General.salvaConsulta();
 				}
 			}
 			
-			
-			
+			private function onMouseWheel(e:MouseEvent):void
+			{
+				e.delta = e.delta > 0 ? 1 : -1;
+			}
 		]]>
 	</fx:Script>
 	
@@ -282,7 +287,7 @@
 		<s:RadioButtonGroup id="PerguntaR" change="validateForm(event)" />
 	</fx:Declarations>
 	
-	<s:Scroller x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
+	<s:Scroller id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
 		<s:VGroup width="994" height="390" gap="20" paddingBottom="10" paddingLeft="10"
 				  paddingRight="10" paddingTop="10">
 			<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"

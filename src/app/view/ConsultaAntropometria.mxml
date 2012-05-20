@@ -20,6 +20,8 @@
 			
 			private function init(event:FlexEvent):void
 			{
+				scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
+				
 				for each( var validator:Validator in validators )
 					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
 			}
@@ -74,7 +76,13 @@
 					a.dobraCutaneaPanturrilhaMedial = Number(txtPeso.text);
 					
 					General.consultaAtual.antropometria = a ;
+					General.salvaConsulta();
 				}
+			}
+			
+			private function onMouseWheel(e:MouseEvent):void
+			{
+				e.delta = e.delta > 0 ? 10 : -10;
 			}
 			
 		]]>
@@ -85,7 +93,7 @@
 			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valEstatura" source="{txtEstatura}" />
 		</fx:Array>
 	</fx:Declarations>
-	<s:Scroller x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
+	<s:Scroller id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
 		<s:Group width="100%" height="100%">
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
 			

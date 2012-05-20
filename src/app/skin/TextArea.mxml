@@ -71,7 +71,7 @@
 	</s:Rect>
 
     <!--- Defines the scroller that is used to scroll the TextArea control. -->
-    <s:Scroller id="scroller" left="0" top="0" right="0" bottom="0" minViewportInset="1" measuredSizeIncludesScrollBars="false" hasFocusableChildren="false" skinClass="app.skin.Scroller">
+    <s:Scroller id="scroller" left="5" top="5" right="0" bottom="5" minViewportInset="1" measuredSizeIncludesScrollBars="false" hasFocusableChildren="false" skinClass="app.skin.Scroller">
         <!--- @copy spark.components.supportClasses.SkinnableTextBase#textDisplay -->
         <s:RichEditableText id="textDisplay" heightInLines="10" widthInChars="15" />
     </s:Scroller>

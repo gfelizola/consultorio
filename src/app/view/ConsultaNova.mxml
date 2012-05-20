@@ -45,10 +45,10 @@
 	
 	<mx:ViewStack id="vsConsulta" x="0" y="100" width="100%" height="100%" backgroundColor="#ffffff" creationPolicy="all">
 		<view:ConsultaAntropometria width="100%" height="100%" label="ANTROPOMETRIA"></view:ConsultaAntropometria>
-		
 		<view:ConsultaMAN id="ncMAN" width="100%" height="100%" label="MAN"></view:ConsultaMAN>
-		<s:NavigatorContent width="100%" height="100%" label="DADOS ALIMENTARES"></s:NavigatorContent>
-		<s:NavigatorContent width="100%" height="100%" label="ATIVIDADE FÍSICA"></s:NavigatorContent>
+		
+		<view:ConsultaDadosAlimentares width="100%" height="100%" label="DADOS ALIMENTARES"></view:ConsultaDadosAlimentares>
+		<view:ConsultaAtividadeFisica width="100%" height="100%" label="ATIVIDADE FÍSICA"></view:ConsultaAtividadeFisica>
 		<s:NavigatorContent width="100%" height="100%" label="EXAMES BIOQUÍMICOS"></s:NavigatorContent>
 		<view:ConsultaObservacao width="100%" height="100%" label="OBSERVAÇÃO"></view:ConsultaObservacao>
 	</mx:ViewStack>

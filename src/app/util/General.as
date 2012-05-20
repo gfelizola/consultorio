@@ -4,6 +4,7 @@ package app.util
 	import air.update.events.UpdateEvent;
 	
 	import app.model.Consulta;
+	import app.model.DB;
 	import app.model.Paciente;
 	import app.model.Usuario;
 	
@@ -31,6 +32,15 @@ package app.util
 		
 		public function General()
 		{
+			
+		}
+		
+		public static function salvaConsulta():void
+		{
+			if( consultaAtual != null ){
+				consultaAtual.dataConsulta = new Date();
+				DB.em.save(consultaAtual);
+			}
 		}
 		
 		public static function getAppVersion():String 

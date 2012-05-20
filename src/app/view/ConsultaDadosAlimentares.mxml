@@ -1,16 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="984" height="400">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="984" height="400"
+					creationComplete="init(event)">
+	<fx:Script>
+		<![CDATA[
+			import app.model.DadosAlimentares;
+			import app.model.Refeicao;
+			import app.util.General;
+			
+			import mx.controls.Alert;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.Validator;
+			
+			private var focusedFormControl:DisplayObject;
+			
+			[Bindable]
+			private var formIsValid:Boolean = false;
+			
+			private function init(event:FlexEvent):void
+			{
+				scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
+				
+				for each( var validator:Validator in validators ){
+					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
+				}
+			}
+			private function validateForm(e:Event):void
+			{
+				focusedFormControl = e.target as DisplayObject;
+				formIsValid = true;
+				
+				for( var i:int = 0; i < validators.length ; i++  ){
+					var validator:Validator = validators[i] ;
+					if( ! validate(validator) ){
+						//trace( i, validator, validator.source );
+					}
+				}
+
+				trace( formIsValid );
+			}
+			
+			private function validate(validator:Validator):Boolean
+			{
+				var validatorSource:DisplayObject = validator.source as DisplayObject;
+				var supressEvents:Boolean = validatorSource != focusedFormControl;
+				var event:ValidationResultEvent = validator.validate(null, supressEvents)
+				var currentControlIsValid:Boolean = event.type == ValidationResultEvent.VALID;
+				
+				formIsValid = formIsValid && currentControlIsValid;
+				return currentControlIsValid;
+			}
+			
+			private function onSalvar(e:MouseEvent):void
+			{
+				if( Validator.validateAll(validators).length > 0 )
+				{
+					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
+				}
+				else
+				{
+					var da:DadosAlimentares = new DadosAlimentares();
+					da.aversoesAlimentares = txtAversoes.text ;
+					da.preferenciasAlimentares = txtPreferencias.text ;
+					da.qtdeAgua = txtAgua.text ;
+					da.observacoes = txtObservacoes.text ;
+					
+					var r:Refeicao;
+					
+					for (var i:int = 1; i <= 7; i++) 
+					{
+						var cAlimento:spark.components.TextInput = this['txtAlimento' + i];
+						var cQtde:spark.components.TextInput = this['txtQtde' + i];
+						var cRefeicao:spark.components.TextInput = this['txtRefeicao' + i];
+						
+						if( cAlimento.text != '' && cQtde.text != '' && cRefeicao.text != '' ){
+							r = new Refeicao();
+							r.alimentos = cAlimento.text ;
+							r.quantidades = cQtde.text ;
+							r.nome = cRefeicao.text ;
+							
+							da.refeicoes.addItem(r);
+						}
+					}
+					
+					General.consultaAtual.dadosAlimentares = da ;
+					General.salvaConsulta();
+				}
+			}
+			
+			private function onMouseWheel(e:MouseEvent):void
+			{
+				e.delta = e.delta > 0 ? 1 : -1;
+			}
+			
+		]]>
+	</fx:Script>
 	
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<fx:Array id="validators">
+			<!-- mx:Validator property="text" requiredFieldError="Campo obrigatório" required="true" id="valAgua" source="{txtAgua}" / -->
+		</fx:Array>
 	</fx:Declarations>
 	
-	<s:Scroller x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
-		<s:VGroup width="994" height="390" gap="20" paddingBottom="10" paddingLeft="10"
+	<s:Scroller id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
+		<s:VGroup width="984" height="390" gap="20" paddingBottom="10" paddingLeft="10"
 				  paddingRight="10" paddingTop="10">
+			
+			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="DADOS ALIMENTARES" />
+			
+			<s:Label x="10" text="Relatório alimentar habitual" />
+			
+			<s:VGroup width="435" gap="0">
+				<s:SkinnableContainer width="100%" height="30" backgroundColor="#F6F9FE">
+					<s:Label x="10" y="10" text="REFEIÇÃO / HORARIO"/>
+					<s:Label x="165" y="10" text="ALIMENTO"/>
+					<s:Label x="299" y="10" text="QUANTIDADE"/>
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
+					<s:TextInput id="txtRefeicao1" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+					<s:TextArea id="txtAlimento1" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					<s:TextArea id="txtQtde1" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
+					<s:TextInput id="txtRefeicao2" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+					<s:TextArea id="txtAlimento2" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					<s:TextArea id="txtQtde2" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
+					<s:TextInput id="txtRefeicao3" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+					<s:TextArea id="txtAlimento3" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					<s:TextArea id="txtQtde3" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
+					<s:TextInput id="txtRefeicao4" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+					<s:TextArea id="txtAlimento4" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					<s:TextArea id="txtQtde4" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
+					<s:TextInput id="txtRefeicao5" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+					<s:TextArea id="txtAlimento5" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					<s:TextArea id="txtQtde5" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
+					<s:TextInput id="txtRefeicao6" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+					<s:TextArea id="txtAlimento6" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					<s:TextArea id="txtQtde6" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
+					<s:TextInput id="txtRefeicao7" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+					<s:TextArea id="txtAlimento7" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					<s:TextArea id="txtQtde7" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
+					<s:Label x="10" y="10" text="QUANTIDADE DE ÁGUA POR DIA" />
+					<s:TextArea id="txtAgua" x="10" y="31" width="415" height="39" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
+					<s:Label x="10" y="10" text="FUNCIONAMENTO INTESTINAL" />
+					<s:TextArea id="txtIntestinal" x="10" y="31" width="415" height="39" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
+					<s:Label x="10" y="10" text="PREFERÊNCIAS ALIMENTARES" />
+					<s:TextArea id="txtPreferencias" x="10" y="31" width="415" height="39" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
+					<s:Label x="10" y="10" text="AVERSÕES ALIMENTARES" />
+					<s:TextArea id="txtAversoes" x="10" y="31" width="415" height="39" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="100%" height="120" backgroundColor="#F6F9FE">
+					<s:Label x="10" y="10" text="OUTRAS INFORMAÇÕES / OBSERVAÇÕES" />
+					<s:TextArea id="txtObservacoes" x="10" y="31" width="415" height="79" skinClass="app.skin.TextArea" />
+				</s:SkinnableContainer>
+			</s:VGroup>
+			
+			<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" />
+			
 			
 		</s:VGroup>
 	</s:Scroller>
+	
 </s:NavigatorContent>

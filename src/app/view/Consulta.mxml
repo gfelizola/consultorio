@@ -7,7 +7,7 @@
 			import app.util.General;
 			
 			[Bindable]
-			private var bindNomeSobrenomePaciente:String = General.pacienteAtual.nome.toUpperCase() + ' ' + General.pacienteAtual.sobrenome.toUpperCase();
+			private var bindNomeSobrenomePaciente:String = General.pacienteAtual ? General.pacienteAtual.nome.toUpperCase() + ' ' + General.pacienteAtual.sobrenome.toUpperCase() : '';
 		]]>
 	</fx:Script>
 	<fx:Declarations>

@@ -14,8 +14,6 @@
 			
 			import mx.collections.ArrayCollection;
 			
-			/*EDITING*/
-			
 			protected function init():void
 			{
 				nativeWindow.x = (Capabilities.screenResolutionX - nativeWindow.width) / 2;

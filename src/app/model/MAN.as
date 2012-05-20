@@ -30,6 +30,9 @@ package app.model
 		public var opcaoE:String;
 		public var pontosE:int;
 		
+		public var opcaoIMC:String;
+		public var pontosIMC:int;
+		
 		public var opcaoF:String;
 		public var pontosF:int;
 		
@@ -45,8 +48,14 @@ package app.model
 		public var opcaoJ:String;
 		public var pontosJ:int;
 		
-		public var opcaoK:String;
-		public var pontosK:int;
+		public var opcaoK1:String;
+		public var pontosK1:int;
+		
+		public var opcaoK2:String;
+		public var pontosK2:int;
+		
+		public var opcaoK3:String;
+		public var pontosK3:int;
 		
 		public var opcaoL:String;
 		public var pontosL:int;

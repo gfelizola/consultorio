@@ -67,44 +67,70 @@
 			private function tentaCalcularTriagem():void
 			{
 				var p:Number = 0 ;
+				var allSel:Boolean = true ;
 				
 				for (var i:int = 0; i < pergsTriagem.length; i++) 
 				{
-					var rbg:RadioButtonGroup = pergsTriagem[i] ;
-					if( rbg.selectedValue != null )
+					if( pergsTriagem[i] is RadioButtonGroup ) {
+						var rbg:RadioButtonGroup = pergsTriagem[i] ;
+						if( rbg.selectedValue != null )
+						{
+							p += Number( rbg.selectedValue );
+						}
+						else
+						{
+							allSel = false ;
+						}
+					}
+					else
 					{
-						p += Number( rbg.selectedValue );
+						allSel = false ;
 					}
 				}
 				
-				vgGlobal.visible = vgGlobal.includeInLayout = p < 12 ;
-				var resultado:String = sPontos(p) + ' - Estado nutricional: ' ;
+				trace( 'allSel triagem', allSel ); 
 				
-				if( p < 8 ){
-					resultado += 'DESNUTRIDO' ;
-				} else if( p >= 8 && p < 12 ){
-					resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
-				} else {
-					resultado += 'NORMAL' ;
+				if( allSel ){
+					vgGlobal.visible = vgGlobal.includeInLayout = p < 12 ;
+					var resultado:String = sPontos(p) + ' - Estado nutricional: ' ;
+					
+					if( p < 8 ){
+						resultado += 'DESNUTRIDO' ;
+					} else if( p >= 8 && p < 12 ){
+						resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
+					} else {
+						resultado += 'NORMAL' ;
+					}
+					
+					pontuacaoTriagem = p ;
+					
+					txtPontosTriagem.text = sPontos(p) ;
+					txtResultadoTriagem.text = resultado ;
+					scResultadoTriagem.visible = scResultadoTriagem.includeInLayout = true ;
 				}
-				
-				pontuacaoTriagem = p ;
-				
-				txtPontosTriagem.text = sPontos(p) ;
-				txtResultadoTriagem.text = resultado ;
-				scResultadoTriagem.visible = true ;
 			}
 			
 			private function tentaCalcularGlobal():void
 			{
 				var p:Number = 0 ;
+				var allSel:Boolean = true ;
 				
 				for (var i:int = 0; i < pergsGlobal.length; i++) 
 				{
-					var rbg:RadioButtonGroup = pergsGlobal[i] ;
-					if( rbg.selectedValue != null )
+					if( pergsGlobal[i] is RadioButtonGroup ) {
+						var rbg:RadioButtonGroup = pergsGlobal[i] ;
+						if( rbg.selectedValue != null )
+						{
+							p += Number( rbg.selectedValue );
+						}
+						else
+						{
+							allSel = false ;
+						}
+					}
+					else
 					{
-						p += Number( rbg.selectedValue );
+						allSel = false ;
 					}
 				}
 				
@@ -119,20 +145,24 @@
 					p += 1 ;
 				}
 				
-				var resultado:String = sPontos(p) + ' - Estado nutricional: ' ;
-				
-				if( p < 8 ){
-					resultado += 'DESNUTRIDO' ;
-				} else if( p >= 8 && p < 12 ){
-					resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
-				} else {
-					resultado += 'NORMAL' ;
+				if( allSel ){
+					var resultado:String = '' ;
+					
+					if( p < 8 ){
+						resultado += 'DESNUTRIDO' ;
+					} else if( p >= 8 && p < 12 ){
+						resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
+					} else {
+						resultado += 'NORMAL' ;
+					}
+					
+					pontuacaoGlobal = p ;
+					
+					txtPontosTriagem.text = sPontos(pontuacaoTriagem) ;
+					txtPontosGlobal.text = sPontos(pontuacaoGlobal) ;
+					txtEstadoNutricional.text = resultado ;
+					scResultadoFinal.visible = scResultadoFinal.includeInLayout = true ;
 				}
-				
-				pontuacaoGlobal = p ;
-				
-				txtResultadoTriagem.text = resultado ;
-				scResultadoTriagem.visible = true ;
 			}
 			
 			private function sPontos(p:int):String
@@ -148,7 +178,7 @@
 				for( var i:int = 0; i < validators.length ; i++  ){
 					var validator:Validator = validators[i] ;
 					if( ! validate(validator) ){
-						trace( i, validator, validator.source );
+						//trace( i, validator, validator.source );
 					}
 				}
 				
@@ -156,12 +186,10 @@
 					pergsTriagem[6] = PerguntaIMC.selectedValue == "0" ? PerguntaF1 : PerguntaF2 ;
 				}
 				
-				if( formIsValid ){
-					tentaCalcularTriagem();
-					tentaCalcularGlobal();
-				}
+				tentaCalcularTriagem();
+				tentaCalcularGlobal();
 				
-				trace( formIsValid );
+//				trace( formIsValid );
 			}
 			
 			private function validate(validator:Validator):Boolean
@@ -185,9 +213,22 @@
 				{
 					var a:MAN = new MAN();
 					
+					var perguntas:Array = ['A','B','C','D','E','IMC','F','G','H','I','J','K1','K2','K3','L','M','N','O','P','Q','R'];
+					
+					for (var i:int = 0; i < perguntas.length; i++) 
+					{
+						if( perguntas[i] == 'F' ){
+							perguntas[i] = PerguntaIMC.selectedValue == 0 ? 'F1' : 'F2' ;
+						}
+						a['opcao' + perguntas[i]  ] = spark.components.RadioButton( this['Pergunta' + perguntas[i]].selection ).label ;
+						a['pontos' + perguntas[i] ] = int( this['Pergunta' + perguntas[i]].selectedValue ) ;
+					}
+					
 					General.consultaAtual.man = a ;
 				}
 			}
+			
+			
 			
 		]]>
 	</fx:Script>
@@ -240,6 +281,7 @@
 		<s:RadioButtonGroup id="PerguntaQ" change="validateForm(event)" />
 		<s:RadioButtonGroup id="PerguntaR" change="validateForm(event)" />
 	</fx:Declarations>
+	
 	<s:Scroller x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
 		<s:VGroup width="994" height="390" gap="20" paddingBottom="10" paddingLeft="10"
 				  paddingRight="10" paddingTop="10">
@@ -323,10 +365,11 @@
 				</s:VGroup>
 			</s:Group>
 			
-			<s:SkinnableContainer id="scResultadoTriagem" visible="false" x="10" y="853" width="435" backgroundColor="#F6FAFE">
+			<s:SkinnableContainer id="scResultadoTriagem" visible="false" includeInLayout="false" x="10" y="853" width="435" backgroundColor="#F6FAFE">
 				<s:layout>
 					<s:VerticalLayout paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10" />
 				</s:layout>
+				
 				<s:Label x="10" y="10" fontSize="16" text="Pontos da triagem"/>
 				<s:Label x="150" y="14" fontSize="11" styleName="light"
 						 text="(subtotal máximo de 14 pontos)"/>
@@ -454,7 +497,7 @@
 								   skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
 				
-				<s:SkinnableContainer width="435" height="200" visible="false" includeInLayout="false" backgroundColor="#F6FAFE">
+				<s:SkinnableContainer id="scResultadoFinal" width="435" height="200" visible="false" includeInLayout="false" backgroundColor="#F6FAFE">
 					<s:Label x="10" y="10" text="Pontuação"/>
 					<mx:HRule x="10" y="31" width="415"/>
 					<s:Label x="10" y="41" fontSize="20" styleName="bold" text="Avaliação global"/>
@@ -475,7 +518,8 @@
 							 styleName="bold" text="NORMAL"/>
 				</s:SkinnableContainer>
 			</s:VGroup>
-			<s:Button id="btnSalvar" label="SALVAR E VISUALIZAR DADOS DESSA CONSULTA" skinClass="app.skin.Button" enabled="{formIsValid}" />
+			<s:Button id="btnSalvar" label="SALVAR E VISUALIZAR DADOS DESSA CONSULTA" 
+					  skinClass="app.skin.Button" enabled="{formIsValid}" click="onSalvar(event)" />
 		</s:VGroup>
 	</s:Scroller>
 	

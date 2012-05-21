@@ -6,8 +6,16 @@
 		<![CDATA[
 			import app.util.General;
 			
+			import mx.events.IndexChangedEvent;
+			
 			[Bindable]
 			private var bindNomeSobrenomePaciente:String = General.pacienteAtual ? General.pacienteAtual.nome.toUpperCase() + ' ' + General.pacienteAtual.sobrenome.toUpperCase() : '';
+			
+			private function vsPaciente_changeHandler(event:IndexChangedEvent):void
+			{
+				vsPaciente.creationPolicy
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -25,15 +33,15 @@
 		</s:filters>
 	</s:Rect>
 	
-	<mx:ViewStack id="vsPaciente" x="0" y="40" width="100%" height="100%" creationPolicy="all">
+	<mx:ViewStack id="vsPaciente" x="0" y="40" width="100%" height="100%" creationPolicy="all" change="vsPaciente_changeHandler(event)">
 		<view:ConsultaSumario width="100%" height="100%" label="{bindNomeSobrenomePaciente}">
 		</view:ConsultaSumario>
 		
 		<view:ConsultaDadosPaciente width="100%" height="100%" label="DADOS DO PACIENTE">
 		</view:ConsultaDadosPaciente>
 		
-		<s:NavigatorContent width="100%" height="100%" label="HISTORICO DE CONSULTAS">
-		</s:NavigatorContent>
+		<view:ConsultaHistorico width="100%" height="100%" label="HISTORICO DE CONSULTAS">
+		</view:ConsultaHistorico>
 		
 		<view:ConsultaNova width="100%" height="100%" label="NOVA CONSULTA">
 		</view:ConsultaNova>

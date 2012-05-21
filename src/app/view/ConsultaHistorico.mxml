@@ -2,14 +2,29 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540"
-					creationComplete="init(event)">
+					creationComplete="init()" show="init()">
 	<fx:Script>
 		<![CDATA[
+			import app.model.Consulta;
+			import app.model.DB;
+			import app.util.General;
+			
+			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			
-			private function init(event:FlexEvent):void
+			import nz.co.codec.flexorm.criteria.Criteria;
+			import nz.co.codec.flexorm.criteria.Sort;
+			
+			[Bindable]
+			public var consultas:ArrayCollection =  new ArrayCollection();
+			
+			private function init():void
 			{
+				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
+				c.addEqualsCondition("paciente", General.pacienteAtual.id );
+				c.addSort("dataConsulta", Sort.DESC );
 				
+				consultas = DB.em.fetchCriteria(c);
 			}
 			
 		]]>
@@ -22,15 +37,14 @@
 	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
 			 text="CONSULTAS ANTERIORES"/>
 	
-	
-	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="520" dataProvider="{pacientes}" rowHeight="40" focusEnabled="false"
+	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="520" dataProvider="{consultas}" rowHeight="40" focusEnabled="false"
 				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
 				skinClass="app.skin.DataGridSkin">
 		<s:columns>
 			<s:ArrayList>
 				
 				
-				<s:GridColumn dataField="nome" headerText="Data" width="830">
+				<s:GridColumn dataField="dataConsulta" headerText="Data" width="800">
 					<s:itemRenderer>
 						<fx:Component>
 							<s:GridItemRenderer>
@@ -41,13 +55,13 @@
 										import spark.formatters.DateTimeFormatter;
 									]]>
 								</fx:Script>
-								<s:Button y="4" icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(Date(data.dataUltimaConsulta).toString())}" fontSize="18" skinClass="app.skin.TextButton" />
+								<s:Button y="4" x="40" icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(Date(data.dataConsulta).toString())}" fontSize="18" skinClass="app.skin.TextButton" />
 							</s:GridItemRenderer>
 						</fx:Component>
 					</s:itemRenderer>
 				</s:GridColumn>
 				
-				<s:GridColumn  headerText="Editar" width="150">
+				<s:GridColumn  headerText="Editar">
 					<s:itemRenderer>
 						<fx:Component>
 							<s:GridItemRenderer>

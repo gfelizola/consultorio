@@ -58,7 +58,7 @@ package app.controller
 				areaAnterior = areaAtual ;
 				areaAtual = area ;
 				
-				if( area.nome == EAreas.CONSULTA.nome ){
+				if( area.nome != EAreas.CONSULTA.nome ){
 					if( General.consultaAtual != null ){
 						Alert.yesLabel = "Sim" ;
 						Alert.noLabel = "Não" ;

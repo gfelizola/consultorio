@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500" creationComplete="init()">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500" show="init()" creationComplete="init()">
 	<fx:Script>
 		<![CDATA[
 			import app.controller.Navigation;
@@ -31,8 +31,12 @@
 					return ;
 				}
 				
-				var idade:Number = ( new Date().fullYear ) - p.dataNascimento.fullYear ;
-				txtIdade.text = idade + " ANOS" ;
+				if( p.dataNascimento ){
+					var idade:Number = ( new Date().fullYear ) - p.dataNascimento.fullYear ;
+					txtIdade.text = idade + " ANOS" ;
+				} else {
+					txtIdade.visible = txtIdade.includeInLayout = false ;
+				}
 				
 				var perfil:String = "";
 				
@@ -54,6 +58,8 @@
 						if( p.dataUltimaMenstruacao ){
 							txtSemanaGestacional.text = p.semanaGestacional + "ª SEMANA GESTACIONAL" ;
 							txtSemanaGestacional.visible = true ;
+						} else {
+							txtSemanaGestacional.visible = txtSemanaGestacional.includeInLayout = false ;
 						}
 					}
 					else
@@ -66,42 +72,51 @@
 				txtPerfil.text = perfil ;
 				
 				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
-				c.addEqualsCondition("paciente_id", p.id );
-				c.addSort("data_consulta", Sort.DESC );
+				c.addEqualsCondition("paciente", p.id );
+				c.addSort("dataConsulta", Sort.DESC );
 				
 				var consulta:app.model.Consulta = DB.em.fetchCriteriaFirstResult(c) as app.model.Consulta ;
+				
+				trace( "ultima consulta ->", consulta );
+				
 				if( consulta )
 				{
 					var df:DateFormatter = new DateFormatter();
-					df.formatString = "DD de MMMM de YYYY" ;
+					df.formatString = "DD/MM/YYYY HH:NN" ;
 					txtUltimaConsulta.text = df.format( consulta.dataConsulta );
 					
 					txtUltimoIMC.text = consulta.antropometria.imc.toPrecision(2) ;
 					
-					var nivelAtividade:String = "" ;
-					switch(consulta.atividadeFisica.nivel)
+					if( consulta.atividadeFisica )
 					{
-						case AtividadeFisica.MUITO_ATIVO:
-							nivelAtividade = "MUITO ATIVO" ;
-							break;
-						case AtividadeFisica.ATIVO:
-							nivelAtividade = "ATIVO" ;
-							break;
-						case AtividadeFisica.POUCO_ATIVO:
-							nivelAtividade = "POUCO ATIVO" ;
-							break;
-						case AtividadeFisica.SEDENTARIO:
-							nivelAtividade = "SEDENTÁRIO" ;
-							break;
+						var nivelAtividade:String = "" ;
+						switch(consulta.atividadeFisica.nivel)
+						{
+							case AtividadeFisica.MUITO_ATIVO:
+								nivelAtividade = "MUITO ATIVO" ;
+								break;
+							case AtividadeFisica.ATIVO:
+								nivelAtividade = "ATIVO" ;
+								break;
+							case AtividadeFisica.POUCO_ATIVO:
+								nivelAtividade = "POUCO ATIVO" ;
+								break;
+							case AtividadeFisica.SEDENTARIO:
+								nivelAtividade = "SEDENTÁRIO" ;
+								break;
+						}
+						
+						txtAtividade.text = nivelAtividade ;
+					} else {
+						txtAtividade.visible = txtAtividade.includeInLayout = false ;
 					}
-					
-					txtAtividade.text = nivelAtividade ;
 				}
 				else
 				{
 					txtUltimaConsulta.text = "NENHUMA CONSULTA REALIZADA" ;
 					txtUltimoIMC.text = "N/A" ;
 					txtAtividade.text = "" ;
+					txtAtividade.visible = txtAtividade.includeInLayout = false ;
 					
 //					Alert.noLabel = "Não" ;
 //					Alert.yesLabel = "Sim" ;
@@ -141,7 +156,7 @@
 	</s:Rect>
 	
 	
-	<s:VGroup gap="6" x="0" y="20">
+	<s:VGroup gap="6" x="20" y="20">
 		<s:Label id="txtPerfil" x="20" width="185" height="30" color="#81BAEA" fontSize="20"
 				 styleName="bold" text="ADULTO"/>
 		

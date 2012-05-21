@@ -32,7 +32,7 @@
 			{
 				if(General.consultaAtual){
 					General.consultaAtual.observacao = txtObservacao.text;
-					DB.em.save(General.consultaAtual);
+					General.salvaConsulta();
 				}
 			}
 			

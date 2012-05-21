@@ -37,12 +37,15 @@
 			private var exames:ArrayCollection = Constantes.exames;
 			
 			[Bindable]
-			private var dataDoExame:* =  (General.consultaAtual) ? General.consultaAtual.exameBioquimico.dataDoExame : "";
+			private var dataDoExame:* =  ( General.consultaAtual) ? General.consultaAtual.exameBioquimico.dataDoExame : General.getFormattedDate(new Date().toString());
 			
 			[Bindable]
 			private var campos:Object;
 			
+			[Bindable]
+			private var colors:Array = [0xF6F9FE,0xFCFDFF];
 			private var quantidadeAdicionais:uint = 3;
+			
 			
 			
 			private function onMouseWheel(e:MouseEvent):void
@@ -68,7 +71,6 @@
 			
 			private function buildForm():void
 			{
-				var colors:Array = [0xF6F9FE,0xFCFDFF];
 				var cc:uint = 0;
 				var o:Object;
 				campos = {};
@@ -88,6 +90,7 @@
 					o['referencia'].text = exame.referencia;
 					o['referencia'].width = 150;
 					o['valor'] = new spark.components.TextInput();
+					o['valor'].setStyle('skinClass', app.skin.TextInput);
 					
 					o['hg'].addElement(o['nome']);
 					o['hg'].addElement(o['referencia']);
@@ -110,10 +113,11 @@
 					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
 					o['hg'] = new HGroup();
 					o['nome'] = new spark.components.TextInput();
-					o['nome'].width = 150;
+					o['nome'].setStyle('skinClass', app.skin.TextInput);
 					o['referencia'] = new spark.components.TextInput();
-					o['referencia'].width = 150;
+					o['referencia'].setStyle('skinClass', app.skin.TextInput);
 					o['valor'] = new spark.components.TextInput();
+					o['valor'].setStyle('skinClass', app.skin.TextInput);
 					
 					o['hg'].addElement(o['nome']);
 					o['hg'].addElement(o['referencia']);
@@ -151,26 +155,23 @@
 			private function onSalvar(e:MouseEvent):void
 			{
 				// Verifica adicionais
+				/*
 				for(var adicional:uint = 0; adicional < quantidadeAdicionais; adicional++)
 				{
-//					if(
-//						(campos['adicional_'+adicional].nome.text == '' && campos['adicional_'+adicional].valor.text != '') ||
-//						(campos['adicional_'+adicional].nome.text != '' && campos['adicional_'+adicional].valor.text == '')
-//					)
-//					{
-//						formIsValid = false;
-//					}
+					if((campos['adicional_'+adicional].nome.text == '' && campos['adicional_'+adicional].valor.text != ''))
+					{
+						this.addValidator(campos['adicional_'+adicional].valor);
+					}
 				}
+				//*/
 				
 				var erros:Array = Validator.validateAll(validators);
-				if (erros.length > 0)
-				{
-					formIsValid = false;
-				}
+				formIsValid = (erros.length == 0) ? true : false;
 				
 				if(!formIsValid)
 				{
 					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
+					//validators.pop();
 				}
 				else
 				{
@@ -179,26 +180,29 @@
 					
 					for each (var i:Object in campos) 
 					{
-						trace( i );
 						var ea:ExameAdicional = new ExameAdicional();
 						if( i['valor'].text != '' ){
 							ea.nome = i['nome'].text;
 							ea.referencia = i['referencia'].text;
 							ea.valor = i['valor'].text;
-	//						if(ea.nome == "adicional_"+cc)
-							
 							exameCollection.addItem(ea);
+							cc++;
 						}
-						
-						cc++;
 					}
 					
-					var eb:ExameBioquimico = new ExameBioquimico();
-					eb.dataDoExame = txtDateExame.text;
-					eb.exames = exameCollection;
-					
-					General.consultaAtual.exameBioquimico = eb;
-					General.salvaConsulta();
+					if(cc > 0)
+					{
+						var eb:ExameBioquimico = new ExameBioquimico();
+						eb.dataDoExame = txtDateExame.text;
+						eb.exames = exameCollection;
+						
+						General.consultaAtual.exameBioquimico = eb;
+						General.salvaConsulta();
+					}
+					else
+					{
+						Alert.show("Não há dados de exame para ser salvo!", "Erro", Alert.OK );
+					}
 				}
 			}
 		]]>
@@ -216,12 +220,14 @@
 			
 			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
 			<s:VGroup width="435" gap="10" id="ExameGroup">
-				<s:SkinnableContainer>
-					<s:HGroup>
-						<s:Label text="Tipo do Exame" />
-						<s:Label text="Referência" />
-						<s:Label text="Data" />
-						<s:TextInput id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" />
+				<s:SkinnableContainer backgroundColor="#F6F9FE">
+					<s:HGroup gap="10" verticalAlign="middle">
+						<s:Label width="150" text="Tipo do Exame" />
+						<s:Label width="150" text="Referência" />
+						<s:HGroup verticalAlign="middle">
+							<s:Label text="Data" />
+							<s:TextInput id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" />
+						</s:HGroup>
 					</s:HGroup>
 				</s:SkinnableContainer>
 			</s:VGroup>

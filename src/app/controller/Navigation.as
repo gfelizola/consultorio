@@ -21,8 +21,8 @@ package app.controller
 
 	public class Navigation
 	{
-		private static var areaAtual:VoInfoArea;
-		private static var areaAnterior:VoInfoArea;
+		public static var areaAtual:VoInfoArea;
+		public static var areaAnterior:VoInfoArea;
 		
 		private static var estrutura:Estrutura;
 
@@ -82,6 +82,7 @@ package app.controller
 			var type:Class = areaAtual.className as Class;
 			var area:UIComponent = new type();
 			
+			areaAtual.areaInstance = area ;
 			container.addElement(area);
 			
 			estrutura.bgAreas.visible = areaAtual.usaBg ;

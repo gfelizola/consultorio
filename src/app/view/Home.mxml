@@ -88,7 +88,31 @@
 				skinClass="app.skin.DataGridSkin">
 		<s:columns>
 			<s:ArrayList>
-				<s:GridColumn dataField="nome" labelFunction="{function(data:* = null, item2:* = null):String{ return data.nome.toUpperCase() + ' ' + data.sobrenome.toUpperCase() }}" headerText="Nome"></s:GridColumn>
+				<s:GridColumn dataField="nome" headerText="Nome">
+					<s:itemRenderer>
+						<fx:Component>
+							<s:GridItemRenderer verticalCenter="1">
+								
+								<fx:Script>
+									<![CDATA[
+										import app.controller.Navigation;
+										import app.enums.EAreas;
+										import app.model.Paciente;
+										import app.util.General;
+										private function goPaciente(e:MouseEvent):void
+										{
+											var p:Paciente = data as Paciente;
+											General.pacienteAtual = p;
+											Navigation.navega(EAreas.CONSULTA);
+										}
+									]]>
+								</fx:Script>
+								
+								<s:Button y="4" label="{data.nome.toUpperCase() + ' ' + data.sobrenome.toUpperCase()}" skinClass="app.skin.TextButton" buttonMode="true" click="goPaciente(event)" />
+							</s:GridItemRenderer>
+						</fx:Component>
+					</s:itemRenderer>
+				</s:GridColumn>
 				<s:GridColumn dataField="nome" headerText="Data" width="150">
 					<s:itemRenderer>
 						<fx:Component>

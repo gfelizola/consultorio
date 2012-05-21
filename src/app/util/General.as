@@ -26,6 +26,8 @@ package app.util
 		
 		public static var consultaAtual:Consulta;
 		
+		public static var buscaAtual:String = '' ;
+		
 		public static const APLICACAO_CARREGADA:String = "AplicacaoCarregada" ;
 
 		private static var appUpdater:ApplicationUpdaterUI;

@@ -91,7 +91,14 @@
 			
 			private function buscar(e:MouseEvent):void
 			{
-				//TODO - BUSCAR PACIENTES
+				if( txtBusca.text != '' ){
+					General.buscaAtual = txtBusca.text ;
+					if( Navigation.areaAtual != EAreas.MEUS_PACIENTES ){
+						Navigation.navega(EAreas.MEUS_PACIENTES) ;
+					} else {
+						Pacientes(Navigation.areaAtual.areaInstance).listaPacientes();
+					}
+				}
 			}
 			
 			private function pacientes(e:MouseEvent):void

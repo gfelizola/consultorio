@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="984" height="400"
+					creationComplete="init(event)">
+	<fx:Script>
+		
+		<![CDATA[
+			import app.model.Constantes;
+			import app.model.Consulta;
+			import app.model.DB;
+			import app.model.Exame;
+			import app.model.ExameAdicional;
+			import app.model.ExameBioquimico;
+			import app.skin.TextInput;
+			import app.util.General;
+			
+			import as3.utils.Mask;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.controls.Text;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.Validator;
+			
+			import nz.co.codec.flexorm.criteria.Criteria;
+			
+			import spark.components.HGroup;
+			import spark.components.SkinnableContainer;
+			
+			private var focusedFormControl:DisplayObject;
+			
+			[Bindable]
+			private var formIsValid:Boolean = false;
+			
+			[Bindable]
+			private var exames:ArrayCollection = Constantes.exames;
+			
+			[Bindable]
+			private var dataDoExame:* =  (General.consultaAtual) ? General.consultaAtual.exameBioquimico.dataDoExame : "";
+			
+			[Bindable]
+			private var campos:Object;
+			
+			//[Bindable]
+			//private var dadosConsutaAtual;
+			
+			private function getExames():ArrayCollection
+			{
+				var c:Criteria = DB.em.createCriteria(Exame);
+				c.addEqualsCondition("ativo",true);
+				return DB.em.fetchCriteria(c);
+			}
+			
+			private function buildForm():void
+			{
+				var colors:Array = [0xF6F9FE,0xFCFDFF];
+				var cc:uint = 0;
+				var o:Object;
+				campos = {};
+				
+				// Date
+				
+				
+				// Build
+				for each(var exame:Exame in exames)
+				{
+					o = {};
+					
+					o['sc'] = new SkinnableContainer();
+					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
+					o['hg'] = new HGroup();
+					o['nome'] = new Label();
+					o['nome'].text = exame.nome;
+					o['nome'].width = 150;
+					o['referencia'] = new Label();
+					o['referencia'].text = exame.referencia;
+					o['referencia'].width = 150;
+					o['valor'] = new app.skin.TextInput();
+					
+					o['hg'].addElement(o['nome']);
+					o['hg'].addElement(o['referencia']);
+					o['hg'].addElement(o['valor']);
+					
+					o['sc'].addElement(o['hg']);
+					
+					ExameGroup.addElement(o['sc']);
+					campos[exame.nome] = o;
+					
+					cc++;
+				}
+				
+				// Campos adicionais
+				for(var adicional:uint = 0; adicional < 4; adicional++)
+				{
+					o = {};
+					
+					o['sc'] = new SkinnableContainer();
+					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
+					o['hg'] = new HGroup();
+					o['nome'] = new app.skin.TextInput();
+					o['nome'].width = 150;
+					o['referencia'] = new app.skin.TextInput();
+					o['referencia'].width = 150;
+					o['valor'] = new app.skin.TextInput();
+					
+					o['hg'].addElement(o['nome']);
+					o['hg'].addElement(o['referencia']);
+					o['hg'].addElement(o['valor']);
+					
+					o['sc'].addElement(o['hg']);
+					
+					ExameGroup.addElement(o['sc']);
+					campos['adicional_'+adicional] = o;
+				}
+				
+				// Fill fields
+				if(General.consultaAtual != null)
+				{
+					for each(var exameAdd:app.model.ExameAdicional in General.consultaAtual.exameBioquimico.exames)
+					{
+						campos[exameAdd.nome]['inputResult'].text = exameAdd.valor; 
+					}
+				}
+			}
+			
+			private function init(event:FlexEvent):void
+			{
+				new Mask(txtDateExame, "99/99/9999" );
+				
+				exames = this.getExames();
+				if(exames.length > 0)
+				{
+					this.buildForm();
+				}
+				
+				scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true); 
+				
+				/*
+				for each( var validator:Validator in validators ){
+					validator.source.addEventListener(Event.CHANGE, validateForm);
+				}
+				//*/
+			}
+			
+			private function validateForm(e:Event):void
+			{
+				focusedFormControl = e.target as DisplayObject;
+				formIsValid = true;
+				
+				for( var i:int = 0; i < validators.length ; i++  ){
+					var validator:Validator = validators[i] ;
+					if( ! validate(validator) ){
+						//trace( i, validator, validator.source );
+					}
+				}
+			}
+			
+			private function validate(validator:Validator):Boolean
+			{
+				var validatorSource:DisplayObject = validator.source as DisplayObject;
+				var supressEvents:Boolean = validatorSource != focusedFormControl;
+				var event:ValidationResultEvent = validator.validate(null, supressEvents)
+				var currentControlIsValid:Boolean = event.type == ValidationResultEvent.VALID;
+				
+				formIsValid = formIsValid && currentControlIsValid;
+				return currentControlIsValid;
+			}
+			
+			private function onSalvar(e:MouseEvent):void
+			{
+				/*
+				if( Validator.validateAll(validators).length > 0 )
+				{
+					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
+				}
+				else
+				{
+				//*/
+					var exameCollection:ArrayCollection = new ArrayCollection();
+					for (var i:Object in campos) 
+					{
+						var ea:ExameAdicional = new ExameAdicional();
+						ea.nome = i['nome'].text;
+						ea.referencia = i['referencia'].text;
+						ea.valor = i['valor'].text;
+						exameCollection.addItem(e);
+					}
+					
+					var eb:ExameBioquimico = new ExameBioquimico();
+					eb.dataDoExame = txtDateExame.text;
+					eb.exames = exameCollection;
+					
+					General.consultaAtual.exameBioquimico = eb;
+					General.salvaConsulta();
+				/*
+				}
+				//*/
+			}
+			
+			private function onMouseWheel(e:MouseEvent):void
+			{
+				e.delta = e.delta > 0 ? 1 : -1;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<fx:Array id="validators">
+			<!-- mx:Validator property="text" requiredFieldError="Campo obrigatório" required="true" id="valAgua" source="{txtAgua}" / -->
+		</fx:Array>
+		<s:RadioButtonGroup id="NivelAtividade"/>
+	</fx:Declarations>
+	
+	<s:Scroller id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
+		<s:VGroup width="984" height="390" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+			
+			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
+			<s:VGroup width="435" gap="10" id="ExameGroup">
+				<s:SkinnableContainer>
+					<s:HGroup>
+						<s:Label text="Tipo do Exame" />
+						<s:Label text="Referência" />
+						<s:Label text="Data" />
+						<s:TextInput id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" />
+					</s:HGroup>
+				</s:SkinnableContainer>
+			</s:VGroup>
+			
+			<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" />
+	
+		</s:VGroup>
+	</s:Scroller>
+</s:NavigatorContent>

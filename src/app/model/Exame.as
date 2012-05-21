@@ -7,6 +7,8 @@ package app.model
 		[Id]
 		public var id:int;
 		
+		public var slug:String;
+		
 		public var nome:String;
 		
 		public var referencia:String;

@@ -10,9 +10,12 @@
 			import app.model.Consulta;
 			import app.model.DB;
 			import app.model.Exame;
+			import app.model.ExameAdicional;
 			import app.model.ExameBioquimico;
 			import app.skin.TextInput;
 			import app.util.General;
+			
+			import as3.utils.Mask;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -36,7 +39,10 @@
 			private var exames:ArrayCollection = Constantes.exames;
 			
 			[Bindable]
-			private var campos:Array;
+			private var dataDoExame:* =  (General.consultaAtual) ? General.consultaAtual.exameBioquimico.dataDoExame : "";
+			
+			[Bindable]
+			private var campos:Object;
 			
 			//[Bindable]
 			//private var dadosConsutaAtual;
@@ -44,47 +50,86 @@
 			private function getExames():ArrayCollection
 			{
 				var c:Criteria = DB.em.createCriteria(Exame);
-				c.addEqualsCondition("ativo",false);
+				c.addEqualsCondition("ativo",true);
 				return DB.em.fetchCriteria(c);
 			}
 			
 			private function buildForm():void
 			{
-				//var dadosConsultaAtual:ArrayCollection = General.consultaAtual.exameBioquimico.;
-				
 				var colors:Array = [0xF6F9FE,0xFCFDFF];
-				var cc:uint = 0 
-				campos = [];
+				var cc:uint = 0;
+				var o:Object;
+				campos = {};
+				
+				// Date
+				
+				
+				// Build
 				for each(var exame:Exame in exames)
 				{
-					var o:Object = {};
+					o = {};
 					
 					o['sc'] = new SkinnableContainer();
 					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
 					o['hg'] = new HGroup();
-					o['labelExame'] = new Label();
-					o['labelExame'].text = exame.nome;
-					o['labelExame'].width = 150;
-					o['labelRef'] = new Label();
-					o['labelRef'].text = exame.referencia;
-					o['labelRef'].width = 150;
-					o['inputResult'] = new app.skin.TextInput();
+					o['nome'] = new Label();
+					o['nome'].text = exame.nome;
+					o['nome'].width = 150;
+					o['referencia'] = new Label();
+					o['referencia'].text = exame.referencia;
+					o['referencia'].width = 150;
+					o['valor'] = new app.skin.TextInput();
 					
-					o['hg'].addElement(o['labelExame']);
-					o['hg'].addElement(o['labelRef']);
-					o['hg'].addElement(o['inputResult']);
+					o['hg'].addElement(o['nome']);
+					o['hg'].addElement(o['referencia']);
+					o['hg'].addElement(o['valor']);
 					
 					o['sc'].addElement(o['hg']);
 					
 					ExameGroup.addElement(o['sc']);
-					campos.push(o);
+					campos[exame.nome] = o;
 					
 					cc++;
+				}
+				
+				// Campos adicionais
+				for(var adicional:uint = 0; adicional < 4; adicional++)
+				{
+					o = {};
+					
+					o['sc'] = new SkinnableContainer();
+					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
+					o['hg'] = new HGroup();
+					o['nome'] = new app.skin.TextInput();
+					o['nome'].width = 150;
+					o['referencia'] = new app.skin.TextInput();
+					o['referencia'].width = 150;
+					o['valor'] = new app.skin.TextInput();
+					
+					o['hg'].addElement(o['nome']);
+					o['hg'].addElement(o['referencia']);
+					o['hg'].addElement(o['valor']);
+					
+					o['sc'].addElement(o['hg']);
+					
+					ExameGroup.addElement(o['sc']);
+					campos['adicional_'+adicional] = o;
+				}
+				
+				// Fill fields
+				if(General.consultaAtual != null)
+				{
+					for each(var exameAdd:app.model.ExameAdicional in General.consultaAtual.exameBioquimico.exames)
+					{
+						campos[exameAdd.nome]['inputResult'].text = exameAdd.valor; 
+					}
 				}
 			}
 			
 			private function init(event:FlexEvent):void
 			{
+				new Mask(txtDateExame, "99/99/9999" );
+				
 				exames = this.getExames();
 				if(exames.length > 0)
 				{
@@ -93,10 +138,11 @@
 				
 				scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true); 
 				
-				
+				/*
 				for each( var validator:Validator in validators ){
 					validator.source.addEventListener(Event.CHANGE, validateForm);
 				}
+				//*/
 			}
 			
 			private function validateForm(e:Event):void
@@ -110,8 +156,6 @@
 						//trace( i, validator, validator.source );
 					}
 				}
-				
-				trace( formIsValid );
 			}
 			
 			private function validate(validator:Validator):Boolean
@@ -134,29 +178,24 @@
 				}
 				else
 				{
-					var af:AtividadeFisica = new AtividadeFisica();
-					af.nivel = int(NivelAtividade.selectedValue);
-					
-					var at:Atividade;
-					
-					for (var i:int = 1; i <= 7; i++) 
+				//*/
+					var exameCollection:ArrayCollection = new ArrayCollection();
+					for (var i:Object in campos) 
 					{
-						var cAtividade:spark.components.TextInput = this['txtAtividade' + i];
-						var cDias:spark.components.TextInput = this['txtDias' + i];
-						var cHorario:spark.components.TextInput = this['txtHorario' + i];
-						
-						if( cAtividade.text != '' && cDias.text != '' && cHorario.text != '' ){
-							at = new Atividade();
-							at.nome = cAtividade.text ;
-							at.dias = cDias.text ;
-							at.horario = cHorario.text ;
-							
-							af.atividades.addItem(at);
-						}
+						var ea:ExameAdicional = new ExameAdicional();
+						ea.nome = i['nome'].text;
+						ea.referencia = i['referencia'].text;
+						ea.valor = i['valor'].text;
+						exameCollection.addItem(e);
 					}
 					
-					General.consultaAtual.atividadeFisica = af ;
+					var eb:ExameBioquimico = new ExameBioquimico();
+					eb.dataDoExame = txtDateExame.text;
+					eb.exames = exameCollection;
+					
+					General.consultaAtual.exameBioquimico = eb;
 					General.salvaConsulta();
+				/*
 				}
 				//*/
 			}
@@ -180,7 +219,16 @@
 		<s:VGroup width="984" height="390" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 			
 			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
-			<s:VGroup width="435" gap="10" id="ExameGroup"></s:VGroup>
+			<s:VGroup width="435" gap="10" id="ExameGroup">
+				<s:SkinnableContainer>
+					<s:HGroup>
+						<s:Label text="Tipo do Exame" />
+						<s:Label text="Referência" />
+						<s:Label text="Data" />
+						<s:TextInput id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" />
+					</s:HGroup>
+				</s:SkinnableContainer>
+			</s:VGroup>
 			
 			<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" />
 	

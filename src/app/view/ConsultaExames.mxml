@@ -23,17 +23,19 @@
 			import mx.core.UIComponent;
 			import mx.events.FlexEvent;
 			import mx.events.ValidationResultEvent;
+			import mx.validators.StringValidator;
 			import mx.validators.Validator;
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			
 			import spark.components.HGroup;
 			import spark.components.SkinnableContainer;
+			import spark.components.TextInput;
 			
 			private var focusedFormControl:DisplayObject;
 			
 			[Bindable]
-			private var formIsValid:Boolean = false;
+			private var formIsValid:Boolean = true;
 			
 			[Bindable]
 			private var exames:ArrayCollection = Constantes.exames;
@@ -44,8 +46,22 @@
 			[Bindable]
 			private var campos:Object;
 			
-			//[Bindable]
-			//private var dadosConsutaAtual;
+			private var quantidadeAdicionais:uint = 3;
+			
+			
+			private function onMouseWheel(e:MouseEvent):void
+			{
+				e.delta = e.delta > 0 ? 1 : -1;
+			}
+			
+			private function addValidator(f:*):void
+			{
+				var sv:StringValidator = new StringValidator();
+				sv.required = true;
+				sv.requiredFieldError = "Este campo é obrigatório"
+				sv.source = f;
+				validators.push(sv);
+			}
 			
 			private function getExames():ArrayCollection
 			{
@@ -61,9 +77,6 @@
 				var o:Object;
 				campos = {};
 				
-				// Date
-				
-				
 				// Build
 				for each(var exame:Exame in exames)
 				{
@@ -78,7 +91,7 @@
 					o['referencia'] = new Label();
 					o['referencia'].text = exame.referencia;
 					o['referencia'].width = 150;
-					o['valor'] = new app.skin.TextInput();
+					o['valor'] = new spark.components.TextInput();
 					
 					o['hg'].addElement(o['nome']);
 					o['hg'].addElement(o['referencia']);
@@ -93,18 +106,18 @@
 				}
 				
 				// Campos adicionais
-				for(var adicional:uint = 0; adicional < 4; adicional++)
+				for(var adicional:uint = 0; adicional < quantidadeAdicionais; adicional++)
 				{
 					o = {};
 					
 					o['sc'] = new SkinnableContainer();
 					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
 					o['hg'] = new HGroup();
-					o['nome'] = new app.skin.TextInput();
+					o['nome'] = new spark.components.TextInput();
 					o['nome'].width = 150;
-					o['referencia'] = new app.skin.TextInput();
+					o['referencia'] = new spark.components.TextInput();
 					o['referencia'].width = 150;
-					o['valor'] = new app.skin.TextInput();
+					o['valor'] = new spark.components.TextInput();
 					
 					o['hg'].addElement(o['nome']);
 					o['hg'].addElement(o['referencia']);
@@ -137,48 +150,35 @@
 				}
 				
 				scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true); 
-				
-				/*
-				for each( var validator:Validator in validators ){
-					validator.source.addEventListener(Event.CHANGE, validateForm);
-				}
-				//*/
-			}
-			
-			private function validateForm(e:Event):void
-			{
-				focusedFormControl = e.target as DisplayObject;
-				formIsValid = true;
-				
-				for( var i:int = 0; i < validators.length ; i++  ){
-					var validator:Validator = validators[i] ;
-					if( ! validate(validator) ){
-						//trace( i, validator, validator.source );
-					}
-				}
-			}
-			
-			private function validate(validator:Validator):Boolean
-			{
-				var validatorSource:DisplayObject = validator.source as DisplayObject;
-				var supressEvents:Boolean = validatorSource != focusedFormControl;
-				var event:ValidationResultEvent = validator.validate(null, supressEvents)
-				var currentControlIsValid:Boolean = event.type == ValidationResultEvent.VALID;
-				
-				formIsValid = formIsValid && currentControlIsValid;
-				return currentControlIsValid;
 			}
 			
 			private function onSalvar(e:MouseEvent):void
 			{
-				/*
-				if( Validator.validateAll(validators).length > 0 )
+				// Verifica adicionais
+				for(var adicional:uint = 0; adicional < quantidadeAdicionais; adicional++)
+				{
+					if(
+						(campos['adicional_'+adicional].nome.text == '' && campos['adicional_'+adicional].valor.text != '') ||
+						(campos['adicional_'+adicional].nome.text != '' && campos['adicional_'+adicional].valor.text == '')
+					)
+					{
+						formIsValid = false;
+					}
+				}
+				
+				var erros:Array = validators.validateAll(validators);
+				if (erros.length > 0)
+				{
+					formIsValid = false;
+				}
+				
+				if(!formIsValid)
 				{
 					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
 				}
 				else
 				{
-				//*/
+					var cc:uint = 0;
 					var exameCollection:ArrayCollection = new ArrayCollection();
 					for (var i:Object in campos) 
 					{
@@ -186,7 +186,10 @@
 						ea.nome = i['nome'].text;
 						ea.referencia = i['referencia'].text;
 						ea.valor = i['valor'].text;
-						exameCollection.addItem(e);
+						if(ea.nome == "adicional_"+cc)
+							exameCollection.addItem(e);
+						
+						cc++;
 					}
 					
 					var eb:ExameBioquimico = new ExameBioquimico();
@@ -195,22 +198,14 @@
 					
 					General.consultaAtual.exameBioquimico = eb;
 					General.salvaConsulta();
-				/*
 				}
-				//*/
 			}
-			
-			private function onMouseWheel(e:MouseEvent):void
-			{
-				e.delta = e.delta > 0 ? 1 : -1;
-			}
-			
 		]]>
 	</fx:Script>
 	
 	<fx:Declarations>
 		<fx:Array id="validators">
-			<!-- mx:Validator property="text" requiredFieldError="Campo obrigatório" required="true" id="valAgua" source="{txtAgua}" / -->
+			<mx:StringValidator id="valDateExame" source="{txtDateExame}" property="text" required="true" requiredFieldError="O campo Data do Exame é obrigatório" />
 		</fx:Array>
 		<s:RadioButtonGroup id="NivelAtividade"/>
 	</fx:Declarations>

@@ -79,8 +79,8 @@
 	<mx:HRule x="32" y="156" width="320"/>
 	
 	<s:Form id="formLogin" defaultButton="{btnEntrar}" x="21" y="162" keyUp="checkKey(event)">
-		<s:TextInput id="txtLogin" x="0" y="162" width="321" prompt="LOGIN" text="gustavo" skinClass="app.skin.LoginTextInput"/>
-		<s:TextInput id="txtSenha" x="0" y="203" width="321" prompt="SENHA" text="gustavo" skinClass="app.skin.LoginTextInput" displayAsPassword="true" />
+		<s:TextInput id="txtLogin" x="0" y="162" width="321" prompt="LOGIN" text="" skinClass="app.skin.LoginTextInput"/>
+		<s:TextInput id="txtSenha" x="0" y="203" width="321" prompt="SENHA" text="" skinClass="app.skin.LoginTextInput" displayAsPassword="true" />
 		<s:Button id="btnEntrar" x="0" y="244" label="ENTRAR" skinClass="app.skin.Button" click="onEntrar(event)" />
 	</s:Form>
 	

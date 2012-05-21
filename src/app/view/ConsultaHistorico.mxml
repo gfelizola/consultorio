@@ -1,10 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540"
+					creationComplete="init(event)">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			private function init(event:FlexEvent):void
+			{
+				
+			}
+			
+		]]>
+	</fx:Script>
+	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
+	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
+			 text="CONSULTAS ANTERIORES"/>
 	
+	
+	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="520" dataProvider="{pacientes}" rowHeight="40" focusEnabled="false"
+				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
+				skinClass="app.skin.DataGridSkin">
+		<s:columns>
+			<s:ArrayList>
+				
+				
+				<s:GridColumn dataField="nome" headerText="Data" width="830">
+					<s:itemRenderer>
+						<fx:Component>
+							<s:GridItemRenderer>
+								<fx:Script>
+									<![CDATA[
+										import app.util.General;
+										
+										import spark.formatters.DateTimeFormatter;
+									]]>
+								</fx:Script>
+								<s:Button y="4" icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(Date(data.dataUltimaConsulta).toString())}" fontSize="18" skinClass="app.skin.TextButton" />
+							</s:GridItemRenderer>
+						</fx:Component>
+					</s:itemRenderer>
+				</s:GridColumn>
+				
+				<s:GridColumn  headerText="Editar" width="150">
+					<s:itemRenderer>
+						<fx:Component>
+							<s:GridItemRenderer>
+								
+								<fx:Script>
+									<![CDATA[
+										import app.controller.Navigation;
+										import app.enums.EAreas;
+										import app.model.Paciente;
+										import app.util.General;
+										private function verConsulta(event:MouseEvent):void
+										{
+//											Navigation.navega(EAreas.CADASTRO_PACIENTE);
+										}
+									]]>
+								</fx:Script>
+								
+								<s:Button y="4" icon="assets/images/icoLupa.png" label="Ver consulta" skinClass="app.skin.TextButton" buttonMode="true" click="verConsulta(event)" />
+							</s:GridItemRenderer>
+						</fx:Component>
+					</s:itemRenderer>
+				</s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
 </s:NavigatorContent>

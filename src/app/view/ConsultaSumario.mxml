@@ -52,7 +52,7 @@
 					{
 						perfil = "GESTANTE" ;
 						if( p.dataUltimaMenstruacao ){
-							txtSemanaGestacional.text = p.semanaGestacional + " SEMANA GESTACIONAL" ;
+							txtSemanaGestacional.text = p.semanaGestacional + "ª SEMANA GESTACIONAL" ;
 							txtSemanaGestacional.visible = true ;
 						}
 					}
@@ -139,12 +139,16 @@
 			<s:SolidColor color="#FAFDFE"></s:SolidColor>
 		</s:fill>
 	</s:Rect>
-	<s:Label id="txtPerfil" x="20" y="20" width="185" height="30" color="#81BAEA" fontSize="20"
-			 styleName="bold" text="ADULTO"/>
 	
-	<s:Label id="txtIdade" x="20" y="50" width="185" height="20" text="30 ANOS"/>
-	<s:Label id="txtAtividade" x="20" y="70" width="185" height="20" text="SEDENTÁRIO"/>
-	<s:Label id="txtSemanaGestacional" x="20" y="90" width="185" height="20" text="32 SEMANA GESTACIONAL"/>
+	
+	<s:VGroup gap="6" x="0" y="20">
+		<s:Label id="txtPerfil" x="20" width="185" height="30" color="#81BAEA" fontSize="20"
+				 styleName="bold" text="ADULTO"/>
+		
+		<s:Label id="txtIdade" x="20" width="185" height="20" text="30 ANOS"/>
+		<s:Label id="txtAtividade" x="20" width="185" height="20" text="SEDENTÁRIO"/>
+		<s:Label id="txtSemanaGestacional" x="20" width="185" height="20" text="32 SEMANA GESTACIONAL"/>
+	</s:VGroup>
 	
 	<s:Label x="20" y="200" width="185" height="30" color="#81BAEA" fontSize="20" styleName="bold" text="ÚLTIMA CONSULTA"/>
 	<s:Label id="txtUltimaConsulta" x="20" y="230" width="185" height="60" text="30 ANOS"/>

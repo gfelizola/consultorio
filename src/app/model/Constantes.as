@@ -63,17 +63,17 @@ package app.model
 		);
 		
 		private static var _exames:Array = new Array(
-			{ nome:'Glicemia de jejum', referencia:'Valor de referência: 75 - 99 mg/Dl' },
-			{ nome:'Hemoglobina glicosilada', referencia:'Valor de referência: 4.0 a 6.0%' },
-			{ nome:'Insulina (livre, no soro)', referencia:'Valor de referência:  5 a 35 µU/mL.' },
-			{ nome:'Colesterol total', referencia:'De 2 a 19 ANOS:<br>Desejável: Menor que 170 mg/dl<br>Aceitável: 170 a 199 mg/dl <br>Elevado: Maior ou igual a 200 mg/dl<br><br>Adultos<br>Ótimo: Menor que 200 mg/dL<br>Limítrofe: 200 a 239 mg/dl<br>Elevado: Maior ou igual a 240 mg/dl' },
-			{ nome:'Colesterol HDL', referencia:'De 2 a 9 anos:<br>Maior ou igual a 40 mg/dL<br><br>De 10 a 19 anos:<br>Maior ou igual a 35 mg/dL<br><br>Acima de 19 anos:<br>Homens:  Maior ou igual a 40 mg/dL<br>Mulheres: Maior ou igual a 50 mg/dL' },
-			{ nome:'Colesterol LDL', referencia:'De 2 a 19 anos:<br>Desejável: inferior a 110 mg/dL<br>Limítrofe: de 110 a 129 mg/dL<br>Elevado : superior a 129 mg/dL<br><br>Acima de 19 anos:<br>Ótimo: inferior a 100 mg/dL <br>Sub-ótimo: de 100 a 129 mg/dL<br>Limítrofe: de 130 a 159 mg/dL<br>Elevado : de 160 a 189 mg/dL<br>Muito elevado: superior a 189 mg/dL' },
-			{ nome:'Colesterol VLDL', referencia:'De 2 a 9 anos:<br>Desejável: até 20 mg/dL<br><br>De 10 a 19 anos:<br>Desejável: até 26 mg/dL<br><br>Acima de 19 anos:<br>Normal: inferior a 30 mg/dL' },
-			{ nome:'Triglicerídeos', referencia:'De 2 a 9 anos:<br>Desejável: até 100 mg/dL<br><br>De 10 a 19 anos:<br>Desejável: até 130 mg/dL<br><br>Acima de 19 anos:<br>Normal: inferior a 150 mg/dL<br>Limítrofe: de 150 a 199 mg/dL<br>Elevado : de 200 a 499 mg/dL<br>Muito elevado: superior a 499 mg/dL' },
-			{ nome:'Uréia', referencia:'De 26 a 43 g/24 horas, dieta dependente', ativo:false },
-			{ nome:'Creatinina (soro)', referencia:'Recém-nascido: 0,3 a 1,0 mg/dL.<br>Até 6 anos : 0,3 a 0,7 mg/dL.<br>De 7 a 12 anos : 0,5 a 1,0 mg/dL;<br>> 12 anos:<br>sexo masculino: 0,7 a 1,3 mg/dL;<br>sexo feminino : 0,6 a 1,1 mg/dL.' },
-			{ nome:'Acido úrico (soro)', referencia:'Sexo feminino: 2,4 a 5,7 mg/dL;<br>Sexo masculino: 3,4 a 7,0 mg/dL.' }
+			{ nome:'Glicemia de jejum', referencia:'Valor de referência: 75 - 99 mg/Dl', ativo:true },
+			{ nome:'Hemoglobina glicosilada', referencia:'Valor de referência: 4.0 a 6.0%', ativo:true },
+			{ nome:'Insulina (livre, no soro)', referencia:'Valor de referência:  5 a 35 µU/mL.', ativo:true },
+			{ nome:'Colesterol total', referencia:'De 2 a 19 ANOS:\nDesejável: Menor que 170 mg/dl\nAceitável: 170 a 199 mg/dl \nElevado: Maior ou igual a 200 mg/dl\n\nAdultos\nÓtimo: Menor que 200 mg/dL\nLimítrofe: 200 a 239 mg/dl\nElevado: Maior ou igual a 240 mg/dl', ativo:true },
+			{ nome:'Colesterol HDL', referencia:'De 2 a 9 anos:\nMaior ou igual a 40 mg/dL\n\nDe 10 a 19 anos:\nMaior ou igual a 35 mg/dL\n\nAcima de 19 anos:\nHomens:  Maior ou igual a 40 mg/dL\nMulheres: Maior ou igual a 50 mg/dL', ativo:true },
+			{ nome:'Colesterol LDL', referencia:'De 2 a 19 anos:\nDesejável: inferior a 110 mg/dL\nLimítrofe: de 110 a 129 mg/dL\nElevado : superior a 129 mg/dL\n\nAcima de 19 anos:\nÓtimo: inferior a 100 mg/dL \nSub-ótimo: de 100 a 129 mg/dL\nLimítrofe: de 130 a 159 mg/dL\nElevado : de 160 a 189 mg/dL\nMuito elevado: superior a 189 mg/dL', ativo:true },
+			{ nome:'Colesterol VLDL', referencia:'De 2 a 9 anos:\nDesejável: até 20 mg/dL\n\nDe 10 a 19 anos:\nDesejável: até 26 mg/dL\n\nAcima de 19 anos:\nNormal: inferior a 30 mg/dL', ativo:true },
+			{ nome:'Triglicerídeos', referencia:'De 2 a 9 anos:\nDesejável: até 100 mg/dL\n\nDe 10 a 19 anos:\nDesejável: até 130 mg/dL\n\nAcima de 19 anos:\nNormal: inferior a 150 mg/dL\nLimítrofe: de 150 a 199 mg/dL\nElevado : de 200 a 499 mg/dL\nMuito elevado: superior a 499 mg/dL', ativo:true },
+			{ nome:'Uréia', referencia:'De 26 a 43 g/24 horas, dieta dependente', ativo:true },
+			{ nome:'Creatinina (soro)', referencia:'Recém-nascido: 0,3 a 1,0 mg/dL.\nAté 6 anos : 0,3 a 0,7 mg/dL.\nDe 7 a 12 anos : 0,5 a 1,0 mg/dL;\n> 12 anos:\nsexo masculino: 0,7 a 1,3 mg/dL;\nsexo feminino : 0,6 a 1,1 mg/dL.', ativo:true },
+			{ nome:'Acido úrico (soro)', referencia:'Sexo feminino: 2,4 a 5,7 mg/dL;\nSexo masculino: 3,4 a 7,0 mg/dL.', ativo:true }
 		);
 		
 		private static var tipos:Array 					= [ EstadoCivil, TipoAtendimento, Patologia, RedeSocial, Exame, Historico ];

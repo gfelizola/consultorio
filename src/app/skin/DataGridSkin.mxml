@@ -119,15 +119,16 @@ declarations define DataGrid skin parts except <code>headerColumnSeparator</code
                                 return;
                             
                             const color:uint = dataGrid.getStyle("caretColor");
-                            caretIndicatorFill.color = color;
+                            //caretIndicatorFill.color = color;
                         }
                     ]]>
                 </fx:Script>
                 
+				<!-- 
                 <s:stroke>
-                    <!--- @private -->
                     <s:SolidColorStroke id="caretIndicatorFill" color="0x0167FF" weight="1"/>
                 </s:stroke>
+				-->
             </s:Rect>
         </fx:Component>
         
@@ -145,7 +146,7 @@ declarations define DataGrid skin parts except <code>headerColumnSeparator</code
         <fx:Component id="headerColumnSeparator">
             <s:Line>
                 <s:stroke>
-                    <s:SolidColorStroke color="0x696969" weight="1" caps="square"/>
+                    <s:SolidColorStroke color="0xF6F9FE" weight="1" caps="square"/>
                 </s:stroke>
             </s:Line>
         </fx:Component>
@@ -260,14 +261,12 @@ declarations define DataGrid skin parts except <code>headerColumnSeparator</code
             <!-- header separator, scroller and grid -->
             <s:VGroup horizontalAlign="justify" height="100%" width="100%" gap="-1">
                 <!--- @private -->
-                <s:Line id="headerSeparator">
-                    <s:stroke>
-                        <s:SolidColorStroke color="0x696969" weight="1" caps="square"/>
-                    </s:stroke>
+                <s:Line id="headerSeparator" alpha="0">
+                    
                 </s:Line>          
                 
                 <!--- @private -->
-                <s:Scroller id="scroller" minViewportInset="1" hasFocusableChildren="false" height="100%">
+                <s:Scroller id="scroller" minViewportInset="1" hasFocusableChildren="false" height="100%" skinClass="app.skin.Scroller">
                     <!--- @private -->
                     <s:Grid id="grid" itemRenderer="spark.skins.spark.DefaultGridItemRenderer">
                         <s:GridLayer name="backgroundLayer"/>

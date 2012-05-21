@@ -63,9 +63,9 @@
         <s:State name="down" />
         <s:State name="disabled" />
     </s:states>
-    
-    <!-- layer 1: fill -->
-    <!--- @private -->
+	
+	<!-- layer 1: fill -->
+	<!--- @private -->
 	<s:Rect id="fill" left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5">
 		<s:fill>
 			<s:SolidColor color="0xFFFFFF" alpha="1" />
@@ -74,10 +74,18 @@
 			<s:DropShadowFilter blurX="11" blurY="11" alpha="0.15" distance="1" angle="45" />
 		</s:filters>
 	</s:Rect>
+	
+	<!-- layer 1: fillOver -->
+	<!--- @private -->
+	<s:Rect id="fillOver" left="0" right="0" top="0" bottom="0" radiusX="5" radiusY="5" includeIn="over">
+		<s:fill>
+			<s:SolidColor color="0x80BAEA" alpha="1" />
+		</s:fill>
+	</s:Rect>
     
     <!-- layer 2: text -->
     <!--- @copy spark.components.supportClasses.ButtonBase#labelDisplay  -->
-    <s:Label id="labelDisplay" color="0x80BAEA" styleName="bold" textAlign="center" 
+    <s:Label id="labelDisplay" color="0x80BAEA" color.over="0xFFFFFF" styleName="bold" textAlign="center" 
 			 maxDisplayedLines="1" horizontalCenter="0" verticalCenter="1" verticalAlign="middle"
              left="2" right="2" top="2" bottom="2">
 		<s:filters>

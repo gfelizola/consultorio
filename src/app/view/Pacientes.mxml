@@ -1,32 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="500"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540"
 					creationComplete="init(event)">
 	<fx:Script>
 		<![CDATA[
+			import app.model.DB;
+			import app.model.Paciente;
 			import app.skin.WhiteButton;
+			import app.util.General;
 			
+			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			
+			import nz.co.codec.flexorm.criteria.Criteria;
+			import nz.co.codec.flexorm.criteria.LikeCondition;
+			import nz.co.codec.flexorm.criteria.Sort;
+			
 			import spark.components.Button;
+			
+			[Bindable]
+			public var pacientes:ArrayCollection =  new ArrayCollection();
+			
+			private var atualLetter:String = '';
+			private var atualSort:String = '';
+			private var atualDirection:String = '';
 			
 			private function init(event:FlexEvent):void
 			{
 				var letras:String = 'ABCDEFGHIJKLMNOPQRSTUWXYZ' ;
+				var b:Button;
+				
+				b = new Button();
+				b.label = 'TODOS';
+				b.setStyle('skinClass', app.skin.WhiteButton);
+				b.height = 30 ;
+				b.addEventListener(MouseEvent.CLICK, onLetraClick);
+				
+				containerLetras.addElement(b);
 				
 				for (var i:int = 0; i < letras.length; i++) 
 				{
 					var letra:String = letras.charAt(i);
-					var b:Button = new Button();
+					b = new Button();
 					b.label = letra.toUpperCase();
 					b.setStyle('skinClass', app.skin.WhiteButton);
 					b.width = 20 ;
 					b.height = 30 ;
+					b.addEventListener(MouseEvent.CLICK, onLetraClick);
 					
 					containerLetras.addElement(b);
 				}
 				
+				b = new Button();
+				b.label = "NOME" ;
+				b.setStyle('skinClass', app.skin.WhiteButton);
+				b.height = 30 ;
+				b.addEventListener(MouseEvent.CLICK, onOrderClick );
+				
+				containerOrders.addElement(b);
+				
+				b = new Button();
+				b.label = "SOBRENOME" ;
+				b.setStyle('skinClass', app.skin.WhiteButton);
+				b.height = 30 ;
+				
+				containerOrders.addElement(b);
+				
+				b = new Button();
+				b.label = "DATA" ;
+				b.setStyle('skinClass', app.skin.WhiteButton);
+				b.height = 30 ;
+				b.right = 0 ;
+				
+				containerOrders.addElement(b);
+				
+				listaPacientes();
+			}
+			
+			private function listaPacientes():void
+			{
+				try
+				{
+					var c:Criteria = DB.em.createCriteria(Paciente);
+					c.addEqualsCondition("usuario", General.usuario.id.toString() ) ;
+					
+					if( atualLetter != '' ) c.addLikeCondition("nome", atualLetter, LikeCondition.RIGHT);
+
+					if( atualSort != '' ){
+						var sortDirection:String = sortDirection == 'DESC' ? Sort.DESC : Sort.ASC ;
+						c.addSort(atualSort, sortDirection);
+					}
+					
+					pacientes = DB.em.fetchCriteria(c);
+				} 
+				catch(error:Error) 
+				{
+					trace("Erro na consulta SQL", error.message, error.getStackTrace() );
+				}
+			}
+			
+			private function onOrderClick(e:MouseEvent):void
+			{
+				var b:Button = e.currentTarget as Button ;
+				
+				switch(b.label)
+				{
+					case 'NOME':
+						if( atualSort == 'nome' ){
+							atualDirection = atualDirection == 'DESC' ? 'ASC' : 'DESC' ;
+						} else {
+							atualSort = 'nome' ;
+							atualDirection = 'ASC' ;
+						}
+						break;
+					case 'SOBRENOME':
+						if( atualSort == 'sobrenome' ){
+							atualDirection = atualDirection == 'DESC' ? 'ASC' : 'DESC' ;
+						} else {
+							atualSort = 'sobrenome' ;
+							atualDirection = 'ASC' ;
+						}
+						break;
+					case 'DATA':
+						if( atualSort == 'dataUltimaConsulta' ){
+							atualDirection = atualDirection == 'DESC' ? 'ASC' : 'DESC' ;
+						} else {
+							atualSort = 'dataUltimaConsulta' ;
+							atualDirection = 'ASC' ;
+						}
+						break;
+				}
+				
+				listaPacientes();
+			}
+			
+			private function onLetraClick(e:MouseEvent):void
+			{
+				var texto:String = Button(e.currentTarget).label ;
+				atualLetter = texto == 'TODOS' ? '' : texto ;
+				listaPacientes();
 			}
 			
 		]]>
@@ -41,7 +154,83 @@
 		</s:fill>
 	</s:Rect>
 	
-	<s:HGroup id="containerLetras" x="0" y="0" height="43" width="100%" paddingLeft="10" paddingTop="5" paddingRight="10" gap="5">
-		
-	</s:HGroup>
+	<s:HGroup id="containerLetras" x="0" y="0" height="43" paddingLeft="10" paddingTop="5" paddingRight="10" gap="5" />
+	<s:HGroup id="containerOrders" paddingLeft="10" paddingTop="5" paddingRight="10" gap="5" right="0" />
+	
+	
+	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="470" dataProvider="{pacientes}" rowHeight="30"
+				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
+				skinClass="app.skin.DataGridSkin">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="nome" headerText="Nome" width="682">
+					<s:itemRenderer>
+						<fx:Component>
+							<s:GridItemRenderer verticalCenter="1">
+								
+								<fx:Script>
+									<![CDATA[
+										import app.controller.Navigation;
+										import app.enums.EAreas;
+										import app.model.Paciente;
+										import app.util.General;
+										private function goPaciente(e:MouseEvent):void
+										{
+											var p:Paciente = data as Paciente;
+											General.pacienteAtual = p;
+											Navigation.navega(EAreas.CONSULTA);
+										}
+									]]>
+								</fx:Script>
+								
+								<s:Button y="4" label="{data.nome.toUpperCase() + ' ' + data.sobrenome.toUpperCase()}" skinClass="app.skin.TextButton" buttonMode="true" click="goPaciente(event)" />
+							</s:GridItemRenderer>
+						</fx:Component>
+					</s:itemRenderer>
+				</s:GridColumn>
+				
+				<s:GridColumn dataField="nome" headerText="Data" width="150">
+					<s:itemRenderer>
+						<fx:Component>
+							<s:GridItemRenderer>
+								<fx:Script>
+									<![CDATA[
+										import app.util.General;
+									]]>
+								</fx:Script>
+								<s:Button y="4" icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(Date(data.dataUltimaConsulta).toString())}" skinClass="app.skin.TextButton" />
+							</s:GridItemRenderer>
+						</fx:Component>
+					</s:itemRenderer>
+				</s:GridColumn>
+				
+				<s:GridColumn  headerText="Editar" width="150">
+					<s:itemRenderer>
+						<fx:Component>
+							<s:GridItemRenderer>
+								
+								<fx:Script>
+									<![CDATA[
+										import app.controller.Navigation;
+										import app.enums.EAreas;
+										import app.model.Paciente;
+										import app.util.General;
+										private function editarPaciente(event:MouseEvent):void
+										{
+											var p:Paciente = data as Paciente;
+											General.pacienteAtual = p;
+											Navigation.navega(EAreas.CADASTRO_PACIENTE);
+										}
+									]]>
+								</fx:Script>
+								
+								<s:Button y="4" icon="assets/images/icoEditar.png" label="EDITAR PACIENTE" skinClass="app.skin.TextButton" buttonMode="true" click="editarPaciente(event)" />
+							</s:GridItemRenderer>
+						</fx:Component>
+					</s:itemRenderer>
+				</s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	
 </s:NavigatorContent>

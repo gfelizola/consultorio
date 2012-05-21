@@ -231,7 +231,7 @@ package app.model
 		
 		private static function adicionarReferencias():void
 		{
-			var ts:Array = new Array( Antropometria, Atividade, AtividadeFisica, Consulta, DadosAlimentares, EstadoCivil, Exame, ExameBioquimico, Historico, MAN, Paciente, Patologia, Refeicao, RedeSocial, TipoAtendimento, Usuario, UsuarioRedeSocial, Versao );
+			var ts:Array = new Array( Antropometria, Atividade, AtividadeFisica, Consulta, DadosAlimentares, EstadoCivil, Exame, ExameAdicional, ExameBioquimico, Historico, MAN, Paciente, Patologia, Refeicao, RedeSocial, TipoAtendimento, Usuario, UsuarioRedeSocial, Versao );
 		}
 		
 		private static function atualizaVersao(v:String):void

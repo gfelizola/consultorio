@@ -84,23 +84,49 @@
 			 text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam ac mauris. Quisque eget metus eget tellus ultrices rhoncus. Phasellus id lacus semper lacus suscipit pretium. Nulla mollis ligula id tellus. Duis ac libero. Nulla facilisi. Lorem ipsum dolor sit.&#xd; &#xd;Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla commodo viverra malesuada. Quisque sodales turpis vulputate enim ornare venenatis. Aliquam scelerisque pretium orci, rutrum commodo lectus placerat vel. Suspendisse porta, orci at ornare porttitor, libero urna sagittis justo, et mollis odio elit sit amet massa. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam ac mauris. Quisque eget metus eget tellus ultrices rhoncus. Phasellus id lacus semper lacus suscipit pretium. Nulla mollis ligula id tellus. Duis ac libero. Nulla facilisi. Lorem ipsum dolor sit."/>
 	
 	<s:DataGrid id="dgPacientes" x="476" y="76" width="518" height="442" visible="false" dataProvider="{pacientes}" requestedMaxRowCount="16"
+				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
 				skinClass="app.skin.DataGridSkin">
 		<s:columns>
 			<s:ArrayList>
-				<s:GridColumn dataField="nome" headerText="Nome"></s:GridColumn>
-				<s:GridColumn headerText="Data" width="150">
-					<!-- s:itemRenderer>
+				<s:GridColumn dataField="nome" labelFunction="{function(data:* = null, item2:* = null):String{ return data.nome.toUpperCase() + ' ' + data.sobrenome.toUpperCase() }}" headerText="Nome"></s:GridColumn>
+				<s:GridColumn dataField="nome" headerText="Data" width="150">
+					<s:itemRenderer>
 						<fx:Component>
-							<mx:LinkButton icon="@Embed('assets/images/icoAgenda.png')" label="DATA DA CONSULTA" buttonMode="false" />
+							<s:GridItemRenderer>
+								<fx:Script>
+									<![CDATA[
+										import app.util.General;
+									]]>
+								</fx:Script>
+								<s:Button icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(Date(data.dataUltimaConsulta).toString())}" skinClass="app.skin.TextButton" />
+							</s:GridItemRenderer>
 						</fx:Component>
-					</s:itemRenderer -->
+					</s:itemRenderer>
 				</s:GridColumn>
 				<s:GridColumn  headerText="Editar" width="150">
-					<!-- s:itemRenderer>
+					<s:itemRenderer>
 						<fx:Component>
-							<mx:LinkButton icon="@Embed('assets/images/icoEditar.png')" label="Editar paciente" />
+							<s:GridItemRenderer>
+								
+								<fx:Script>
+									<![CDATA[
+										import app.controller.Navigation;
+										import app.enums.EAreas;
+										import app.model.Paciente;
+										import app.util.General;
+										private function editarPaciente(event:MouseEvent):void
+										{
+											var p:Paciente = data as Paciente;
+											General.pacienteAtual = p;
+											Navigation.navega(EAreas.CADASTRO_PACIENTE);
+										}
+									]]>
+								</fx:Script>
+								
+								<s:Button icon="assets/images/icoEditar.png" label="EDITAR PACIENTE" skinClass="app.skin.TextButton" buttonMode="true" click="editarPaciente(event)" />
+							</s:GridItemRenderer>
 						</fx:Component>
-					</s:itemRenderer -->
+					</s:itemRenderer>
 				</s:GridColumn>
 			</s:ArrayList>
 		</s:columns>

@@ -112,12 +112,12 @@ package nz.co.codec.flexorm.criteria
             return this;
         }
 
-        public function addLikeCondition(property:String, str:String):Criteria
+        public function addLikeCondition(property:String, str:String, sides:String = LikeCondition.ALL):Criteria
         {
             var column:Object = _entity.getColumn(property);
             if (column)
             {
-                _filters.push(new LikeCondition(column.table, column.column, str));
+                _filters.push(new LikeCondition(column.table, column.column, str, sides));
             }
             return this;
         }

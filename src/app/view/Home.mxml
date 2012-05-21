@@ -32,13 +32,15 @@
 				try
 				{
 					var c:Criteria = DB.em.createCriteria(Paciente);
-						c.addEqualsCondition("usuario", General.usuario )
+						c.addEqualsCondition("usuario", General.usuario.id.toString() )
 						.addNotNullCondition("dataUltimaConsulta")
 						.addSort("dataUltimaConsulta", Sort.DESC )
 						.addSort("nome")
 						.addSort("sobrenome");
 					
 					pacientes = DB.em.fetchCriteria(c);
+					if( pacientes.length < 1 ) addSemPacientes();
+					else dgPacientes.visible = true ;
 				} 
 				catch(error:Error) 
 				{
@@ -81,7 +83,7 @@
 	<s:Label x="39" y="148" width="390" height="370"
 			 text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam ac mauris. Quisque eget metus eget tellus ultrices rhoncus. Phasellus id lacus semper lacus suscipit pretium. Nulla mollis ligula id tellus. Duis ac libero. Nulla facilisi. Lorem ipsum dolor sit.&#xd; &#xd;Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla commodo viverra malesuada. Quisque sodales turpis vulputate enim ornare venenatis. Aliquam scelerisque pretium orci, rutrum commodo lectus placerat vel. Suspendisse porta, orci at ornare porttitor, libero urna sagittis justo, et mollis odio elit sit amet massa. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam ac mauris. Quisque eget metus eget tellus ultrices rhoncus. Phasellus id lacus semper lacus suscipit pretium. Nulla mollis ligula id tellus. Duis ac libero. Nulla facilisi. Lorem ipsum dolor sit."/>
 	
-	<s:DataGrid id="dgPacientes" x="476" y="76" width="518" height="442" dataProvider="{pacientes}" requestedMaxRowCount="16"
+	<s:DataGrid id="dgPacientes" x="476" y="76" width="518" height="442" visible="false" dataProvider="{pacientes}" requestedMaxRowCount="16"
 				skinClass="app.skin.DataGridSkin">
 		<s:columns>
 			<s:ArrayList>

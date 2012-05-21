@@ -96,7 +96,7 @@
 			
 			private function pacientes(e:MouseEvent):void
 			{
-				//TODO - LISTAR PACIENTES
+				Navigation.navega(EAreas.MEUS_PACIENTES);
 			}
 			
 			private function cadastrarPaciente(e:MouseEvent):void
@@ -118,6 +118,7 @@
 			private function requisitos(event:MouseEvent):void
 			{
 				Navigation.navega(EAreas.REQUISITOS_SISTEMA);
+				
 			}
 			
 		]]>

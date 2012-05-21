@@ -11,8 +11,8 @@ package app.model
 		
 		public var dataDoExame:Date;
 		
-		[OneToMany(type="app.model.Exame", lazy="false", cascade="all")]
-		public var atividades:ArrayCollection = new ArrayCollection();
+		[OneToMany(type="app.model.ExameAdicional", lazy="false", cascade="all")]
+		public var exames:ArrayCollection = new ArrayCollection();
 		
 		public function ExameBioquimico()
 		{

@@ -1,8 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="500">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="500"
+					creationComplete="init(event)">
+	<fx:Script>
+		<![CDATA[
+			import app.skin.WhiteButton;
+			
+			import mx.events.FlexEvent;
+			
+			import spark.components.Button;
+			
+			private function init(event:FlexEvent):void
+			{
+				var letras:String = 'ABCDEFGHIJKLMNOPQRSTUWXYZ' ;
+				
+				for (var i:int = 0; i < letras.length; i++) 
+				{
+					var letra:String = letras.charAt(i);
+					var b:Button = new Button();
+					b.label = letra.toUpperCase();
+					b.setStyle('skinClass', app.skin.WhiteButton);
+					b.width = 20 ;
+					b.height = 30 ;
+					
+					containerLetras.addElement(b);
+				}
+				
+			}
+			
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	
+	<s:Rect y="0" x="0" width="100%" height="43" radiusX="10" radiusY="10">
+		<s:fill>
+			<s:SolidColor color="#81BAEA" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:HGroup id="containerLetras" x="0" y="0" height="43" width="100%" paddingLeft="10" paddingTop="5" paddingRight="10" gap="5">
+		
+	</s:HGroup>
 </s:NavigatorContent>

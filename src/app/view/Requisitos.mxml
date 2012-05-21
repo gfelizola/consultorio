@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="500">
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:VGroup x="0" y="0" width="100%" height="100%" paddingLeft="10" paddingTop="10" paddingRight="10" paddingBottom="10" gap="20">
+		<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="REQUISITOS DO SISTEMA" />
+		<s:Label fontSize="16" styleName="bold" text="Pré-requisitos de instalação do Consultório Nutri Saúde" />
+		
+		<s:VGroup gap="0" width="974">
+			<s:SkinnableContainer width="100%" height="30" backgroundColor="#FCFDFF">
+				<s:Label x="10" y="10" text="ITENS" />
+				<s:Label x="200" y="10" text="REQUISITOS MÍNIMOS" />
+			</s:SkinnableContainer>
+			
+			<s:SkinnableContainer width="100%" height="30" backgroundColor="#F6F9FE">
+				<s:Label x="10" y="10" text="WINDOWS" />
+				<mx:HRule x="200" y="15" width="764"/>
+			</s:SkinnableContainer>
+			
+			<s:SkinnableContainer width="100%" height="45" backgroundColor="#FCFDFF">
+				<s:Label x="10" y="10" text="Computador / Sistema" />
+				<s:Label x="200" y="10" width="764"
+						 text="Computador com processador de 2,33 GHz ou mais veloz compatível com x86 ou processador Intel Atom de 1,6 GHz ou mais veloz para notebooks"/>
+			</s:SkinnableContainer>
+			
+			<s:SkinnableContainer width="100%" height="45" backgroundColor="#F6F9FE">
+				<s:Label x="10" y="10" text="Sistema operacional" />
+				<s:Label x="200" y="10" width="764"
+						 text="Microsoft Windows XP Home ou Professional; Windows Server 2003; Windows Server 2008; Windows Vista Home Premium; Business, Ultimate ou Enterprise (inclusive versões de 64 bits) com Service Pack 2; ou Windows 7"/>
+			</s:SkinnableContainer>
+			
+			<s:SkinnableContainer width="100%" height="30" backgroundColor="#FCFDFF">
+				<s:Label x="10" y="10" text="Memória" />
+				<s:Label x="200" y="10" text="512 MB de RAM (recomendável 1 GB)" />
+			</s:SkinnableContainer>
+			
+			<s:SkinnableContainer width="100%" height="30" backgroundColor="#F6F9FE">
+				<s:Label x="10" y="10" text="MAC OS X" />
+				<mx:HRule x="200" y="15" width="764"/>
+			</s:SkinnableContainer>
+			
+			<s:SkinnableContainer width="100%" height="30" backgroundColor="#FCFDFF">
+				<s:Label x="10" y="10" text="Computador / Sistema" />
+				<s:Label x="200" y="10" text="Processador Intel Core Duo ou mais rápido" />
+			</s:SkinnableContainer>
+			
+			<s:SkinnableContainer width="100%" height="30" backgroundColor="#F6F9FE">
+				<s:Label x="10" y="10" text="Sistema operacional" />
+				<s:Label x="200" y="10" text="Mac OS X versão 10.6 ou 10.7" />
+			</s:SkinnableContainer>
+			
+			<s:SkinnableContainer width="100%" height="30" backgroundColor="#FCFDFF">
+				<s:Label x="10" y="10" text="Memória" />
+				<s:Label x="200" y="10" text="512 MB de RAM (recomendável 1 GB)" />
+			</s:SkinnableContainer>
+			
+			
+		</s:VGroup>
+		
+	</s:VGroup>
+	
+</s:NavigatorContent>

@@ -233,10 +233,10 @@ package nz.co.codec.flexorm.command
                 sql += " order by ";
                 for each(var sort:Sort in _sorts)
                 {
-                    sql += StringUtil.substitute("t{0}.{1} and ",
+                    sql += StringUtil.substitute("t{0}.{1} , ",
                             tables.indexOf(ICondition(sort).table), sort);
                 }
-                sql = sql.substring(0, sql.length-5); // remove last ' and '
+                sql = sql.substring(0, sql.length-3); // remove last ' and '
             }
 
             _statement.text = sql;

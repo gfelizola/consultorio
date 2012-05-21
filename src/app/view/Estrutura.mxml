@@ -29,14 +29,16 @@
 				
 				toogleButtons();
 				
+				/*
 				var c:Criteria = DB.em.createCriteria(Paciente);
 				c.addEqualsCondition("id", 10);
 				var p:Paciente = DB.em.fetchCriteriaFirstResult(c) as Paciente ;
 				
 				General.pacienteAtual = p ;
+				*/
 				
 				initNavigation();
-				Navigation.navega( EAreas.CONSULTA );
+				Navigation.navega( EAreas.HOME );
 			}
 			
 			public function initWithoutUser():void
@@ -108,6 +110,16 @@
 				Navigation.navega(EAreas.CADASTRO);
 			}
 			
+			private function home(e:MouseEvent):void
+			{
+				Navigation.navega(EAreas.HOME);
+			}
+			
+			private function requisitos(event:MouseEvent):void
+			{
+				Navigation.navega(EAreas.REQUISITOS_SISTEMA);
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -125,7 +137,7 @@
 		<!-- BOTOÕES DA BARRA -->
 		<mx:LinkButton id="btnEditarDados" x="594" y="2" label="Alterar Dados" color="#ffffff" icon="@Embed('assets/images/icoAlterarDados.png')" click="alterarDados(event)" />
 		<mx:LinkButton id="btnManualUso" x="704" y="2" label="Manual de uso" color="#ffffff" icon="@Embed('assets/images/icoManualUso.png')" />
-		<mx:LinkButton id="btnRequisitos" x="814" y="2" label="Requisitos de sistema" color="#ffffff" icon="@Embed('assets/images/icoRequisitos.png')" />
+		<mx:LinkButton id="btnRequisitos" x="814" y="2" label="Requisitos de sistema" color="#ffffff" icon="@Embed('assets/images/icoRequisitos.png')" click="requisitos(event)" />
 		
 		<!-- BOTÕES DE SISTEMA -->
 		<mx:LinkButton x="996" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoFechar5.gif')" click="fechar(event)" />
@@ -142,8 +154,8 @@
 	<s:Image id="bgBarraBusca" x="0" y="18" source="assets/images/barra_topo_bg.png"/>
 	
 	<!-- NOME -->
-	<s:Label x="36" y="65" color="#83BBEA" fontSize="18" text="Consultório"/>
-	<s:Label x="133" y="60" color="#83BBEA" styleName="bold" fontSize="18" text="Nutri Saúde"/>
+	<s:Label x="36" y="65" color="#83BBEA" fontSize="18" text="Consultório" click="home(event)"/>
+	<s:Label x="133" y="60" color="#83BBEA" styleName="bold" fontSize="18" text="Nutri Saúde" click="home(event)"/>
 	
 	<!-- BOTÕES -->
 	<s:Button id="btnMeusPacientes" x="669" y="52" width="155" height="35" label="MEUS PACIENTES" click="pacientes(event)" skinClass="app.skin.Button" />

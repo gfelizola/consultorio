@@ -57,6 +57,8 @@ package app.model
 		
 		public var carteira:String ;
 		
+		public var dataUltimaConsulta:Date;
+		
 		[ManyToOne( cascade="none" )]
 		public var usuario:Usuario;
 		

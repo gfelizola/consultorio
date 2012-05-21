@@ -39,6 +39,8 @@ package app.util
 		{
 			if( consultaAtual != null ){
 				consultaAtual.dataConsulta = new Date();
+				pacienteAtual.dataUltimaConsulta = new Date();
+				consultaAtual.paciente = pacienteAtual ;
 				DB.em.save(consultaAtual);
 			}
 		}

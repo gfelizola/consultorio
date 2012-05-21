@@ -37,15 +37,12 @@
 	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
 			 text="CONSULTAS ANTERIORES"/>
 	
-	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="477" dataProvider="{consultas}" rowHeight="40" focusEnabled="false"
+	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="477" dataProvider="{consultas}" rowHeight="40" 
 				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
-				>
+				skinClass="app.skin.DataGridSkin">
 		<s:columns>
 			<s:ArrayList>
 				<s:GridColumn dataField="dataConsulta" headerText="Data" width="800" />
-				<s:GridColumn headerText="Editar">
-					
-				</s:GridColumn>
 			</s:ArrayList>
 		</s:columns>
 	</s:DataGrid>

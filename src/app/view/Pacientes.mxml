@@ -78,14 +78,22 @@
 				listaPacientes();
 			}
 			
-			private function listaPacientes():void
+			public function listaPacientes():void
 			{
 				try
 				{
 					var c:Criteria = DB.em.createCriteria(Paciente);
 					c.addEqualsCondition("usuario", General.usuario.id.toString() ) ;
 					
-					if( atualLetter != '' ) c.addLikeCondition("nome", atualLetter, LikeCondition.RIGHT);
+					if( General.buscaAtual !=  '' ){
+						c.addJunction(
+							c.createOrJunction()
+							.addLikeCondition("nome", General.buscaAtual)
+							.addLikeCondition("sobrenome", General.buscaAtual)
+						);
+					} else {
+						if( atualLetter != '' ) c.addLikeCondition("nome", atualLetter, LikeCondition.RIGHT);
+					}
 
 					if( atualSort != '' ){
 						var sortDirection:String = sortDirection == 'DESC' ? Sort.DESC : Sort.ASC ;
@@ -137,6 +145,7 @@
 			
 			private function onLetraClick(e:MouseEvent):void
 			{
+				General.buscaAtual = '' ;
 				var texto:String = Button(e.currentTarget).label ;
 				atualLetter = texto == 'TODOS' ? '' : texto ;
 				listaPacientes();

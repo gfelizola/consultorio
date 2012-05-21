@@ -1,6 +1,8 @@
 package app.vo
 {
 	import flash.display.MovieClip;
+	
+	import mx.core.UIComponent;
 
 	public class VoInfoArea
 	{
@@ -19,6 +21,11 @@ package app.vo
 		public function get usaBg():Boolean { return _usaBg; }
 		public function set usaBg(value:Boolean):void { _usaBg = value; }
 		
+		
+		private var _areaInstance:UIComponent;
+		
+		public function get areaInstance():UIComponent { return _areaInstance; }
+		public function set areaInstance(value:UIComponent):void { _areaInstance = value; }
 		
 		public function VoInfoArea( nome:String, className:Class, usaBg:Boolean = true )
 		{

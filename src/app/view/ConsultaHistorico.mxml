@@ -37,52 +37,14 @@
 	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
 			 text="CONSULTAS ANTERIORES"/>
 	
-	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="520" dataProvider="{consultas}" rowHeight="40" focusEnabled="false"
+	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="477" dataProvider="{consultas}" rowHeight="40" focusEnabled="false"
 				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
-				skinClass="app.skin.DataGridSkin">
+				>
 		<s:columns>
 			<s:ArrayList>
-				
-				
-				<s:GridColumn dataField="dataConsulta" headerText="Data" width="800">
-					<s:itemRenderer>
-						<fx:Component>
-							<s:GridItemRenderer>
-								<fx:Script>
-									<![CDATA[
-										import app.util.General;
-										
-										import spark.formatters.DateTimeFormatter;
-									]]>
-								</fx:Script>
-								<s:Button y="4" x="40" icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(Date(data.dataConsulta).toString())}" fontSize="18" skinClass="app.skin.TextButton" />
-							</s:GridItemRenderer>
-						</fx:Component>
-					</s:itemRenderer>
-				</s:GridColumn>
-				
-				<s:GridColumn  headerText="Editar">
-					<s:itemRenderer>
-						<fx:Component>
-							<s:GridItemRenderer>
-								
-								<fx:Script>
-									<![CDATA[
-										import app.controller.Navigation;
-										import app.enums.EAreas;
-										import app.model.Paciente;
-										import app.util.General;
-										private function verConsulta(event:MouseEvent):void
-										{
-//											Navigation.navega(EAreas.CADASTRO_PACIENTE);
-										}
-									]]>
-								</fx:Script>
-								
-								<s:Button y="4" icon="assets/images/icoLupa.png" label="Ver consulta" skinClass="app.skin.TextButton" buttonMode="true" click="verConsulta(event)" />
-							</s:GridItemRenderer>
-						</fx:Component>
-					</s:itemRenderer>
+				<s:GridColumn dataField="dataConsulta" headerText="Data" width="800" />
+				<s:GridColumn headerText="Editar">
+					
 				</s:GridColumn>
 			</s:ArrayList>
 		</s:columns>

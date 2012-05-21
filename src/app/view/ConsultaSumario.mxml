@@ -85,7 +85,11 @@
 					df.formatString = "DD/MM/YYYY HH:NN" ;
 					txtUltimaConsulta.text = df.format( consulta.dataConsulta );
 					
-					txtUltimoIMC.text = consulta.antropometria.imc.toPrecision(2) ;
+					if( consulta.antropometria ){
+						txtUltimoIMC.text = consulta.antropometria.imc.toPrecision(2) ;
+					} else {
+						txtUltimoIMC.text = "N/A" ;
+					}
 					
 					if( consulta.atividadeFisica )
 					{

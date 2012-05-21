@@ -30,7 +30,7 @@
 				toogleButtons();
 				
 				var c:Criteria = DB.em.createCriteria(Paciente);
-				c.addEqualsCondition("id", 1);
+				c.addEqualsCondition("id", 10);
 				var p:Paciente = DB.em.fetchCriteriaFirstResult(c) as Paciente ;
 				
 				General.pacienteAtual = p ;

@@ -74,6 +74,10 @@ package nz.co.codec.flexorm.criteria
                 _filters.push(new EqualsCondition(column.table, column.column, property));
                 _params[property] = value;
             }
+			else
+			{
+				trace( "Coluna", property, "não encontrada" );
+			}
             return this;
         }
 

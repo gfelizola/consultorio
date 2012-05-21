@@ -18,6 +18,11 @@ package nz.co.codec.flexorm.metamodel
                 }
             }
         }
+		
+		public function toString():String
+		{
+			  return column + ", " + property + ", " + type ;
+		}
 
     }
 }

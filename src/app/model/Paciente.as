@@ -15,8 +15,6 @@ package app.model
 		
 		public var sexo:String;
 		
-		public var dataNascimento:Date;
-		
 		public var estadoCivil:EstadoCivil;
 		
 		public var profissao:String;
@@ -39,8 +37,6 @@ package app.model
 		
 		public var email:String;
 		
-		public var dataUltimaMenstruacao:Date;
-		
 		public var gestante:Boolean;
 		
 		public var nutriz:Boolean;
@@ -56,8 +52,6 @@ package app.model
 		public var convenio:String ;
 		
 		public var carteira:String ;
-		
-		public var dataUltimaConsulta:Date;
 		
 		[ManyToOne( cascade="none" )]
 		public var usuario:Usuario;
@@ -96,6 +90,47 @@ package app.model
 		}
 		public function set semanaGestacional(value:Number):void { _semanaGestacional = value; }
 		
+		
+		/*
+		public var dataNascimento:Date;
+		
+		public var dataUltimaMenstruacao:Date;
+		
+		public var dataUltimaConsulta:Date;
+		*/
+		
+		private var _dataNascimento:Date;
+		
+		public function get dataNascimento():Date { return _dataNascimento; }
+		public function set dataNascimento(value:*):void { 
+			if( value is Date ){
+				_dataNascimento = value;
+			} else if (value is String) {
+				if( value != '' ) _dataNascimento = new Date(value);
+			}
+		}
+		
+		private var _dataUltimaMenstruacao:Date;
+		
+		public function get dataUltimaMenstruacao():Date { return _dataUltimaMenstruacao; }
+		public function set dataUltimaMenstruacao(value:*):void { 
+			if( value is Date ){
+				_dataUltimaMenstruacao = value;
+			} else if (value is String) {
+				if( value != '' ) _dataUltimaMenstruacao = new Date(value);
+			}
+		}
+		
+		private var _dataUltimaConsulta:Date;
+		
+		public function get dataUltimaConsulta():Date { return _dataUltimaConsulta; }
+		public function set dataUltimaConsulta(value:*):void { 
+			if( value is Date ){
+				_dataUltimaConsulta = value;
+			} else if (value is String) {
+				if( value != '' ) _dataUltimaConsulta = new Date(value);
+			}
+		}
 		
 		public function Paciente(){}
 	}

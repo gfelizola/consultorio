@@ -185,6 +185,8 @@
 			{
 				var p:Paciente = new Paciente();
 				p.tipo = cmbTipoAtendimento.selectedItem ;
+				p.convenio = txtConvenio.text ;
+				p.carteira = txtCarteira.text ;
 				p.objetivo = txtObjetivo.text ;
 				p.indicacao = txtIndicacao.text ;
 				p.nome = txtNome.text ;

@@ -1,5 +1,6 @@
 package app.controller
 {
+	import app.enums.EAreas;
 	import app.model.Usuario;
 	import app.util.General;
 	import app.view.Estrutura;
@@ -12,7 +13,9 @@ package app.controller
 	
 	import flashx.textLayout.formats.WhiteSpaceCollapse;
 	
+	import mx.controls.Alert;
 	import mx.core.UIComponent;
+	import mx.events.CloseEvent;
 	
 	import spark.components.SkinnableContainer;
 
@@ -51,14 +54,27 @@ package app.controller
 			
 			if( areaAtual != null ){
 				if( area.nome == areaAtual.nome ) return ;
+				
 				areaAnterior = areaAtual ;
+				areaAtual = area ;
+				
+				if( area.nome == EAreas.CONSULTA.nome ){
+					if( General.consultaAtual != null ){
+						Alert.yesLabel = "Sim" ;
+						Alert.noLabel = "Não" ;
+						Alert.show("Você está cadastrando uma nova consulta. Caso saia dessa tela, a consulta será gravada somente até o ultimo momento que foi salva. Deseja continuar e sair?", "Cuidado", Alert.YES|Alert.NO, null, onAlertSair );
+						return ;
+					}
+				}
+			} else {
+				areaAnterior = areaAtual ;
+				areaAtual = area ;
 			}
 			
-			areaAtual = area ;
 			addArea();
 		}
 		
-		public static function addArea():void
+		private static function addArea():void
 		{
 			var container:SkinnableContainer = estrutura.getContainer() ;
 			container.removeAllElements();
@@ -69,6 +85,15 @@ package app.controller
 			container.addElement(area);
 			
 			estrutura.bgAreas.visible = areaAtual.usaBg ;
+		}
+		
+		private static function onAlertSair( e:CloseEvent ):void
+		{
+			if( e.detail == Alert.YES ){
+				addArea();
+			} else {
+				areaAtual = areaAnterior ;
+			}
 		}
 	}
 }

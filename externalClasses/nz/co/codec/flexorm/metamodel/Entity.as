@@ -1,7 +1,7 @@
 package nz.co.codec.flexorm.metamodel
 {
     import mx.core.IUID;
-
+    
     import nz.co.codec.flexorm.command.CreateAsynCommand;
     import nz.co.codec.flexorm.command.CreateSynCommand;
     import nz.co.codec.flexorm.command.DeleteCommand;
@@ -355,6 +355,56 @@ package nz.co.codec.flexorm.metamodel
                     return { table: table, column: field.column };
                 }
             }
+			
+			for each (var f:Association in _manyToOneAssociations) 
+			{
+				if( f.property == property )
+				{
+					return { table: table, column: f.fkColumn }
+				}
+			}
+			
+			for each (f in _manyToManyInverseAssociations) 
+			{
+				if( f.property == property )
+				{
+					return { table: table, column: f.fkColumn }
+				}
+			}
+			
+			for each (f in _oneToManyAssociations) 
+			{
+				if( f.property == property )
+				{
+					return { table: table, column: f.fkColumn }
+				}
+			}
+			
+			for each (f in _oneToManyInverseAssociations) 
+			{
+				if( f.property == property )
+				{
+					return { table: table, column: f.fkColumn }
+				}
+			}
+			
+			for each (f in _manyToManyAssociations) 
+			{
+				if( f.property == property )
+				{
+					return { table: table, column: f.fkColumn }
+				}
+			}
+			
+			for each (f in _manyToManyInverseAssociations) 
+			{
+				if( f.property == property )
+				{
+					return { table: table, column: f.fkColumn }
+				}
+			}
+			
+			
             if (superEntity)
                 return superEntity.getColumn(property);
             return null;

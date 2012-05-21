@@ -21,5 +21,18 @@
   <modules/>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
-  <buildTargets/>
+  <buildTargets>
+    <buildTarget buildTargetName="default">
+      <airSettings airCertificatePath="/Work/WSs/Nestle/Consultorio Nutrisaude/cert_p_123456.p12" airTimestamp="true" anePathSet="true" version="1">
+        <airExcludes>
+          <pathEntry path="com"/>
+          <pathEntry path="server"/>
+          <pathEntry path="de"/>
+          <pathEntry path="net"/>
+        </airExcludes>
+        <anePaths/>
+      </airSettings>
+      <actionScriptSettings version="1"/>
+    </buildTarget>
+  </buildTargets>
 </actionScriptProperties>

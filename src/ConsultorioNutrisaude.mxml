@@ -3,7 +3,8 @@
 					   xmlns:s="library://ns.adobe.com/flex/spark"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:views="app.view.*"
-					   width="1024" height="700" applicationComplete="init()" showStatusBar="false">
+					   width="1024" height="700" applicationComplete="init()" backgroundAlpha="0.0"
+					   showStatusBar="false">
 	<fx:Style source="app/style/Estilo.css" />
 
 	<fx:Script>

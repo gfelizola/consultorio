@@ -5,6 +5,7 @@
 					creationComplete="init()" xmlns:view="app.view.*">
 	<fx:Script>
 		<![CDATA[
+			import app.model.Consulta;
 			import app.model.Paciente;
 			import app.util.General;
 			
@@ -20,6 +21,8 @@
 				
 				var tabMAN:UIComponent = tbConsulta.dataGroup.getElementAt(1) as UIComponent;
 				//if(tabMAN){tabMAN.enabled = idade > 65;}
+				
+				if( General.consultaAtual == null ) General.consultaAtual = new app.model.Consulta();
 			}
 			
 		]]>

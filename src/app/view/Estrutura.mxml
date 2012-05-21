@@ -141,8 +141,8 @@
 		<mx:LinkButton id="btnRequisitos" x="814" y="2" label="Requisitos de sistema" color="#ffffff" icon="@Embed('assets/images/icoRequisitos.png')" click="requisitos(event)" />
 		
 		<!-- BOTÕES DE SISTEMA -->
-		<mx:LinkButton x="996" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoFechar5.gif')" click="fechar(event)" />
-		<mx:LinkButton x="969" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoMinimize4.gif')" click="minimizar(event)" />
+		<mx:LinkButton x="996" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoFechar.png')" click="fechar(event)" />
+		<mx:LinkButton x="969" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoMinimizar.png')" click="minimizar(event)" />
 		
 		<s:Group id="separadores">
 			<mx:VRule id="ruleName" x="593" y="4" height="17" width="1" chromeColor="#FFFFFF" />

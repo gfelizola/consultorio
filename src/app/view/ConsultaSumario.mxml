@@ -103,21 +103,21 @@
 					txtUltimoIMC.text = "N/A" ;
 					txtAtividade.text = "" ;
 					
-					Alert.noLabel = "Não" ;
-					Alert.yesLabel = "Sim" ;
-					
-					Alert.show("Este paciente ainda não possui nenhuma consulta cadastrada.\nDeseja iniciar uma agora", "Confirma consulta", Alert.YES|Alert.NO, null, onAletaNovaConsulta);
+//					Alert.noLabel = "Não" ;
+//					Alert.yesLabel = "Sim" ;
+//					
+//					Alert.show("Este paciente ainda não possui nenhuma consulta cadastrada.\nDeseja iniciar uma agora", "Confirma consulta", Alert.YES|Alert.NO, null, onAlertaNovaConsulta);
 				}
 			}
 			
-			private function onAletaNovaConsulta(e:CloseEvent):void
+			private function onAlertaNovaConsulta(e:CloseEvent):void
 			{
 				if( e.detail == Alert.YES )
 				{
 					//TODO - MOVER PARA NOVA CONSULTA
 					trace( "ir para nova consulta" );
 					if( General.consultaAtual == null ) General.consultaAtual = new app.model.Consulta();
-					ViewStack(this.parent).selectedIndex = 3 ;
+//					ViewStack(this.parent).selectedIndex = 3 ;
 				}
 			}
 			

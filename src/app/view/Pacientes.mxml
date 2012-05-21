@@ -158,7 +158,7 @@
 	<s:HGroup id="containerOrders" paddingLeft="10" paddingTop="5" paddingRight="10" gap="5" right="0" />
 	
 	
-	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="470" dataProvider="{pacientes}" rowHeight="30"
+	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="470" dataProvider="{pacientes}" rowHeight="30" focusEnabled="false"
 				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
 				skinClass="app.skin.DataGridSkin">
 		<s:columns>

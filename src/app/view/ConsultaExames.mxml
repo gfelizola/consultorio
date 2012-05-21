@@ -7,7 +7,6 @@
 		
 		<![CDATA[
 			import app.model.Constantes;
-			import app.model.Consulta;
 			import app.model.DB;
 			import app.model.Exame;
 			import app.model.ExameAdicional;
@@ -19,10 +18,7 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
-			import mx.controls.Text;
-			import mx.core.UIComponent;
 			import mx.events.FlexEvent;
-			import mx.events.ValidationResultEvent;
 			import mx.validators.StringValidator;
 			import mx.validators.Validator;
 			
@@ -157,16 +153,16 @@
 				// Verifica adicionais
 				for(var adicional:uint = 0; adicional < quantidadeAdicionais; adicional++)
 				{
-					if(
-						(campos['adicional_'+adicional].nome.text == '' && campos['adicional_'+adicional].valor.text != '') ||
-						(campos['adicional_'+adicional].nome.text != '' && campos['adicional_'+adicional].valor.text == '')
-					)
-					{
-						formIsValid = false;
-					}
+//					if(
+//						(campos['adicional_'+adicional].nome.text == '' && campos['adicional_'+adicional].valor.text != '') ||
+//						(campos['adicional_'+adicional].nome.text != '' && campos['adicional_'+adicional].valor.text == '')
+//					)
+//					{
+//						formIsValid = false;
+//					}
 				}
 				
-				var erros:Array = validators.validateAll(validators);
+				var erros:Array = Validator.validateAll(validators);
 				if (erros.length > 0)
 				{
 					formIsValid = false;
@@ -180,14 +176,19 @@
 				{
 					var cc:uint = 0;
 					var exameCollection:ArrayCollection = new ArrayCollection();
-					for (var i:Object in campos) 
+					
+					for each (var i:Object in campos) 
 					{
+						trace( i );
 						var ea:ExameAdicional = new ExameAdicional();
-						ea.nome = i['nome'].text;
-						ea.referencia = i['referencia'].text;
-						ea.valor = i['valor'].text;
-						if(ea.nome == "adicional_"+cc)
-							exameCollection.addItem(e);
+						if( i['valor'].text != '' ){
+							ea.nome = i['nome'].text;
+							ea.referencia = i['referencia'].text;
+							ea.valor = i['valor'].text;
+	//						if(ea.nome == "adicional_"+cc)
+							
+							exameCollection.addItem(ea);
+						}
 						
 						cc++;
 					}
@@ -225,7 +226,7 @@
 				</s:SkinnableContainer>
 			</s:VGroup>
 			
-			<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" />
+			<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" click="onSalvar(event)" />
 	
 		</s:VGroup>
 	</s:Scroller>

@@ -80,7 +80,7 @@ package app.model
 		private static var full:Array 					= [ _estadosCivis, _tiposAtendimentos, _patologias, _redesSociais, _exames, _historicos ] ;
 		
 		private static var novosNessaVersao:Array 		= [ null, null, null, null, null, null ];
-		private static var atualizadosNessaVersao:Array = [ null, null, null, null, null, null ];
+		private static var atualizadosNessaVersao:Array = [ null, null, null, null, _exames, null ];
 		
 		
 		/* --------------- SE PRECISAR ATUALIZAR CONSTANTES - ADICINAR ITENS MODIFICADOS/NOVOS NOS VETORES COMO MOSTRADO ABAIXO.

@@ -2,34 +2,12 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500"
-					show="init()">
+					show="init()" xmlns:view="app.view.*">
 	<fx:Script>
 		<![CDATA[
-			import app.model.Consulta;
-			import app.model.DB;
-			import app.util.General;
-			import app.skin.DataGridSkin;
-			
-			import mx.collections.ArrayCollection;
-			import mx.events.FlexEvent;
-			
-			import nz.co.codec.flexorm.criteria.Criteria;
-			import nz.co.codec.flexorm.criteria.Sort;
-			
 			private function init():void
 			{
-				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
-				c.addEqualsCondition("paciente", General.pacienteAtual.id );
-				c.addSort("dataConsulta", Sort.DESC );
-				
-				var historicos:ArrayCollection =  new ArrayCollection();
-				historicos = DB.em.fetchCriteria(c);
-				
-				for each(var historico:Object in historicos)
-				{
-					// historico.dataConsulta = app.util.General.getFormattedDate(historico.dataConsulta);
-					historicoCollection.addItem(historico);
-				}
+				//...
 			}
 		]]>
 	</fx:Script>
@@ -38,40 +16,11 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
-			 text="CONSULTAS ANTERIORES"/>
 	
-	<s:DataGrid x="10" y="53" width="984" height="470" rowHeight="30" focusEnabled="false"
-				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
-				skinClass="app.skin.DataGridSkin">
-		<s:columns>
-			<s:ArrayList>
-				<s:GridColumn dataField="dataConsulta" headerText="Key"/>
-				<s:GridColumn headerText="Visualizar" width="150">
-					<s:itemRenderer>
-						<fx:Component>
-							<s:GridItemRenderer>
-								<fx:Script>
-									<![CDATA[
-										import app.controller.Navigation;
-										import app.enums.EAreas;
-										import app.util.General;
-										private function verConsulta(event:MouseEvent):void
-										{
-											trace(data.id);
-											//... do some stuff
-										}
-									]]>
-								</fx:Script>
-								<s:Button y="4" icon="assets/images/icoLupa.png" label="Ver consulta" skinClass="app.skin.TextButton" buttonMode="true" click="verConsulta(event)" />
-							</s:GridItemRenderer>
-						</fx:Component>
-					</s:itemRenderer>
-				</s:GridColumn>
-			</s:ArrayList>
-		</s:columns>
-		<s:ArrayCollection id="historicoCollection"></s:ArrayCollection>
-	</s:DataGrid>
+	<mx:ViewStack id="viewstackHistoricoConsulta" x="10" y="10" width="984" height="470">
+		<view:ConsultaHistoricoLista></view:ConsultaHistoricoLista>
+		<view:ConsultaHistoricoShow></view:ConsultaHistoricoShow>
+	</mx:ViewStack>
 	
 	
 </s:NavigatorContent>

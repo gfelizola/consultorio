@@ -67,18 +67,19 @@
 					a.circunferenciaCoxa = Number(txtCircCoxa.text);
 					a.circunferenciaPanturrilha = Number(txtCircPanturrilha.text);
 					
-					a.dobraCutaneaBiciptal = Number(txtPeso.text);
-					a.dobraCutaneaTriciptal = Number(txtPeso.text);
-					a.dobraCutaneaSubescapular = Number(txtPeso.text);
-					a.dobraCutaneaAxilarMedia = Number(txtPeso.text);
-					a.dobraCutaneaSupraIliaca = Number(txtPeso.text);
-					a.dobraCutaneaToracica = Number(txtPeso.text);
-					a.dobraCutaneaAbdominal = Number(txtPeso.text);
-					a.dobraCutaneaCoxa = Number(txtPeso.text);
-					a.dobraCutaneaPanturrilhaMedial = Number(txtPeso.text);
+					a.dobraCutaneaBiciptal = Number(txtDobraBiceps.text);
+					a.dobraCutaneaTriciptal = Number(txtDobraTriceps.text);
+					a.dobraCutaneaSubescapular = Number(txtDobraSubescapular.text);
+					a.dobraCutaneaAxilarMedia = Number(txtDobraAxilarMedia.text);
+					a.dobraCutaneaSupraIliaca = Number(txtDobraSupraIliaca.text);
+					a.dobraCutaneaToracica = Number(txtDobraToracica.text);
+					a.dobraCutaneaAbdominal = Number(txtDobraAbdominal.text);
+					a.dobraCutaneaCoxa = Number(txtDobraCoxa.text);
+					a.dobraCutaneaPanturrilhaMedial = Number(txtDobraPanturrilha.text);
 					
 					General.consultaAtual.antropometria = a ;
-					General.salvaConsulta();
+//					General.salvaConsulta();
+					impressao.visible = impressao.includeInLayout = true ;
 				}
 			}
 			
@@ -170,8 +171,7 @@
 			<s:Button id="btnSalvar" x="10" y="760" skinClass="app.skin.Button" enabled="{formIsValid}" alpha="{formIsValid ? 1 : 0.5}"
 					  label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" click="onSalvar(event)"/>
 			
-			<view:ConsultaImpressa id="impressao" etapa="1" x="516" y="10" visible="false" includeInLayout="false">
-			</view:ConsultaImpressa>
+			<view:ConsultaImpressa id="impressao" etapa="1" x="516" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
 	</s:Scroller>
 	

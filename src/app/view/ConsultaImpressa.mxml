@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="460" height="800"
-					show="init()" creationComplete="init()" backgroundColor="#F6FAFE">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="4000" height="3508"
+					show="init()" creationComplete="init()">
 	
 	<fx:Style source="app/style/Estilo.css" />
 	
@@ -131,26 +131,32 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	
-	<s:Image id="imgLogo" x="10" y="10" width="326" height="80" scaleMode="letterbox" horizontalAlign="left" />
-	<s:Button x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button"/>
-	
-	<mx:ViewStack id="conteudos" x="0" y="100" width="460" height="100%" selectedIndex="{etapa}">
-		<s:NavigatorContent id="antropometria">
-			<s:Label x="10" y="0" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
-			<s:Label id="antData" x="285" y="7" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
-			<s:Label x="10" y="30" styleName="bold" text="NOME:"/>
-			<s:Label id="antNomePaciente" x="53" y="33" width="156" styleName="light" text="Aline Maciel"/>
-			<s:Label x="217" y="30" styleName="bold" text="IDADE:"/>
-			<s:Label x="327" y="30" styleName="bold" text="SEXO:"/>
-			<s:Label id="antIdadePaciente" x="263" y="33" width="56" styleName="light" text="120 anos"/>
-			<s:Label id="antSexoPaciente" x="364" y="33" width="86" styleName="light" text="MASCULINO"/>
-			<s:VGroup id="containerDadosAntropometria" x="10" y="70" width="440" gap="10" />
-		</s:NavigatorContent>
-	</mx:ViewStack>
-	
-	<s:Group id="gDados" left="10" bottom="10" right="10">
-		<s:Label width="100%" text="{usuarioNome}" styleName="bold" fontSize="18" textAlign="center" />
-		<s:Label width="100%" y="25" lineHeight="20" text="{usuarioDesc}" styleName="light" textAlign="center" />
-	</s:Group> 
+	<s:SkinnableContainer x="0" y="0" width="460" height="800" backgroundColor="#F6FAFE">
+		<s:Image id="imgLogo" x="10" y="10" width="326" height="80" scaleMode="letterbox" horizontalAlign="left" />
+		<s:Button x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button"/>
+		
+		<mx:ViewStack id="conteudos" x="0" y="100" width="460" height="100%" selectedIndex="{etapa}">
+			<s:NavigatorContent id="antropometria">
+				<s:Label x="10" y="0" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
+				<s:Label id="antData" x="285" y="7" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
+				<s:Label x="10" y="30" styleName="bold" text="NOME:"/>
+				<s:Label id="antNomePaciente" x="53" y="33" width="156" styleName="light" text="Aline Maciel"/>
+				<s:Label x="217" y="30" styleName="bold" text="IDADE:"/>
+				<s:Label x="327" y="30" styleName="bold" text="SEXO:"/>
+				<s:Label id="antIdadePaciente" x="263" y="33" width="56" styleName="light" text="120 anos"/>
+				<s:Label id="antSexoPaciente" x="364" y="33" width="86" styleName="light" text="MASCULINO"/>
+				<s:VGroup id="containerDadosAntropometria" x="10" y="70" width="440" gap="10" />
+			</s:NavigatorContent>
+		</mx:ViewStack>
+		
+		<s:Group id="gDados" left="10" bottom="10" right="10">
+			<s:Label width="100%" text="{usuarioNome}" styleName="bold" fontSize="18" textAlign="center" />
+			<s:Label width="100%" y="25" lineHeight="20" text="{usuarioDesc}" styleName="light" textAlign="center" />
+		</s:Group> 
+	</s:SkinnableContainer>
+	<!-- 
+	<s:Group id="versaoreal" x="100" y="0" width="2480" height="3508" scaleX="0.3" scaleY="0.3" >
+		<s:Image id="imgLogoGrande" x="50" y="50" width="80%" height="10%" scaleMode="letterbox" horizontalAlign="left" />
+	</s:Group>
+	-->
 </s:NavigatorContent>

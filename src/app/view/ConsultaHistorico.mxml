@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540"
-					creationComplete="init()" show="init()">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500"
+					show="init()">
 	<fx:Script>
 		<![CDATA[
 			import app.model.Consulta;
@@ -16,7 +16,7 @@
 			import nz.co.codec.flexorm.criteria.Sort;
 			
 			[Bindable]
-			public var consultas:ArrayCollection =  new ArrayCollection();
+			public var historico:ArrayCollection =  new ArrayCollection();
 			
 			private function init():void
 			{
@@ -24,7 +24,9 @@
 				c.addEqualsCondition("paciente", General.pacienteAtual.id );
 				c.addSort("dataConsulta", Sort.DESC );
 				
-				consultas = DB.em.fetchCriteria(c);
+				historico = DB.em.fetchCriteria(c);
+				
+				dgConsultas.dataProvider = historico ;
 			}
 			
 		]]>
@@ -37,13 +39,15 @@
 	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
 			 text="CONSULTAS ANTERIORES"/>
 	
-	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="477" dataProvider="{consultas}" rowHeight="40" 
-				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
-				skinClass="app.skin.DataGridSkin">
+	<s:DataGrid id="dgConsultas" x="10" y="43">
 		<s:columns>
 			<s:ArrayList>
-				<s:GridColumn dataField="dataConsulta" headerText="Data" width="800" />
+				<s:GridColumn dataField="dataField1" headerText="Column 1"></s:GridColumn>
+				<s:GridColumn dataField="dataField2" headerText="Column 2"></s:GridColumn>
+				<s:GridColumn dataField="dataField3" headerText="Column 3"></s:GridColumn>
 			</s:ArrayList>
 		</s:columns>
 	</s:DataGrid>
+	
+	
 </s:NavigatorContent>

@@ -11,6 +11,7 @@
 			import app.model.Exame;
 			import app.model.ExameAdicional;
 			import app.model.ExameBioquimico;
+			import app.skin.TextArea;
 			import app.skin.TextInput;
 			import app.util.General;
 			
@@ -26,6 +27,7 @@
 			
 			import spark.components.HGroup;
 			import spark.components.SkinnableContainer;
+			import spark.components.TextArea;
 			import spark.components.TextInput;
 			
 			private var focusedFormControl:DisplayObject;
@@ -41,12 +43,8 @@
 			
 			[Bindable]
 			private var campos:Object;
-			
-			[Bindable]
 			private var colors:Array = [0xF6F9FE,0xFCFDFF];
 			private var quantidadeAdicionais:uint = 3;
-			
-			
 			
 			private function onMouseWheel(e:MouseEvent):void
 			{
@@ -79,18 +77,26 @@
 				for each(var exame:Exame in exames)
 				{
 					o = {};
-					
 					o['sc'] = new SkinnableContainer();
 					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
+					o['sc'].width = 435;
 					o['hg'] = new HGroup();
+					with(o['hg'])
+					{
+						paddingTop = paddingRight = paddingBottom = paddingLeft = 5;
+						gap = 10;
+					}
+					
 					o['nome'] = new Label();
 					o['nome'].text = exame.nome;
-					o['nome'].width = 150;
+					o['nome'].width = 135;
 					o['referencia'] = new Label();
 					o['referencia'].text = exame.referencia;
 					o['referencia'].width = 150;
+					o['referencia'].styleName = "lightSmall";
 					o['valor'] = new spark.components.TextInput();
 					o['valor'].setStyle('skinClass', app.skin.TextInput);
+					o['valor'].width = 90;
 					
 					o['hg'].addElement(o['nome']);
 					o['hg'].addElement(o['referencia']);
@@ -111,13 +117,26 @@
 					
 					o['sc'] = new SkinnableContainer();
 					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
+					o['sc'].width = 435;
 					o['hg'] = new HGroup();
+					with(o['hg'])
+					{
+						paddingTop = paddingRight = paddingBottom = paddingLeft = 5;
+						gap = 10;
+					}
+					
 					o['nome'] = new spark.components.TextInput();
 					o['nome'].setStyle('skinClass', app.skin.TextInput);
-					o['referencia'] = new spark.components.TextInput();
-					o['referencia'].setStyle('skinClass', app.skin.TextInput);
+					o['nome'].prompt = "Exame adicional";
+					o['nome'].width = 135;
+					o['referencia'] = new spark.components.TextArea();
+					o['referencia'].setStyle('skinClass', app.skin.TextArea);
+					o['referencia'].prompt = "Referência adicional";
+					o['referencia'].width = 150;
+					o['referencia'].height = 90;
 					o['valor'] = new spark.components.TextInput();
 					o['valor'].setStyle('skinClass', app.skin.TextInput);
+					o['valor'].width = 90;
 					
 					o['hg'].addElement(o['nome']);
 					o['hg'].addElement(o['referencia']);
@@ -127,6 +146,8 @@
 					
 					ExameGroup.addElement(o['sc']);
 					campos['adicional_'+adicional] = o;
+					
+					cc++;
 				}
 				
 				// Fill fields
@@ -219,14 +240,14 @@
 		<s:VGroup width="984" height="390" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 			
 			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
-			<s:VGroup width="435" gap="10" id="ExameGroup">
-				<s:SkinnableContainer backgroundColor="#F6F9FE">
-					<s:HGroup gap="10" verticalAlign="middle">
-						<s:Label width="150" text="Tipo do Exame" />
+			<s:VGroup gap="10" id="ExameGroup">
+				<s:SkinnableContainer width="435" backgroundColor="#F6F9FE">
+					<s:HGroup gap="10" paddingTop="5" paddingRight="5" paddingBottom="5" paddingLeft="5" variableColumnWidth="false" verticalAlign="middle">
+						<s:Label width="135" text="Tipo do Exame" />
 						<s:Label width="150" text="Referência" />
-						<s:HGroup verticalAlign="middle">
+						<s:HGroup width="150" verticalAlign="middle">
 							<s:Label text="Data" />
-							<s:TextInput id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" />
+							<s:TextInput width="90" id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" />
 						</s:HGroup>
 					</s:HGroup>
 				</s:SkinnableContainer>

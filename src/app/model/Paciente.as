@@ -132,6 +132,21 @@ package app.model
 			}
 		}
 		
+		[Transient]
+		public function get nomeCompleto():String
+		{
+			return nome + ' ' + sobrenome ;
+		}
+		
+		[Transient]
+		public function get idade():Number
+		{
+			if( dataNascimento ){
+				return ( new Date().fullYear ) - dataNascimento.fullYear ;
+			} 
+			return 0;
+		}
+		
 		public function Paciente(){}
 	}
 }

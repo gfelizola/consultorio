@@ -143,19 +143,19 @@
 				 text="Ana Maria"/>
 		
 		<!-- BOTOÕES DA BARRA -->
-		<mx:LinkButton id="btnEditarDados" x="594" y="2" label="Alterar Dados" color="#ffffff" icon="@Embed('assets/images/icoAlterarDados.png')" click="alterarDados(event)" />
-		<mx:LinkButton id="btnManualUso" x="704" y="2" label="Manual de uso" color="#ffffff" icon="@Embed('assets/images/icoManualUso.png')" />
-		<mx:LinkButton id="btnRequisitos" x="814" y="2" label="Requisitos de sistema" color="#ffffff" icon="@Embed('assets/images/icoRequisitos.png')" click="requisitos(event)" />
+		<mx:LinkButton id="btnEditarDados" x="606" y="2" label="Alterar Dados" color="#ffffff" icon="@Embed('assets/images/icoAlterarDados.png')" click="alterarDados(event)" />
+		<mx:LinkButton id="btnManualUso" x="716" y="2" label="Manual de uso" color="#ffffff" icon="@Embed('assets/images/icoManualUso.png')" />
+		<mx:LinkButton id="btnRequisitos" x="826" y="2" label="Requisitos de sistema" color="#ffffff" icon="@Embed('assets/images/icoRequisitos.png')" click="requisitos(event)" />
 		
 		<!-- BOTÕES DE SISTEMA -->
-		<mx:LinkButton x="996" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoFechar.png')" click="fechar(event)" />
-		<mx:LinkButton x="969" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoMinimizar.png')" click="minimizar(event)" />
+		<mx:LinkButton x="999" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoFechar.png')" click="fechar(event)" />
+		<mx:LinkButton x="978" y="2" width="25" label="" color="#ffffff" icon="@Embed('assets/images/icoMinimizar.png')" click="minimizar(event)" />
 		
 		<s:Group id="separadores">
-			<mx:VRule id="ruleName" x="593" y="4" height="17" width="1" chromeColor="#FFFFFF" />
-			<mx:VRule x="704" y="4" height="17" width="1" chromeColor="#FFFFFF" />
-			<mx:VRule x="813" y="4" height="17" width="1" chromeColor="#FFFFFF" />
-			<mx:VRule x="964" y="4" height="17" width="1" chromeColor="#FFFFFF" />
+			<mx:VRule id="ruleName" x="605" y="4" height="17" width="1" chromeColor="#FFFFFF" />
+			<mx:VRule x="716" y="4" height="17" width="1" chromeColor="#FFFFFF" />
+			<mx:VRule x="825" y="4" height="17" width="1" chromeColor="#FFFFFF" />
+			<mx:VRule x="976" y="4" height="17" width="1" chromeColor="#FFFFFF" />
 		</s:Group>
 	</s:SkinnableContainer>
 	

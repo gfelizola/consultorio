@@ -10,10 +10,14 @@
 			
 			import mx.events.FlexEvent;
 			
+			public var etapa:int = 1 ;
+			
 			private function init(event:FlexEvent):void
 			{
 				var usuario:Usuario = General.usuario ;
 				var logo:File;
+				
+				trace( "impressao", usuario.logo );
 				
 				if( usuario.logo != "" )
 				{

@@ -169,7 +169,8 @@
 			
 			<s:Button id="btnSalvar" x="10" y="760" skinClass="app.skin.Button" enabled="{formIsValid}" alpha="{formIsValid ? 1 : 0.5}"
 					  label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" click="onSalvar(event)"/>
-			<view:ConsultaImpressa x="516" y="10">
+			
+			<view:ConsultaImpressa id="impressao" etapa="1" x="516" y="10" visible="false" includeInLayout="false">
 			</view:ConsultaImpressa>
 		</s:Group>
 	</s:Scroller>

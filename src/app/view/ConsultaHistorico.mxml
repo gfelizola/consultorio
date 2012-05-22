@@ -39,12 +39,11 @@
 	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
 			 text="CONSULTAS ANTERIORES"/>
 	
-	<s:DataGrid id="dgConsultas" x="10" y="43">
+	<s:DataGrid id="dgConsultas" x="10" y="43" width="994" height="447">
 		<s:columns>
 			<s:ArrayList>
-				<s:GridColumn dataField="dataField1" headerText="Column 1"></s:GridColumn>
-				<s:GridColumn dataField="dataField2" headerText="Column 2"></s:GridColumn>
-				<s:GridColumn dataField="dataField3" headerText="Column 3"></s:GridColumn>
+				<s:GridColumn dataField="dataConsulta" headerText="Column 1"></s:GridColumn>
+				<s:GridColumn dataField="observacao" headerText="Column 2"></s:GridColumn>
 			</s:ArrayList>
 		</s:columns>
 	</s:DataGrid>

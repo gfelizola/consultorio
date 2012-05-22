@@ -2,33 +2,13 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500"
-					show="init()">
+					show="init()" xmlns:view="app.view.*">
 	<fx:Script>
 		<![CDATA[
-			import app.model.Consulta;
-			import app.model.DB;
-			import app.util.General;
-			
-			import mx.collections.ArrayCollection;
-			import mx.events.FlexEvent;
-			
-			import nz.co.codec.flexorm.criteria.Criteria;
-			import nz.co.codec.flexorm.criteria.Sort;
-			
-			[Bindable]
-			public var historico:ArrayCollection =  new ArrayCollection();
-			
 			private function init():void
 			{
-				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
-				c.addEqualsCondition("paciente", General.pacienteAtual.id );
-				c.addSort("dataConsulta", Sort.DESC );
-				
-				historico = DB.em.fetchCriteria(c);
-				
-				dgConsultas.dataProvider = historico ;
+				//...
 			}
-			
 		]]>
 	</fx:Script>
 	
@@ -36,17 +16,11 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
-			 text="CONSULTAS ANTERIORES"/>
 	
-	<s:DataGrid id="dgConsultas" x="10" y="43" width="994" height="447">
-		<s:columns>
-			<s:ArrayList>
-				<s:GridColumn dataField="dataConsulta" headerText="Column 1"></s:GridColumn>
-				<s:GridColumn dataField="observacao" headerText="Column 2"></s:GridColumn>
-			</s:ArrayList>
-		</s:columns>
-	</s:DataGrid>
+	<mx:ViewStack id="viewstackHistoricoConsulta" x="10" y="10" width="984" height="470">
+		<view:ConsultaHistoricoLista></view:ConsultaHistoricoLista>
+		<view:ConsultaHistoricoShow></view:ConsultaHistoricoShow>
+	</mx:ViewStack>
 	
 	
 </s:NavigatorContent>

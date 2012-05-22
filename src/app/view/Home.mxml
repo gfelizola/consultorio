@@ -31,12 +31,12 @@
 				
 				try
 				{
-					var c:Criteria = DB.em.createCriteria(Paciente);
-						c.addEqualsCondition("usuario", General.usuario.id.toString() )
-						.addNotNullCondition("dataUltimaConsulta")
-						.addSort("dataUltimaConsulta", Sort.DESC )
-						.addSort("nome")
-						.addSort("sobrenome");
+					c = DB.em.createCriteria(Paciente);
+					c.addEqualsCondition("usuario", General.usuario.id.toString() )
+					.addNotNullCondition("dataUltimaConsulta")
+					.addSort("dataUltimaConsulta", Sort.DESC )
+					.addSort("nome")
+					.addSort("sobrenome");
 					
 					pacientes = DB.em.fetchCriteria(c);
 					if( pacientes.length < 1 ) addSemPacientes();
@@ -122,7 +122,7 @@
 										import app.util.General;
 									]]>
 								</fx:Script>
-								<s:Button icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(Date(data.dataUltimaConsulta).toString())}" skinClass="app.skin.TextButton" />
+								<s:Button icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(new Date(data.dataUltimaConsulta).toString())}" skinClass="app.skin.TextButton" />
 							</s:GridItemRenderer>
 						</fx:Component>
 					</s:itemRenderer>

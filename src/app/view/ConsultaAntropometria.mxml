@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
-					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="400" creationComplete="init(event)">
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009"
+					xmlns:s="library://ns.adobe.com/flex/spark"
+					xmlns:mx="library://ns.adobe.com/flex/mx"
+					xmlns:view="app.view.*"
+					width="994" height="400" creationComplete="init(event)">
 	<fx:Script>
 		<![CDATA[
 			import app.model.Antropometria;
@@ -94,7 +96,7 @@
 		</fx:Array>
 	</fx:Declarations>
 	<s:Scroller id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
-		<s:Group width="100%" height="100%">
+		<s:Group width="994" height="390">
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
 			
 			<s:Label x="10" y="50" text="PESO*"/>
@@ -167,6 +169,8 @@
 			
 			<s:Button id="btnSalvar" x="10" y="760" skinClass="app.skin.Button" enabled="{formIsValid}" alpha="{formIsValid ? 1 : 0.5}"
 					  label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" click="onSalvar(event)"/>
+			<view:ConsultaImpressa x="516" y="10">
+			</view:ConsultaImpressa>
 		</s:Group>
 	</s:Scroller>
 	

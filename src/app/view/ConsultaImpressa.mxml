@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="460" height="650"
+					show="init(event)">
+	<fx:Script>
+		<![CDATA[
+			import app.model.Usuario;
+			import app.util.General;
+			
+			import mx.events.FlexEvent;
+			
+			private function init(event:FlexEvent):void
+			{
+				var usuario:Usuario = General.usuario ;
+				var logo:File;
+				
+				if( usuario.logo != "" )
+				{
+					logo = File.applicationStorageDirectory.resolvePath("images/" + usuario.logo );
+					if( logo.exists ) imgLogo.source = logo.url ;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Button x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png"
+			  skinClass="app.skin.Button"/>
+	
+	
+	<s:Image id="imgLogo" x="10" y="10" width="326" height="78" scaleMode="letterbox" horizontalAlign="left" />
+</s:NavigatorContent>

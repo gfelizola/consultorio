@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300"
+					creationComplete="init()" show="init()">
 	
 	<fx:Script>
 		<![CDATA[
 			import app.model.Consulta;
 			import app.model.DB;
-			import app.util.General;
 			import app.skin.DataGridSkin;
+			import app.util.General;
 			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
@@ -42,7 +43,7 @@
 	<s:DataGrid x="10" y="53" width="984" height="470" rowHeight="30" focusEnabled="false" alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}" skinClass="app.skin.DataGridSkin">
 		<s:columns>
 			<s:ArrayList>
-				<s:GridColumn dataField="dataConsulta" headerText="Key"/>
+				<s:GridColumn dataField="dataConsulta" labelFunction="{function(data:* = null, data2:* = null):String{ return General.getFormattedDate( data.dataConsulta );}}" headerText="Key"/>
 				<s:GridColumn headerText="Visualizar" width="150">
 					<s:itemRenderer>
 						<fx:Component>
@@ -51,11 +52,14 @@
 									<![CDATA[
 										import app.controller.Navigation;
 										import app.enums.EAreas;
+										import app.model.Consulta;
 										import app.util.General;
 										private function verConsulta(event:MouseEvent):void
 										{
 											trace(data.id);
-											//... do some stuff
+											
+											General.consultaAtual = data as app.model.Consulta ;
+											ConsultaHistorico.instance.viewstackHistoricoConsulta.selectedIndex = 1 ;
 										}
 									]]>
 								</fx:Script>

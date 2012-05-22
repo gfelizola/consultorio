@@ -5,10 +5,14 @@
 					show="init()" xmlns:view="app.view.*">
 	<fx:Script>
 		<![CDATA[
+			
+			public static var instance:ConsultaHistorico ;
+			
 			private function init():void
 			{
-				//...
+				instance = this ;
 			}
+			
 		]]>
 	</fx:Script>
 	
@@ -18,7 +22,7 @@
 	
 	
 	<mx:ViewStack id="viewstackHistoricoConsulta" x="10" y="10" width="984" height="470">
-		<view:ConsultaHistoricoLista></view:ConsultaHistoricoLista>
+		<view:ConsultaHistoricoLista id="vLista"></view:ConsultaHistoricoLista>
 		<view:ConsultaHistoricoShow></view:ConsultaHistoricoShow>
 	</mx:ViewStack>
 	

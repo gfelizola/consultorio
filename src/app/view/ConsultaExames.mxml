@@ -51,11 +51,12 @@
 				e.delta = e.delta > 0 ? 1 : -1;
 			}
 			
-			private function addValidator(f:*):void
+			private function addValidator(f:*,msg:String = "Este campo é obrigatório"):void
 			{
 				var sv:StringValidator = new StringValidator();
+				sv.property = "text";
 				sv.required = true;
-				sv.requiredFieldError = "Este campo é obrigatório"
+				sv.requiredFieldError = msg;
 				sv.source = f;
 				validators.push(sv);
 			}
@@ -176,10 +177,14 @@
 			private function onSalvar(e:MouseEvent):void
 			{
 				// Verifica adicionais
-				/*
+				//*
 				for(var adicional:uint = 0; adicional < quantidadeAdicionais; adicional++)
 				{
 					if((campos['adicional_'+adicional].nome.text == '' && campos['adicional_'+adicional].valor.text != ''))
+					{
+						this.addValidator(campos['adicional_'+adicional].nome);
+					}
+					if((campos['adicional_'+adicional].nome.text != '' && campos['adicional_'+adicional].valor.text == ''))
 					{
 						this.addValidator(campos['adicional_'+adicional].valor);
 					}
@@ -192,7 +197,7 @@
 				if(!formIsValid)
 				{
 					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
-					//validators.pop();
+					validators.pop();
 				}
 				else
 				{

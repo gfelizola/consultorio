@@ -36,6 +36,7 @@
 				{
 					dateConsulta = General.getFormattedDate(General.consultaAtual.dataConsulta.toString());
 					txtObservacao.text = General.consultaAtual.observacao;
+					buildAntropo();
 				}
 				else{
 					//...
@@ -51,18 +52,24 @@
 			{
 				if(General.consultaAtual.antropometria != null)
 				{
+					antroInfo.htmlText =  
+						"<p><b>Peso</b> " + General.consultaAtual.antropometria.peso + "</p>" +
+						"<p><b>Estatura</b> " + General.consultaAtual.antropometria.estatura + "</p>";
+					/*
 					// Add no stage
 					if(!dadosAccordion.contains(antropoAccordion))
 					{
-						antroPeso.text = General.consultaAtual.antropometria.peso as String;
-						antroEstatura.text = General.consultaAtual.antropometria.estatura as String;
+						antroInfo.htmlText = 
+							"<p><b>Peso</b> " + General.consultaAtual.antropometria.peso + "</p>" +
+							"<p><b>Estatura</b> " + General.consultaAtual.antropometria.estatura + "</p>";
 						dadosAccordion.addElement(antropoAccordion);
 					}
+					//*/
 				}
 				else
 				{
 					// Remove do stage
-					if(dadosAccordion.contains(antropoAccordion))dadosAccordion.removeChild(antropoAccordion);
+					// if(dadosAccordion.contains(antropoAccordion))dadosAccordion.removeChild(antropoAccordion);
 				}
 			}
 			
@@ -93,10 +100,24 @@
 			<mx:Accordion width="100%" height="100%" id="dadosAccordion">
 				<mx:VBox label="MAN" id="manAccordion"></mx:VBox>
 				<mx:VBox label="ANTROPOMETRIA" id="antropoAccordion">
-					<s:Label text="Peso" /><s:Label id="antroPeso" />
-					<s:Label text="Estatura" /><s:Label id="antroEstatura" />
+					<mx:Text id="antroInfo" condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
 				</mx:VBox>
-				<mx:VBox label="HÁBITOS ALIMENTARES" id="habitosAccordion"></mx:VBox>
+				<mx:VBox label="HÁBITOS ALIMENTARES" id="habitosAccordion">
+					<mx:Text condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+						<mx:htmlText>
+							<![CDATA[
+							<b>Teste:</b> 1231321 <br>
+							<b>Teste:</b> 1231321 <br>
+							<p><b>Teste:</b> 1231321</p>
+							<p><b>Teste:</b> 1231321</p>
+							<table>
+								<tr><td>Header</td></tr>
+								<tr><td>Data</td></tr>
+							</table>
+							]]>
+						</mx:htmlText>
+					</mx:Text>
+				</mx:VBox>
 				<mx:VBox label="ATIVIDADES FÍSICAS" id="atividadesAccordion"></mx:VBox>
 				<mx:VBox label="EXAMES BIOQUÍMICOS" id="examesAccordion"></mx:VBox>
 			</mx:Accordion>

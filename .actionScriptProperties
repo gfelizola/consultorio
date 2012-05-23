@@ -10,6 +10,7 @@
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
         </excludedEntries>
       </libraryPathEntry>
+      <libraryPathEntry kind="1" linkType="1" path="libs"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -26,10 +27,10 @@
       <airSettings airCertificatePath="/Work/WSs/Nestle/Consultorio Nutrisaude/cert_p_123456.p12" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes>
           <pathEntry path=".DS_Store"/>
-          <pathEntry path="com"/>
-          <pathEntry path="server"/>
-          <pathEntry path="de"/>
           <pathEntry path="net"/>
+          <pathEntry path="com"/>
+          <pathEntry path="de"/>
+          <pathEntry path="server"/>
         </airExcludes>
         <anePaths/>
       </airSettings>

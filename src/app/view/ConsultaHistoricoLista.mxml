@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 					creationComplete="init()" show="init()">
 	
 	<fx:Script>
 		<![CDATA[
 			import app.model.Consulta;
 			import app.model.DB;
+			
 			import app.skin.DataGridSkin;
 			import app.util.General;
 			
@@ -16,6 +17,10 @@
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			import nz.co.codec.flexorm.criteria.Sort;
+			
+			import spark.components.Grid;
+			import spark.events.GridEvent;
+			import spark.events.GridSelectionEvent;
 			
 			private function init():void
 			{
@@ -26,44 +31,32 @@
 				var historicos:ArrayCollection =  new ArrayCollection();
 				historicos = DB.em.fetchCriteria(c);
 				
+				historicoCollection.removeAll();
 				for each(var historico:Object in historicos)
 				{
-					// historico.dataConsulta = app.util.General.getFormattedDate(historico.dataConsulta);
 					historicoCollection.addItem(historico);
 				}
-			}
+			} 
+			
+			protected function onClickHandler(event:MouseEvent):void
+			{
+				General.consultaAtual = event.currentTarget.grid.selectedItem as app.model.Consulta ;
+				ConsultaHistorico.instance.viewstackHistoricoConsulta.selectedIndex = 1 ;
+				trace(General.consultaAtual.dataConsulta,General.consultaAtual.antropometria);
+			} 
 		]]>
 	</fx:Script>
 	
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
-	
 	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold" text="CONSULTAS ANTERIORES"/>
-	<s:DataGrid x="10" y="53" width="984" height="470" rowHeight="30" focusEnabled="false" alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}" skinClass="app.skin.DataGridSkin">
+	<s:DataGrid x="10" y="53" width="100%" height="100%" rowHeight="30" focusEnabled="false" alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}" skinClass="app.skin.DataGridSkin" click="onClickHandler(event)">
 		<s:columns>
 			<s:ArrayList>
-				<s:GridColumn dataField="dataConsulta" labelFunction="{function(data:* = null, data2:* = null):String{ return General.getFormattedDate( data.dataConsulta );}}" headerText="Key"/>
+				<s:GridColumn headerText="Data da Consulta" dataField="dataConsulta" labelFunction="{function(data:* = null, data2:* = null):String{ return General.getFormattedDate( data.dataConsulta );}}" />
 				<s:GridColumn headerText="Visualizar" width="150">
 					<s:itemRenderer>
 						<fx:Component>
 							<s:GridItemRenderer>
-								<fx:Script>
-									<![CDATA[
-										import app.controller.Navigation;
-										import app.enums.EAreas;
-										import app.model.Consulta;
-										import app.util.General;
-										private function verConsulta(event:MouseEvent):void
-										{
-											trace(data.id);
-											
-											General.consultaAtual = data as app.model.Consulta ;
-											ConsultaHistorico.instance.viewstackHistoricoConsulta.selectedIndex = 1 ;
-										}
-									]]>
-								</fx:Script>
-								<s:Button y="4" icon="assets/images/icoLupa.png" label="Ver consulta" skinClass="app.skin.TextButton" buttonMode="true" click="verConsulta(event)" />
+								<s:Button y="4" icon="assets/images/icoLupa.png" label="Ver consulta" skinClass="app.skin.TextButton" buttonMode="true" />
 							</s:GridItemRenderer>
 						</fx:Component>
 					</s:itemRenderer>

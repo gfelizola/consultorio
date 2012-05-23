@@ -11,6 +11,7 @@
 			import app.model.Exame;
 			import app.model.ExameAdicional;
 			import app.model.ExameBioquimico;
+			
 			import app.skin.TextArea;
 			import app.skin.TextInput;
 			import app.util.General;
@@ -39,7 +40,7 @@
 			private var exames:ArrayCollection = Constantes.exames;
 			
 			[Bindable]
-			private var dataDoExame:* =  ( General.consultaAtual) ? General.consultaAtual.exameBioquimico.dataDoExame : General.getFormattedDate(new Date().toString());
+			private var dataDoExame:String = General.getFormattedDate(new Date().toString());
 			
 			[Bindable]
 			private var campos:Object;
@@ -106,7 +107,7 @@
 					o['sc'].addElement(o['hg']);
 					
 					ExameGroup.addElement(o['sc']);
-					campos[exame.nome] = o;
+					campos['banco_'+cc] = o;
 					
 					cc++;
 				}
@@ -150,19 +151,15 @@
 					
 					cc++;
 				}
-				
-				// Fill fields
-				if(General.consultaAtual != null)
-				{
-					for each(var exameAdd:app.model.ExameAdicional in General.consultaAtual.exameBioquimico.exames)
-					{
-						campos[exameAdd.nome]['inputResult'].text = exameAdd.valor; 
-					}
-				}
 			}
 			
 			private function init(event:FlexEvent):void
 			{
+				if(General.consultaAtual != null)
+				{
+					dataDoExame = (General.consultaAtual.exameBioquimico != null) ? General.getFormattedDate(General.consultaAtual.exameBioquimico.dataDoExame.toString()) : General.getFormattedDate(new Date().toString());
+				}
+				
 				new Mask(txtDateExame, "99/99/9999" );
 				
 				exames = this.getExames();
@@ -176,20 +173,18 @@
 			
 			private function onSalvar(e:MouseEvent):void
 			{
-				// Verifica adicionais
-				//*
 				for(var adicional:uint = 0; adicional < quantidadeAdicionais; adicional++)
 				{
 					if((campos['adicional_'+adicional].nome.text == '' && campos['adicional_'+adicional].valor.text != ''))
 					{
 						this.addValidator(campos['adicional_'+adicional].nome);
 					}
+					
 					if((campos['adicional_'+adicional].nome.text != '' && campos['adicional_'+adicional].valor.text == ''))
 					{
 						this.addValidator(campos['adicional_'+adicional].valor);
 					}
 				}
-				//*/
 				
 				var erros:Array = Validator.validateAll(validators);
 				formIsValid = (erros.length == 0) ? true : false;
@@ -203,11 +198,13 @@
 				{
 					var cc:uint = 0;
 					var exameCollection:ArrayCollection = new ArrayCollection();
+					var ea:ExameAdicional;
 					
 					for each (var i:Object in campos) 
 					{
-						var ea:ExameAdicional = new ExameAdicional();
-						if( i['valor'].text != '' ){
+						if( i['valor'].text != '' )
+						{
+							ea = new ExameAdicional();
 							ea.nome = i['nome'].text;
 							ea.referencia = i['referencia'].text;
 							ea.valor = i['valor'].text;
@@ -242,8 +239,7 @@
 	</fx:Declarations>
 	
 	<s:Scroller id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
-		<s:VGroup width="984" height="390" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-			
+		<s:VGroup width="100%" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
 			<s:VGroup gap="10" id="ExameGroup">
 				<s:SkinnableContainer width="435" backgroundColor="#F6F9FE">
@@ -257,9 +253,7 @@
 					</s:HGroup>
 				</s:SkinnableContainer>
 			</s:VGroup>
-			
 			<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" click="onSalvar(event)" />
-	
 		</s:VGroup>
 	</s:Scroller>
 </s:NavigatorContent>

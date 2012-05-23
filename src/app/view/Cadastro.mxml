@@ -102,6 +102,8 @@
 				}
 				
 				if( General.usuario != null ) atualizaUsuario( General.usuario );
+				
+				redesSociais = Constantes.redesSociais ;
 			}
 			
 			private function onSalvar(e:MouseEvent = null):void
@@ -352,7 +354,7 @@
 			<s:Label x="10" y="726" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
 			
 			<s:Label x="10" y="758" text="REDE SOCIAL"/>
-			<s:ComboBox id="cmbRedeSocial" x="10" y="779" width="434" labelField="nome" dataProvider="{Constantes.redesSociais}" skinClass="app.skin.ComboBox" />
+			<s:ComboBox id="cmbRedeSocial" x="10" y="779" width="434" labelField="nome" dataProvider="{redesSociais}" skinClass="app.skin.ComboBox" />
 			
 			<s:Label x="490" y="758" text="ENDEREÇO"/>
 			<s:TextInput id="txtEndRedeSocial" x="490" y="779" width="301" skinClass="app.skin.TextInput"/>

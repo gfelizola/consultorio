@@ -80,7 +80,7 @@ package app.model
 		private static var full:Array 					= [ _estadosCivis, _tiposAtendimentos, _patologias, _redesSociais, _exames, _historicos ] ;
 		
 		private static var novosNessaVersao:Array 		= [ null, null, null, null, null, null ];
-		private static var atualizadosNessaVersao:Array = [ null, null, null, null, _exames, null ];
+		private static var atualizadosNessaVersao:Array = [ null, null, null, null, null, null ];
 		
 		
 		/* --------------- SE PRECISAR ATUALIZAR CONSTANTES - ADICINAR ITENS MODIFICADOS/NOVOS NOS VETORES COMO MOSTRADO ABAIXO.
@@ -141,44 +141,13 @@ package app.model
 						}
 					}
 					
-					getObjectFromDatabase();
-					/*
-					var usuario:Usuario = new Usuario();
-					usuario.nome = "Tribo" ;
-					usuario.sobrenome = "Interactive" ;
-					usuario.login = "tribo" ;
-					usuario.senha = "tribo" ;
-					usuario.CRN = "11111" ;
-					usuario.regional = "3" ;
-					usuario.endereco = "Rua Luigi Galvani, 72" ;
-					usuario.complemento = "andar 13" ;
-					usuario.bairro = "Brooklin" ;
-					usuario.cidade = "São Paulo" ;
-					usuario.estado = "SP" ;
-					usuario.telefone = "(11) 5501-1351" ;
-					usuario.site = "http://www.tribointeractive.com.br" ;
-					usuario.email = "contato@tribointeractive.com.br" ;
-					
-					var twitter:RedeSocial = getByNome( _redesSociais[0].nome, redesSociais ) as RedeSocial;
-					
-					var urs1:UsuarioRedeSocial = new UsuarioRedeSocial();
-					urs1.endereco = "@tribo";
-					urs1.rede = twitter ;
-					urs1.usuario = usuario ;
-					
-					usuario.redesSociais.addItem(urs1);
-					
-					DB.em.save(usuario);
-					*/
 					atualizaVersao(versaoAtual);
-					
 					trace("aplicação atualizada para a versao:", versaoAtual);
 				}
 				else
 				{
 					trace("aplicação atualizada");
 				}
-				
 			}
 			
 			getObjectFromDatabase();
@@ -270,7 +239,7 @@ package app.model
 					item[s] = ref[s];
 				}
 				
-				if( item.ativo == undefined ) item.ativo = true ;
+				if( ref.ativo == undefined ) item.ativo = true ;
 			}
 			
 			return item;

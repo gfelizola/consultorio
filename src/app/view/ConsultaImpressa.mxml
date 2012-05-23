@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="4000" height="3508"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="460" height="650"
 					show="init()" creationComplete="init()">
 	
 	<fx:Style source="app/style/Estilo.css" />
@@ -16,6 +16,8 @@
 			
 			import mx.controls.HRule;
 			import mx.events.FlexEvent;
+			import mx.printing.FlexPrintJob;
+			import mx.printing.FlexPrintJobScaleType;
 			
 			[Bindable]
 			public var etapa:int = 1 ;
@@ -103,6 +105,7 @@
 				lNome.styleName = 'bold' ;
 				lNome.x = 0 ;
 				lNome.y = 0 ;
+				lNome.setStyle('fontSize', 10);
 				lNome.text = nome.toUpperCase();
 				
 				var lValor:Label = new Label();
@@ -110,20 +113,38 @@
 				lValor.setStyle('textAlign', 'right');
 				lValor.width = 200 ;
 				lValor.x = 240 ;
+				lValor.setStyle('fontSize', 10);
 				lValor.text = ! isNaN(valor) ? valor.toString() : '0' ;
 				
 				var rule:HRule = new HRule();
 				rule.height = 1 ;
 				rule.width = 440 ;
 				rule.x = 0 ;
-				rule.y = 20 ;
+				rule.y = 13 ;
 				
 				var g:Group = new Group();
+				g.height = 14 ;
 				g.addElement(lNome);
 				g.addElement(lValor);
 				g.addElement(rule);
+				
 
 				return g;
+			}
+			
+			private function onImprimir(e:MouseEvent):void
+			{
+				btnImprimir.visible = false ;
+				scImpressao.setStyle('backgroundColor', '0xffffff');
+				
+				var pj:FlexPrintJob = new FlexPrintJob();
+				pj.start();
+				
+				pj.addObject( scImpressao, FlexPrintJobScaleType.SHOW_ALL );
+				pj.send();
+				
+				btnImprimir.visible = true ;
+				scImpressao.setStyle('backgroundColor', '0xF6FAFE');
 			}
 			
 		]]>
@@ -131,11 +152,11 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<s:SkinnableContainer x="0" y="0" width="460" height="800" backgroundColor="#F6FAFE">
-		<s:Image id="imgLogo" x="10" y="10" width="326" height="80" scaleMode="letterbox" horizontalAlign="left" />
-		<s:Button x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button"/>
+	<s:SkinnableContainer id="scImpressao" x="0" y="0" width="460" height="650" backgroundColor="#F6FAFE">
+		<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
+		<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
 		
-		<mx:ViewStack id="conteudos" x="0" y="100" width="460" height="100%" selectedIndex="{etapa}">
+		<mx:ViewStack id="conteudos" x="0" y="77" width="460" height="573" selectedIndex="{etapa}">
 			<s:NavigatorContent id="antropometria">
 				<s:Label x="10" y="0" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
 				<s:Label id="antData" x="285" y="7" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
@@ -145,13 +166,13 @@
 				<s:Label x="327" y="30" styleName="bold" text="SEXO:"/>
 				<s:Label id="antIdadePaciente" x="263" y="33" width="56" styleName="light" text="120 anos"/>
 				<s:Label id="antSexoPaciente" x="364" y="33" width="86" styleName="light" text="MASCULINO"/>
-				<s:VGroup id="containerDadosAntropometria" x="10" y="70" width="440" gap="10" />
+				<s:VGroup id="containerDadosAntropometria" x="10" y="57" width="440" gap="10" />
 			</s:NavigatorContent>
 		</mx:ViewStack>
 		
 		<s:Group id="gDados" left="10" bottom="10" right="10">
-			<s:Label width="100%" text="{usuarioNome}" styleName="bold" fontSize="18" textAlign="center" />
-			<s:Label width="100%" y="25" lineHeight="20" text="{usuarioDesc}" styleName="light" textAlign="center" />
+			<s:Label width="100%" text="{usuarioNome}" styleName="bold" fontSize="11" textAlign="center" />
+			<s:Label width="100%" y="25" lineHeight="12" text="{usuarioDesc}" styleName="light" fontSize="10" textAlign="center" />
 		</s:Group> 
 	</s:SkinnableContainer>
 	<!-- 

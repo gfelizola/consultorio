@@ -78,7 +78,7 @@
 					a.dobraCutaneaPanturrilhaMedial = Number(txtDobraPanturrilha.text);
 					
 					General.consultaAtual.antropometria = a ;
-//					General.salvaConsulta();
+					General.salvaConsulta();
 					impressao.visible = impressao.includeInLayout = true ;
 				}
 			}

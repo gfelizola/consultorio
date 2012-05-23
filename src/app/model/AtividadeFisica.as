@@ -16,6 +16,8 @@ package app.model
 		
 		public var nivel:int;
 		
+		public var observacao:String;
+		
 		[OneToMany(type="app.model.Atividade", lazy="false", cascade="all")]
 		public var atividades:ArrayCollection = new ArrayCollection();
 		

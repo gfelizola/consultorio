@@ -9,6 +9,8 @@
 	<fx:Script>
 		<![CDATA[
 			import app.model.Antropometria;
+			import app.model.Atividade;
+			import app.model.AtividadeFisica;
 			import app.model.Consulta;
 			import app.model.Paciente;
 			import app.model.Usuario;
@@ -21,6 +23,8 @@
 			
 			[Bindable]
 			public var etapa:int = 1 ;
+			
+			private var titulos:Array = [];
 			
 			[Bindable]
 			private var usuarioNome:String = '' ;
@@ -53,19 +57,33 @@
 			
 			private function verificaConsultaAtual():void
 			{
+				if( General.pacienteAtual != null ) {
+					var p:Paciente = General.pacienteAtual ;
+					impNomePaciente.text = p.nomeCompleto.toUpperCase() ;
+					impIdadePaciente.text = p.idade + ' ANOS' ;
+					impSexoPaciente.text = p.sexo == 'M' ? 'MASCULINO' : 'FEMININO' ;
+					antropometria.visible = true ;
+				} else {
+					impNomePaciente.text = '' ;
+					impIdadePaciente.text = '' ;
+					impSexoPaciente.text = '' ;
+					antropometria.visible = false ;
+				}
+				
 				if( General.consultaAtual != null ){
 					var c:app.model.Consulta = General.consultaAtual ;
+					impData.text = c.dataConsulta ? General.getFormattedDate( c.dataConsulta.toString() ) : '';	
+					
 					verificaAntropometria(c);
+					verificaAtividadesFisicas(c);
 				}
 			}
 			
 			private function verificaAntropometria(c:app.model.Consulta):void
 			{
 				var a:Antropometria = c.antropometria ;
-				antData.text = c.dataConsulta ? General.getFormattedDate( c.dataConsulta.toString() ) : '';				
 				
 				if( a != null ){
-					
 					containerDadosAntropometria.addElement( getAntropometriaGroup('PESO', a.peso ) ) ;
 					if( ! isNaN( a.pesoPreGestacional ) ) containerDadosAntropometria.addElement( getAntropometriaGroup('PESO PRÉ-GESTACIONAL', a.pesoPreGestacional ) ) ;
 					containerDadosAntropometria.addElement( getAntropometriaGroup('ESTATURA', a.estatura ) ) ;
@@ -83,19 +101,6 @@
 					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA ABDOMINAL', a.dobraCutaneaAbdominal ) ) ;
 					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA DA COXA', a.dobraCutaneaCoxa ) ) ;
 					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', a.dobraCutaneaPanturrilhaMedial ) ) ;
-				}
-				
-				if( General.pacienteAtual != null ) {
-					var p:Paciente = General.pacienteAtual ;
-					antNomePaciente.text = p.nomeCompleto.toUpperCase() ;
-					antIdadePaciente.text = p.idade + ' ANOS' ;
-					antSexoPaciente.text = p.sexo == 'M' ? 'MASCULINO' : 'FEMININO' ;
-					antropometria.visible = true ;
-				} else {
-					antNomePaciente.text = '' ;
-					antIdadePaciente.text = '' ;
-					antSexoPaciente.text = '' ;
-					antropometria.visible = false ;
 				}
 			}
 			
@@ -127,8 +132,73 @@
 				g.addElement(lNome);
 				g.addElement(lValor);
 				g.addElement(rule);
-				
 
+				return g;
+			}
+			
+			private function verificaAtividadesFisicas(c:app.model.Consulta):void
+			{
+				var af:AtividadeFisica = c.atividadeFisica ;
+				trace( "nivel", af.nivel );
+				if( af ){
+					var txtNivel:String = "Nível de atividade física: " ;
+					switch(af.nivel)
+					{
+						case AtividadeFisica.MUITO_ATIVO: 	txtNivel += "muito ativo"; 	break;
+						case AtividadeFisica.ATIVO: 		txtNivel += "ativo"; 		break;
+						case AtividadeFisica.POUCO_ATIVO: 	txtNivel += "pouco ativo"; 	break;
+						case AtividadeFisica.SEDENTARIO: 	txtNivel += "sedentário"; 	break;
+					}
+					nivelAtividade.text = txtNivel ;
+					observacaoAtividade.text = af.observacao ;
+					
+					containerAtividades.addElement( getAtividadeGroup("ATIVIDADE FÍSICA", "DIAS DA SEMANA", "HORÁRIO") );
+					for (var i:int = 0; i < af.atividades.length; i++) 
+					{
+						var at:Atividade = af.atividades[i] ;
+						containerAtividades.addElement( getAtividadeGroup(at.nome, at.dias, at.horario) );
+					}
+				}
+			}
+			
+			private function getAtividadeGroup( nome:String, dias:String, horario:String ):Group
+			{
+				var lNome:Label = new Label();
+				lNome.styleName = 'bold' ;
+				lNome.x = 0 ;
+				lNome.y = 0 ;
+				lNome.width = 210 ;
+				lNome.setStyle('fontSize', 10);
+				lNome.text = nome.toUpperCase();
+				
+				var lDias:Label = new Label();
+				lDias.y = 0 ;
+				lDias.x = 210 ;
+				lDias.setStyle('textAlign', 'center');
+				lDias.width = 180 ;
+				lDias.setStyle('fontSize', 10);
+				lDias.text = dias ;
+				
+				var lHorario:Label = new Label();
+				lHorario.y = 0 ;
+				lHorario.setStyle('textAlign', 'right');
+				lHorario.width = 50 ;
+				lHorario.x = 390 ;
+				lHorario.setStyle('fontSize', 10);
+				lHorario.text = horario ;
+				
+				var rule:HRule = new HRule();
+				rule.height = 1 ;
+				rule.width = 440 ;
+				rule.x = 0 ;
+				rule.y = 13 ;
+				
+				var g:Group = new Group();
+				g.height = 14 ;
+				g.addElement(lNome);
+				g.addElement(lHorario);
+				g.addElement(rule);
+				
 				return g;
 			}
 			
@@ -156,23 +226,35 @@
 		<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
 		<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
 		
-		<mx:ViewStack id="conteudos" x="0" y="77" width="460" height="573" selectedIndex="{etapa}">
+		<s:Label id="impTitulo" x="10" y="77" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
+		<s:Label id="impData" x="285" y="84" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
+		
+		<s:Label x="10" y="107" styleName="bold" text="NOME:"/>
+		<s:Label id="impNomePaciente" x="53" y="110" width="156" styleName="light" text="Aline Maciel"/>
+		
+		<s:Label x="217" y="107" styleName="bold" text="IDADE:"/>
+		<s:Label id="impIdadePaciente" x="263" y="110" width="56" styleName="light" text="120 anos"/>
+		
+		<s:Label x="327" y="107" styleName="bold" text="SEXO:"/>
+		<s:Label id="impSexoPaciente" x="364" y="110" width="86" styleName="light" text="MASCULINO"/>
+		
+		<mx:ViewStack id="conteudos" x="0" y="134" width="460" height="573" selectedIndex="{etapa}">
 			<s:NavigatorContent id="antropometria">
-				<s:Label x="10" y="0" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
-				<s:Label id="antData" x="285" y="7" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
-				<s:Label x="10" y="30" styleName="bold" text="NOME:"/>
-				<s:Label id="antNomePaciente" x="53" y="33" width="156" styleName="light" text="Aline Maciel"/>
-				<s:Label x="217" y="30" styleName="bold" text="IDADE:"/>
-				<s:Label x="327" y="30" styleName="bold" text="SEXO:"/>
-				<s:Label id="antIdadePaciente" x="263" y="33" width="56" styleName="light" text="120 anos"/>
-				<s:Label id="antSexoPaciente" x="364" y="33" width="86" styleName="light" text="MASCULINO"/>
-				<s:VGroup id="containerDadosAntropometria" x="10" y="57" width="440" gap="10" />
+				<s:VGroup id="containerDadosAntropometria" x="10" y="0" width="440" gap="10" />
+			</s:NavigatorContent>
+			
+			<s:NavigatorContent id="atividadeFisica">
+				<s:VGroup>
+					<s:Label id="nivelAtividade" x="10" width="440" styleName="bold" text="Nível de atividade física: ativo" />
+					<s:VGroup id="containerAtividades" x="10" width="440" gap="10" />
+					<s:Label id="observacaoAtividade" x="10" width="440" text="" />
+				</s:VGroup>
 			</s:NavigatorContent>
 		</mx:ViewStack>
 		
 		<s:Group id="gDados" left="10" bottom="10" right="10">
 			<s:Label width="100%" text="{usuarioNome}" styleName="bold" fontSize="11" textAlign="center" />
-			<s:Label width="100%" y="25" lineHeight="12" text="{usuarioDesc}" styleName="light" fontSize="10" textAlign="center" />
+			<s:Label width="100%" y="20" lineHeight="12" text="{usuarioDesc}" styleName="light" fontSize="10" textAlign="center" />
 		</s:Group> 
 	</s:SkinnableContainer>
 	<!-- 

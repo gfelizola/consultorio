@@ -2,7 +2,7 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="984" height="400"
-					creationComplete="init(event)">
+					creationComplete="init(event)" xmlns:view="app.view.*">
 	<fx:Script>
 		<![CDATA[
 			import app.model.Atividade;
@@ -38,13 +38,8 @@
 				formIsValid = true;
 				
 				for( var i:int = 0; i < validators.length ; i++  ){
-					var validator:Validator = validators[i] ;
-					if( ! validate(validator) ){
-						//trace( i, validator, validator.source );
-					}
+					validate(validators[i])
 				}
-				
-				trace( formIsValid );
 			}
 			
 			private function validate(validator:Validator):Boolean
@@ -68,14 +63,15 @@
 				{
 					var af:AtividadeFisica = new AtividadeFisica();
 					af.nivel = int(NivelAtividade.selectedValue);
+					af.observacao = txtObservacoes.text ;
 					
 					var at:Atividade;
 					
-					for (var i:int = 1; i <= 7; i++) 
+					for (var i:int = 1; i <= 4; i++) 
 					{
 						var cAtividade:spark.components.TextInput = this['txtAtividade' + i];
-						var cDias:spark.components.TextInput = this['txtDias' + i];
-						var cHorario:spark.components.TextInput = this['txtHorario' + i];
+						var cDias:spark.components.TextArea = this['txtDias' + i];
+						var cHorario:spark.components.TextArea = this['txtHorario' + i];
 						
 						if( cAtividade.text != '' && cDias.text != '' && cHorario.text != '' ){
 							at = new Atividade();
@@ -88,7 +84,9 @@
 					}
 					
 					General.consultaAtual.atividadeFisica = af ;
-					General.salvaConsulta();
+//					General.salvaConsulta();
+					
+					impressao.visible = impressao.includeInLayout = true ;
 				}
 			}
 			
@@ -102,60 +100,61 @@
 	
 	<fx:Declarations>
 		<fx:Array id="validators">
-			<!-- mx:Validator property="text" requiredFieldError="Campo obrigatório" required="true" id="valAgua" source="{txtAgua}" / -->
+			<mx:NumberValidator id="valNivel" property="selectedValue" source="{NivelAtividade}" minValue="0" />
 		</fx:Array>
 		<s:RadioButtonGroup id="NivelAtividade"/>
 	</fx:Declarations>
 	
 	<s:Scroller id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
-		<s:VGroup width="984" height="390" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-			
-			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="ATIVIDADE FÍSICA" />
-			
-			<s:Label x="10" text="Nível de atividade física" fontSize="17" />
-			<s:RadioButton width="450" value="3"
-						   label="Muito Ativo - aquele que cumpriu as recomendações de:&#xd;a) VIGOROSA: &gt; 5 dias/sem e &gt; 30 minutos por sessão&#xd;b) VIGOROSA: &gt; 3 dias/sem e &gt; 20 minutos por sessão + MODERADA e/ou CAMINHADA: &gt; 5 dias/sem e &gt; 30 minutos por sessão."
-						   groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
-			
-			<s:RadioButton width="450" value="2" label="Ativo - aquele que cumpriu as recomendações de:&#xd;a) VIGOROSA:    3 dias/sem e   20 minutos por sessão; ou&#xd;b) MODERADA ou CAMINHADA: &gt; 5 dias/sem e &gt; 30 minutos por sessão; ou&#xd;c) Qualquer atividade somada: &gt; 5 dias/sem e &gt; 150 minutos/sem (caminhada&#xd;+ moderada + vigorosa)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
-			
-			<s:RadioButton width="450" value="1" label="Pouco Ativo – faz atividades físicas de duas a três vezes por semana  (como&#xd;caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
-			
-			<s:RadioButton width="450" value="0" label="Sedentário – não faz nenhuma atividade física ou faz apenas uma vez na&#xd;semana  (como caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
-			
-			<s:VGroup width="435" gap="0">
-				<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
-					<s:TextInput id="txtAtividade1" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
-					<s:TextArea id="txtDias1" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
-					<s:TextArea id="txtHorario1" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
-				</s:SkinnableContainer>
+		<s:Group width="984" height="390">
+			<s:VGroup width="450" x="0" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="ATIVIDADE FÍSICA" />
 				
-				<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
-					<s:TextInput id="txtAtividade2" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
-					<s:TextArea id="txtDias2" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
-					<s:TextArea id="txtHorario2" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
-				</s:SkinnableContainer>
+				<s:Label x="10" text="Nível de atividade física" fontSize="17" />
+				<s:RadioButton width="450" value="3"
+							   label="Muito Ativo - aquele que cumpriu as recomendações de:&#xd;a) VIGOROSA: &gt; 5 dias/sem e &gt; 30 minutos por sessão&#xd;b) VIGOROSA: &gt; 3 dias/sem e &gt; 20 minutos por sessão + MODERADA e/ou CAMINHADA: &gt; 5 dias/sem e &gt; 30 minutos por sessão."
+							   groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
 				
-				<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
-					<s:TextInput id="txtAtividade3" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
-					<s:TextArea id="txtDias3" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
-					<s:TextArea id="txtHorario3" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
-				</s:SkinnableContainer>
+				<s:RadioButton width="450" value="2" label="Ativo - aquele que cumpriu as recomendações de:&#xd;a) VIGOROSA:    3 dias/sem e   20 minutos por sessão; ou&#xd;b) MODERADA ou CAMINHADA: &gt; 5 dias/sem e &gt; 30 minutos por sessão; ou&#xd;c) Qualquer atividade somada: &gt; 5 dias/sem e &gt; 150 minutos/sem (caminhada&#xd;+ moderada + vigorosa)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
+				<s:RadioButton width="450" value="1" label="Pouco Ativo – faz atividades físicas de duas a três vezes por semana  (como&#xd;caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
+				<s:RadioButton width="450" value="0" label="Sedentário – não faz nenhuma atividade física ou faz apenas uma vez na&#xd;semana  (como caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
 				
-				<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
-					<s:TextInput id="txtAtividade4" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
-					<s:TextArea id="txtDias4" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
-					<s:TextArea id="txtHorario4" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
-				</s:SkinnableContainer>
+				<s:VGroup width="435" gap="0">
+					<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
+						<s:TextInput id="txtAtividade1" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+						<s:TextArea id="txtDias1" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+						<s:TextArea id="txtHorario1" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					</s:SkinnableContainer>
+					
+					<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
+						<s:TextInput id="txtAtividade2" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+						<s:TextArea id="txtDias2" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+						<s:TextArea id="txtHorario2" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					</s:SkinnableContainer>
+					
+					<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
+						<s:TextInput id="txtAtividade3" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+						<s:TextArea id="txtDias3" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+						<s:TextArea id="txtHorario3" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					</s:SkinnableContainer>
+					
+					<s:SkinnableContainer width="100%" height="80" backgroundColor="#FCFDFF">
+						<s:TextInput id="txtAtividade4" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
+						<s:TextArea id="txtDias4" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+						<s:TextArea id="txtHorario4" x="299" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
+					</s:SkinnableContainer>
+					
+					<s:SkinnableContainer width="100%" height="120" backgroundColor="#F6F9FE">
+						<s:Label x="10" y="10" text="OUTRAS INFORMAÇÕES / OBSERVAÇÕES" />
+						<s:TextArea id="txtObservacoes" x="10" y="31" width="415" height="79" skinClass="app.skin.TextArea" />
+					</s:SkinnableContainer>
+				</s:VGroup>
 				
-				<s:SkinnableContainer width="100%" height="120" backgroundColor="#F6F9FE">
-					<s:Label x="10" y="10" text="OUTRAS INFORMAÇÕES / OBSERVAÇÕES" />
-					<s:TextArea id="txtObservacoes" x="10" y="31" width="415" height="79" skinClass="app.skin.TextArea" />
-				</s:SkinnableContainer>
+				<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" click="onSalvar(event)" />
 			</s:VGroup>
 			
-			<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" />
+			<view:ConsultaImpressa id="impressao" etapa="2" x="516" y="10" visible="false" includeInLayout="false" />
 			
-		</s:VGroup>
+		</s:Group>
 	</s:Scroller>
 </s:NavigatorContent>

@@ -12,7 +12,13 @@
 			import app.model.Atividade;
 			import app.model.AtividadeFisica;
 			import app.model.Consulta;
+			import app.model.DadosAlimentares;
+			import app.model.Exame;
+			import app.model.ExameAdicional;
+			import app.model.ExameBioquimico;
+			import app.model.MAN;
 			import app.model.Paciente;
+			import app.model.Refeicao;
 			import app.model.Usuario;
 			import app.util.General;
 			
@@ -24,6 +30,7 @@
 			[Bindable]
 			public var etapa:int = 1 ;
 			
+			[Bindable]
 			private var titulos:Array = [];
 			
 			[Bindable]
@@ -52,11 +59,16 @@
 					'TEL: ' + usuario.telefone + ' - E-MAIL: ' + usuario.email.toUpperCase() + '\n' +
 					'SITE: ' + usuario.site.toUpperCase() ;
 				
+				titulos = ['ANTROPOMETRIA', 'ATIVIDADES FÍSICAS', 'DADOS ALIMENTARES', 'EXAMES BIOQUÍMICOS', 'MAN - MINI AVALIAÇÃO NUTRICIONAL', 'OBSERVAÇÃO'];
+				
 				verificaConsultaAtual();
 			}
 			
 			private function verificaConsultaAtual():void
 			{
+				trace("ConsultaImpressa.verificaConsultaAtual()", etapa);
+				
+				
 				if( General.pacienteAtual != null ) {
 					var p:Paciente = General.pacienteAtual ;
 					impNomePaciente.text = p.nomeCompleto.toUpperCase() ;
@@ -74,8 +86,14 @@
 					var c:app.model.Consulta = General.consultaAtual ;
 					impData.text = c.dataConsulta ? General.getFormattedDate( c.dataConsulta.toString() ) : '';	
 					
-					verificaAntropometria(c);
-					verificaAtividadesFisicas(c);
+					switch(etapa)
+					{
+						case 1: 	verificaAntropometria(c);		break;
+						case 2: 	verificaAtividadesFisicas(c);	break;
+						case 3: 	verificaDadosalimentares(c);	break;
+						case 4: 	verificaExames(c);				break;
+						case 5: 	verificaMAN(c);					break;
+					}
 				}
 			}
 			
@@ -139,7 +157,6 @@
 			private function verificaAtividadesFisicas(c:app.model.Consulta):void
 			{
 				var af:AtividadeFisica = c.atividadeFisica ;
-				trace( "nivel", af.nivel );
 				if( af ){
 					var txtNivel:String = "Nível de atividade física: " ;
 					switch(af.nivel)
@@ -196,10 +213,155 @@
 				var g:Group = new Group();
 				g.height = 14 ;
 				g.addElement(lNome);
+				g.addElement(lDias);
 				g.addElement(lHorario);
 				g.addElement(rule);
 				
 				return g;
+			}
+			
+			private function verificaDadosalimentares(c:app.model.Consulta):void
+			{
+				var da:DadosAlimentares = c.dadosAlimentares ;
+				if( da ){
+					containerRefeicoes.addElement( getRefeicaoGroup( 'REFEIÇÃO/HORARIO', 'ALIMENTO', 'QUANTIDADE' ) ) ;
+					
+					for (var i:int = 0; i < da.refeicoes.length; i++) 
+					{
+						var r:Refeicao = da.refeicoes[i] ;
+						containerRefeicoes.addElement( getRefeicaoGroup( r.nome, r.alimentos, r.quantidades ) ) ;
+					}
+					
+					containerRefeicoes.addElement( getLinhaGroup( 'QUANTIDADE DE ÁGUA POR DIA', da.qtdeAgua ) ) ;
+					containerRefeicoes.addElement( getLinhaGroup( 'FUNCIONALIDADE INTESTINAL', da.funcionamentoIntestinal ) ) ;
+					containerRefeicoes.addElement( getLinhaGroup( 'PREFERÊNCIAS ALIMENTARES', da.preferenciasAlimentares ) ) ;
+					containerRefeicoes.addElement( getLinhaGroup( 'AVERSÕES ALIMENTARES', da.aversoesAlimentares ) ) ;
+					containerRefeicoes.addElement( getLinhaGroup( 'OUTRAS INFORMAÇÕES / OBSERVAÇÕES', da.observacoes ) ) ;
+				}
+			}
+			
+			private function getRefeicaoGroup( nome:String, alimentos:String, qtdes:String ):Group
+			{
+				var lNome:Label = new Label();
+				lNome.styleName = 'bold' ;
+				lNome.x = 0 ;
+				lNome.y = 0 ;
+				lNome.width = 160 ;
+				lNome.setStyle('fontSize', 10);
+				lNome.text = nome.toUpperCase();
+				
+				var lAlimentos:Label = new Label();
+				lAlimentos.y = 0 ;
+				lAlimentos.x = 160 ;
+				lAlimentos.setStyle('textAlign', 'center');
+				lAlimentos.width = 180 ;
+				lAlimentos.setStyle('fontSize', 10);
+				lAlimentos.text = alimentos ;
+				
+				var lQtdes:Label = new Label();
+				lQtdes.y = 0 ;
+				lQtdes.setStyle('textAlign', 'right');
+				lQtdes.width = 100 ;
+				lQtdes.x = 340 ;
+				lQtdes.setStyle('fontSize', 10);
+				lQtdes.text = qtdes ;
+				
+				var rule:HRule = new HRule();
+				rule.height = 1 ;
+				rule.width = 440 ;
+				rule.x = 0 ;
+				
+				var g:Group = new Group();
+				g.addElement(lNome);
+				g.addElement(lAlimentos);
+				g.addElement(lQtdes);
+				
+				var vg:VGroup = new VGroup();
+				vg.gap = 3 ;
+				vg.addElement(g);
+				vg.addElement(rule);
+				
+				return vg;
+			}
+			
+			private function getLinhaGroup( titulo:String, valor:String ):Group
+			{
+				var lTitulo:Label = new Label();
+				lTitulo.styleName = 'bold' ;
+				lTitulo.x = 0 ;
+				lTitulo.width = 440 ;
+				lTitulo.setStyle('fontSize', 10);
+				lTitulo.text = titulo.toUpperCase();
+				
+				var lValor:Label = new Label();
+				lValor.x = 0 ;
+				lValor.width = 440 ;
+				lValor.setStyle('fontSize', 10);
+				lValor.text = valor;
+				
+				var vg:VGroup = new VGroup();
+				vg.addElement(lTitulo);
+				vg.addElement(lValor);
+				
+				return vg;
+			}
+			
+			private function verificaExames(c:app.model.Consulta):void
+			{
+				var eb:ExameBioquimico = c.exameBioquimico ;
+				if( eb ){
+					containerExames.addElement( getRefeicaoGroup( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame.toString() ) ) ) ;
+					
+					for (var i:int = 0; i < eb.exames.length; i++) 
+					{
+						var e:ExameAdicional = eb.exames[i] ;
+						containerExames.addElement( getExameGroup( e.nome, e.referencia, e.valor ) ) ;
+					}
+				}
+			}
+			
+			private function getExameGroup( nome:String, referencia:String, resultado:String ):Group
+			{
+				var lNome:Label = new Label();
+				lNome.styleName = 'bold' ;
+				lNome.x = 0 ;
+				lNome.y = 0 ;
+				lNome.width = 160 ;
+				lNome.setStyle('fontSize', 10);
+				lNome.text = nome.toUpperCase();
+				
+				var lAlimentos:Label = new Label();
+				lAlimentos.y = 0 ;
+				lAlimentos.x = 160 ;
+				lAlimentos.setStyle('textAlign', 'center');
+				lAlimentos.width = 180 ;
+				lAlimentos.setStyle('fontSize', 10);
+				lAlimentos.text = referencia ;
+				
+				var lQtdes:Label = new Label();
+				lQtdes.y = 0 ;
+				lQtdes.setStyle('textAlign', 'right');
+				lQtdes.width = 100 ;
+				lQtdes.x = 340 ;
+				lQtdes.setStyle('fontSize', 10);
+				lQtdes.text = resultado ;
+				
+				var rule:HRule = new HRule();
+				rule.height = 1 ;
+				rule.width = 440 ;
+				rule.x = 0 ;
+				
+				var g:Group = new Group();
+				g.addElement(lNome);
+				g.addElement(lAlimentos);
+				g.addElement(lQtdes);
+				
+				var vg:VGroup = new VGroup();
+				vg.gap = 3 ;
+				vg.addElement(g);
+				vg.addElement(rule);
+				
+				return vg;
 			}
 			
 			private function onImprimir(e:MouseEvent):void
@@ -217,6 +379,46 @@
 				scImpressao.setStyle('backgroundColor', '0xF6FAFE');
 			}
 			
+			private function verificaMAN(c:app.model.Consulta):void
+			{
+				var man:MAN = c.man ;
+				if( man ){
+					var p:Number = man.pontuacaoTriagem ;
+					var resultado:String = sPontos(man.pontuacaoTriagem) + ' - Estado nutricional: ' ;
+					
+					if( p < 8 ){
+						resultado += 'DESNUTRIDO' ;
+					} else if( p >= 8 && p < 12 ){
+						resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
+					} else {
+						resultado += 'NORMAL' ;
+					}
+					
+					txtPontosTriagem.text = sPontos(man.pontuacaoTriagem) ;
+					txtResultadoTriagem.text = resultado ;
+					
+					p = man.pontuacaoGlobal ;
+					var resultadoGlobal:String = '' ;
+					
+					if( p < 8 ){
+						resultadoGlobal += 'DESNUTRIDO' ;
+					} else if( p >= 8 && p < 12 ){
+						resultadoGlobal += 'SOB RISCO DE DESNUTRIÇÃO' ;
+					} else {
+						resultadoGlobal += 'NORMAL' ;
+					}
+					
+					txtPontosTriagem.text = sPontos(man.pontuacaoTriagem) ;
+					txtPontosGlobal.text = sPontos(man.pontuacaoGlobal) ;
+					txtPontuacaoFinal.text = sPontos( man.pontuacaoGlobal + man.pontuacaoTriagem) ;
+					txtEstadoNutricional.text = resultadoGlobal ;
+				}
+			}
+			
+			private function sPontos(p:int):String
+			{
+				return p + ( p > 1 ? ' pontos' : ' ponto') ;
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -226,7 +428,7 @@
 		<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
 		<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
 		
-		<s:Label id="impTitulo" x="10" y="77" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
+		<s:Label id="impTitulo" x="10" y="77" color="#83BBEA" fontSize="19" styleName="bold" text="{titulos[etapa-1]}"/>
 		<s:Label id="impData" x="285" y="84" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
 		
 		<s:Label x="10" y="107" styleName="bold" text="NOME:"/>
@@ -244,10 +446,62 @@
 			</s:NavigatorContent>
 			
 			<s:NavigatorContent id="atividadeFisica">
-				<s:VGroup>
-					<s:Label id="nivelAtividade" x="10" width="440" styleName="bold" text="Nível de atividade física: ativo" />
-					<s:VGroup id="containerAtividades" x="10" width="440" gap="10" />
-					<s:Label id="observacaoAtividade" x="10" width="440" text="" />
+				<s:VGroup gap="20" x="10">
+					<s:Label id="nivelAtividade" width="440" styleName="bold" text="Nível de atividade física: ativo" />
+					<s:VGroup id="containerAtividades" width="440" gap="10" />
+					<s:Label id="observacaoAtividade" width="440" text="" />
+				</s:VGroup>
+			</s:NavigatorContent>
+			
+			<s:NavigatorContent id="dadosAlimentares">
+				<s:VGroup id="containerRefeicoes" gap="10" x="10">
+					<s:Label styleName="bold" text="RECORDATÓRIO ALIMENTAR HABITUAL" />
+				</s:VGroup>
+			</s:NavigatorContent>
+			
+			<s:NavigatorContent id="examesBioquimicos">
+				<s:VGroup id="containerExames" gap="10" x="10">
+				</s:VGroup>
+			</s:NavigatorContent>
+			
+			<s:NavigatorContent id="man">
+				<s:VGroup id="containerMAN" x="10" width="440" gap="10">
+					<s:VGroup>
+						<s:HGroup>
+							<s:Label fontSize="10" text="Pontos da triagem"/>
+							<s:Label fontSize="9" text="(subtotal máximo de 14 pontos)"/>
+						</s:HGroup>
+						<mx:HRule width="440"/>
+						<s:Label id="txtResultadoTriagem" x="10" y="46" width="415" fontSize="12" styleName="bold" text="8 pontos - Estado nutricional: DESNUTRIDO"/>
+					</s:VGroup>
+					<s:VGroup>
+						<s:Label text="Pontuação"/>
+						<mx:HRule width="440"/>
+						
+						<s:Group width="440">
+							<s:Label fontSize="11" styleName="bold" text="Avaliação global"/>
+							<s:Label x="90" y="4" fontSize="9" styleName="light" text="(máximo 16 pontos)"/>
+							<s:Label right="0" id="txtPontosGlobal" fontSize="10" text="15 pontos" textAlign="right"/>
+						</s:Group>
+						
+						<s:Group width="440">
+							<s:Label fontSize="11" styleName="bold" text="Pontos da triagem"/>
+							<s:Label right="0" id="txtPontosTriagem" fontSize="10" text="13 pontos" textAlign="right"/>
+						</s:Group>
+						
+						<s:Group width="440">
+							<s:Label fontSize="11" styleName="bold" text="Pontos total"/>
+							<s:Label x="70" y="5" fontSize="9" styleName="light" text="{máximo 30 pontos)"/>
+							<s:Label right="0" id="txtPontuacaoFinal" fontSize="10" text="28 pontos" textAlign="right"/>
+						</s:Group>
+						
+						<mx:HRule width="440"/>
+						
+						<s:HGroup>
+							<s:Label text="Avaliação do estado nutricional"/>
+							<s:Label id="txtEstadoNutricional" fontSize="10" styleName="bold" text="NORMAL"/>
+						</s:HGroup>
+					</s:VGroup>
 				</s:VGroup>
 			</s:NavigatorContent>
 		</mx:ViewStack>

@@ -2,7 +2,7 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="984" height="400"
-					creationComplete="init(event)">
+					creationComplete="init(event)" xmlns:view="app.view.*">
 	<fx:Script>
 		
 		<![CDATA[
@@ -49,7 +49,7 @@
 			
 			private function onMouseWheel(e:MouseEvent):void
 			{
-				e.delta = e.delta > 0 ? 1 : -1;
+				e.delta = e.delta > 0 ? 5 : -5;
 			}
 			
 			private function addValidator(f:*,msg:String = "Este campo é obrigatório"):void
@@ -221,6 +221,8 @@
 						
 						General.consultaAtual.exameBioquimico = eb;
 						General.salvaConsulta();
+						
+						impressao.visible = impressao.includeInLayout = true ;
 					}
 					else
 					{
@@ -239,21 +241,25 @@
 	</fx:Declarations>
 	
 	<s:Scroller id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
-		<s:VGroup width="100%" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
-			<s:VGroup gap="10" id="ExameGroup">
-				<s:SkinnableContainer width="435" backgroundColor="#F6F9FE">
-					<s:HGroup gap="10" paddingTop="5" paddingRight="5" paddingBottom="5" paddingLeft="5" variableColumnWidth="false" verticalAlign="middle">
-						<s:Label width="135" text="Tipo do Exame" />
-						<s:Label width="150" text="Referência" />
-						<s:HGroup width="150" verticalAlign="middle">
-							<s:Label text="Data" />
-							<s:TextInput width="90" id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" />
+		<s:Group>
+			<s:VGroup width="100%" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
+				<s:VGroup gap="10" id="ExameGroup">
+					<s:SkinnableContainer width="435" backgroundColor="#F6F9FE">
+						<s:HGroup gap="10" paddingTop="5" paddingRight="5" paddingBottom="5" paddingLeft="5" variableColumnWidth="false" verticalAlign="middle">
+							<s:Label width="135" text="Tipo do Exame" />
+							<s:Label width="150" text="Referência" />
+							<s:HGroup width="150" verticalAlign="middle">
+								<s:Label text="Data" />
+								<s:TextInput width="90" id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" />
+							</s:HGroup>
 						</s:HGroup>
-					</s:HGroup>
-				</s:SkinnableContainer>
+					</s:SkinnableContainer>
+				</s:VGroup>
+				<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" click="onSalvar(event)" />
 			</s:VGroup>
-			<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" click="onSalvar(event)" />
-		</s:VGroup>
+			
+			<view:ConsultaImpressa id="impressao" etapa="4" x="516" y="10" visible="false" includeInLayout="false" />
+		</s:Group>
 	</s:Scroller>
 </s:NavigatorContent>

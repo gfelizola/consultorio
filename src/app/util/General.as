@@ -44,8 +44,8 @@ package app.util
 				pacienteAtual.dataUltimaConsulta = new Date();
 				consultaAtual.paciente = pacienteAtual ;
 				
-				DB.em.save(consultaAtual);
-				DB.em.save(pacienteAtual)
+//				DB.em.save(consultaAtual);
+//				DB.em.save(pacienteAtual)
 				
 				Alert.show("Consulta salva com dados atuais");
 			}

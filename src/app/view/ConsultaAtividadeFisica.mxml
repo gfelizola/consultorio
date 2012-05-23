@@ -84,7 +84,7 @@
 					}
 					
 					General.consultaAtual.atividadeFisica = af ;
-//					General.salvaConsulta();
+					General.salvaConsulta();
 					
 					impressao.visible = impressao.includeInLayout = true ;
 				}
@@ -92,7 +92,7 @@
 			
 			private function onMouseWheel(e:MouseEvent):void
 			{
-				e.delta = e.delta > 0 ? 1 : -1;
+				e.delta = e.delta > 0 ? 5 : -5;
 			}
 			
 		]]>

@@ -79,6 +79,7 @@
 					
 					General.consultaAtual.antropometria = a ;
 					General.salvaConsulta();
+					
 					impressao.visible = impressao.includeInLayout = true ;
 				}
 			}

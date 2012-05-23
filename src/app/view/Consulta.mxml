@@ -13,7 +13,7 @@
 			
 			private function vsPaciente_changeHandler(event:IndexChangedEvent):void
 			{
-				vsPaciente.creationPolicy
+//				vsPaciente.creationPolicy
 			}
 			
 		]]>

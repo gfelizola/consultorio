@@ -2,7 +2,7 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="400" 
-					creationComplete="init(event)">
+					creationComplete="init(event)" xmlns:view="app.view.*">
 	
 	<fx:Style source="app/style/Estilo.css" />
 	
@@ -162,6 +162,7 @@
 					
 					txtPontosTriagem.text = sPontos(pontuacaoTriagem) ;
 					txtPontosGlobal.text = sPontos(pontuacaoGlobal) ;
+					txtPontuacaoFinal.text = sPontos(pontuacaoGlobal+pontuacaoTriagem) ;
 					txtEstadoNutricional.text = resultado ;
 					scResultadoFinal.visible = scResultadoFinal.includeInLayout = true ;
 				}
@@ -214,26 +215,31 @@
 				else
 				{
 					var a:MAN = new MAN();
-					
 					var perguntas:Array = ['A','B','C','D','E','IMC','F','G','H','I','J','K1','K2','K3','L','M','N','O','P','Q','R'];
+					var letra:String = '';
 					
 					for (var i:int = 0; i < perguntas.length; i++) 
 					{
 						if( perguntas[i] == 'F' ){
-							perguntas[i] = PerguntaIMC.selectedValue == 0 ? 'F1' : 'F2' ;
+							letra = PerguntaIMC.selectedValue == 0 ? 'F1' : 'F2' ;
+						} else {
+							letra = perguntas[i];
 						}
-						a['opcao' + perguntas[i]  ] = spark.components.RadioButton( this['Pergunta' + perguntas[i]].selection ).label ;
-						a['pontos' + perguntas[i] ] = int( this['Pergunta' + perguntas[i]].selectedValue ) ;
+						
+						a['opcao' + perguntas[i]  ] = spark.components.RadioButton( this['Pergunta' + letra].selection ).label ;
+						a['pontos' + perguntas[i] ] = int( this['Pergunta' + letra].selectedValue ) ;
 					}
 					
 					General.consultaAtual.man = a ;
 					General.salvaConsulta();
+					
+					impressao.visible = impressao.includeInLayout = true ;
 				}
 			}
 			
 			private function onMouseWheel(e:MouseEvent):void
 			{
-				e.delta = e.delta > 0 ? 1 : -1;
+				e.delta = e.delta > 0 ? 5 : -5;
 			}
 		]]>
 	</fx:Script>
@@ -288,244 +294,247 @@
 	</fx:Declarations>
 	
 	<s:Scroller id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
-		<s:VGroup width="994" height="390" gap="20" paddingBottom="10" paddingLeft="10"
-				  paddingRight="10" paddingTop="10">
-			<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
-					 text="MAN - MINI AVALIAÇÃO NUTRICIONAL"/>
-			<s:Label x="10" y="43" fontSize="16" styleName="bold" text="Triagem"/>
-			
-			<s:Label x="10" y="71" width="435"
-					 text="A) Nos últimos três meses houve diminuição da ingesta alimentar devido a perda de apetite, problemas digestivos ou dificuldade para mastigar ou deglutir?"/>
-			<s:VGroup x="10" y="123" width="435" styleName="light">
-				<s:RadioButton label="Diminuição severa da ingesta" value="0" groupName="PerguntaA"
-							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Diminuição moderada da ingesta" value="1" groupName="PerguntaA"
-							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Sem diminuição da ingesta" value="2" groupName="PerguntaA"
-							   skinClass="app.skin.RadioButton"/>
-			</s:VGroup>
-			<s:Label x="10" y="200" text="B) Perda de peso nos últimos meses"/>
-			<s:VGroup x="10" y="221" width="435">
-				<s:RadioButton label="Superior a três quilos" value="0" groupName="PerguntaB"
-							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Não sabe informar" value="1" groupName="PerguntaB"
-							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Entre um e três quilos" value="2" groupName="PerguntaB"
-							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Sem perda de peso" value="3" groupName="PerguntaB"
-							   skinClass="app.skin.RadioButton"/>
-			</s:VGroup>
-			<s:Label x="10" y="323" text="C) Mobilidade"/>
-			<s:VGroup x="10" y="344" width="435">
-				<s:RadioButton label="Restrito ao leito ou à cadeira de rodas" value="0" groupName="PerguntaC"
-							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Deambula mas não é capaz de sair de casa" value="1" groupName="PerguntaC"
-							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Normal" groupName="PerguntaC" value="2" skinClass="app.skin.RadioButton"/>
-			</s:VGroup>
-			<s:Label x="10" y="421" width="435"
-					 text="D) Passou por algum estresse psicológico ou doença aguda nos últimos três meses?"/>
-			<s:HGroup x="10" y="457" gap="20">
-				<s:RadioButton label="Sim" groupName="PerguntaD" value="0" skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Não" groupName="PerguntaD" value="2" skinClass="app.skin.RadioButton"/>
-			</s:HGroup>
-			<s:Label x="10" y="484" text="E) Problemas neuropsicológicos"/>
-			<s:VGroup x="10" y="505" width="435">
-				<s:RadioButton label="Demência ou depressão graves" value="0" groupName="PerguntaE"
-							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Demência leve" value="1" groupName="PerguntaE"
-							   skinClass="app.skin.RadioButton"/>
-				<s:RadioButton label="Sem problemas psicológicos" value="2" groupName="PerguntaE"
-							   skinClass="app.skin.RadioButton"/>
-			</s:VGroup>
-			<s:SkinnableContainer x="10" y="582" width="189" height="63" backgroundColor="#F6FAFE">
-				<s:Label x="10" y="10" text="O cálculo do IMC é possível?"/>
-				<s:HGroup x="10" y="31" gap="20">
-					<s:RadioButton label="Sim" value="0" groupName="PerguntaIMC"
+		<s:Group width="994" height="390">
+			<s:VGroup width="435" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+				<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
+						 text="MAN - MINI AVALIAÇÃO NUTRICIONAL"/>
+				<s:Label x="10" y="43" fontSize="16" styleName="bold" text="Triagem"/>
+				
+				<s:Label x="10" y="71" width="435"
+						 text="A) Nos últimos três meses houve diminuição da ingesta alimentar devido a perda de apetite, problemas digestivos ou dificuldade para mastigar ou deglutir?"/>
+				<s:VGroup x="10" y="123" width="435" styleName="light">
+					<s:RadioButton label="Diminuição severa da ingesta" value="0" groupName="PerguntaA"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" value="2" groupName="PerguntaIMC"
+					<s:RadioButton label="Diminuição moderada da ingesta" value="1" groupName="PerguntaA"
 								   skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Sem diminuição da ingesta" value="2" groupName="PerguntaA"
+								   skinClass="app.skin.RadioButton"/>
+				</s:VGroup>
+				<s:Label x="10" y="200" text="B) Perda de peso nos últimos meses"/>
+				<s:VGroup x="10" y="221" width="435">
+					<s:RadioButton label="Superior a três quilos" value="0" groupName="PerguntaB"
+								   skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não sabe informar" value="1" groupName="PerguntaB"
+								   skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Entre um e três quilos" value="2" groupName="PerguntaB"
+								   skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Sem perda de peso" value="3" groupName="PerguntaB"
+								   skinClass="app.skin.RadioButton"/>
+				</s:VGroup>
+				<s:Label x="10" y="323" text="C) Mobilidade"/>
+				<s:VGroup x="10" y="344" width="435">
+					<s:RadioButton label="Restrito ao leito ou à cadeira de rodas" value="0" groupName="PerguntaC"
+								   skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Deambula mas não é capaz de sair de casa" value="1" groupName="PerguntaC"
+								   skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Normal" groupName="PerguntaC" value="2" skinClass="app.skin.RadioButton"/>
+				</s:VGroup>
+				<s:Label x="10" y="421" width="435"
+						 text="D) Passou por algum estresse psicológico ou doença aguda nos últimos três meses?"/>
+				<s:HGroup x="10" y="457" gap="20">
+					<s:RadioButton label="Sim" groupName="PerguntaD" value="0" skinClass="app.skin.RadioButton"/>
+					<s:RadioButton label="Não" groupName="PerguntaD" value="2" skinClass="app.skin.RadioButton"/>
 				</s:HGroup>
-			</s:SkinnableContainer>
-			<s:Group id="containerF1" x="10" y="662" width="435" height="115" visible="{PerguntaIMC.selectedValue==0}" includeInLayout="{PerguntaIMC.selectedValue==0}">
-				<s:Label x="-1" y="0" text="F) Índice de Massa Corporea (IMC = peso [kg] / estatura [m]²)"/>
-				<s:VGroup x="0" y="21">
-					<s:RadioButton label="IMC &lt; 19&#xa;" value="0" groupName="PerguntaF1"
+				<s:Label x="10" y="484" text="E) Problemas neuropsicológicos"/>
+				<s:VGroup x="10" y="505" width="435">
+					<s:RadioButton label="Demência ou depressão graves" value="0" groupName="PerguntaE"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="19 &gt; IMC &lt; 21" value="1" groupName="PerguntaF1"
+					<s:RadioButton label="Demência leve" value="1" groupName="PerguntaE"
 								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="21 &gt; IMC &lt; 23" value="2" groupName="PerguntaF1"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="IMC &gt; 23&#xa;" value="3" groupName="PerguntaF1"
+					<s:RadioButton label="Sem problemas psicológicos" value="2" groupName="PerguntaE"
 								   skinClass="app.skin.RadioButton"/>
 				</s:VGroup>
-			</s:Group>
-			<s:Group id="contiainerF2" x="453" y="662" width="435" height="65" visible="{PerguntaIMC.selectedValue==2}" includeInLayout="{PerguntaIMC.selectedValue==2}">
-				<s:Label x="0" y="0" text="F) Circunferência da panturrilha (CP) em cm"/>
-				<s:VGroup x="0" y="21">
-					<s:RadioButton label="CP menor que 31" value="0" groupName="PerguntaF2"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="CP maior ou igual a 31" value="3" groupName="PerguntaF2"
-								   skinClass="app.skin.RadioButton"/>
-				</s:VGroup>
-			</s:Group>
-			
-			<s:SkinnableContainer id="scResultadoTriagem" visible="false" includeInLayout="false" x="10" y="853" width="435" backgroundColor="#F6FAFE">
-				<s:layout>
-					<s:VerticalLayout paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10" />
-				</s:layout>
-				
-				<s:Label x="10" y="10" fontSize="16" text="Pontos da triagem"/>
-				<s:Label x="150" y="14" fontSize="11" styleName="light"
-						 text="(subtotal máximo de 14 pontos)"/>
-				<mx:HRule x="10" y="33" width="415"/>
-				<s:Label id="txtResultadoTriagem" x="10" y="46" width="415" fontSize="20"
-						 styleName="bold" text="8 pontos - Estado nutricional: DESNUTRIDO"/>
-			</s:SkinnableContainer>
-			
-			<s:VGroup id="vgGlobal" visible="false" includeInLayout="false" x="10" y="947" width="435" gap="20">
-				<s:Label x="0" y="10" styleName="light"
-						 text="Para uma avaliação mas detalhada , continue com as perguntas G-R"/>
-				<mx:HRule x="0" y="31" width="435"/>
-				<s:Label x="0" y="41" fontSize="16" styleName="bold" text="Avaliação global"/>
-				<s:Label x="0" y="69" width="435"
-						 text="G) O paciente vive em sua própria casa (não em casa geriátrica ou hospital)"/>
-				<s:HGroup x="0" y="90" gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaG" value="1" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaG" value="0" skinClass="app.skin.RadioButton"/>
-				</s:HGroup>
-				<s:Label text="H) Utiliza mais de três medicamentos diferentes por dia?"/>
-				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaH" value="0" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaH" value="1" skinClass="app.skin.RadioButton"/>
-				</s:HGroup>
-				<s:Label text="I) Lesões de pele ou escaras?"/>
-				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaI" value="0" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaI" value="1" skinClass="app.skin.RadioButton"/>
-				</s:HGroup>
-				
-				<s:Label text="J) Quantas refeições faz por dia?"/>
-				<s:VGroup>
-					<s:RadioButton label="Uma refeição" value="0" groupName="PerguntaJ"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Duas refeições" value="1" groupName="PerguntaJ"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Três ou mais refeições" value="2" groupName="PerguntaJ"
-								   skinClass="app.skin.RadioButton"/>
-				</s:VGroup>
-				
-				<s:Label text="K) O paciente consome:"/>
-				<s:Label styleName="light"
-						 text="Pelo menos uma porção diária de leite ou derivados (leite, queijo, iogurte)?"/>
-				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaK1" value="1" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaK1" value="0" skinClass="app.skin.RadioButton"/>
-				</s:HGroup>
-				
-				<s:Label styleName="light"
-						 text="Duas ou mais porções semanais de leguminosas ou ovos?"/>
-				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaK2" value="1" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaK2" value="0"
-								   skinClass="app.skin.RadioButton"/>
-				</s:HGroup>
-				<s:Label styleName="light" text="Carne, peixe ou aves todos os dias?"/>
-				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaK3" value="1" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaK3" value="0" skinClass="app.skin.RadioButton"/>
-				</s:HGroup>
-				
-				<s:Label width="435"
-						 text="L) O paciente consome duas ou mais porções diárias de fruta ouprodutos hortícolas?"/>
-				<s:HGroup gap="20">
-					<s:RadioButton label="Sim" groupName="PerguntaL" value="1" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não" groupName="PerguntaL" value="0" skinClass="app.skin.RadioButton"/>
-				</s:HGroup>
-				
-				<s:Label width="435"
-						 text="M) Quantos copos de líquidos (água, suco, café, chá, leite) o paciente consome por dia?"/>
-				
-				<s:VGroup gap="10">
-					<s:RadioButton label="Menos de três copos" value="0" groupName="PerguntaM"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Três a cinco copos" value="0.5" groupName="PerguntaM"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Mais de cinco copos" value="1" groupName="PerguntaM"
-								   skinClass="app.skin.RadioButton"/>
-				</s:VGroup>
-				
-				<s:Label text="N) Modo de se alimentar"/>
-				<s:VGroup gap="10">
-					<s:RadioButton label="Não é capaz de se alimentar sozinho" value="0" groupName="PerguntaN"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Alimenta-se sozinho, porém com dificuldade" value="0.5"
-								   groupName="PerguntaN" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Alimenta-se sozinho sem dificuldade" value="1" groupName="PerguntaN"
-								   skinClass="app.skin.RadioButton"/>
-				</s:VGroup>
-				
-				<s:Label text="O) O paciente acredita ter algum problema nutricional?"/>
-				<s:VGroup gap="10">
-					<s:RadioButton label="Acredita estar desnutrido" value="0" groupName="PerguntaO"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não sabe dizer" value="0.5" groupName="PerguntaO"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Acredita não ter um problema nutricional" value="1" groupName="PerguntaO"
-								   skinClass="app.skin.RadioButton"/>
-				</s:VGroup>
-				
-				<s:Label width="435"
-						 text="P) Em comparação a outras pessoas da mesma idade, como o paciente considera a sua própria saúde?"/>
-				<s:VGroup gap="10">
-					<s:RadioButton label="Pior" value="0" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Não sabe" value="0.5" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Igual" value="1" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="Melhor" value="2" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
-				</s:VGroup>
-				
-				<s:Label text="Q) Perímetro braquial (PB) em cm"/>
-				<s:VGroup gap="10">
-					<s:RadioButton label="PB &lt; 21" value="0" groupName="PerguntaQ"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="21 &gt; PB &lt; 22" value="0.5" groupName="PerguntaQ"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="PB &gt; 22" value="1" groupName="PerguntaQ"
-								   skinClass="app.skin.RadioButton"/>
-				</s:VGroup>
-				
-				<s:Label text="R) Perímetro da perna (PP) em cm"/>
-				<s:VGroup gap="10">
-					<s:RadioButton label="PP &lt; 31" value="1" groupName="PerguntaR"
-								   skinClass="app.skin.RadioButton"/>
-					<s:RadioButton label="PP &gt; 31" value="0" groupName="PerguntaR"
-								   skinClass="app.skin.RadioButton"/>
-				</s:VGroup>
-				
-				<s:SkinnableContainer id="scResultadoFinal" width="435" height="200" visible="false" includeInLayout="false" backgroundColor="#F6FAFE">
-					<s:Label x="10" y="10" text="Pontuação"/>
-					<mx:HRule x="10" y="31" width="415"/>
-					<s:Label x="10" y="41" fontSize="20" styleName="bold" text="Avaliação global"/>
-					<s:Label x="167" y="53" fontSize="11" styleName="light" text="(máximo 16 pontos)"/>
-					<s:Label id="txtPontosGlobal" x="270" y="45" width="155" fontSize="20"
-							 text="15 pontos" textAlign="right"/>
-					<s:Label x="10" y="74" fontSize="20" styleName="bold" text="Pontos da triagem"/>
-					<s:Label id="txtPontosTriagem" x="338" y="80" fontSize="20" text="13 pontos"
-							 textAlign="right"/>
-					<s:Label x="10" y="107" fontSize="20" styleName="bold" text="Pontos total"/>
-					<s:Label x="128" y="121" fontSize="11" styleName="light"
-							 text="{máximo 30 pontos)"/>
-					<s:Label id="txtPontuacaoFinal" x="231" y="113" width="194" fontSize="20"
-							 text="28 pontos" textAlign="right"/>
-					<mx:HRule x="10" y="140" width="415"/>
-					<s:Label x="10" y="164" text="Avaliação do estado nutricional"/>
-					<s:Label id="txtEstadoNutricional" x="200" y="152" width="225" fontSize="20"
-							 styleName="bold" text="NORMAL"/>
+				<s:SkinnableContainer x="10" y="582" width="189" height="63" backgroundColor="#F6FAFE">
+					<s:Label x="10" y="10" text="O cálculo do IMC é possível?"/>
+					<s:HGroup x="10" y="31" gap="20">
+						<s:RadioButton label="Sim" value="0" groupName="PerguntaIMC"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não" value="2" groupName="PerguntaIMC"
+									   skinClass="app.skin.RadioButton"/>
+					</s:HGroup>
 				</s:SkinnableContainer>
+				<s:Group id="containerF1" x="10" y="662" width="435" height="115" visible="{PerguntaIMC.selectedValue==0}" includeInLayout="{PerguntaIMC.selectedValue==0}">
+					<s:Label x="-1" y="0" text="F) Índice de Massa Corporea (IMC = peso [kg] / estatura [m]²)"/>
+					<s:VGroup x="0" y="21">
+						<s:RadioButton label="IMC &lt; 19&#xa;" value="0" groupName="PerguntaF1"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="19 &gt; IMC &lt; 21" value="1" groupName="PerguntaF1"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="21 &gt; IMC &lt; 23" value="2" groupName="PerguntaF1"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="IMC &gt; 23&#xa;" value="3" groupName="PerguntaF1"
+									   skinClass="app.skin.RadioButton"/>
+					</s:VGroup>
+				</s:Group>
+				<s:Group id="contiainerF2" x="453" y="662" width="435" height="65" visible="{PerguntaIMC.selectedValue==2}" includeInLayout="{PerguntaIMC.selectedValue==2}">
+					<s:Label x="0" y="0" text="F) Circunferência da panturrilha (CP) em cm"/>
+					<s:VGroup x="0" y="21">
+						<s:RadioButton label="CP menor que 31" value="0" groupName="PerguntaF2"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="CP maior ou igual a 31" value="3" groupName="PerguntaF2"
+									   skinClass="app.skin.RadioButton"/>
+					</s:VGroup>
+				</s:Group>
+				
+				<s:SkinnableContainer id="scResultadoTriagem" visible="false" includeInLayout="false" x="10" y="853" width="435" backgroundColor="#F6FAFE">
+					<s:layout>
+						<s:VerticalLayout paddingBottom="10" paddingTop="10" paddingLeft="10" paddingRight="10" />
+					</s:layout>
+					
+					<s:Label x="10" y="10" fontSize="16" text="Pontos da triagem"/>
+					<s:Label x="150" y="14" fontSize="11" styleName="light"
+							 text="(subtotal máximo de 14 pontos)"/>
+					<mx:HRule x="10" y="33" width="415"/>
+					<s:Label id="txtResultadoTriagem" x="10" y="46" width="415" fontSize="20"
+							 styleName="bold" text="8 pontos - Estado nutricional: DESNUTRIDO"/>
+				</s:SkinnableContainer>
+				
+				<s:VGroup id="vgGlobal" visible="false" includeInLayout="false" x="10" y="947" width="435" gap="20">
+					<s:Label x="0" y="10" styleName="light"
+							 text="Para uma avaliação mas detalhada , continue com as perguntas G-R"/>
+					<mx:HRule x="0" y="31" width="435"/>
+					<s:Label x="0" y="41" fontSize="16" styleName="bold" text="Avaliação global"/>
+					<s:Label x="0" y="69" width="435"
+							 text="G) O paciente vive em sua própria casa (não em casa geriátrica ou hospital)"/>
+					<s:HGroup x="0" y="90" gap="20">
+						<s:RadioButton label="Sim" groupName="PerguntaG" value="1" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não" groupName="PerguntaG" value="0" skinClass="app.skin.RadioButton"/>
+					</s:HGroup>
+					<s:Label text="H) Utiliza mais de três medicamentos diferentes por dia?"/>
+					<s:HGroup gap="20">
+						<s:RadioButton label="Sim" groupName="PerguntaH" value="0" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não" groupName="PerguntaH" value="1" skinClass="app.skin.RadioButton"/>
+					</s:HGroup>
+					<s:Label text="I) Lesões de pele ou escaras?"/>
+					<s:HGroup gap="20">
+						<s:RadioButton label="Sim" groupName="PerguntaI" value="0" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não" groupName="PerguntaI" value="1" skinClass="app.skin.RadioButton"/>
+					</s:HGroup>
+					
+					<s:Label text="J) Quantas refeições faz por dia?"/>
+					<s:VGroup>
+						<s:RadioButton label="Uma refeição" value="0" groupName="PerguntaJ"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Duas refeições" value="1" groupName="PerguntaJ"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Três ou mais refeições" value="2" groupName="PerguntaJ"
+									   skinClass="app.skin.RadioButton"/>
+					</s:VGroup>
+					
+					<s:Label text="K) O paciente consome:"/>
+					<s:Label styleName="light"
+							 text="Pelo menos uma porção diária de leite ou derivados (leite, queijo, iogurte)?"/>
+					<s:HGroup gap="20">
+						<s:RadioButton label="Sim" groupName="PerguntaK1" value="1" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não" groupName="PerguntaK1" value="0" skinClass="app.skin.RadioButton"/>
+					</s:HGroup>
+					
+					<s:Label styleName="light"
+							 text="Duas ou mais porções semanais de leguminosas ou ovos?"/>
+					<s:HGroup gap="20">
+						<s:RadioButton label="Sim" groupName="PerguntaK2" value="1" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não" groupName="PerguntaK2" value="0"
+									   skinClass="app.skin.RadioButton"/>
+					</s:HGroup>
+					<s:Label styleName="light" text="Carne, peixe ou aves todos os dias?"/>
+					<s:HGroup gap="20">
+						<s:RadioButton label="Sim" groupName="PerguntaK3" value="1" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não" groupName="PerguntaK3" value="0" skinClass="app.skin.RadioButton"/>
+					</s:HGroup>
+					
+					<s:Label width="435"
+							 text="L) O paciente consome duas ou mais porções diárias de fruta ouprodutos hortícolas?"/>
+					<s:HGroup gap="20">
+						<s:RadioButton label="Sim" groupName="PerguntaL" value="1" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não" groupName="PerguntaL" value="0" skinClass="app.skin.RadioButton"/>
+					</s:HGroup>
+					
+					<s:Label width="435"
+							 text="M) Quantos copos de líquidos (água, suco, café, chá, leite) o paciente consome por dia?"/>
+					
+					<s:VGroup gap="10">
+						<s:RadioButton label="Menos de três copos" value="0" groupName="PerguntaM"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Três a cinco copos" value="0.5" groupName="PerguntaM"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Mais de cinco copos" value="1" groupName="PerguntaM"
+									   skinClass="app.skin.RadioButton"/>
+					</s:VGroup>
+					
+					<s:Label text="N) Modo de se alimentar"/>
+					<s:VGroup gap="10">
+						<s:RadioButton label="Não é capaz de se alimentar sozinho" value="0" groupName="PerguntaN"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Alimenta-se sozinho, porém com dificuldade" value="0.5"
+									   groupName="PerguntaN" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Alimenta-se sozinho sem dificuldade" value="1" groupName="PerguntaN"
+									   skinClass="app.skin.RadioButton"/>
+					</s:VGroup>
+					
+					<s:Label text="O) O paciente acredita ter algum problema nutricional?"/>
+					<s:VGroup gap="10">
+						<s:RadioButton label="Acredita estar desnutrido" value="0" groupName="PerguntaO"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não sabe dizer" value="0.5" groupName="PerguntaO"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Acredita não ter um problema nutricional" value="1" groupName="PerguntaO"
+									   skinClass="app.skin.RadioButton"/>
+					</s:VGroup>
+					
+					<s:Label width="435"
+							 text="P) Em comparação a outras pessoas da mesma idade, como o paciente considera a sua própria saúde?"/>
+					<s:VGroup gap="10">
+						<s:RadioButton label="Pior" value="0" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Não sabe" value="0.5" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Igual" value="1" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="Melhor" value="2" groupName="PerguntaP" skinClass="app.skin.RadioButton"/>
+					</s:VGroup>
+					
+					<s:Label text="Q) Perímetro braquial (PB) em cm"/>
+					<s:VGroup gap="10">
+						<s:RadioButton label="PB &lt; 21" value="0" groupName="PerguntaQ"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="21 &gt; PB &lt; 22" value="0.5" groupName="PerguntaQ"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="PB &gt; 22" value="1" groupName="PerguntaQ"
+									   skinClass="app.skin.RadioButton"/>
+					</s:VGroup>
+					
+					<s:Label text="R) Perímetro da perna (PP) em cm"/>
+					<s:VGroup gap="10">
+						<s:RadioButton label="PP &lt; 31" value="1" groupName="PerguntaR"
+									   skinClass="app.skin.RadioButton"/>
+						<s:RadioButton label="PP &gt; 31" value="0" groupName="PerguntaR"
+									   skinClass="app.skin.RadioButton"/>
+					</s:VGroup>
+					
+					<s:SkinnableContainer id="scResultadoFinal" width="435" height="200" visible="false" includeInLayout="false" backgroundColor="#F6FAFE">
+						<s:Label x="10" y="10" text="Pontuação"/>
+						<mx:HRule x="10" y="31" width="415"/>
+						<s:Label x="10" y="41" fontSize="20" styleName="bold" text="Avaliação global"/>
+						<s:Label x="167" y="53" fontSize="11" styleName="light" text="(máximo 16 pontos)"/>
+						<s:Label id="txtPontosGlobal" x="270" y="45" width="155" fontSize="20"
+								 text="15 pontos" textAlign="right"/>
+						<s:Label x="10" y="74" fontSize="20" styleName="bold" text="Pontos da triagem"/>
+						<s:Label id="txtPontosTriagem" x="338" y="80" fontSize="20" text="13 pontos"
+								 textAlign="right"/>
+						<s:Label x="10" y="107" fontSize="20" styleName="bold" text="Pontos total"/>
+						<s:Label x="128" y="121" fontSize="11" styleName="light"
+								 text="{máximo 30 pontos)"/>
+						<s:Label id="txtPontuacaoFinal" x="231" y="113" width="194" fontSize="20"
+								 text="28 pontos" textAlign="right"/>
+						<mx:HRule x="10" y="140" width="415"/>
+						<s:Label x="10" y="164" text="Avaliação do estado nutricional"/>
+						<s:Label id="txtEstadoNutricional" x="200" y="152" width="225" fontSize="20"
+								 styleName="bold" text="NORMAL"/>
+					</s:SkinnableContainer>
+				</s:VGroup>
+				<s:Button id="btnSalvar" label="SALVAR E VISUALIZAR DADOS DESSA CONSULTA" 
+						  skinClass="app.skin.Button" enabled="{formIsValid}" click="onSalvar(event)" />
 			</s:VGroup>
-			<s:Button id="btnSalvar" label="SALVAR E VISUALIZAR DADOS DESSA CONSULTA" 
-					  skinClass="app.skin.Button" enabled="{formIsValid}" click="onSalvar(event)" />
-		</s:VGroup>
+			
+			<view:ConsultaImpressa id="impressao" etapa="5" x="516" y="10" visible="false" includeInLayout="false" />
+		</s:Group>
 	</s:Scroller>
 	
 	

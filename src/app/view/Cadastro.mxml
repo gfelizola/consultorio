@@ -104,6 +104,8 @@
 				if( General.usuario != null ) atualizaUsuario( General.usuario );
 				
 				redesSociais = Constantes.redesSociais ;
+				
+				formScroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
 			}
 			
 			private function onSalvar(e:MouseEvent = null):void
@@ -264,6 +266,11 @@
 				var bt:LinkButton = e.currentTarget as LinkButton ;
 				redesSociais.removeItemAt( redesSociais.getItemIndex(bt.data) );
 				atualizarRedesSociais();
+			}
+			
+			private function onMouseWheel(e:MouseEvent):void
+			{
+				e.delta = e.delta > 0 ? 10 : -10;
 			}
 			
 		]]>

@@ -66,9 +66,6 @@
 			
 			private function verificaConsultaAtual():void
 			{
-				trace("ConsultaImpressa.verificaConsultaAtual()", etapa);
-				
-				
 				if( General.pacienteAtual != null ) {
 					var p:Paciente = General.pacienteAtual ;
 					impNomePaciente.text = p.nomeCompleto.toUpperCase() ;
@@ -93,6 +90,7 @@
 						case 3: 	verificaDadosalimentares(c);	break;
 						case 4: 	verificaExames(c);				break;
 						case 5: 	verificaMAN(c);					break;
+						case 6: 	verificaObservacao(c);			break;
 					}
 				}
 			}
@@ -419,6 +417,15 @@
 			{
 				return p + ( p > 1 ? ' pontos' : ' ponto') ;
 			}
+			
+			private function verificaObservacao(c:app.model.Consulta):void
+			{
+				if( c.observacao != '' ){
+					trace( c.observacao );
+					textoObservacao.text = c.observacao ;
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -503,6 +510,12 @@
 						</s:HGroup>
 					</s:VGroup>
 				</s:VGroup>
+			</s:NavigatorContent>
+			
+			<s:NavigatorContent id="observacoes">
+				<s:Group width="440">
+					<s:Label id="textoObservacao" x="10" width="440" styleName="light" />
+				</s:Group>
 			</s:NavigatorContent>
 		</mx:ViewStack>
 		

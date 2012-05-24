@@ -2,7 +2,7 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
-					creationComplete="init()" show="init()">
+					creationComplete="init()" show="init()" xmlns:skin="app.skin.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -81,7 +81,7 @@
 		]]>
 	</fx:Script>
 	
-	<s:Scroller id="scroller" x="0" y="0" width="100%" height="100%" skinClass="app.skin.Scroller">
+	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="100%" height="100%" skinClass="app.skin.Scroller">
 		<s:VGroup width="100%" height="100%" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 			<s:HGroup width="100%" gap="10" requestedColumnCount="2" verticalAlign="middle">
 				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="{dateConsulta}"/>
@@ -122,5 +122,5 @@
 				<mx:VBox label="EXAMES BIOQUÍMICOS" id="examesAccordion"></mx:VBox>
 			</mx:Accordion>
 		</s:VGroup>
-	</s:Scroller>
+	</skin:ScrollerSemBug>
 </s:NavigatorContent>

@@ -42,7 +42,7 @@ declarations define DataGrid skin parts except <code>headerColumnSeparator</code
     xmlns:s="library://ns.adobe.com/flex/spark" 
     xmlns:mx="library://ns.adobe.com/flex/mx"
     xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
-    alpha.disabled="0.5" minWidth="89" minHeight="84">
+    alpha.disabled="0.5" minWidth="89" minHeight="84" xmlns:skin="app.skin.*">
     
     <fx:Metadata>
     <![CDATA[
@@ -266,7 +266,7 @@ declarations define DataGrid skin parts except <code>headerColumnSeparator</code
                 </s:Line>          
                 
                 <!--- @private -->
-                <s:Scroller id="scroller" minViewportInset="1" hasFocusableChildren="false" height="100%" skinClass="app.skin.Scroller">
+                <skin:ScrollerSemBug id="scroller" minViewportInset="1" hasFocusableChildren="false" height="100%" skinClass="app.skin.Scroller">
                     <!--- @private -->
                     <s:Grid id="grid" itemRenderer="spark.skins.spark.DefaultGridItemRenderer">
                         <s:GridLayer name="backgroundLayer"/>
@@ -275,7 +275,7 @@ declarations define DataGrid skin parts except <code>headerColumnSeparator</code
                         <s:GridLayer name="rendererLayer"/>
                         <s:GridLayer name="overlayLayer"/>
                     </s:Grid>                    
-                </s:Scroller>
+                </skin:ScrollerSemBug>
             </s:VGroup>
             
         </s:Group>

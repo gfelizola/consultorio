@@ -3,7 +3,7 @@
 					xmlns:s="library://ns.adobe.com/flex/spark"
 					xmlns:mx="library://ns.adobe.com/flex/mx"
 					xmlns:view="app.view.*"
-					width="994" height="400" creationComplete="init(event)">
+					width="994" height="400" creationComplete="init(event)" xmlns:skin="app.skin.*">
 	<fx:Script>
 		<![CDATA[
 			import app.model.Antropometria;
@@ -97,7 +97,7 @@
 			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valEstatura" source="{txtEstatura}" />
 		</fx:Array>
 	</fx:Declarations>
-	<s:Scroller id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
+	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
 		<s:Group width="994" height="390">
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
 			
@@ -174,7 +174,5 @@
 			
 			<view:ConsultaImpressa id="impressao" etapa="1" x="516" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
-	</s:Scroller>
-	
-	
+	</skin:ScrollerSemBug>
 </s:NavigatorContent>

@@ -2,7 +2,7 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="400" 
-					creationComplete="init(event)" xmlns:view="app.view.*">
+					creationComplete="init(event)" xmlns:view="app.view.*" xmlns:skin="app.skin.*">
 	
 	<fx:Style source="app/style/Estilo.css" />
 	
@@ -215,6 +215,10 @@
 				else
 				{
 					var a:MAN = new MAN();
+					
+					a.pontuacaoGlobal = pontuacaoGlobal ;
+					a.pontuacaoTriagem = pontuacaoTriagem ;
+					
 					var perguntas:Array = ['A','B','C','D','E','IMC','F','G','H','I','J','K1','K2','K3','L','M','N','O','P','Q','R'];
 					var letra:String = '';
 					
@@ -293,7 +297,7 @@
 		<s:RadioButtonGroup id="PerguntaR" change="validateForm(event)" />
 	</fx:Declarations>
 	
-	<s:Scroller id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
+	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
 		<s:Group width="994" height="390">
 			<s:VGroup width="435" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 				<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold"
@@ -535,7 +539,5 @@
 			
 			<view:ConsultaImpressa id="impressao" etapa="5" x="516" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
-	</s:Scroller>
-	
-	
+	</skin:ScrollerSemBug>
 </s:NavigatorContent>

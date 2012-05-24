@@ -2,7 +2,7 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540"
-					creationComplete="init()">
+					creationComplete="init()" xmlns:skin="app.skin.*">
 	<fx:Script>
 		<![CDATA[
 			import app.controller.Navigation;
@@ -293,7 +293,7 @@
 		<s:NumberValidator id="valRegional" 		source="{cmbRegional}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Regional é obrigatório" />
 	</fx:Declarations>
 	
-	<s:Scroller id="formScroller" x="10" y="10" width="984" height="520" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
+	<skin:ScrollerSemBug id="formScroller" x="10" y="10" width="984" height="520" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
 		<s:Group id="formContainer" width="984" height="520">
 			
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DE ACESSO" />
@@ -385,6 +385,6 @@
 			</s:Group>
 			
 		</s:Group>
-	</s:Scroller>
+	</skin:ScrollerSemBug>
 	
 </s:NavigatorContent>

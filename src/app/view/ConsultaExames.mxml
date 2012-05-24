@@ -2,7 +2,7 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="984" height="400"
-					creationComplete="init(event)" xmlns:view="app.view.*">
+					creationComplete="init(event)" xmlns:view="app.view.*" xmlns:skin="app.skin.*">
 	<fx:Script>
 		
 		<![CDATA[
@@ -240,7 +240,7 @@
 		<s:RadioButtonGroup id="NivelAtividade"/>
 	</fx:Declarations>
 	
-	<s:Scroller id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
+	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
 		<s:Group>
 			<s:VGroup width="100%" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
@@ -261,5 +261,5 @@
 			
 			<view:ConsultaImpressa id="impressao" etapa="4" x="516" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
-	</s:Scroller>
+	</skin:ScrollerSemBug>
 </s:NavigatorContent>

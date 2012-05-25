@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="2000">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Scroller id="scroller" x="0" y="0" width="994" height="2000">
+		<s:Group width="994" height="2000">
+			<s:Label id="txtTitulo" x="10" y="10" color="#83BBEA" fontSize="20" styleName="bold"
+					 text="RESULTADO DA AVALIAÇÃO NUTRICIONAL"/>
+			<s:Button id="btnImprimir" x="878" y="10" label="IMPRIMIR"
+					  icon="assets/images/icoImprimir.png" skinClass="app.skin.Button"/>
+			
+		</s:Group>
+	</s:Scroller>
+	
+</s:NavigatorContent>

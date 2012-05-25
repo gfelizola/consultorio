@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" 
+      minWidth="21" minHeight="21" alpha.disabled="0.5">
+
+    <fx:Script>
+        /**
+         * @private
+         */
+        override protected function initializationComplete():void
+        {
+          useChromeColor = true;
+          super.initializationComplete();
+        }
+    </fx:Script>
+      
+    <!-- states -->
+    <s:states>
+        <s:State name="up" />
+        <s:State name="over" />
+        <s:State name="down" />
+        <s:State name="disabled" />
+        <s:State name="selectedUp" stateGroups="selected" />
+        <s:State name="selectedOver" stateGroups="selected" />
+        <s:State name="selectedDown" stateGroups="selected" />
+        <s:State name="selectedDisabled" stateGroups="selected" />
+    </s:states>
+    
+    <!-- layer 3: fill -->
+    <s:Rect left="0" right="0" top="0" bottom="0">
+        <s:fill>
+			<s:SolidColor color="0xFAFDFE" />
+        </s:fill>
+    </s:Rect>
+	
+	<s:Path right="5" horizontalCenter="0" verticalCenter="0" id="arrow" rotation.selected="90"
+			data="M 3.5 7.0 L 0.0 0.0 L 7.0 0.0 L 3.5 7.0">
+		<s:fill>
+			<s:SolidColor color="#333333" />
+		</s:fill>
+	</s:Path>
+    
+</s:SparkSkin>

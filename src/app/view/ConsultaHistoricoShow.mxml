@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500"
 					creationComplete="init()" show="init()" xmlns:skin="app.skin.*">
 	
 	<fx:Script>
 		<![CDATA[
+			import app.model.Antropometria;
+			import app.model.Atividade;
+			import app.model.AtividadeFisica;
 			import app.model.Consulta;
 			import app.model.DB;
+			import app.model.DadosAlimentares;
+			import app.model.ExameAdicional;
+			import app.model.ExameBioquimico;
+			import app.model.MAN;
+			import app.model.Refeicao;
 			import app.skin.TextArea;
 			import app.skin.TextInput;
 			import app.util.General;
@@ -37,90 +45,201 @@
 					dateConsulta = General.getFormattedDate(General.consultaAtual.dataConsulta.toString());
 					txtObservacao.text = General.consultaAtual.observacao;
 					buildAntropo();
-				}
-				else{
-					//...
+					buildMan();
+					buildAlimentos();
 				}
 			}
 			
 			private function buildMan():void
 			{
-				
+				if(General.consultaAtual.man != null) {
+					var m:MAN = General.consultaAtual.man ;
+					var manTexto:String = "<textformat tabstops='[200, 500, 750]'>" ;
+					
+					manTexto += "<p><b>Pontos da triagem</b> (subtotal, máximo 14 pontos) </p>" +
+						"<p><font size='20'>" + m.pontuacaoTriagem + " pontos</font></p><p></p>" +
+						"<p><b>Pontuação</b></p>" +
+						"<p><b>Avaliação global </b> (subtotal, máximo 16 pontos) <tab/> <font size='20'>" + m.pontuacaoGlobal + " pontos</font></p>" +
+						"<p><b>Pontos da triagem</b> <tab/> <font size='20'>" + m.pontuacaoTriagem + " pontos</font></p>" +
+						"<p><b>Pontouação total</b> (subtotal, máximo 30 pontos) <tab/> <font size='20'>" + ( m.pontuacaoTriagem + m.pontuacaoGlobal) + " pontos</font></p>" ;
+					
+					manTexto += "</textformat>";
+					
+					manInfo.htmlText = manTexto ;
+				}
 			}
 			
 			private function buildAntropo():void
 			{
 				if(General.consultaAtual.antropometria != null)
 				{
-					antroInfo.htmlText =  
-						"<p><b>Peso</b> " + General.consultaAtual.antropometria.peso + "</p>" +
-						"<p><b>Estatura</b> " + General.consultaAtual.antropometria.estatura + "</p>";
-					/*
-					// Add no stage
-					if(!dadosAccordion.contains(antropoAccordion))
+					var a:Antropometria = General.consultaAtual.antropometria ;
+					var antroTexto:String = "<textformat tabstops='[200, 500, 750]'>" +
+						"<p><b>Peso</b> <tab/>" + a.peso + "<tab/>" +
+						"<b>Dobra cutânea Triciptal</b> <tab/>" + a.dobraCutaneaTriciptal + "</p>" ;
+					
+					if( General.pacienteAtual.gestante ){
+						antroTexto += "<p><b>Peso pré-gestacional</b> <tab/>" + a.pesoPreGestacional + "<tab/>" +
+							"<b>Dobra cutânea Subescapular</b> <tab/>" + a.dobraCutaneaSubescapular + "</p>" + 
+							"<p><b>Estatura</b> <tab/>" + a.estatura + "<tab/>" +
+							"<b>Dobra cutânea Biciptal</b> <tab/>" + a.dobraCutaneaBiciptal + "</p>" +
+							"<p><b>Circunferência da Cintura</b> <tab/>" + a.circunferenciaCintura + "<tab/>" + 
+							"<b>Dobra cutânea Axilar Média</b> <tab/>" + a.dobraCutaneaAxilarMedia + "</p>" +
+							"<p><b>Circunferência do Quadril</b> <tab/>" + a.circunferenciaQuadril + "<tab/>" + 
+							"<b>Dobra cutânea Supra-ilíaca</b> <tab/>" + a.dobraCutaneaSupraIliaca + "</p>" +
+							"<p><b>Circunferência do Tríceps</b> <tab/>" + a.circunferenciaTriceps + "<tab/>" + 
+							"<b>Dobra cutânea Torácica</b> <tab/>" + a.dobraCutaneaToracica + "</p>" +
+							"<p><b>Circunferência da Coxa</b> <tab/>" + a.circunferenciaCoxa + "<tab/>" + 
+							"<b>Dobra cutânea Abdominal</b> <tab/>" + a.dobraCutaneaAbdominal + "</p>" +
+							"<p><b>Circunferência da Panturrilha</b> <tab/>" + a.circunferenciaPanturrilha + "<tab/>" +
+							"<b>Dobra cutânea da Coxa</b> <tab/>" + a.dobraCutaneaCoxa + "</p>" +
+							"<p><tab/><tab/><b>Dobra cutânea Panturrilha Medial</b> <tab/>" + a.dobraCutaneaPanturrilhaMedial + "</p>" ;
+					} 
+					else 
 					{
-						antroInfo.htmlText = 
-							"<p><b>Peso</b> " + General.consultaAtual.antropometria.peso + "</p>" +
-							"<p><b>Estatura</b> " + General.consultaAtual.antropometria.estatura + "</p>";
-						dadosAccordion.addElement(antropoAccordion);
+						antroTexto += "<p><b>Estatura</b> <tab/>" + a.estatura + "<tab/>" +
+							"<b>Dobra cutânea Subescapular</b> <tab/>" + a.dobraCutaneaSubescapular + "</p>" +
+							"<p><b>Circunferência da Cintura</b> <tab/>" + a.circunferenciaCintura + "<tab/>" + 
+							"<b>Dobra cutânea Biciptal</b> <tab/>" + a.dobraCutaneaBiciptal + "</p>" +
+							"<p><b>Circunferência do Quadril</b> <tab/>" + a.circunferenciaQuadril + "<tab/>" + 
+							"<b>Dobra cutânea Axilar Média</b> <tab/>" + a.dobraCutaneaAxilarMedia + "</p>" +
+							"<p><b>Circunferência do Tríceps</b> <tab/>" + a.circunferenciaTriceps + "<tab/>" + 
+							"<b>Dobra cutânea Supra-ilíaca</b> <tab/>" + a.dobraCutaneaSupraIliaca + "</p>" +
+							"<p><b>Circunferência da Coxa</b> <tab/>" + a.circunferenciaCoxa + "<tab/>" + 
+							"<b>Dobra cutânea Torácica</b> <tab/>" + a.dobraCutaneaToracica + "</p>" +
+							"<p><b>Circunferência da Panturrilha</b> <tab/>" + a.circunferenciaPanturrilha + "<tab/>" +
+							"<b>Dobra cutânea Abdominal</b> <tab/>" + a.dobraCutaneaAbdominal + "</p>" +
+							"<p><tab/><tab/><b>Dobra cutânea da Coxa</b> <tab/>" + a.dobraCutaneaCoxa + "</p>" +
+							"<p><tab/><tab/><b>Dobra cutânea Panturrilha Medial</b> <tab/>" + a.dobraCutaneaPanturrilhaMedial + "</p>" ;
 					}
-					//*/
-				}
-				else
-				{
-					// Remove do stage
-					// if(dadosAccordion.contains(antropoAccordion))dadosAccordion.removeChild(antropoAccordion);
+					
+					antroTexto += "</textformat>";
+					antroInfo.htmlText = antroTexto;
 				}
 			}
 			
 			private function backToList(event:MouseEvent):void
 			{
-				trace('volta para lista');
 				ConsultaHistorico.instance.viewstackHistoricoConsulta.selectedIndex = 0 ;
 			}
+			
+			private function buildAlimentos():void
+			{
+				if(General.consultaAtual.dadosAlimentares != null) {
+					var da:DadosAlimentares = General.consultaAtual.dadosAlimentares ;
+					var daTexto:String = "<textformat tabstops='[300, 600]'>" ;
+					
+					daTexto += '<p><b>Refeição/Horaio<tab/>Alimento<tab/>Quantidade</b></p>' ;
+					
+					for (var i:int = 0; i < da.refeicoes.length; i++) 
+					{
+						var r:Refeicao = da.refeicoes[i] ;
+						daTexto += '<p>' + r.nome + '<tab/>' + r.alimentos + '<tab/>' + r.quantidades + '</b></p>' ;
+					}
+					
+					daTexto += '<p><b>Quantidade de água por dia:</b> ' + da.qtdeAgua + '</p>' ;
+					daTexto += '<p><b>Funcionalidade intestinal:</b> ' + da.funcionamentoIntestinal + '</p>' ;
+					daTexto += '<p><b>Preferências alimentares:</b> ' + da.preferenciasAlimentares + '</p>' ;
+					daTexto += '<p><b>Aversões alimentares:</b> ' + da.aversoesAlimentares + '</p>' ;
+					daTexto += '<p><b>Outras informações / Observações:</b> ' + da.observacoes + '</p>' ;
+					
+					daTexto += "</textformat>";
+					alimentosInfo.htmlText = daTexto ;
+				}
+			}
+			
+			private function buildExames():void
+			{
+				if(General.consultaAtual.exameBioquimico != null) {
+					var eb:ExameBioquimico = General.consultaAtual.exameBioquimico ;
+					var ebTexto:String = "<textformat tabstops='[300, 600]'>" ;
+					
+					ebTexto += '<p><b>Exame<tab/>Referência<tab/>' + eb.dataDoExame + '</b></p>' ;
+					
+					for (var i:int = 0; i < eb.exames.length; i++) 
+					{
+						var r:ExameAdicional = eb.exames[i] ;
+						ebTexto += '<p>' + r.nome + '<tab/>' + r.referencia + '<tab/>' + r.valor + '</b></p>' ;
+					}
+					
+					ebTexto += "</textformat>";
+					examesInfo.htmlText = ebTexto ;
+				}
+			}
+			
+			private function buildAtividades():void
+			{
+				if(General.consultaAtual.atividadeFisica != null) {
+					var af:AtividadeFisica = General.consultaAtual.atividadeFisica ;
+					var afTexto:String = "<textformat tabstops='[300, 600]'>" ;
+					
+					afTexto += "<p><b>Nível de atividade física: </b>" ;
+					switch(af.nivel)
+					{
+						case AtividadeFisica.MUITO_ATIVO: 	afTexto += "muito ativo"; 	break;
+						case AtividadeFisica.ATIVO: 		afTexto += "ativo"; 		break;
+						case AtividadeFisica.POUCO_ATIVO: 	afTexto += "pouco ativo"; 	break;
+						case AtividadeFisica.SEDENTARIO: 	afTexto += "sedentário"; 	break;
+					}
+					
+					afTexto += '</p>' ;
+					afTexto += '<p><b>Atividades<tab/>Dias da semana<tab/>Horários</b></p>' ;
+					
+					for (var i:int = 0; i < af.atividades.length; i++) 
+					{
+						var r:app.model.Atividade = af.atividades[i] ;
+						afTexto += '<p>' + r.nome + '<tab/>' + r.dias + '<tab/>' + r.horario + '</b></p>' ;
+					}
+					
+					afTexto += "</textformat>";
+					atividadesInfo.htmlText = afTexto ;
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	
-	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="100%" height="100%" skinClass="app.skin.Scroller">
-		<s:VGroup width="100%" height="100%" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-			<s:HGroup width="100%" gap="10" requestedColumnCount="2" verticalAlign="middle">
+	<s:Scroller id="scroller" x="10" y="10" width="984" height="480" skinClass="app.skin.Scroller">
+		<s:VGroup width="984" height="480" gap="10" paddingBottom="10" paddingLeft="0" paddingRight="0" paddingTop="10">
+			<s:Group width="984">
 				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="{dateConsulta}"/>
-				<s:Button label="Consultas Anteriores" skinClass="app.skin.Button" click="backToList(event)" />
-			</s:HGroup>
+				<s:Button right="0" label="CONSULTAS ANTERIORES" skinClass="app.skin.Button" click="backToList(event)" />
+				<s:Button y="0" right="202" label="IMPRIMIR" skinClass="app.skin.Button"/>
+			</s:Group>
+			
 			<s:HGroup width="100%" verticalAlign="baseline">
-				<s:Label fontSize="15" styleName="bold" text="RECOMENDAÇÃO DE DIETA:"/>
-				<s:Label id="txtRecomendaDieta" text="Texto da recomendação da dieta"/>
+				<s:Label fontSize="15" styleName="bold" text="RECOMENDAÇÃO DE DIETA:" />
+				<s:Label id="txtRecomendaDieta" text="Texto da recomendação da dieta" />
 			</s:HGroup>
+			
 			<s:SkinnableContainer width="100%" backgroundColor="#F6F9FE">
 				<s:Label id="txtObservacao" text="Texto da observação" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
 			</s:SkinnableContainer>
+			
 			<s:SkinnableContainer width="100%" backgroundColor="#FCFDFF">
 				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="DADOS DA CONSULTA"/>
 			</s:SkinnableContainer>
-			<mx:Accordion width="100%" height="100%" id="dadosAccordion">
-				<mx:VBox label="MAN" id="manAccordion"></mx:VBox>
-				<mx:VBox label="ANTROPOMETRIA" id="antropoAccordion">
-					<mx:Text id="antroInfo" condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+			
+			<mx:Accordion width="984" height="100%" id="dadosAccordion">
+				<mx:VBox label="MAN" id="manAccordion" width="984">
+					<mx:Text id="manInfo" condenseWhite="true" width="964" height="100%" paddingBottom="0" paddingLeft="10" paddingRight="10" paddingTop="10" />
 				</mx:VBox>
+				
+				<mx:VBox label="ANTROPOMETRIA" id="antropoAccordion" width="984">
+					<mx:Text id="antroInfo" condenseWhite="true" width="964" height="100%" paddingBottom="0" paddingLeft="10" paddingRight="10" paddingTop="10" />
+				</mx:VBox>
+				
 				<mx:VBox label="HÁBITOS ALIMENTARES" id="habitosAccordion">
-					<mx:Text condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-						<mx:htmlText>
-							<![CDATA[
-							<b>Teste:</b> 1231321 <br>
-							<b>Teste:</b> 1231321 <br>
-							<p><b>Teste:</b> 1231321</p>
-							<p><b>Teste:</b> 1231321</p>
-							<table>
-								<tr><td>Header</td></tr>
-								<tr><td>Data</td></tr>
-							</table>
-							]]>
-						</mx:htmlText>
-					</mx:Text>
+					<mx:Text id="alimentosInfo" condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
 				</mx:VBox>
-				<mx:VBox label="ATIVIDADES FÍSICAS" id="atividadesAccordion"></mx:VBox>
-				<mx:VBox label="EXAMES BIOQUÍMICOS" id="examesAccordion"></mx:VBox>
+				
+				<mx:VBox label="ATIVIDADES FÍSICAS" id="atividadesAccordion">
+					<mx:Text id="atividadesInfo" condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+				</mx:VBox>
+				<mx:VBox label="EXAMES BIOQUÍMICOS" id="examesAccordion">
+					<mx:Text id="examesInfo" condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+				</mx:VBox>
 			</mx:Accordion>
 		</s:VGroup>
-	</skin:ScrollerSemBug>
+	</s:Scroller>
 </s:NavigatorContent>

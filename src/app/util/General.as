@@ -43,6 +43,7 @@ package app.util
 				consultaAtual.dataConsulta = new Date();
 				pacienteAtual.dataUltimaConsulta = new Date();
 				consultaAtual.paciente = pacienteAtual ;
+				if( pacienteAtual.gestante ) consultaAtual.setSemanaGestacional();
 				
 				DB.em.save(consultaAtual);
 				DB.em.save(pacienteAtual)

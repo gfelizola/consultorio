@@ -48,7 +48,7 @@ package app.model
 		public function get imc():Number {
 			if( ! isNaN(peso) && ! isNaN(estatura) )
 			{
-				_imc = peso / Math.pow( ( estatura / 100 ), 2 );
+				_imc = peso / ( ( estatura / 100 ) * ( estatura / 100 ) );
 			}
 			
 			return _imc; 

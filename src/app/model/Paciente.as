@@ -56,6 +56,9 @@ package app.model
 		[ManyToOne( cascade="none" )]
 		public var usuario:Usuario;
 		
+		[OneToMany( type="app.model.Consulta", cascade="all", lazy="false" )]
+		public var consultas:IList;
+		
 		[ManyToMany(type="app.model.Patologia", cascade="all")]
 		public var patologias:IList;
 		

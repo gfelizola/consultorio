@@ -23,8 +23,11 @@
 
 			private var consultas:ArrayCollection;
 			
+			[Bindable]
+			private var minIdade:Number;
+			
+			[Bindable]
 			private var pesos:ArrayCollection;
-			private var imcs:ArrayCollection;
 			
 			private function init():void
 			{
@@ -50,10 +53,12 @@
 				if( idade > 60 )
 				{
 					perfil = "IDOSO" ;
+					vsGraficos.selectedIndex = 3 ;
 				}
 				else if( idade < 20 )
 				{
 					perfil = "CRIANÇA" ;
+					vsGraficos.selectedIndex = 1 ;
 				}
 				else 
 				{
@@ -66,6 +71,8 @@
 						} else {
 							txtSemanaGestacional.visible = txtSemanaGestacional.includeInLayout = false ;
 						}
+						
+						vsGraficos.selectedIndex = 2 ;
 					}
 					else
 					{
@@ -133,19 +140,26 @@
 				}
 				
 				consultas.source.reverse();
-				
 				pesos = new ArrayCollection();
-				imcs = new ArrayCollection();
+				
+				minIdade = 0 ;
 				
 				for (var i:int = 0; i < consultas.length; i++) 
 				{
 					var cons:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
 					if( cons.antropometria ){
-						pesos.addItem({ dataConsulta:General.getFormattedDate(cons.dataConsulta.toString()), peso:cons.antropometria.peso, imc:cons.antropometria.imc, altura:cons.antropometria.estatura });
+						pesos.addItem({ 
+							dataConsulta:General.getFormattedDate(cons.dataConsulta.toString()), 
+							peso:cons.antropometria.peso, 
+							imc:cons.antropometria.imc, 
+							altura:cons.antropometria.estatura,
+							semana:cons.semanaGestacional,
+							idade:cons.idadeNaConsulta()
+						});
+						
+						if( minIdade == 0 ) minIdade = cons.idadeNaConsulta() ;
 					}
 				}
-				
-				curvaDePeso.dataProvider = pesos ;
 			}
 			
 			private function onAlertaNovaConsulta(e:CloseEvent):void
@@ -194,13 +208,13 @@
 	<mx:HRule x="10" y="170" width="205" height="2" chromeColor="#E0EFFB"/>
 	<mx:HRule x="10" y="330" width="205" height="2" chromeColor="#E0EFFB"/>
 	
-	<mx:ViewStack id="vsGraficos" x="235" y="22" width="746" height="456">
+	<mx:ViewStack id="vsGraficos" x="235" y="22" width="746" height="460">
 		<s:NavigatorContent width="100%" height="100%" label="Peso">
 			<s:VGroup gap="5">
 				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="GRÁFICO DE VARIAÇÃO DE PESO"/>
 				<s:Label width="500" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
 				
-				<mx:LineChart id="curvaDePeso" width="500" height="400" showDataTips="true" seriesFilters="{[]}">
+				<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="500" height="300" showDataTips="true" seriesFilters="{[]}">
 					<mx:horizontalAxis>
 						<mx:CategoryAxis categoryField="dataConsulta" title="Data da consulta" />
 					</mx:horizontalAxis>
@@ -209,7 +223,36 @@
 					</mx:verticalAxis>
 					
 					<mx:series>
-						<mx:LineSeries displayName="Peso" form="segment" yField="peso">
+						<mx:LineSeries displayName="Peso" form="curve" yField="peso">
+							<mx:lineStroke>
+								<mx:SolidColorStroke color="#81BAEA" weight="7" />
+							</mx:lineStroke>
+							<mx:itemRenderer>
+								<fx:Component>
+									<mx:CrossItemRenderer />
+								</fx:Component>
+							</mx:itemRenderer>
+						</mx:LineSeries>
+					</mx:series>
+					
+				</mx:LineChart>
+			</s:VGroup>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="Peso">
+			<s:VGroup gap="5">
+				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO"/>
+				<s:Label width="500" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+				
+				<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="500" height="300" showDataTips="true" seriesFilters="{[]}">
+					<mx:horizontalAxis>
+						<mx:LinearAxis title="IDADE (meses)" minimum="{minIdade}" />
+					</mx:horizontalAxis>
+					<mx:verticalAxis>
+						<mx:LinearAxis title="PESO (kg)" />
+					</mx:verticalAxis>
+					
+					<mx:series>
+						<mx:LineSeries displayName="Peso" form="curve" yField="peso" xField="idade">
 							<mx:lineStroke>
 								<mx:SolidColorStroke color="#81BAEA" weight="7" />
 							</mx:lineStroke>
@@ -229,15 +272,18 @@
 				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE ATALAH"/>
 				<s:Label width="500" text="Ferramenta de avaliação do estado nutricional da gestante" />
 				
-				<mx:LineChart id="curvacDeAtalah" width="500" height="359" showDataTips="true">
+				<mx:LineChart id="curvaDeAtalah" dataProvider="{pesos}" width="600" height="300" showDataTips="true">
 					<mx:horizontalAxis>
-						<mx:CategoryAxis categoryField="dataConsulta" displayName="Data" title="Data da consulta" ticksBetweenLabels="true" />
+						<mx:LinearAxis title="IDADE GESTACIONAL EM SEMANAS" minimum="10" maximum="50" interval="2" />
 					</mx:horizontalAxis>
+					<mx:verticalAxis>
+						<mx:LinearAxis title="IMC" minimum="10" maximum="60" />
+					</mx:verticalAxis>
 					<mx:seriesFilters>
 						<fx:Array/>
 					</mx:seriesFilters>
 					<mx:series>
-						<mx:LineSeries displayName="Peso" form="segment" yField="imc">
+						<mx:LineSeries displayName="IMC" form="curve" yField="imc" xField="semana">
 							<mx:lineStroke>
 								<mx:SolidColorStroke color="#81BAEA" weight="7" />
 							</mx:lineStroke>
@@ -250,6 +296,14 @@
 					</mx:series>
 				</mx:LineChart>
 			</s:VGroup>
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%" label="MAN">
+			<s:VGroup gap="5">
+				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="RESULTADO DA MINI AVALIAÇÃO NUTRICIONAL"/>
+				<s:Label width="500" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+			</s:VGroup>
+			<s:Label id="resultadoMAN" x="0" y="100" color="#81BAEA" fontSize="40" styleName="bold"
+					 text="DESNUTRIDO"/>
 		</s:NavigatorContent>
 	</mx:ViewStack>
 </s:NavigatorContent>

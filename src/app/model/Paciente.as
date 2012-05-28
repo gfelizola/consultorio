@@ -15,6 +15,7 @@ package app.model
 		
 		public var sexo:String;
 		
+		[ManyToOne( cascade="none")]
 		public var estadoCivil:EstadoCivil;
 		
 		public var profissao:String;
@@ -43,6 +44,7 @@ package app.model
 		
 		public var historico:String;
 		
+		[ManyToOne( cascade="none")]
 		public var tipo:TipoAtendimento;
 		
 		public var objetivo:String;

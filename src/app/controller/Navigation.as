@@ -91,6 +91,7 @@ package app.controller
 		private static function onAlertSair( e:CloseEvent ):void
 		{
 			if( e.detail == Alert.YES ){
+				General.consultaAtual = null ;
 				addArea();
 			} else {
 				areaAtual = areaAnterior ;

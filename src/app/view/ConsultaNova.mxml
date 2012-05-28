@@ -2,16 +2,21 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500"
-					creationComplete="init()" xmlns:view="app.view.*">
+					creationComplete="init()" show="init()" xmlns:view="app.view.*">
 	<fx:Script>
 		<![CDATA[
 			import app.model.Consulta;
 			import app.model.Paciente;
 			import app.util.General;
 			
+			import mx.controls.Alert;
 			import mx.core.UIComponent;
+			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.events.IndexChangedEvent;
+			
+			private var telaAnterior:Number = -1 ; 
+			private var verificarTroca:Boolean = true;
 			
 			private function init():void
 			{
@@ -21,14 +26,41 @@
 				var idade:Number = ( new Date().fullYear ) - p.dataNascimento.fullYear ;
 				
 				var tabMAN:UIComponent = tbConsulta.dataGroup.getElementAt(1) as UIComponent;
-//				if(tabMAN){tabMAN.enabled = idade > 65;}
+				if(tabMAN){tabMAN.enabled = idade > 65;}
 				
-				if( General.consultaAtual == null ) General.consultaAtual = new app.model.Consulta();
+				if( General.consultaAtual == null ){
+					General.consultaAtual = new app.model.Consulta();
+				} else {
+					if( General.consultaAtual.id > 0 ){
+						General.consultaAtual = new app.model.Consulta();
+					}
+				}
 			}
 			
-			private function onConsultaChangeTela(event:IndexChangedEvent):void
+			private function onConsultaChangeTela(e:IndexChangedEvent):void
 			{
-				General.consultaSalva = false ;
+				if( ! General.consultaSalva && verificarTroca ){
+					telaAnterior = e.oldIndex ;
+					
+					Alert.yesLabel = "Sim" ;
+					Alert.noLabel = "Não" ;
+					Alert.show("Você ainda não salvou os dados dessa parte da consulta. Tem certeza que deseja trocar de aba?", "Aviso", Alert.YES|Alert.NO, null, onAlertaFechado );
+					
+				} else {
+					verificarTroca = true ;
+					General.consultaSalva = false ;
+					trace("ConsultaNova.onConsultaChangeTela(e): consultaSalva = false");
+				}
+			}
+			
+			private function onAlertaFechado(e:CloseEvent):void
+			{
+				if( e.detail == Alert.YES ){
+					General.consultaSalva = false ;
+				} else {
+					verificarTroca = false ;
+					vsConsulta.selectedIndex = telaAnterior ;
+				}
 			}
 			
 		]]>
@@ -38,8 +70,7 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	<s:TabBar id="tbConsulta" x="0" y="10" width="100%" height="40" dataProvider="{vsConsulta}"
-			  skinClass="app.skin.TabBar"/>
+	<s:TabBar id="tbConsulta" x="0" y="10" width="100%" height="40" dataProvider="{vsConsulta}" skinClass="app.skin.TabBar"/>
 	
 	<s:Rect id="bgVsConsulta" left="0" right="0" top="50" bottom="0">
 		<s:fill>
@@ -49,19 +80,13 @@
 			<s:GlowFilter color="#000000" alpha="0.15" blurX="0" blurY="10" />
 		</s:filters>
 	</s:Rect>
-
-	<!--
-	<s:Button id="btnSalvarConsulta" y="58" horizontalCenter="0" label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DA CONSULTA" skinClass="app.skin.Button" />
-	-->
 	
 	<mx:ViewStack id="vsConsulta" x="0" y="100" width="100%" height="100%" change="onConsultaChangeTela(event)" backgroundColor="#ffffff" creationPolicy="all">
-		<view:ConsultaAntropometria width="100%" height="100%" label="ANTROPOMETRIA"></view:ConsultaAntropometria>
-		<view:ConsultaMAN id="ncMAN" width="100%" height="100%" label="MAN"></view:ConsultaMAN>
-		
-		<view:ConsultaDadosAlimentares width="100%" height="100%" label="DADOS ALIMENTARES"></view:ConsultaDadosAlimentares>
-		<view:ConsultaAtividadeFisica width="100%" height="100%" label="ATIVIDADE FÍSICA"></view:ConsultaAtividadeFisica>
-		<view:ConsultaExames width="100%" height="100%" label="EXAMES BIOQUÍMICOS"></view:ConsultaExames>
-		
-		<view:ConsultaObservacao width="100%" height="100%" label="OBSERVAÇÃO"></view:ConsultaObservacao>
+		<view:ConsultaAntropometria 	width="100%" height="100%" label="ANTROPOMETRIA" />
+		<view:ConsultaMAN 				width="100%" height="100%" label="MAN" />
+		<view:ConsultaDadosAlimentares 	width="100%" height="100%" label="DADOS ALIMENTARES" />
+		<view:ConsultaAtividadeFisica 	width="100%" height="100%" label="ATIVIDADE FÍSICA" />
+		<view:ConsultaExames 			width="100%" height="100%" label="EXAMES BIOQUÍMICOS" />
+		<view:ConsultaObservacao 		width="100%" height="100%" label="OBSERVAÇÃO" />
 	</mx:ViewStack>
 </s:NavigatorContent>

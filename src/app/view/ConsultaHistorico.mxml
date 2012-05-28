@@ -5,12 +5,16 @@
 					show="init()" xmlns:view="app.view.*">
 	<fx:Script>
 		<![CDATA[
+			import app.util.General;
 			
 			public static var instance:ConsultaHistorico ;
 			
 			private function init():void
 			{
 				instance = this ;
+				if( General.consultaAtual != null ){
+					if( General.consultaAtual.id ) vsHistoricoConsulta.selectedIndex = 1 ;
+				}
 			}
 			
 		]]>
@@ -21,7 +25,7 @@
 	</fx:Declarations>
 	
 	
-	<mx:ViewStack id="viewstackHistoricoConsulta" x="0" y="0" width="1004" height="500">
+	<mx:ViewStack id="vsHistoricoConsulta" x="0" y="0" width="1004" height="500">
 		<view:ConsultaHistoricoLista id="vLista"></view:ConsultaHistoricoLista>
 		<view:ConsultaHistoricoShow></view:ConsultaHistoricoShow>
 	</mx:ViewStack>

@@ -83,6 +83,8 @@
 					var c:app.model.Consulta = General.consultaAtual ;
 					impData.text = c.dataConsulta ? General.getFormattedDate( c.dataConsulta.toString() ) : '';	
 					
+					trace("ConsultaImpressa.verificaConsultaAtual() - etapa:", etapa);
+					
 					switch(etapa)
 					{
 						case 1: 	verificaAntropometria(c);		break;
@@ -97,6 +99,8 @@
 			
 			private function verificaAntropometria(c:app.model.Consulta):void
 			{
+				trace("ConsultaImpressa.verificaAntropometria(c)");
+				
 				var a:Antropometria = c.antropometria ;
 				
 				if( a != null ){
@@ -154,6 +158,8 @@
 			
 			private function verificaAtividadesFisicas(c:app.model.Consulta):void
 			{
+				trace("ConsultaImpressa.verificaAtividadesFisicas(c)");
+				
 				var af:AtividadeFisica = c.atividadeFisica ;
 				if( af ){
 					var txtNivel:String = "Nível de atividade física: " ;
@@ -220,6 +226,8 @@
 			
 			private function verificaDadosalimentares(c:app.model.Consulta):void
 			{
+				trace("ConsultaImpressa.verificaDadosalimentares(c)");
+				
 				var da:DadosAlimentares = c.dadosAlimentares ;
 				if( da ){
 					containerRefeicoes.addElement( getRefeicaoGroup( 'REFEIÇÃO/HORARIO', 'ALIMENTO', 'QUANTIDADE' ) ) ;
@@ -306,6 +314,8 @@
 			
 			private function verificaExames(c:app.model.Consulta):void
 			{
+				trace("ConsultaImpressa.verificaExames(c)");
+				
 				var eb:ExameBioquimico = c.exameBioquimico ;
 				if( eb ){
 					containerExames.addElement( getRefeicaoGroup( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame.toString() ) ) ) ;
@@ -362,23 +372,10 @@
 				return vg;
 			}
 			
-			private function onImprimir(e:MouseEvent):void
-			{
-				btnImprimir.visible = false ;
-				scImpressao.setStyle('backgroundColor', '0xffffff');
-				
-				var pj:FlexPrintJob = new FlexPrintJob();
-				pj.start();
-				
-				pj.addObject( scImpressao, FlexPrintJobScaleType.SHOW_ALL );
-				pj.send();
-				
-				btnImprimir.visible = true ;
-				scImpressao.setStyle('backgroundColor', '0xF6FAFE');
-			}
-			
 			private function verificaMAN(c:app.model.Consulta):void
 			{
+				trace("ConsultaImpressa.verificaMAN(c)" , c.man);
+				
 				var man:MAN = c.man ;
 				if( man ){
 					var p:Number = man.pontuacaoTriagem ;
@@ -413,17 +410,33 @@
 				}
 			}
 			
+			private function verificaObservacao(c:app.model.Consulta):void
+			{
+				trace("ConsultaImpressa.verificaObservacao(c)", c.observacao);
+				
+				if( c.observacao != '' ){
+					textoObservacao.text = c.observacao ;
+				}
+			}
+			
+			private function onImprimir(e:MouseEvent):void
+			{
+				btnImprimir.visible = false ;
+				scImpressao.setStyle('backgroundColor', '0xffffff');
+				
+				var pj:FlexPrintJob = new FlexPrintJob();
+				pj.start();
+				
+				pj.addObject( scImpressao, FlexPrintJobScaleType.SHOW_ALL );
+				pj.send();
+				
+				btnImprimir.visible = true ;
+				scImpressao.setStyle('backgroundColor', '0xF6FAFE');
+			}
+			
 			private function sPontos(p:int):String
 			{
 				return p + ( p > 1 ? ' pontos' : ' ponto') ;
-			}
-			
-			private function verificaObservacao(c:app.model.Consulta):void
-			{
-				if( c.observacao != '' ){
-					trace( c.observacao );
-					textoObservacao.text = c.observacao ;
-				}
 			}
 			
 		]]>

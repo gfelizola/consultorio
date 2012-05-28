@@ -15,6 +15,8 @@ package app.model
 		
 		public var necessidadeEnergetica:Number;
 		
+		public var necessidadeEnergeticaGestacional:Number;
+		
 		public function ResumoConsulta()
 		{
 		}

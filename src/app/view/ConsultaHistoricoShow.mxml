@@ -16,6 +16,7 @@
 			import app.model.ExameBioquimico;
 			import app.model.MAN;
 			import app.model.Refeicao;
+			import app.model.ResumoConsulta;
 			import app.skin.TextArea;
 			import app.skin.TextInput;
 			import app.util.General;
@@ -42,11 +43,7 @@
 			{
 				if(General.consultaAtual)
 				{
-					dateConsulta = General.getFormattedDate(General.consultaAtual.dataConsulta.toString());
-					txtObservacao.text = General.consultaAtual.observacao;
-					buildAntropo();
-					buildMan();
-					buildAlimentos();
+					buidlAll();
 				}
 			}
 			
@@ -64,7 +61,6 @@
 						"<p><b>Pontouação total</b> (subtotal, máximo 30 pontos) <tab/> <font size='20'>" + ( m.pontuacaoTriagem + m.pontuacaoGlobal) + " pontos</font></p>" ;
 					
 					manTexto += "</textformat>";
-					
 					manInfo.htmlText = manTexto ;
 				}
 			}
@@ -118,11 +114,6 @@
 				}
 			}
 			
-			private function backToList(event:MouseEvent):void
-			{
-				ConsultaHistorico.instance.viewstackHistoricoConsulta.selectedIndex = 0 ;
-			}
-			
 			private function buildAlimentos():void
 			{
 				if(General.consultaAtual.dadosAlimentares != null) {
@@ -152,9 +143,11 @@
 			{
 				if(General.consultaAtual.exameBioquimico != null) {
 					var eb:ExameBioquimico = General.consultaAtual.exameBioquimico ;
-					var ebTexto:String = "<textformat tabstops='[300, 600]'>" ;
+					var ebTexto:String = "<textformat tabstops='[300, 800]'>" ;
 					
-					ebTexto += '<p><b>Exame<tab/>Referência<tab/>' + eb.dataDoExame + '</b></p>' ;
+					ebTexto += '<p><b>Data da realização dos exames:</b> ' + General.getFormattedDate( eb.dataDoExame.toString() ) + '</p>' ;
+					
+					ebTexto += '<p><b>Exame<tab/>Referência<tab/>Valor/Resultado</b></p>' ;
 					
 					for (var i:int = 0; i < eb.exames.length; i++) 
 					{
@@ -183,17 +176,61 @@
 					}
 					
 					afTexto += '</p>' ;
-					afTexto += '<p><b>Atividades<tab/>Dias da semana<tab/>Horários</b></p>' ;
 					
-					for (var i:int = 0; i < af.atividades.length; i++) 
-					{
-						var r:app.model.Atividade = af.atividades[i] ;
-						afTexto += '<p>' + r.nome + '<tab/>' + r.dias + '<tab/>' + r.horario + '</b></p>' ;
+					if( af.atividades.length > 0 ){
+						afTexto += '<p><b>Atividades<tab/>Dias da semana<tab/>Horários</b></p>' ;
+						
+						for (var i:int = 0; i < af.atividades.length; i++) 
+						{
+							var r:app.model.Atividade = af.atividades[i] ;
+							afTexto += '<p>' + r.nome + '<tab/>' + r.dias + '<tab/>' + r.horario + '</b></p>' ;
+						}
 					}
 					
 					afTexto += "</textformat>";
 					atividadesInfo.htmlText = afTexto ;
 				}
+			}
+			
+			private function buildMetabolismo():void
+			{
+				if(General.consultaAtual.resumo != null){
+					var r:ResumoConsulta = General.consultaAtual.resumo ;
+					
+					var rTexto:String = "<textformat tabstops='[300]'>" ;
+					
+					rTexto += "<p><b>Metabilismo Basal:</b> <tab/>" + r.metabolismoBasal + "</p>" +
+						"<p><b>Necessidade energética:</b><tab/>" + r.necessidadeEnergetica + "</p>" ;
+					
+					if( General.consultaAtual.semanaGestacional > 12 ){
+						rTexto += "<p><b>Necessidade energética gestacional:</b><tab/>" + r.necessidadeEnergeticaGestacional + "</p>" ;
+					} else {
+						if( General.consultaAtual.semanaGestacional > 0 ){
+							rTexto += "<p><b>Necessidade energética gestacional:</b><tab/>" + r.necessidadeEnergeticaGestacional + " (menos de 12 semanas de gestação)</p>" ;
+						}
+					}
+					
+					rTexto += "</textformat>";
+					tmbInfo.htmlText = rTexto ;
+				}
+			}
+			
+			private function buidlAll():void
+			{
+				if( General.consultaAtual.dataConsulta ) dateConsulta = General.getFormattedDate(General.consultaAtual.dataConsulta.toString());
+				txtObservacao.text = General.consultaAtual.observacao;
+				
+				buildAntropo();
+				buildMan();
+				buildAlimentos();
+				buildAtividades();
+				buildExames();
+				buildMetabolismo();
+			}
+			
+			private function backToList(event:MouseEvent = null):void
+			{
+				ConsultaHistorico.instance.vsHistoricoConsulta.selectedIndex = 0 ;
 			}
 			
 		]]>
@@ -221,6 +258,10 @@
 			</s:SkinnableContainer>
 			
 			<mx:Accordion width="984" height="100%" id="dadosAccordion">
+				<mx:VBox label="Metabolismo Basas / Necessidades Energéticas" id="tbmBox" width="984">
+					<mx:Text id="tmbInfo" condenseWhite="true" width="964" height="100%" paddingBottom="0" paddingLeft="10" paddingRight="10" paddingTop="10" />
+				</mx:VBox>
+				
 				<mx:VBox label="MAN" id="manAccordion" width="984">
 					<mx:Text id="manInfo" condenseWhite="true" width="964" height="100%" paddingBottom="0" paddingLeft="10" paddingRight="10" paddingTop="10" />
 				</mx:VBox>

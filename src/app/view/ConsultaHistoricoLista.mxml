@@ -41,7 +41,7 @@
 			protected function onClickHandler(event:MouseEvent):void
 			{
 				General.consultaAtual = event.currentTarget.grid.selectedItem as app.model.Consulta ;
-				ConsultaHistorico.instance.viewstackHistoricoConsulta.selectedIndex = 1 ;
+				ConsultaHistorico.instance.vsHistoricoConsulta.selectedIndex = 1 ;
 				trace(General.consultaAtual.dataConsulta,General.consultaAtual.antropometria);
 			} 
 		]]>

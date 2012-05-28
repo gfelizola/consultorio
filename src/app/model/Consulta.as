@@ -25,6 +25,8 @@ package app.model
 		
 		public var exameBioquimico:ExameBioquimico;
 		
+		public var resumo:ResumoConsulta;
+		
 		public var observacao:String;
 		
 		public var semanaGestacional:Number;
@@ -47,6 +49,12 @@ package app.model
 					}
 				}
 			}
+		}
+		
+		public function setResumo():void
+		{
+			resumo = new ResumoConsulta();
+//			resumo.metabolismoBasal
 		}
 		
 		[Transient]

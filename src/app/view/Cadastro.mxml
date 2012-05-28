@@ -119,19 +119,22 @@
 					
 					if( senha == confirmacao )
 					{
-						var c:Criteria = DB.em.createCriteria(Usuario);
-						c.addEqualsCondition("login", txtLogin.text );
 						
-						var cadastrado:Boolean = DB.em.fetchCriteria(c).length > 0 ;
-						if( cadastrado )
-						{
-							focusManager.setFocus(txtLogin);
-							Alert.show("Esse login já existe. Por favor, escolha outro.", "Aviso");
-						}
-						else 
-						{
-							salvarUsuario();
-						}
+						salvarUsuario();
+						
+//						var c:Criteria = DB.em.createCriteria(Usuario);
+//						c.addEqualsCondition("login", txtLogin.text );
+//						
+//						var cadastrado:Boolean = DB.em.fetchCriteria(c).length > 0 ;
+//						if( cadastrado )
+//						{
+//							focusManager.setFocus(txtLogin);
+//							Alert.show("Esse login já existe. Por favor, escolha outro.", "Aviso");
+//						}
+//						else 
+//						{
+//							salvarUsuario();
+//						}
 					}
 					else
 					{

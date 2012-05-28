@@ -66,6 +66,6 @@
     <s:RichEditableText id="textDisplay" verticalAlign="middle" widthInChars="10" left="10" right="10" top="1" bottom="1" color="0x81BAEA" fontSize="13" />
 	
     <!--- Defines the Label that is used for prompt text. The includeInLayout property is false so the prompt text does not affect measurement. -->
-    <s:Label id="promptDisplay" text="" maxDisplayedLines="1" verticalAlign="middle" mouseEnabled="false" styleName="bold" alpha="0.5" left="10" right="10" top="1" bottom="1" mouseChildren="false" includeIn="normalWithPrompt,disabledWithPrompt" />
+    <s:Label id="promptDisplay" text="" maxDisplayedLines="1" verticalAlign="middle" mouseEnabled="false" fontStyle="normal" alpha="0.5" left="10" right="10" top="1" bottom="1" mouseChildren="false" includeIn="normalWithPrompt,disabledWithPrompt" />
 
 </s:SparkSkin>

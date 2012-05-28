@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540" xmlns:view="app.view.*">
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540" 
+					xmlns:view="app.view.*" creationComplete="init()">
 	<fx:Script>
 		<![CDATA[
 			import app.util.General;
 			
+			import mx.events.FlexEvent;
 			import mx.events.IndexChangedEvent;
+			
+			
+			public static var instance:Consulta;
 			
 			[Bindable]
 			private var bindNomeSobrenomePaciente:String = General.pacienteAtual ? General.pacienteAtual.nome.toUpperCase() + ' ' + General.pacienteAtual.sobrenome.toUpperCase() : '';
@@ -14,6 +19,11 @@
 			private function vsPaciente_changeHandler(event:IndexChangedEvent):void
 			{
 //				vsPaciente.creationPolicy
+			}
+			
+			private function init():void
+			{
+				instance = this ;
 			}
 			
 		]]>

@@ -26,6 +26,8 @@ package app.util
 		
 		public static var consultaAtual:Consulta;
 		
+		public static var consultaSalva:Boolean;
+		
 		public static var buscaAtual:String = '' ;
 		
 		public static const APLICACAO_CARREGADA:String = "AplicacaoCarregada" ;
@@ -46,7 +48,9 @@ package app.util
 				if( pacienteAtual.gestante ) consultaAtual.setSemanaGestacional();
 				
 				DB.em.save(consultaAtual);
-				DB.em.save(pacienteAtual)
+				DB.em.save(pacienteAtual);
+				
+				consultaSalva = true ;
 				
 				Alert.show("Consulta salva com dados atuais");
 			}

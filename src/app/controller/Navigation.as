@@ -59,7 +59,7 @@ package app.controller
 				areaAtual = area ;
 				
 				if( area.nome != EAreas.CONSULTA.nome ){
-					if( General.consultaAtual != null ){
+					if( General.consultaAtual != null && ! General.consultaSalva ){
 						Alert.yesLabel = "Sim" ;
 						Alert.noLabel = "Não" ;
 						Alert.show("Você está cadastrando uma nova consulta. Caso saia dessa tela, a consulta será gravada somente até o ultimo momento que foi salva. Deseja continuar e sair?", "Cuidado", Alert.YES|Alert.NO, null, onAlertSair );

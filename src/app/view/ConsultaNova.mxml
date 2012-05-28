@@ -11,6 +11,7 @@
 			
 			import mx.core.UIComponent;
 			import mx.events.FlexEvent;
+			import mx.events.IndexChangedEvent;
 			
 			private function init():void
 			{
@@ -23,6 +24,11 @@
 //				if(tabMAN){tabMAN.enabled = idade > 65;}
 				
 				if( General.consultaAtual == null ) General.consultaAtual = new app.model.Consulta();
+			}
+			
+			private function onConsultaChangeTela(event:IndexChangedEvent):void
+			{
+				General.consultaSalva = false ;
 			}
 			
 		]]>
@@ -48,7 +54,7 @@
 	<s:Button id="btnSalvarConsulta" y="58" horizontalCenter="0" label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DA CONSULTA" skinClass="app.skin.Button" />
 	-->
 	
-	<mx:ViewStack id="vsConsulta" x="0" y="100" width="100%" height="100%" backgroundColor="#ffffff" creationPolicy="all">
+	<mx:ViewStack id="vsConsulta" x="0" y="100" width="100%" height="100%" change="onConsultaChangeTela(event)" backgroundColor="#ffffff" creationPolicy="all">
 		<view:ConsultaAntropometria width="100%" height="100%" label="ANTROPOMETRIA"></view:ConsultaAntropometria>
 		<view:ConsultaMAN id="ncMAN" width="100%" height="100%" label="MAN"></view:ConsultaMAN>
 		

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="2000"
 					creationComplete="init()" xmlns:skin="app.skin.*">
 	<fx:Script>
 		<![CDATA[
@@ -61,9 +61,18 @@
 					paciente = p;
 					patologias = p.patologias as ArrayCollection ;
 					historicos = p.historicos as ArrayCollection ;
+					
+					txtDataNascimento.text = General.getFormattedDate( p.dataNascimento.toString() );
 				
 					gpHistorico.visible = ! isNaN( p.id );
-					cmbSexo.selectedIndex = p.sexo == 'M' ? 1 : 0 ;
+					cmbSexo.selectedIndex = p.sexo == 'M' ? 0 : 1 ;
+					cmbEstados.selectedItem = p.estado ;
+					cmbTipoAtendimento.selectedItem = p.tipo ;
+					
+					Gestante.selectedValue = p.gestante ? 'Sim' : 'Não' ;
+					Nutriz.selectedValue = p.nutriz ? 'Sim' : 'Não' ;
+					
+					onTipoAtendimentoChange();
 				}
 			}
 			
@@ -85,7 +94,7 @@
 				validators.push(valEndereco);
 				validators.push(valCidade);
 				validators.push(valTelRes);
-				validators.push(valEmail);
+//				validators.push(valEmail);
 				validators.push(valSexo);
 				validators.push(valEstado);
 				
@@ -101,14 +110,13 @@
 			
 			private function onSexoChange(e:IndexChangeEvent):void
 			{
-				gpGestante.visible = cmbSexo.selectedItem.valor == 'F' ;
-				gpDados.y = gpGestante.visible ? 431 : 365 ;
+				gpFeminino.visible = gpFeminino.includeInLayout = cmbSexo.selectedItem.valor == 'F' ;
 			}
 			
 			private function onGestanteChange(e:Event):void
 			{
-				gpDataMestruacao.visible = Gestante.selectedValue == 'Sim';
-				gpNutriz.visible = Gestante.selectedValue == 'Não';
+				gpDataMestruacao.visible = gpDataMestruacao.includeInLayout = Gestante.selectedValue == 'Sim';
+				gpNutriz.visible = gpNutriz.includeInLayout = Gestante.selectedValue == 'Não';
 			}
 			
 			private function onHistoricoChange(e:IndexChangeEvent):void
@@ -220,7 +228,7 @@
 				Navigation.navega( EAreas.CONSULTA );
 			}
 			
-			private function onTipoAtendimentoChange(e:IndexChangeEvent):void
+			private function onTipoAtendimentoChange(e:IndexChangeEvent = null):void
 			{
 				var v:Boolean = TipoAtendimento( cmbTipoAtendimento.selectedItem ).nome.indexOf('Conv') > -1 ;
 				lblConvenio.visible = v ;
@@ -232,8 +240,8 @@
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<s:RadioButtonGroup id="Gestante" change="onGestanteChange(event)" selectedValue="{paciente.gestante?'Sim': 'Não'}" />
-		<s:RadioButtonGroup id="Nutriz" selectedValue="{paciente.nutriz?'Sim': 'Não'}" />
+		<s:RadioButtonGroup id="Gestante" change="onGestanteChange(event)" />
+		<s:RadioButtonGroup id="Nutriz" />
 		
 		<mx:StringValidator id="valNome" 			source="{txtNome}" 				property="text" required="true" requiredFieldError="O campo Nome é obrigatório" />
 		<mx:StringValidator id="valSobrenome" 		source="{txtSobrenome}" 		property="text" required="true" requiredFieldError="O campo Sobrenome é obrigatório" />
@@ -241,71 +249,76 @@
 		<mx:StringValidator id="valEndereco" 		source="{txtEndereco}" 			property="text" required="true" requiredFieldError="O campo Endereço é obrigatório" />
 		<mx:StringValidator id="valCidade" 			source="{txtCidade}" 			property="text" required="true" requiredFieldError="O campo Cidade é obrigatório" />
 		<mx:StringValidator id="valTelRes" 			source="{txtTelResidencial}" 	property="text" required="true" requiredFieldError="O campo Telefone Residencial é obrigatório" />
-		<mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" />
+		<!--  mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" / -->
 		
 		<s:NumberValidator id="valSexo" source="{cmbSexo}" property="selectedIndex" minValue="0" />
 		<s:NumberValidator id="valEstado" source="{cmbEstados}" property="selectedIndex" minValue="0" />
 	</fx:Declarations>
 	
-	<skin:ScrollerSemBug id="formScroller" x="10" y="10" width="984" height="520" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
-		<s:Group id="formContainer" width="984" height="520">
+	<skin:ScrollerSemBug id="formScroller" x="10" y="10" width="984" height="2000" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
+		<s:VGroup id="formContainer" width="984" height="2000" paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
 			
-			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DA CONSULTA" />
+			<s:Label color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DA CONSULTA" />
 			
-			<s:Label x="10" y="50" text="TIPO DE ATENDIMENTO"/>
-			<s:ComboBox id="cmbTipoAtendimento" x="10" y="71" width="435" labelField="nome" dataProvider="{Constantes.tiposAtendimentos}" skinClass="app.skin.ComboBox" selectedItem="{paciente.tipo}" change="onTipoAtendimentoChange(event)" />
-			
-			<s:Label id="lblConvenio" x="490" y="50" text="CONVÊNIO"/>
-			<s:TextInput id="txtConvenio" x="490" y="71" width="225" skinClass="app.skin.TextInput" text="{paciente.convenio}" />
-			
-			<s:Label id="lblNCarteira" x="735" y="50" text="N. DA CARTEIRA"/>
-			<s:TextInput id="txtCarteira" x="735" y="71" width="200" skinClass="app.skin.TextInput" text="{paciente.carteira}" />
-			
-			<s:Label x="10" y="114" text="OBJETIVO DA CONSULTA"/>
-			<s:TextInput id="txtObjetivo" x="10" y="135" width="435" skinClass="app.skin.TextInput" text="{paciente.objetivo}"/>
-			
-			<s:Label x="490" y="114" text="INDICAÇÃO"/>
-			<s:TextInput id="txtIndicacao" x="490" y="135" width="435" skinClass="app.skin.TextInput" text="{paciente.indicacao}" />
-			
-			<s:Label x="10" y="182" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DO PACIENTE"/>
-			
-			<s:Label x="10" y="219" text="NOME*"/>
-			<s:TextInput id="txtNome" x="10" y="240" width="435" skinClass="app.skin.TextInput" text="{paciente.nome}" />
-			
-			<s:Label x="490" y="219" text="SOBRENOME*"/>
-			<s:TextInput id="txtSobrenome" x="490" y="240" width="435" skinClass="app.skin.TextInput" text="{paciente.sobrenome}" />
-			
-			<s:Label x="10" y="295" text="SEXO*"/>
-			<s:ComboBox id="cmbSexo" x="10" y="316" width="110" labelField="nome" dataProvider="{sexos}" skinClass="app.skin.ComboBox" change="onSexoChange(event)" />
-			
-			<s:Label x="135" y="295" text="DATA DE NASCIMENTO*"/>
-			<s:TextInput id="txtDataNascimento" x="135" y="316" width="309" skinClass="app.skin.TextInput" text="{paciente.dataNascimento}" />
-			
-			<s:Label x="490" y="295" text="ESTADO CIVIL"/>
-			<s:ComboBox id="cmbEstadoCivil" x="490" y="316" width="155" labelField="nome" dataProvider="{Constantes.estadosCivis}" skinClass="app.skin.ComboBox" selectedItem="{paciente.estadoCivil}" />
-			
-			<s:Label x="665" y="295" text="PROFISSÃO"/>
-			<s:TextInput id="txtProfissao" x="665" y="316" width="260" skinClass="app.skin.TextInput" text="{paciente.profissao}" />
-			
-			<s:Group id="gpGestante" x="10" y="365" width="145" height="57" visible="false">
-				<s:Label x="0" y="0" text="É GESTANTE?"/>
-				<s:RadioButton id="gestanteSim" x="0" y="20" label="Sim" groupName="Gestante"/>
-				<s:RadioButton id="gestanteNao" x="63" y="20" label="Não" groupName="Gestante"/>
-			</s:Group>
-			
-			<s:Group id="gpNutriz" x="210" y="365" width="145" height="57" visible="false">
-				<s:Label x="0" y="0" text="É NUTRIZ?"/>
-				<s:RadioButton id="nutrizSim" x="0" y="20" label="Sim" groupName="Nutriz"/>
-				<s:RadioButton id="nutrizNao" x="63" y="20" label="Não" groupName="Nutriz"/>
-			</s:Group>
-			
-			<s:Group id="gpDataMestruacao" x="210" y="365" width="145" height="57" visible="false">
-				<s:Label x="0" y="0" text="Data da última menstruação"/>
-				<mx:DateField id="dtUltimaMestruacao" x="0" y="20" contentBackgroundColor="#FFFFFF" text="{paciente.dataUltimaMenstruacao?paciente.dataUltimaMenstruacao.toString():''}" />
-			</s:Group>
-			
-			<s:Group id="gpDados" x="0" y="365" width="100%">
+			<s:Group>
+				<s:Label x="0" y="10" text="TIPO DE ATENDIMENTO"/>
+				<s:ComboBox id="cmbTipoAtendimento" x="0" y="31" width="435" labelField="nome" dataProvider="{Constantes.tiposAtendimentos}" skinClass="app.skin.ComboBox" change="onTipoAtendimentoChange(event)" />
 				
+				<s:Label id="lblConvenio" x="480" y="10" text="CONVÊNIO"/>
+				<s:TextInput id="txtConvenio" x="480" y="31" width="225" skinClass="app.skin.TextInput" text="{paciente.convenio}" />
+				
+				<s:Label id="lblNCarteira" x="725" y="10" text="N. DA CARTEIRA"/>
+				<s:TextInput id="txtCarteira" x="725" y="31" width="200" skinClass="app.skin.TextInput" text="{paciente.carteira}" />
+				
+				<s:Label x="0" y="74" text="OBJETIVO DA CONSULTA"/>
+				<s:TextInput id="txtObjetivo" x="0" y="95" width="435" skinClass="app.skin.TextInput" text="{paciente.objetivo}"/>
+				
+				<s:Label x="480" y="74" text="INDICAÇÃO"/>
+				<s:TextInput id="txtIndicacao" x="480" y="95" width="435" skinClass="app.skin.TextInput" text="{paciente.indicacao}" />
+			</s:Group>
+			
+			<s:Label color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DO PACIENTE"/>
+			
+			<s:Group width="100%">
+				<s:Label x="0" y="10" text="NOME*"/>
+				<s:TextInput id="txtNome" x="0" y="31" width="435" skinClass="app.skin.TextInput" text="{paciente.nome}" />
+				
+				<s:Label x="480" y="10" text="SOBRENOME*"/>
+				<s:TextInput id="txtSobrenome" x="480" y="31" width="435" skinClass="app.skin.TextInput" text="{paciente.sobrenome}" />
+				
+				<s:Label x="0" y="86" text="SEXO*"/>
+				<s:ComboBox id="cmbSexo" x="0" y="107" width="110" labelField="nome" dataProvider="{sexos}" skinClass="app.skin.ComboBox" change="onSexoChange(event)" />
+				
+				<s:Label x="125" y="86" text="DATA DE NASCIMENTO*"/>
+				<s:TextInput id="txtDataNascimento" x="125" y="107" width="309" skinClass="app.skin.TextInput" text="" prompt="DD/MM/AAAA" />
+				
+				<s:Label x="480" y="86" text="ESTADO CIVIL"/>
+				<s:ComboBox id="cmbEstadoCivil" x="480" y="107" width="155" labelField="nome" dataProvider="{Constantes.estadosCivis}" skinClass="app.skin.ComboBox" selectedItem="{paciente.estadoCivil}" />
+				
+				<s:Label x="655" y="86" text="PROFISSÃO"/>
+				<s:TextInput id="txtProfissao" x="655" y="107" width="260" skinClass="app.skin.TextInput" text="{paciente.profissao}" />
+			</s:Group>
+			
+			<s:HGroup id="gpFeminino" width="100%" gap="30" includeInLayout="false">
+				<s:Group id="gpGestante" x="0" y="0" width="145" height="57">
+					<s:Label x="0" y="0" text="É GESTANTE?"/>
+					<s:RadioButton id="gestanteSim" x="0" y="20" label="Sim" groupName="Gestante"/>
+					<s:RadioButton id="gestanteNao" x="63" y="20" label="Não" groupName="Gestante"/>
+				</s:Group>
+				
+				<s:Group id="gpNutriz" x="200" y="0" width="145" height="57" visible="false" includeInLayout="false">
+					<s:Label x="0" y="0" text="É NUTRIZ?"/>
+					<s:RadioButton id="nutrizSim" x="0" y="20" label="Sim" groupName="Nutriz"/>
+					<s:RadioButton id="nutrizNao" x="63" y="20" label="Não" groupName="Nutriz"/>
+				</s:Group>
+			
+				<s:Group id="gpDataMestruacao" x="200" y="0" width="145" height="57" visible="false" includeInLayout="false">
+					<s:Label x="0" y="0" text="Data da última menstruação"/>
+					<mx:DateField id="dtUltimaMestruacao" x="0" y="20" contentBackgroundColor="#FFFFFF" text="{paciente.dataUltimaMenstruacao?paciente.dataUltimaMenstruacao.toString():''}" />
+				</s:Group>
+			</s:HGroup>
+			
+			<s:Group id="gpDados" width="100%">
 				<s:Label x="9" y="2" text="ENDEREÇO*"/>
 				<s:TextInput id="txtEndereco" x="9" y="23" width="435" skinClass="app.skin.TextInput" text="{paciente.endereco}" />
 				
@@ -332,34 +345,38 @@
 				
 				<s:Label x="10" y="208" text="E-MAIL*"/>
 				<s:TextInput id="txtEmail" x="10" y="229" width="435" skinClass="app.skin.TextInput" text="{paciente.email}" />
-				
-				<s:Label x="10" y="280" text="HISTÓRICO FAMILIAR"/>
-				<s:ComboBox id="cmbHistoricos" x="10" y="301" width="435" labelField="nome" dataProvider="{Constantes.historicos}" skinClass="app.skin.ComboBox" change="onHistoricoChange(event)" />
-				<s:List id="lstHistoricos" x="10" y="343" width="435" labelField="nome" dataProvider="{historicos}" borderVisible="false" allowMultipleSelection="true">
-					<s:layout>
-						<s:VerticalLayout gap="0" horizontalAlign="justify" requestedRowCount="5" />
-					</s:layout>
-				</s:List>
-				<mx:LinkButton x="10" y="458" icon="@Embed('assets/images/remover.png')" label="remover itens selecionados" click="onRemoverHistoricos(event)" />
-				
-				<s:Label x="493" y="280" text="PATOLOGIAS"/>
-				<s:ComboBox id="cmbPatologias" x="493" y="301" width="435" labelField="nome" dataProvider="{Constantes.patologias}" skinClass="app.skin.ComboBox" change="onPatologiaChange(event)" />
-				<s:List id="lstPatologias" x="493" y="343" width="435" labelField="nome" dataProvider="{patologias}" borderVisible="false" allowMultipleSelection="true">
-					<s:layout>
-						<s:VerticalLayout gap="0" horizontalAlign="justify" requestedRowCount="5" />
-					</s:layout>
-				</s:List>
-				<mx:LinkButton x="493" y="458" icon="@Embed('assets/images/remover.png')" label="remover itens selecionados" click="onRemoverPatologias(event)" />
-				
-				<s:Group x="0" y="500" width="100%" id="gpHistorico" visible="false">
-					<s:Label x="10" y="0" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICO" />
-					<s:Label x="10" y="30" text="TEXTO EXPLICATIVO DE COMO ESTE CAMPO DEVE SER PREENCHIDO LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT.&#xd;MAECENAS EROS LECTUS, ALIQUET ORNARE FERMENTUM SIT AMET, ELEMENTUM A RISUS."/>
-					<s:TextArea id="txtHistorico" x="10" y="66" width="924" height="167" skinClass="app.skin.TextArea" text="{paciente.historico}" />
-				</s:Group>
-				
 			</s:Group>
-			<s:Button id="btnSalvar" x="802" y="{gpDados.y + gpDados.height + 10}" label="SALVAR DADOS" skinClass="app.skin.Button" click="onSalvar(event)"/>
-			<s:Label id="lblResposta" x="10" y="{gpDados.y + gpDados.height + 10}" width="780" height="100" color="#FF0000"/>
-		</s:Group>
+			
+			<s:Group width="100%">
+				<s:Label x="0" y="10" text="HISTÓRICO FAMILIAR"/>
+				<s:ComboBox id="cmbHistoricos" x="0" y="31" width="435" labelField="nome" dataProvider="{Constantes.historicos}" skinClass="app.skin.ComboBox" change="onHistoricoChange(event)" />
+				<s:List id="lstHistoricos" x="0" y="59" width="435" labelField="nome" dataProvider="{historicos}" borderVisible="false" allowMultipleSelection="true">
+					<s:layout>
+						<s:VerticalLayout gap="0" horizontalAlign="justify" requestedRowCount="5" />
+					</s:layout>
+				</s:List>
+				<mx:LinkButton x="0" y="174" icon="@Embed('assets/images/remover.png')" label="remover itens selecionados" click="onRemoverHistoricos(event)" />
+				
+				<s:Label x="483" y="10" text="PATOLOGIAS"/>
+				<s:ComboBox id="cmbPatologias" x="483" y="31" width="435" labelField="nome" dataProvider="{Constantes.patologias}" skinClass="app.skin.ComboBox" change="onPatologiaChange(event)" />
+				<s:List id="lstPatologias" x="483" y="59" width="435" labelField="nome" dataProvider="{patologias}" borderVisible="false" allowMultipleSelection="true">
+					<s:layout>
+						<s:VerticalLayout gap="0" horizontalAlign="justify" requestedRowCount="5" />
+					</s:layout>
+				</s:List>
+				<mx:LinkButton x="483" y="174" icon="@Embed('assets/images/remover.png')" label="remover itens selecionados" click="onRemoverPatologias(event)" />
+			</s:Group>
+			
+			<s:Group width="100%" id="gpHistorico" visible="false">
+				<s:Label x="10" y="0" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICO" />
+				<s:Label x="10" y="30" text="TEXTO EXPLICATIVO DE COMO ESTE CAMPO DEVE SER PREENCHIDO LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT.&#xd;MAECENAS EROS LECTUS, ALIQUET ORNARE FERMENTUM SIT AMET, ELEMENTUM A RISUS."/>
+				<s:TextArea id="txtHistorico" x="10" y="66" width="924" height="167" skinClass="app.skin.TextArea" text="{paciente.historico}" />
+			</s:Group>
+				
+			<s:Group width="100%">
+				<s:Button id="btnSalvar" x="802" y="{gpDados.y + gpDados.height + 10}" label="SALVAR DADOS" skinClass="app.skin.Button" click="onSalvar(event)"/>
+				<s:Label id="lblResposta" x="10" y="{gpDados.y + gpDados.height + 10}" width="780" height="100" color="#FF0000"/>
+			</s:Group>
+		</s:VGroup>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

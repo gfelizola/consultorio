@@ -350,16 +350,16 @@
 			<s:Label x="490" y="219" text="SOBRENOME*"/>
 			<s:TextInput id="txtSobrenome" x="490" y="240" width="435" skinClass="app.skin.TextInput" text="{usuario.sobrenome}" />
 			
-			<s:Label x="490" y="294" text="SEXO*"/>
-			<s:ComboBox id="cmbSexo" x="490" y="315" width="435" dataProvider="{sexos}"
-						labelField="nome" skinClass="app.skin.ComboBox"/>
-			
 			<s:Label x="10" y="295" text="CRN*"/>
 			<s:TextInput id="txtCrn" x="10" y="316" width="309" skinClass="app.skin.TextInput" text="{usuario.CRN}" />
 			
 			<s:Label x="327" y="294" text="REGIONAL*"/>
 			<s:ComboBox id="cmbRegional" x="327" y="315" width="118" dataProvider="{regionais}"
 						selectedItem="{usuario.regional}" skinClass="app.skin.ComboBox"/>
+			
+			<s:Label x="490" y="294" text="SEXO*"/>
+			<s:ComboBox id="cmbSexo" x="490" y="315" width="435" dataProvider="{sexos}"
+						labelField="nome" skinClass="app.skin.ComboBox"/>
 			
 			
 			

@@ -133,6 +133,7 @@
 						daTexto += '<p>' + r.nome + '<tab/>' + r.alimentos + '<tab/>' + r.quantidades + '</b></p>' ;
 					}
 					
+					daTexto += '<p>&nbsp;</p>' ;
 					daTexto += '<p><b>Quantidade de água por dia:</b> ' + da.qtdeAgua + '</p>' ;
 					daTexto += '<p><b>Funcionalidade intestinal:</b> ' + da.funcionamentoIntestinal + '</p>' ;
 					daTexto += '<p><b>Preferências alimentares:</b> ' + da.preferenciasAlimentares + '</p>' ;

@@ -106,23 +106,33 @@
 				if( a != null ){
 					containerDadosAntropometria.removeAllElements();
 					
-					containerDadosAntropometria.addElement( getAntropometriaGroup('PESO', a.peso ) ) ;
-					if( ! isNaN( a.pesoPreGestacional ) ) containerDadosAntropometria.addElement( getAntropometriaGroup('PESO PRÉ-GESTACIONAL', a.pesoPreGestacional ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('ESTATURA', a.estatura ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('CIRCUNFERÊNCIA DA CINTURA', a.circunferenciaCintura ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('CIRCUNFERÊNCIA DO QUADRIL', a.circunferenciaQuadril ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('CIRCUNFERÊNCIA DO TRÍCEPS', a.circunferenciaTriceps ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('CIRCUNFERÊNCIA DA COXA', a.circunferenciaCoxa ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('CIRCUNFERÊNCIA DA PANTURRILHA', a.circunferenciaPanturrilha ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA TRICIPTAL', a.dobraCutaneaTriciptal ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA BICIPTAL', a.dobraCutaneaBiciptal ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA SUBESCAPULAR', a.dobraCutaneaSubescapular ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA AXILAR MÉDIA', a.dobraCutaneaAxilarMedia ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA SUPRA-ILÍACA', a.dobraCutaneaSupraIliaca ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA TORÁCICA', a.dobraCutaneaToracica ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA ABDOMINAL', a.dobraCutaneaAbdominal ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA DA COXA', a.dobraCutaneaCoxa ) ) ;
-					containerDadosAntropometria.addElement( getAntropometriaGroup('DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', a.dobraCutaneaPanturrilhaMedial ) ) ;
+					var campos:Array = [
+						{ nome:'PESO', 									valor: a.peso },
+						{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional },
+						{ nome:'ESTATURA', 								valor: a.estatura },
+						{ nome:'CIRCUNFERÊNCIA DA CINTURA', 			valor: a.circunferenciaCintura },
+						{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril },
+						{ nome:'CIRCUNFERÊNCIA DO TRÍCEPS', 			valor: a.circunferenciaTriceps },
+						{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa },
+						{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha },
+						{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal },
+						{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal },
+						{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular },
+						{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia },
+						{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca },
+						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica },
+						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal },
+						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa },
+						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial }
+					];
+					
+					for (var i:int = 0; i < campos.length; i++) 
+					{
+						var o:Object = campos[i] ;
+						if( ! isNaN( o.valor ) ){
+							if( o.valor > 0 ) containerDadosAntropometria.addElement( getAntropometriaGroup(o.nome, o.valor) ) ;
+						}
+					}
 				}
 			}
 			

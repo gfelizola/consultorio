@@ -81,12 +81,10 @@
 					o['sc'] = new SkinnableContainer();
 					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
 					o['sc'].width = 435;
+					
 					o['hg'] = new HGroup();
-					with(o['hg'])
-					{
-						paddingTop = paddingRight = paddingBottom = paddingLeft = 5;
-						gap = 10;
-					}
+					o['hg'].paddingTop = o['hg'].paddingRight = o['hg'].paddingBottom = o['hg'].paddingLeft = 5;
+					o['hg'].gap = 10;
 					
 					o['nome'] = new Label();
 					o['nome'].text = exame.nome;
@@ -120,11 +118,9 @@
 					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
 					o['sc'].width = 435;
 					o['hg'] = new HGroup();
-					with(o['hg'])
-					{
-						paddingTop = paddingRight = paddingBottom = paddingLeft = 5;
-						gap = 10;
-					}
+
+					o['hg'].paddingTop = o['hg'].paddingRight = o['hg'].paddingBottom = o['hg'].paddingLeft = 5;
+					o['hg'].gap = 10;
 					
 					o['nome'] = new spark.components.TextInput();
 					o['nome'].setStyle('skinClass', app.skin.TextInput);

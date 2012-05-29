@@ -26,6 +26,8 @@
 				
 				for each( var validator:Validator in validators )
 					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
+					
+				gpPreGestacional.visible = gpPreGestacional.includeInLayout = General.pacienteAtual.gestante ;
 			}
 			
 			private function validateForm(event:Event):void
@@ -117,20 +119,28 @@
 		</fx:Array>
 	</fx:Declarations>
 	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
-		<s:Group width="100%" height="100%">
+		<s:Group width="994" height="390">
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
 			
-			<s:Label x="10" y="50" text="PESO*"/>
-			<s:TextInput id="txtPeso" x="10" y="70" width="120" skinClass="app.skin.TextInput" text="" />
-			<s:Label x="134" y="85" color="#999999" styleName="light" text="(kg)"/>
-			
-			<s:Label x="170" y="50" text="PESO PRÉ-GETACIONAL"/>
-			<s:TextInput id="txtPesoGestacional" x="170" y="70" width="120" skinClass="app.skin.TextInput" text="" />
-			<s:Label x="294" y="85" color="#999999" styleName="light" text="(kg)"/>
-			
-			<s:Label x="335" y="50" text="ESTATURA*"/>
-			<s:TextInput id="txtEstatura" x="335" y="70" width="120" skinClass="app.skin.TextInput" text="" />
-			<s:Label x="459" y="85" color="#999999" styleName="light" text="(cm)"/>
+			<s:HGroup x="10" y="50" gap="30">
+				<s:Group>
+					<s:Label x="0" y="0" text="PESO*"/>
+					<s:TextInput id="txtPeso" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" />
+					<s:Label x="124" y="35" color="#999999" styleName="light" text="(kg)"/>
+				</s:Group>
+				
+				<s:Group id="gpPreGestacional" x="170" y="50">
+					<s:Label x="0" y="0" text="PESO PRÉ-GESTACIONAL"/>
+					<s:TextInput id="txtPesoGestacional" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" />
+					<s:Label x="124" y="35" color="#999999" styleName="light" text="(kg)"/>
+				</s:Group>
+				
+				<s:Group>
+					<s:Label x="0" y="0" text="ESTATURA*"/>
+					<s:TextInput id="txtEstatura" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" />
+					<s:Label x="124" y="35" color="#999999" styleName="light" text="(cm)"/>
+				</s:Group>
+			</s:HGroup>
 			
 			<s:Label x="10" y="120" text="CIRCUNFERÊNCIA DA CINTURA"/>
 			<s:TextInput id="txtCircCintura" x="10" y="140" width="175" skinClass="app.skin.TextInput" text="" />

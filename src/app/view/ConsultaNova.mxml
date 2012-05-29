@@ -26,7 +26,7 @@
 				var idade:Number = ( new Date().fullYear ) - p.dataNascimento.fullYear ;
 				
 				var tabMAN:UIComponent = tbConsulta.dataGroup.getElementAt(1) as UIComponent;
-				if(tabMAN){tabMAN.enabled = idade > 65;}
+				if(tabMAN){tabMAN.includeInLayout = tabMAN.visible = idade > 65;}
 				
 				if( General.consultaAtual == null ){
 					General.consultaAtual = new app.model.Consulta();

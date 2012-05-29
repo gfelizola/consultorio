@@ -59,13 +59,8 @@
 			<s:TextArea id="txtObservacao" x="9" y="112" skinClass="app.skin.TextArea" width="481" height="170" text="{bindObservacao}"/>
 			
 			<s:HGroup gap="10">
-				<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR CONSULTA"
-						  alpha="{formIsValid ? 1 : 0.5}" click="onSalvar(event)"
-						  enabled="{formIsValid}" skinClass="app.skin.Button"/>
-				
-				<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA"
-						  alpha="{formIsValid ? 1 : 0.5}" click="onFinalizar(event)"
-						  enabled="{formIsValid}" skinClass="app.skin.Button"/>
+				<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR CONSULTA" click="onSalvar(event)" skinClass="app.skin.Button"/>
+				<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
 			</s:HGroup>
 			
 			<view:ConsultaImpressa id="impressao" etapa="5" x="516" y="10" visible="false" includeInLayout="false" />

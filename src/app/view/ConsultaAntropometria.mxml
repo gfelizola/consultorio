@@ -136,13 +136,13 @@
 			<s:TextInput id="txtCircCintura" x="10" y="140" width="175" skinClass="app.skin.TextInput" text="" />
 			<s:Label x="190" y="155" color="#999999" styleName="light" text="(cm)"/>
 			
-			<s:Label x="10" y="200" text="CIRCUNFERÊNCIA DO TRÍCEPS"/>
-			<s:TextInput id="txtCircTriceps" x="10" y="220" width="175" skinClass="app.skin.TextInput" text="" />
-			<s:Label x="190" y="235" color="#999999" styleName="light" text="(cm)"/>
-			
 			<s:Label x="279" y="120" text="CIRCUNFERÊNCIA DO QUADRIL"/>
 			<s:TextInput id="txtCircQuadril" x="279" y="140" width="175" skinClass="app.skin.TextInput" text="" />
 			<s:Label x="459" y="155" color="#999999" styleName="light" text="(cm)"/>
+			
+			<s:Label x="10" y="200" text="CIRCUNFERÊNCIA DO TRÍCEPS"/>
+			<s:TextInput id="txtCircTriceps" x="10" y="220" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="235" color="#999999" styleName="light" text="(cm)"/>
 			
 			<s:Label x="10" y="280" text="CIRCUNFÊRENCIA DA COXA"/>
 			<s:TextInput id="txtCircCoxa" x="10" y="300" width="175" skinClass="app.skin.TextInput" text="" />
@@ -156,13 +156,13 @@
 			<s:TextInput id="txtDobraBiceps" x="10" y="380" width="175" skinClass="app.skin.TextInput" text="" />
 			<s:Label x="190" y="395" color="#999999" styleName="light" text="(mm)"/>
 			
-			<s:Label x="10" y="440" text="DOBRA CUTÂNEA SUBESCAPULAR"/>
-			<s:TextInput id="txtDobraSubescapular" x="10" y="460" width="175" skinClass="app.skin.TextInput" text="" />
-			<s:Label x="190" y="475" color="#999999" styleName="light" text="(mm)"/>
-			
 			<s:Label x="279" y="360" text="DOBRA CUTÂNEA TRICIPTAL"/>
 			<s:TextInput id="txtDobraTriceps" x="279" y="380" width="175" skinClass="app.skin.TextInput" text="" />
 			<s:Label x="459" y="395" color="#999999" styleName="light" text="(mm)"/>
+			
+			<s:Label x="10" y="440" text="DOBRA CUTÂNEA SUBESCAPULAR"/>
+			<s:TextInput id="txtDobraSubescapular" x="10" y="460" width="175" skinClass="app.skin.TextInput" text="" />
+			<s:Label x="190" y="475" color="#999999" styleName="light" text="(mm)"/>
 			
 			<s:Label x="10" y="520" text="DOBRA CUTÂNEA AXILAR MÉDIA"/>
 			<s:TextInput id="txtDobraAxilarMedia" x="10" y="540" width="175" skinClass="app.skin.TextInput" text="" />

@@ -279,7 +279,7 @@
 				</mx:VBox>
 				
 				<mx:VBox label="HÁBITOS ALIMENTARES" id="habitosAccordion">
-					<mx:Text id="alimentosInfo" condenseWhite="true" width="974" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<mx:Text id="alimentosInfo" condenseWhite="true" width="984" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
 				</mx:VBox>
 				
 				<mx:VBox label="ATIVIDADES FÍSICAS" id="atividadesAccordion">

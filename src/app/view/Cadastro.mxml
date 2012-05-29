@@ -216,7 +216,7 @@
 				{
 					var logoName:String = "logo_" + u.id + "." + logo.extension ;
 					u.logo = logoName ;
-					logo.copyToAsync( File.applicationStorageDirectory.resolvePath("images/" + u.logo ) );	
+					logo.copyToAsync( File.applicationStorageDirectory.resolvePath("images/" + u.logo ), true );	
 				}
 				
 				DB.em.save(u);

@@ -28,7 +28,7 @@
 			import mx.printing.FlexPrintJobScaleType;
 			
 			[Bindable]
-			public var etapa:int = 1 ;
+			public var etapa:int = 0 ;
 			
 			[Bindable]
 			private var titulos:Array = [];
@@ -39,7 +39,7 @@
 			[Bindable]
 			private var usuarioDesc:String = '';
 			
-			private function init():void
+			public function init():void
 			{
 				var usuario:Usuario = General.usuario ;
 				var logo:File;
@@ -87,12 +87,12 @@
 					
 					switch(etapa)
 					{
-						case 1: 	verificaAntropometria(c);		break;
-						case 2: 	verificaAtividadesFisicas(c);	break;
-						case 3: 	verificaDadosalimentares(c);	break;
-						case 4: 	verificaExames(c);				break;
-						case 5: 	verificaMAN(c);					break;
-						case 6: 	verificaObservacao(c);			break;
+						case 0: 	verificaAntropometria(c);		break;
+						case 1: 	verificaAtividadesFisicas(c);	break;
+						case 2: 	verificaDadosalimentares(c);	break;
+						case 3: 	verificaExames(c);				break;
+						case 4: 	verificaMAN(c);					break;
+						case 5: 	verificaObservacao(c);			break;
 					}
 				}
 			}
@@ -174,6 +174,7 @@
 					observacaoAtividade.text = af.observacao ;
 					
 					containerAtividades.addElement( getAtividadeGroup("ATIVIDADE FÍSICA", "DIAS DA SEMANA", "HORÁRIO") );
+					trace( "consulta.atividades.length:", af.atividades.length );
 					for (var i:int = 0; i < af.atividades.length; i++) 
 					{
 						var at:Atividade = af.atividades[i] ;
@@ -232,6 +233,7 @@
 				if( da ){
 					containerRefeicoes.addElement( getRefeicaoGroup( 'REFEIÇÃO/HORARIO', 'ALIMENTO', 'QUANTIDADE' ) ) ;
 					
+					trace( "consulta.refeicoes.length:", da.refeicoes.length );
 					for (var i:int = 0; i < da.refeicoes.length; i++) 
 					{
 						var r:Refeicao = da.refeicoes[i] ;
@@ -319,7 +321,7 @@
 				var eb:ExameBioquimico = c.exameBioquimico ;
 				if( eb ){
 					containerExames.addElement( getRefeicaoGroup( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame.toString() ) ) ) ;
-					
+					trace( "consulta.exames.length:", eb.exames.length );
 					for (var i:int = 0; i < eb.exames.length; i++) 
 					{
 						var e:ExameAdicional = eb.exames[i] ;
@@ -448,7 +450,7 @@
 		<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
 		<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
 		
-		<s:Label id="impTitulo" x="10" y="77" color="#83BBEA" fontSize="19" styleName="bold" text="{titulos[etapa-1]}"/>
+		<s:Label id="impTitulo" x="10" y="77" color="#83BBEA" fontSize="19" styleName="bold" text="{titulos[etapa]}"/>
 		<s:Label id="impData" x="285" y="84" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
 		
 		<s:Label x="10" y="107" styleName="bold" text="NOME:"/>

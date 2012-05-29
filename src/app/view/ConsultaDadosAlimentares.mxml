@@ -54,12 +54,13 @@
 				return currentControlIsValid;
 			}
 			
-			private function onSalvar(e:MouseEvent):void
+			private function salvar():Boolean
 			{
 				trace("salvando");
 				if( Validator.validateAll(validators).length > 0 )
 				{
 					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
+					return false ;
 				}
 				else
 				{
@@ -91,7 +92,24 @@
 					General.consultaAtual.dadosAlimentares = da ;
 					General.salvaConsulta();
 					
-					impressao.visible = impressao.includeInLayout = true ;
+					if( ! impressao.visible ){
+						impressao.visible = impressao.includeInLayout = true ;
+					} else {
+						impressao.init();
+					}
+				}
+				return true;
+			}
+			
+			private function onSalvar(e:MouseEvent):void
+			{
+				salvar();
+			}
+			
+			private function onFinalizar(e:MouseEvent):void
+			{
+				if( salvar() ){
+					Consulta.instance.vsPaciente.selectedIndex = 2 ;
 				}
 			}
 			
@@ -193,10 +211,18 @@
 					</s:SkinnableContainer>
 				</s:VGroup>
 				
-				<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" click="onSalvar(event)" />
+				<s:HGroup gap="10">
+					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR CONSULTA"
+							  alpha="{formIsValid ? 1 : 0.5}" click="onSalvar(event)"
+							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
+					
+					<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA"
+							  alpha="{formIsValid ? 1 : 0.5}" click="onFinalizar(event)"
+							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
+				</s:HGroup>
 			</s:VGroup>
 			
-			<view:ConsultaImpressa id="impressao" etapa="3" x="516" y="10" visible="false" includeInLayout="false" />
+			<view:ConsultaImpressa id="impressao" etapa="2" x="516" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

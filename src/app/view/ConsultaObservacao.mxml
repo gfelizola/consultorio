@@ -20,14 +20,32 @@
 			[Bindable]
 			private var bindObservacao:String = (General.consultaAtual) ? General.consultaAtual.observacao : "";
 			
-			private function onSalvar(e:MouseEvent):void
+			private function salvar():Boolean
 			{
 				if(General.consultaAtual)
 				{
 					General.consultaAtual.observacao = txtObservacao.text;
 					General.salvaConsulta();
 					
-					impressao.visible = impressao.includeInLayout = true ;
+					if( ! impressao.visible ){
+						impressao.visible = impressao.includeInLayout = true ;
+					} else {
+						impressao.init();
+					}
+				}
+				
+				return true ;
+			}
+			
+			private function onSalvar(e:MouseEvent):void
+			{
+				salvar();
+			}
+			
+			private function onFinalizar(e:MouseEvent):void
+			{
+				if( salvar() ){
+					Consulta.instance.vsPaciente.selectedIndex = 2 ;
 				}
 			}
 			
@@ -39,9 +57,18 @@
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="OBSERVAÇÃO"/>
 			<s:Label x="10" y="48" width="481" text="Texto explicativo de como este campo deve ser preenchido loasda Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "/>
 			<s:TextArea id="txtObservacao" x="9" y="112" skinClass="app.skin.TextArea" width="481" height="170" text="{bindObservacao}"/>
-			<s:Button id="btnSalvar" skinClass="app.skin.Button" x="10" y="300" label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" click="onSalvar(event)"/>
 			
-			<view:ConsultaImpressa id="impressao" etapa="6" x="516" y="10" visible="false" includeInLayout="false" />
+			<s:HGroup gap="10">
+				<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR CONSULTA"
+						  alpha="{formIsValid ? 1 : 0.5}" click="onSalvar(event)"
+						  enabled="{formIsValid}" skinClass="app.skin.Button"/>
+				
+				<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA"
+						  alpha="{formIsValid ? 1 : 0.5}" click="onFinalizar(event)"
+						  enabled="{formIsValid}" skinClass="app.skin.Button"/>
+			</s:HGroup>
+			
+			<view:ConsultaImpressa id="impressao" etapa="5" x="516" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
 	</skin:ScrollerSemBug>	
 </s:NavigatorContent>

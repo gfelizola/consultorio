@@ -52,6 +52,9 @@ package app.util
 				
 				consultaSalva = true ;
 				
+				trace("General.salvaConsulta()", consultaAtual.id, pacienteAtual.id, pacienteAtual.nomeCompleto );
+				
+				
 				Alert.show("Consulta salva com dados atuais");
 			}
 		}

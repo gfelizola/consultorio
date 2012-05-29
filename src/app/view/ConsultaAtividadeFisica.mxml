@@ -53,11 +53,12 @@
 				return currentControlIsValid;
 			}
 			
-			private function onSalvar(e:MouseEvent):void
+			private function salvar():Boolean
 			{
 				if( Validator.validateAll(validators).length > 0 )
 				{
 					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );
+					return false ;
 				}
 				else
 				{
@@ -86,7 +87,25 @@
 					General.consultaAtual.atividadeFisica = af ;
 					General.salvaConsulta();
 					
-					impressao.visible = impressao.includeInLayout = true ;
+					if( ! impressao.visible ){
+						impressao.visible = impressao.includeInLayout = true ;
+					} else {
+						impressao.init();
+					}
+				}
+				
+				return true ;
+			}
+			
+			private function onSalvar(e:MouseEvent):void
+			{
+				salvar();
+			}
+			
+			private function onFinalizar(e:MouseEvent):void
+			{
+				if( salvar() ){
+					Consulta.instance.vsPaciente.selectedIndex = 2 ;
 				}
 			}
 			
@@ -120,6 +139,13 @@
 				<s:RadioButton width="450" value="0" label="Sedentário – não faz nenhuma atividade física ou faz apenas uma vez na&#xd;semana  (como caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
 				
 				<s:VGroup width="435" gap="0">
+					
+					<s:SkinnableContainer width="100%" height="30" backgroundColor="#FCFDFF">
+						<s:Label x="10" y="10" text="ATIVIDADE FÍSICA" />
+						<s:Label x="165" y="10" text="DIAS DA SEMANA" />
+						<s:Label x="299" y="10" text="HORÁRIOS" />
+					</s:SkinnableContainer>
+					
 					<s:SkinnableContainer width="100%" height="80" backgroundColor="#F6F9FE">
 						<s:TextInput id="txtAtividade1" x="10" y="10" width="147" skinClass="app.skin.TextInput" />
 						<s:TextArea id="txtDias1" x="165" y="10" width="126" height="60" skinClass="app.skin.TextArea" />
@@ -150,10 +176,18 @@
 					</s:SkinnableContainer>
 				</s:VGroup>
 				
-				<s:Button label="SALVAR E VISUALIZAR IMPRESSÃO DE DADOS DESTA CONSULTA" skinClass="app.skin.Button" click="onSalvar(event)" />
+				<s:HGroup gap="10">
+					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR CONSULTA"
+							  alpha="{formIsValid ? 1 : 0.5}" click="onSalvar(event)"
+							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
+					
+					<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA"
+							  alpha="{formIsValid ? 1 : 0.5}" click="onFinalizar(event)"
+							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
+				</s:HGroup>
 			</s:VGroup>
 			
-			<view:ConsultaImpressa id="impressao" etapa="2" x="516" y="10" visible="false" includeInLayout="false" />
+			<view:ConsultaImpressa id="impressao" etapa="0" x="516" y="10" visible="false" includeInLayout="false" />
 			
 		</s:Group>
 	</skin:ScrollerSemBug>

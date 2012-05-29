@@ -116,11 +116,16 @@
 			
 			private function buildAlimentos():void
 			{
+				trace( "ConsultaHistoricoShow.buildAlimentos()", General.consultaAtual.dadosAlimentares );
+				
 				if(General.consultaAtual.dadosAlimentares != null) {
 					var da:DadosAlimentares = General.consultaAtual.dadosAlimentares ;
 					var daTexto:String = "<textformat tabstops='[300, 600]'>" ;
 					
 					daTexto += '<p><b>Refeição/Horaio<tab/>Alimento<tab/>Quantidade</b></p>' ;
+					
+					trace("ConsultaHistoricoShow.buildAlimentos()", da.refeicoes.length );
+					
 					
 					for (var i:int = 0; i < da.refeicoes.length; i++) 
 					{
@@ -143,16 +148,15 @@
 			{
 				if(General.consultaAtual.exameBioquimico != null) {
 					var eb:ExameBioquimico = General.consultaAtual.exameBioquimico ;
-					var ebTexto:String = "<textformat tabstops='[300, 800]'>" ;
+					var ebTexto:String = "<textformat tabstops='[400, 800]'>" ;
 					
 					ebTexto += '<p><b>Data da realização dos exames:</b> ' + General.getFormattedDate( eb.dataDoExame.toString() ) + '</p>' ;
-					
-					ebTexto += '<p><b>Exame<tab/>Referência<tab/>Valor/Resultado</b></p>' ;
+					ebTexto += '<p><b>Exame<tab/>Valor/Resultado</b></p>' ;
 					
 					for (var i:int = 0; i < eb.exames.length; i++) 
 					{
 						var r:ExameAdicional = eb.exames[i] ;
-						ebTexto += '<p>' + r.nome + '<tab/>' + r.referencia + '<tab/>' + r.valor + '</b></p>' ;
+						ebTexto += '<p>' + r.nome + '<tab/>' + r.valor + '</b></p>' ;
 					}
 					
 					ebTexto += "</textformat>";
@@ -163,6 +167,7 @@
 			private function buildAtividades():void
 			{
 				if(General.consultaAtual.atividadeFisica != null) {
+					
 					var af:AtividadeFisica = General.consultaAtual.atividadeFisica ;
 					var afTexto:String = "<textformat tabstops='[300, 600]'>" ;
 					
@@ -176,6 +181,9 @@
 					}
 					
 					afTexto += '</p>' ;
+					
+					trace("ConsultaHistoricoShow.buildAtividades()", af.atividades.length );
+					
 					
 					if( af.atividades.length > 0 ){
 						afTexto += '<p><b>Atividades<tab/>Dias da semana<tab/>Horários</b></p>' ;
@@ -271,14 +279,14 @@
 				</mx:VBox>
 				
 				<mx:VBox label="HÁBITOS ALIMENTARES" id="habitosAccordion">
-					<mx:Text id="alimentosInfo" condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<mx:Text id="alimentosInfo" condenseWhite="true" width="974" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
 				</mx:VBox>
 				
 				<mx:VBox label="ATIVIDADES FÍSICAS" id="atividadesAccordion">
-					<mx:Text id="atividadesInfo" condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<mx:Text id="atividadesInfo" condenseWhite="true" width="964" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
 				</mx:VBox>
 				<mx:VBox label="EXAMES BIOQUÍMICOS" id="examesAccordion">
-					<mx:Text id="examesInfo" condenseWhite="true" width="100%" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<mx:Text id="examesInfo" condenseWhite="true" width="964" height="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
 				</mx:VBox>
 			</mx:Accordion>
 		</s:VGroup>

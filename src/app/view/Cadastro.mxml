@@ -29,6 +29,8 @@
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			
+			import org.casalib.util.ArrayUtil;
+			
 			import spark.components.FormItem;
 			import spark.events.IndexChangeEvent;
 			import spark.layouts.BasicLayout;
@@ -73,7 +75,13 @@
 					{
 						logo = File.applicationStorageDirectory.resolvePath("images/" + usuario.logo );
 						if( logo.exists ) imgLogo.source = logo.url ;
+						
+						trace( logo.nativePath );
 					}
+					
+					cmbSexo.selectedIndex = u.sexo == 'M' ? 0 : 1 ;
+					cmbRegional.selectedItem = u.regional ;
+					cmbEstados.selectedItem = u.estado ;
 				}
 			}
 			
@@ -98,12 +106,10 @@
 				
 				for (var i:int = 1; i <= 10; i++) 
 				{
-					regionais.addItem(i);
+					regionais.addItem(i.toString());
 				}
 				
 				if( General.usuario != null ) atualizaUsuario( General.usuario );
-				
-				redesSociais = Constantes.redesSociais ;
 				
 				formScroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
 			}
@@ -112,42 +118,66 @@
 			{
 				lblResposta.text = "" ;
 				
-				var erros:Array = Validator.validateAll(validators);
-				if (erros.length == 0) {
-					var senha:String = txtSenha.text ;
-					var confirmacao:String = txtConfirmaSenha.text ;
-					
-					if( senha == confirmacao )
-					{
-						
-						salvarUsuario();
-						
-//						var c:Criteria = DB.em.createCriteria(Usuario);
-//						c.addEqualsCondition("login", txtLogin.text );
-//						
-//						var cadastrado:Boolean = DB.em.fetchCriteria(c).length > 0 ;
-//						if( cadastrado )
-//						{
-//							focusManager.setFocus(txtLogin);
-//							Alert.show("Esse login já existe. Por favor, escolha outro.", "Aviso");
-//						}
-//						else 
-//						{
-//							salvarUsuario();
-//						}
+				if( usuario.id > 0 ){ //alteração
+					if( ArrayUtil.containsAny(validators, [ valSenha, valConfirmaSenha ]) ){
+						ArrayUtil.removeItems(validators, [valSenha, valConfirmaSenha] );
 					}
-					else
-					{
-						lblResposta.text = "A confirmação de senha deve ser exatamente igual a senha. Digite novamente" ;
-						txtSenha.text = "" ;
-						txtConfirmaSenha.text = "";
-					}
-				} else {
-					lblResposta.text = "Existem erros no formulário. Verifique os campos vermelhos." ;
 					
-					var campo:IFocusManagerComponent = IFocusManagerComponent( Validator( ValidationResultEvent(erros[0]).target ).source )
-					focusManager.setFocus( campo );
-				}
+					var erros:Array = Validator.validateAll(validators);
+					if (erros.length == 0) {
+					
+						var senha:String = txtSenha.text ;
+						var confirmacao:String = txtConfirmaSenha.text ;
+						
+						if( senha != '' ){
+							if( senha == confirmacao ) {
+								salvarUsuario();
+							} else {
+								lblResposta.text = "A confirmação de senha deve ser exatamente igual a senha. Digite novamente" ;
+								txtSenha.text = "" ;
+								txtConfirmaSenha.text = "";
+								focusManager.setFocus(txtSenha);
+							}
+						} else {
+							salvarUsuario();
+						}
+					} else {
+						lblResposta.text = "Existem erros no formulário. Verifique os campos vermelhos." ;
+					}
+						
+				} else { //cadastro de novo usuário
+					var erros:Array = Validator.validateAll(validators);
+					if (erros.length == 0) {
+						var senha:String = txtSenha.text ;
+						var confirmacao:String = txtConfirmaSenha.text ;
+						
+						if( senha == confirmacao )
+						{
+							var c:Criteria = DB.em.createCriteria(Usuario);
+							c.addEqualsCondition("login", txtLogin.text );
+							
+							var cadastrado:Boolean = DB.em.fetchCriteria(c).length > 0 ;
+							if( cadastrado )
+							{
+								focusManager.setFocus(txtLogin);
+								Alert.show("Esse login já existe. Por favor, escolha outro.", "Aviso");
+							}
+							else 
+							{
+								salvarUsuario();
+							}
+						}
+						else
+						{
+							lblResposta.text = "A confirmação de senha deve ser exatamente igual a senha. Digite novamente" ;
+							txtSenha.text = "" ;
+							txtConfirmaSenha.text = "";
+							focusManager.setFocus(txtSenha);
+						}
+					} else {
+						lblResposta.text = "Existem erros no formulário. Verifique os campos vermelhos." ;
+					}
+				} 
 			}
 			
 			private function salvarUsuario():void
@@ -155,7 +185,7 @@
 				var u:Usuario = new Usuario();
 				
 				u.login = txtLogin.text ;
-				u.senha = txtSenha.text ;
+				u.senha = txtSenha.text != '' ? txtSenha.text : usuario.senha ;
 				u.nome = txtNome.text ;
 				u.sobrenome = txtSobrenome.text ;
 				u.CRN = txtCrn.text ;
@@ -364,7 +394,7 @@
 			<s:Label x="10" y="726" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
 			
 			<s:Label x="10" y="758" text="REDE SOCIAL"/>
-			<s:ComboBox id="cmbRedeSocial" x="10" y="779" width="434" labelField="nome" dataProvider="{redesSociais}" skinClass="app.skin.ComboBox" />
+			<s:ComboBox id="cmbRedeSocial" x="10" y="779" width="434" labelField="nome" dataProvider="{Constantes.redesSociais}" skinClass="app.skin.ComboBox" />
 			
 			<s:Label x="490" y="758" text="ENDEREÇO"/>
 			<s:TextInput id="txtEndRedeSocial" x="490" y="779" width="301" skinClass="app.skin.TextInput"/>

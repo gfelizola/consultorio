@@ -47,7 +47,9 @@ package app.model
 		[OneToMany(type="app.model.UsuarioRedeSocial", cascade="all")]
 		public var redesSociais:ArrayCollection = new ArrayCollection();
 		
-		public function Usuario(){}
+		public function Usuario(){
+			this.id = 0 ;
+		}
 		
 	}
 }

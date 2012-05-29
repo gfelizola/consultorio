@@ -104,6 +104,8 @@
 				var a:Antropometria = c.antropometria ;
 				
 				if( a != null ){
+					containerDadosAntropometria.removeAllElements();
+					
 					containerDadosAntropometria.addElement( getAntropometriaGroup('PESO', a.peso ) ) ;
 					if( ! isNaN( a.pesoPreGestacional ) ) containerDadosAntropometria.addElement( getAntropometriaGroup('PESO PRÉ-GESTACIONAL', a.pesoPreGestacional ) ) ;
 					containerDadosAntropometria.addElement( getAntropometriaGroup('ESTATURA', a.estatura ) ) ;
@@ -173,6 +175,7 @@
 					nivelAtividade.text = txtNivel ;
 					observacaoAtividade.text = af.observacao ;
 					
+					containerAtividades.removeAllElements();
 					containerAtividades.addElement( getAtividadeGroup("ATIVIDADE FÍSICA", "DIAS DA SEMANA", "HORÁRIO") );
 					trace( "consulta.atividades.length:", af.atividades.length );
 					for (var i:int = 0; i < af.atividades.length; i++) 
@@ -231,6 +234,7 @@
 				
 				var da:DadosAlimentares = c.dadosAlimentares ;
 				if( da ){
+					containerRefeicoes.removeAllElements();
 					containerRefeicoes.addElement( getRefeicaoGroup( 'REFEIÇÃO/HORARIO', 'ALIMENTO', 'QUANTIDADE' ) ) ;
 					
 					trace( "consulta.refeicoes.length:", da.refeicoes.length );
@@ -320,8 +324,10 @@
 				
 				var eb:ExameBioquimico = c.exameBioquimico ;
 				if( eb ){
+					containerExames.removeAllElements();
+					
 					containerExames.addElement( getRefeicaoGroup( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame.toString() ) ) ) ;
-					trace( "consulta.exames.length:", eb.exames.length );
+					
 					for (var i:int = 0; i < eb.exames.length; i++) 
 					{
 						var e:ExameAdicional = eb.exames[i] ;

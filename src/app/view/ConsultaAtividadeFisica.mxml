@@ -187,7 +187,7 @@
 				</s:HGroup>
 			</s:VGroup>
 			
-			<view:ConsultaImpressa id="impressao" etapa="0" x="516" y="10" visible="false" includeInLayout="false" />
+			<view:ConsultaImpressa id="impressao" etapa="1" x="516" y="10" visible="false" includeInLayout="false" />
 			
 		</s:Group>
 	</skin:ScrollerSemBug>

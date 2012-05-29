@@ -56,9 +56,9 @@
 		<s:Group width="984" height="390">
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="OBSERVAÇÃO"/>
 			<s:Label x="10" y="48" width="481" text="Texto explicativo de como este campo deve ser preenchido loasda Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "/>
-			<s:TextArea id="txtObservacao" x="9" y="112" skinClass="app.skin.TextArea" width="481" height="170" text="{bindObservacao}"/>
+			<s:TextArea id="txtObservacao" x="10" y="110" skinClass="app.skin.TextArea" width="481" height="170" text="{bindObservacao}"/>
 			
-			<s:HGroup gap="10">
+			<s:HGroup x="10" y="300" gap="10">
 				<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR CONSULTA" click="onSalvar(event)" skinClass="app.skin.Button"/>
 				<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
 			</s:HGroup>

@@ -63,50 +63,55 @@ package app.model
 				var eer:Number = 0 ;
 				var eerg:Number = 0 ;
 				var coeficiente:Number = 0 ;
-				var idade:Number = idadeNaConsulta() ;
+				var idade:Number = idadeNaConsulta() / 12 ;
 				
-				if( antropometria && atividadeFisica ){
-					if( paciente.sexo == 'M' )
-					{
-						switch(atividadeFisica.nivel)
-						{
-							case AtividadeFisica.MUITO_ATIVO: 	coeficiente = 1.48 ;  	break;
-							case AtividadeFisica.ATIVO:  		coeficiente = 1.25 ;  	break;
-							case AtividadeFisica.POUCO_ATIVO:  	coeficiente = 1.11 ;   	break;
-							case AtividadeFisica.SEDENTARIO: 	coeficiente = 1 ;   	break;
-						}
-						
+				if( antropometria ){
+					if( paciente.sexo == 'M' ) {
 						tmb = 66.47 + (13.75 * antropometria.peso ) + ( 5 * antropometria.estatura ) - ( 6,76 * idade ) ;
-						
-						eer = 662 - ( 9.53 * idade ) ;
-						eer += ( coeficiente * (15.91 * antropometria.peso ) ) ;
-						eer -= ( 539.6 * ( antropometria.estatura / 100 ) ) ;
-						
 					} else {
-						switch(atividadeFisica.nivel)
-						{
-							case AtividadeFisica.MUITO_ATIVO: 	coeficiente = 1.45 ;  	break;
-							case AtividadeFisica.ATIVO: 		coeficiente = 1.27 ;  	break;
-							case AtividadeFisica.POUCO_ATIVO: 	coeficiente = 1.12 ;  	break;
-							case AtividadeFisica.SEDENTARIO: 	coeficiente = 1 ;  		break;
-						}
-						
 						tmb = 655.1 + (9.56 * antropometria.peso ) + ( 1.85 * antropometria.estatura ) - ( 4.68 * idade );
-						eer = 354 - ( 6.91 * idade ) + coeficiente * ( (9.36 * antropometria.peso ) + ( 726 * ( antropometria.estatura / 100 ) ) ) ;
-						
-						if( paciente.gestante ){
-							setSemanaGestacional();
-							if( semanaGestacional > 12 ) {
-								eerg += eer + ( 8 * semanaGestacional ) + 180 ;
-							} else {
-								eerg = eer ;
-							}
-						}
 					}
 					
 					resumo.metabolismoBasal = tmb ;
-					resumo.necessidadeEnergetica = eer ;
-					resumo.necessidadeEnergeticaGestacional = eerg ;
+					
+					if( atividadeFisica ){
+						if( paciente.sexo == 'M' )
+						{
+							switch(atividadeFisica.nivel)
+							{
+								case AtividadeFisica.MUITO_ATIVO: 	coeficiente = 1.48 ;  	break;
+								case AtividadeFisica.ATIVO:  		coeficiente = 1.25 ;  	break;
+								case AtividadeFisica.POUCO_ATIVO:  	coeficiente = 1.11 ;   	break;
+								case AtividadeFisica.SEDENTARIO: 	coeficiente = 1 ;   	break;
+							}
+							
+							eer = 662 - ( 9.53 * idade ) ;
+							eer += ( coeficiente * (15.91 * antropometria.peso ) ) ;
+							eer -= ( 539.6 * ( antropometria.estatura / 100 ) ) ;
+							
+						} else {
+							switch(atividadeFisica.nivel)
+							{
+								case AtividadeFisica.MUITO_ATIVO: 	coeficiente = 1.45 ;  	break;
+								case AtividadeFisica.ATIVO: 		coeficiente = 1.27 ;  	break;
+								case AtividadeFisica.POUCO_ATIVO: 	coeficiente = 1.12 ;  	break;
+								case AtividadeFisica.SEDENTARIO: 	coeficiente = 1 ;  		break;
+							}
+							
+							eer = 354 - ( 6.91 * idade ) + coeficiente * ( (9.36 * antropometria.peso ) + ( 726 * ( antropometria.estatura / 100 ) ) ) ;
+							
+							if( paciente.gestante ){
+								setSemanaGestacional();
+								if( semanaGestacional > 12 ) {
+									eerg += eer + ( 8 * semanaGestacional ) + 180 ;
+								} else {
+									eerg = eer ;
+								}
+							}
+						}
+						resumo.necessidadeEnergetica = eer ;
+						resumo.necessidadeEnergeticaGestacional = eerg ;
+					}
 				}
 			}
 		}
@@ -114,7 +119,7 @@ package app.model
 		[Transient]
 		public function idadeNaConsulta():Number
 		{
-			var idade:Number;
+			var idade:Number = 0;
 			
 			if( paciente ){
 				var diasDeIdade:Number = TimeSpan.fromDates(paciente.dataNascimento, dataConsulta).totalDays;

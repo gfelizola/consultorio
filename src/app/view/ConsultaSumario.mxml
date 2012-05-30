@@ -214,7 +214,7 @@
 				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="GRÁFICO DE VARIAÇÃO DE PESO"/>
 				<s:Label width="500" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
 				
-				<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="500" height="300" showDataTips="true" seriesFilters="{[]}">
+				<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="720" height="390" showDataTips="true" seriesFilters="{[]}">
 					<mx:horizontalAxis>
 						<mx:CategoryAxis categoryField="dataConsulta" title="Data da consulta" />
 					</mx:horizontalAxis>
@@ -243,7 +243,7 @@
 				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO"/>
 				<s:Label width="500" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
 				
-				<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="500" height="300" showDataTips="true" seriesFilters="{[]}">
+				<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="720" height="390" showDataTips="true" seriesFilters="{[]}">
 					<mx:horizontalAxis>
 						<mx:LinearAxis title="IDADE (meses)" minimum="{minIdade}" />
 					</mx:horizontalAxis>
@@ -272,7 +272,7 @@
 				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE ATALAH"/>
 				<s:Label width="500" text="Ferramenta de avaliação do estado nutricional da gestante" />
 				
-				<mx:LineChart id="curvaDeAtalah" dataProvider="{pesos}" width="600" height="300" showDataTips="true">
+				<mx:LineChart id="curvaDeAtalah" dataProvider="{pesos}" width="720" height="390" showDataTips="true">
 					<mx:horizontalAxis>
 						<mx:LinearAxis title="IDADE GESTACIONAL EM SEMANAS" minimum="10" maximum="50" interval="2" />
 					</mx:horizontalAxis>

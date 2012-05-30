@@ -39,6 +39,7 @@
 					.addSort("sobrenome");
 					
 					pacientes = DB.em.fetchCriteria(c);
+					
 					if( pacientes.length < 1 ) addSemPacientes();
 					else dgPacientes.visible = true ;
 				} 
@@ -47,7 +48,6 @@
 					trace("Erro na consulta SQL", error.message, error.getStackTrace() );
 					addSemPacientes();
 				}
-				
 			}
 			
 			private function onPacientesError(e:SQLErrorEvent):void

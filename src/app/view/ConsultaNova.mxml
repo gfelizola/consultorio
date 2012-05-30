@@ -49,7 +49,6 @@
 				} else {
 					verificarTroca = true ;
 					General.consultaSalva = false ;
-					trace("ConsultaNova.onConsultaChangeTela(e): consultaSalva = false");
 				}
 			}
 			

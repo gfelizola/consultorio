@@ -83,8 +83,6 @@
 					var c:app.model.Consulta = General.consultaAtual ;
 					impData.text = c.dataConsulta ? General.getFormattedDate( c.dataConsulta.toString() ) : '';	
 					
-					trace("ConsultaImpressa.verificaConsultaAtual() - etapa:", etapa);
-					
 					switch(etapa)
 					{
 						case 0: 	verificaAntropometria(c);		break;
@@ -99,44 +97,49 @@
 			
 			private function verificaAntropometria(c:app.model.Consulta):void
 			{
-				trace("ConsultaImpressa.verificaAntropometria(c)");
-				
 				var a:Antropometria = c.antropometria ;
 				
 				if( a != null ){
 					containerDadosAntropometria.removeAllElements();
 					
 					var campos:Array = [
-						{ nome:'PESO', 									valor: a.peso },
-						{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional },
-						{ nome:'ESTATURA', 								valor: a.estatura },
-						{ nome:'CIRCUNFERÊNCIA DA CINTURA', 			valor: a.circunferenciaCintura },
-						{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril },
-						{ nome:'CIRCUNFERÊNCIA DO TRÍCEPS', 			valor: a.circunferenciaTriceps },
-						{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa },
-						{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha },
-						{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal },
-						{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal },
-						{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular },
-						{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia },
-						{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca },
-						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica },
-						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal },
-						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa },
-						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial }
+						{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
+						{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
+						{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DA CINTURA', 			valor: a.circunferenciaCintura, 		medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DO TRÍCEPS', 			valor: a.circunferenciaTriceps, 		medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
+						{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
+						{ nome:'IMC', 									valor: a.imc.toPrecision(2), 			medida:'' }
 					];
+					
+					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
+						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
+							campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: a.circunferenciaCintura * a.circunferenciaQuadril, medida: '' })
+						}
+					}
 					
 					for (var i:int = 0; i < campos.length; i++) 
 					{
 						var o:Object = campos[i] ;
 						if( ! isNaN( o.valor ) ){
-							if( o.valor > 0 ) containerDadosAntropometria.addElement( getAntropometriaGroup(o.nome, o.valor) ) ;
+							if( o.valor > 0 ) containerDadosAntropometria.addElement( getAntropometriaGroup(o.nome, o.valor + ' ' + o.medida) ) ;
 						}
 					}
 				}
 			}
 			
-			private function getAntropometriaGroup( nome:String, valor:Number ):Group
+			private function getAntropometriaGroup( nome:String, valor:String ):Group
 			{
 				var lNome:Label = new Label();
 				lNome.styleName = 'bold' ;
@@ -151,7 +154,7 @@
 				lValor.width = 200 ;
 				lValor.x = 240 ;
 				lValor.setStyle('fontSize', 10);
-				lValor.text = ! isNaN(valor) ? valor.toString() : '0' ;
+				lValor.text = valor ;
 				
 				var rule:HRule = new HRule();
 				rule.height = 1 ;
@@ -170,8 +173,6 @@
 			
 			private function verificaAtividadesFisicas(c:app.model.Consulta):void
 			{
-				trace("ConsultaImpressa.verificaAtividadesFisicas(c)");
-				
 				var af:AtividadeFisica = c.atividadeFisica ;
 				if( af ){
 					var txtNivel:String = "Nível de atividade física: " ;
@@ -187,7 +188,6 @@
 					
 					containerAtividades.removeAllElements();
 					containerAtividades.addElement( getAtividadeGroup("ATIVIDADE FÍSICA", "DIAS DA SEMANA", "HORÁRIO") );
-					trace( "consulta.atividades.length:", af.atividades.length );
 					for (var i:int = 0; i < af.atividades.length; i++) 
 					{
 						var at:Atividade = af.atividades[i] ;
@@ -240,14 +240,11 @@
 			
 			private function verificaDadosalimentares(c:app.model.Consulta):void
 			{
-				trace("ConsultaImpressa.verificaDadosalimentares(c)");
-				
 				var da:DadosAlimentares = c.dadosAlimentares ;
 				if( da ){
 					containerRefeicoes.removeAllElements();
 					containerRefeicoes.addElement( getRefeicaoGroup( 'REFEIÇÃO/HORARIO', 'ALIMENTO', 'QUANTIDADE' ) ) ;
 					
-					trace( "consulta.refeicoes.length:", da.refeicoes.length );
 					for (var i:int = 0; i < da.refeicoes.length; i++) 
 					{
 						var r:Refeicao = da.refeicoes[i] ;
@@ -330,13 +327,11 @@
 			
 			private function verificaExames(c:app.model.Consulta):void
 			{
-				trace("ConsultaImpressa.verificaExames(c)");
-				
 				var eb:ExameBioquimico = c.exameBioquimico ;
 				if( eb ){
 					containerExames.removeAllElements();
 					
-					containerExames.addElement( getRefeicaoGroup( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame.toString() ) ) ) ;
+					containerExames.addElement( getExameGroup( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame.toString() ) ) ) ;
 					
 					for (var i:int = 0; i < eb.exames.length; i++) 
 					{
@@ -392,8 +387,6 @@
 			
 			private function verificaMAN(c:app.model.Consulta):void
 			{
-				trace("ConsultaImpressa.verificaMAN(c)" , c.man);
-				
 				var man:MAN = c.man ;
 				if( man ){
 					var p:Number = man.pontuacaoTriagem ;
@@ -430,8 +423,6 @@
 			
 			private function verificaObservacao(c:app.model.Consulta):void
 			{
-				trace("ConsultaImpressa.verificaObservacao(c)", c.observacao);
-				
 				if( c.observacao != '' ){
 					textoObservacao.text = c.observacao ;
 				}

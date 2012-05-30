@@ -130,13 +130,13 @@
 				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="ATIVIDADE FÍSICA" />
 				
 				<s:Label x="10" text="Nível de atividade física" fontSize="17" />
-				<s:RadioButton width="450" value="3"
+				<s:RadioButton width="450" value="1"
 							   label="Muito Ativo - aquele que cumpriu as recomendações de:&#xd;a) VIGOROSA: &gt; 5 dias/sem e &gt; 30 minutos por sessão&#xd;b) VIGOROSA: &gt; 3 dias/sem e &gt; 20 minutos por sessão + MODERADA e/ou CAMINHADA: &gt; 5 dias/sem e &gt; 30 minutos por sessão."
 							   groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
 				
 				<s:RadioButton width="450" value="2" label="Ativo - aquele que cumpriu as recomendações de:&#xd;a) VIGOROSA:    3 dias/sem e   20 minutos por sessão; ou&#xd;b) MODERADA ou CAMINHADA: &gt; 5 dias/sem e &gt; 30 minutos por sessão; ou&#xd;c) Qualquer atividade somada: &gt; 5 dias/sem e &gt; 150 minutos/sem (caminhada&#xd;+ moderada + vigorosa)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
-				<s:RadioButton width="450" value="1" label="Pouco Ativo – faz atividades físicas de duas a três vezes por semana  (como&#xd;caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
-				<s:RadioButton width="450" value="0" label="Sedentário – não faz nenhuma atividade física ou faz apenas uma vez na&#xd;semana  (como caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
+				<s:RadioButton width="450" value="3" label="Pouco Ativo – faz atividades físicas de duas a três vezes por semana  (como&#xd;caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
+				<s:RadioButton width="450" value="4" label="Sedentário – não faz nenhuma atividade física ou faz apenas uma vez na&#xd;semana  (como caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
 				
 				<s:VGroup width="435" gap="0">
 					

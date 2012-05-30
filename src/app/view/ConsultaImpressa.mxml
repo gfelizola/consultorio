@@ -125,7 +125,7 @@
 					
 					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
 						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
-							campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: a.circunferenciaCintura * a.circunferenciaQuadril, medida: '' })
+							campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: a.circunferenciaCintura / a.circunferenciaQuadril, medida: '' })
 						}
 					}
 					

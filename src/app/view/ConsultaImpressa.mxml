@@ -120,12 +120,12 @@
 						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
 						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
 						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
-						{ nome:'IMC', 									valor: a.imc.toPrecision(2), 			medida:'' }
+						{ nome:'IMC', 									valor: a.imc.toFixed(2), 			medida:'' }
 					];
 					
 					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
 						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
-							campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: a.circunferenciaCintura / a.circunferenciaQuadril, medida: '' })
+							campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: (a.circunferenciaCintura / a.circunferenciaQuadril).toFixed(2), medida: '' })
 						}
 					}
 					

@@ -55,6 +55,47 @@ package app.model
 		}
 		public function set imc(value:Number):void { _imc = value; }
 		
+		[Transient]
+		public function getCircunferenciaCinturaDescription(sexo:String):String
+		{
+			if( sexo == 'M' ){
+				return "[Homem > 94 cm (elevado)\n> 102 cm (muito elevado)]" ;
+			} else {
+				return "[Mulher > 80 cm (elevado)\n> 88 cm (muito elevado)]" ;
+			}
+		}
+		
+		[Transient]
+		public function getRCQDescription(sexo:String):String
+		{
+			if( sexo == 'M' ){
+				return "RCQ > 1 para homens" ;
+			} else {
+				return "RCQ > 0,85 para mulheres" ;
+			}
+		}
+		
+		[Transient]
+		public function getIMCDescription():String
+		{
+			var imcDescricao:String = '' ;
+			if( imc < 18.5 ){
+				imcDescricao = 'Baixo Peso' ;
+			} else if( imc >= 18.5 && imc < 25 ){
+				imcDescricao = 'Adequado ou Eutrófico' ;
+			} else if( imc >= 25 && imc < 30 ){
+				imcDescricao = 'Sobrepeso' ;
+			} else if( imc >= 30 && imc < 35 ){
+				imcDescricao = 'Obesidade grau I' ;
+			} else if( imc >= 35 && imc < 40 ){
+				imcDescricao = 'Obesidade grau II' ;
+			} else {
+				imcDescricao = 'Obesidade grau III' ;
+			}
+			
+			return imcDescricao ;
+		}
+		
 		
 		public function Antropometria(){}
 	}

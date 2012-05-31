@@ -97,7 +97,7 @@
 					txtUltimaConsulta.text = df.format( consulta.dataConsulta );
 					
 					if( consulta.antropometria ){
-						txtUltimoIMC.text = consulta.antropometria.imc.toPrecision(2) ;
+						txtUltimoIMC.text = consulta.antropometria.imc.toFixed(2) ;
 					} else {
 						txtUltimoIMC.text = "N/A" ;
 					}

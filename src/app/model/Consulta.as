@@ -29,6 +29,8 @@ package app.model
 		
 		public var observacao:String;
 		
+		public var recomendacoes:String;
+		
 		public var semanaGestacional:Number;
 		
 		public function setSemanaGestacional():void { 

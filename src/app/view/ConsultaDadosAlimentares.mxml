@@ -212,7 +212,7 @@
 				</s:VGroup>
 				
 				<s:HGroup gap="10">
-					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR CONSULTA" click="onSalvar(event)" skinClass="app.skin.Button"/>
+					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
 					<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
 				</s:HGroup>
 			</s:VGroup>

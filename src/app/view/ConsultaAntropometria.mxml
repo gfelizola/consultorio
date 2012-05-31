@@ -208,7 +208,7 @@
 			<s:TextInput id="txtDobraPanturrilha" x="279" y="700" width="175" skinClass="app.skin.TextInput" text="" />
 			<s:Label x="459" y="715" color="#999999" styleName="light" text="(mm)"/>
 			
-			<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR CONSULTA"
+			<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS"
 					  alpha="{formIsValid ? 1 : 0.5}" click="onSalvar(event)"
 					  enabled="{formIsValid}" skinClass="app.skin.Button"/>
 			

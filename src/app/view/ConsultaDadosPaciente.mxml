@@ -42,6 +42,7 @@
 				txtEmail.text = p.email ;
 				
 				txtSemanaGestacao.text = p.gestante ? p.semanaGestacional + ' SEMANA GESTACIONAL' : 'NÃO GESTANTE' ;
+				gpDadosGestacionais.visible = gpDadosGestacionais.includeInLayout = p.gestante ;
 				
 				txtHistorico.text = p.historico ;
 				
@@ -75,107 +76,89 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<skin:ScrollerSemBug x="10" y="10" width="984" height="470">
-		<s:Group width="100%" height="100%">
-			<s:Label x="10" y="10" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS PESSOAIS"/>
-			<s:Label x="10" y="168" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS GESTACIONAIS"/>
+	<skin:ScrollerSemBug x="0" y="10" width="994" height="480">
+		<s:VGroup width="100%" height="100%" gap="10" paddingLeft="10" paddingRight="10">
+			<s:Group id="gpDadosPessoais" width="100%">
+				<s:Label x="0" y="0" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS PESSOAIS"/>
+				
+				<s:Label x="0" y="32" width="50" height="20" text="NOME:" />
+				<s:Label id="txtNome" x="50" y="31" width="899" height="20" styleName="light" text="" />
+				
+				<s:Label x="0" y="52" width="50" height="20" text="SEXO:" />
+				<s:Label id="txtSexo" x="50" y="51" width="100" height="20" styleName="light" text="" />
+				
+				<s:Label x="0" y="72" width="82" height="20" text="ENDEREÇO:" />
+				<s:Label id="txtEndereco" x="80" y="71" width="869" height="20" styleName="light" text="" />
+				
+				<s:Label x="0" y="92" width="120" height="20" text="TEL. RESIDENCIAL:" />
+				<s:Label id="txtTelRes" x="126" y="91" width="98" height="20" styleName="light" text="" />
+				
+				<s:Label x="240" y="92" width="120" height="20" text="TEL. COMERCIAL:" />
+				<s:Label id="txtTelCom" x="358" y="91" width="104" height="20" styleName="light" text="" />
+				
+				<s:Label x="470" y="92" width="120" height="20" text="TEL. CELULAR:" />
+				<s:Label id="txtCelular" x="568" y="91" width="111" height="20" styleName="light" text="" />
+				
+				<s:Label x="0" y="112" width="59" height="20" text="E-MAIL:" />
+				<s:Label id="txtEmail" x="59" y="111" width="890" height="20" styleName="light" text="" />
+				
+				<s:Label x="160" y="52" width="142" height="20" text="DATA DE NASCIMENTO:" />
+				<s:Label id="txtDataNascimento" x="310" y="51" width="100" height="20" styleName="light" text="" />
+				
+				<s:Label x="400" y="52" width="90" height="20" text="ESTADO CIVIL:" />
+				<s:Label id="txtEstadoCivil" x="490" y="51" width="100" height="20" styleName="light" text="" />
+				
+				<s:Label x="570" y="52" width="82" height="20" text="PROFISSÃO:" />
+				<s:Label id="txtProfissao" x="650" y="51" width="299" height="20" styleName="light" text="" />
+				
+				<mx:HRule x="0" y="140" width="100%"/>
+			</s:Group>
 			
-			<s:Label x="10" y="41" width="50" height="20" text="NOME:"
-						/>
-			<s:Label id="txtNome" x="60" y="40" width="899" height="20"
-						styleName="light" text="NOME TESTE BLA BLA BLA"
-						/>
-			<s:Label x="10" y="198" width="150" height="20" text="SEMANA DE GESTAÇÃO:"
-						/>
-			<s:Label x="10" y="248" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICOS E PATOLOGIAS"/>
-			<s:Label x="10" y="278" width="138" height="20" text="HISTÓRICO FAMILIAR:"
-						/>
-			<s:Label id="txtHistoricoFamiliar" x="147" y="277" width="812" height="20"
-					 styleName="light" text="NOME TESTE BLA BLA BLA"/>
-			<s:Label x="10" y="368" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
-			<s:Label x="10" y="398" width="72" height="20" text="CONVÊNIO:"
-						/>
-			<s:Label id="txtConvenio" x="90" y="397" width="303" height="20"
-						styleName="light" text="NOME TESTE BLA BLA BLA"
-						/>
-			<s:Label x="324" y="397" width="80" height="20" text="INDICAÇÃO:"
-						/>
-			<s:Label id="txtIndicacao" x="402" y="396" width="250" height="20"
-						styleName="light" text="NOME TESTE BLA BLA BLA"
-						/>
-			<s:Label x="604" y="397" width="110" height="20" text="Nº DA CARTEIRA:"
-						/>
-			<s:Label id="txtNCarteira" x="717" y="396" width="250" height="20"
-						styleName="light" text="NOME TESTE BLA BLA BLA"
-						/>
-			<s:Label x="10" y="298" width="82" height="20" text="PATOLOGIAS:"
-						/>
-			<s:Label id="txtPatologias" x="100" y="297" width="859" height="20"
-						styleName="light" text="NOME TESTE BLA BLA BLA"
-						/>
-			<s:Label x="10" y="318" width="82" height="20" text="HISTÓRICO:"
-						/>
-			<s:Label id="txtHistorico" x="90" y="317" width="869" height="20"
-						styleName="light" text="NOME TESTE BLA BLA BLA"
-						/>
-			<s:Label id="txtObjetivo" x="177" y="417" width="782" height="20"
-						styleName="light" text="NOME TESTE BLA BLA BLA"
-						/>
-			<s:Label id="txtSemanaGestacao" x="158" y="197" width="801" height="20"
-						styleName="light" text="NOME TESTE BLA BLA BLA"
-						/>
-			<s:Label x="10" y="418" width="159" height="20" text="OBJETIVO DA CONSULTA:"
-						/>
-			<s:Label x="10" y="61" width="50" height="20" text="SEXO:"
-						/>
-			<s:Label id="txtSexo" x="60" y="60" width="100" height="20"
-						styleName="light" text="MASCULINO"
-						/>
-			<s:Label x="10" y="81" width="82" height="20" text="ENDEREÇO:"
-						/>
-			<s:Label id="txtEndereco" x="90" y="80" width="869" height="20"
-						styleName="light" text="MASCULINO"
-						/>
-			<s:Label x="10" y="121" width="59" height="20" text="E-MAIL:"
-						/>
-			<s:Label id="txtEmail" x="69" y="120" width="890" height="20"
-						styleName="light" text="MASCULINO"
-						/>
-			<s:Label x="10" y="101" width="120" height="20" text="TEL. RESIDENCIAL:"
-						/>
-			<s:Label id="txtTelRes" x="136" y="100" width="98" height="20"
-						styleName="light" text="(11) 1111-11111"
-						/>
-			<s:Label x="250" y="101" width="120" height="20" text="TEL. COMERCIAL:"
-						/>
-			<s:Label x="480" y="101" width="120" height="20" text="TEL. CELULAR:"
-						/>
-			<s:Label id="txtCelular" x="578" y="100" width="111" height="20"
-						styleName="light" text="(11) 1111-11111"
-						/>
-			<s:Label id="txtTelCom" x="368" y="100" width="104" height="20"
-						styleName="light" text="(11) 1111-11111"
-						/>
-			<s:Label x="170" y="61" width="142" height="20" text="DATA DE NASCIMENTO:"
-						/>
-			<s:Label x="410" y="61" width="90" height="20" text="ESTADO CIVIL:"
-						/>
-			<s:Label id="txtEstadoCivil" x="500" y="60" width="100" height="20"
-						styleName="light" text="SOLTEIRO"
-						/>
-			<s:Label x="580" y="61" width="82" height="20" text="PROFISSÃO:"
-						/>
-			<s:Label id="txtProfissao" x="660" y="60" width="299" height="20"
-						styleName="light" text="PROGRAMADOR"
-						/>
-			<s:Label id="txtDataNascimento" x="320" y="60" width="100" height="20"
-						styleName="light" text="11/11/2011"
-						/>
-			<mx:HRule x="0" y="148" width="964"/>
-			<mx:HRule x="0" y="229" width="964"/>
-			<mx:HRule x="0" y="349" width="964"/>
-			<s:Button x="772" y="424" label="EDITAR DADOS PESSOAIS" skinClass="app.skin.Button" click="onEditar(event)" />
+			<s:Group id="gpDadosGestacionais" width="100%">
+				<s:Label id="txtTitDadosGestacionais" x="0" y="0" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS GESTACIONAIS"/>
+				
+				<s:Label id="txtTituloGestacional" x="0" y="32" width="150" height="20" text="SEMANA DE GESTAÇÃO:"/>
+				<s:Label id="txtSemanaGestacao" x="148" y="29" width="801" height="20" styleName="light" text="" />
+				
+				<mx:HRule x="0" y="60" width="100%"/>
+			</s:Group>
 			
-		</s:Group>
+			<s:Group id="gpHistorico" width="100%">
+				<s:Label x="0" y="0" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICOS E PATOLOGIAS"/>
+				
+				<s:Label x="0" y="30" width="138" height="20" text="HISTÓRICO FAMILIAR:" />
+				<s:Label id="txtHistoricoFamiliar" x="137" y="29" width="812" height="20" styleName="light" text=""/>
+				
+				<s:Label x="0" y="50" width="82" height="20" text="PATOLOGIAS:" />
+				<s:Label id="txtPatologias" x="90" y="49" width="859" height="20" styleName="light" text="" />
+				
+				<s:Label x="0" y="70" width="82" height="20" text="HISTÓRICO:" />
+				<s:Label id="txtHistorico" x="80" y="69" width="869" height="20" styleName="light" text="" />
+				
+				<mx:HRule x="0" y="101" width="100%"/>
+			</s:Group>
+			
+			<s:Group id="gpDadosAdicionais" width="100%">
+				<s:Label x="0" y="0" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
+				
+				<s:Label x="0" y="38" width="72" height="20" text="CONVÊNIO:" />
+				<s:Label id="txtConvenio" x="80" y="37" width="303" height="20" styleName="light" text="" />
+				
+				<s:Label x="594" y="37" width="110" height="20" text="Nº DA CARTEIRA:" />
+				<s:Label id="txtNCarteira" x="707" y="36" width="250" height="20" styleName="light" text="" />
+				
+				<s:Label x="314" y="37" width="80" height="20" text="INDICAÇÃO:" />
+				<s:Label id="txtIndicacao" x="392" y="36" width="250" height="20" styleName="light" text="" />
+				
+				<s:Label x="0" y="58" width="159" height="20" text="OBJETIVO DA CONSULTA:" />
+				<s:Label id="txtObjetivo" x="167" y="57" width="782" height="20" styleName="light" text="" />
+			</s:Group>
+			
+			<s:Group id="gpBtnEditar" width="100%">
+				<s:Button right="0" y="0" label="EDITAR DADOS PESSOAIS" skinClass="app.skin.Button" click="onEditar(event)" />
+			</s:Group>
+			
+			
+		</s:VGroup>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

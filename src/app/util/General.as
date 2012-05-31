@@ -11,6 +11,7 @@ package app.util
 	import flash.desktop.NativeApplication;
 	import flash.display.Stage;
 	import flash.events.ErrorEvent;
+	import flash.text.ReturnKeyLabel;
 	
 	import mx.controls.Alert;
 	import mx.formatters.DateFormatter;
@@ -39,11 +40,15 @@ package app.util
 			
 		}
 		
-		public static function salvaConsulta():void
+		public static function salvaConsulta( callback:Function = null ):Boolean
 		{
 			if( consultaAtual != null ){
-				consultaAtual.dataConsulta = new Date();
-				pacienteAtual.dataUltimaConsulta = new Date();
+				if( ! consultaAtual.dataConsulta )
+				{
+					consultaAtual.dataConsulta = new Date();
+					pacienteAtual.dataUltimaConsulta = new Date();
+				}
+				
 				consultaAtual.paciente = pacienteAtual ;
 				consultaAtual.setResumo();
 				
@@ -51,8 +56,11 @@ package app.util
 				DB.em.save(pacienteAtual);
 				
 				consultaSalva = true ;
-				Alert.show("Consulta salva com dados atuais");
+//				Alert.show("Consulta salva com dados atuais");
+				
+				return true ;
 			}
+			return false ;
 		}
 		
 		public static function getAppVersion():String 

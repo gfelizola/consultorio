@@ -42,7 +42,6 @@
 			{
 				General.consultaAtual = event.currentTarget.grid.selectedItem as app.model.Consulta ;
 				ConsultaHistorico.instance.vsHistoricoConsulta.selectedIndex = 1 ;
-				trace(General.consultaAtual.dataConsulta,General.consultaAtual.antropometria);
 			} 
 		]]>
 	</fx:Script>

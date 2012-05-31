@@ -105,7 +105,7 @@
 				c.addSort("dataConsulta");
 				
 				consultas = DB.em.fetchCriteria(c);
-				var consulta:app.model.Consulta = consultas.length > 0 ? consultas.getItemAt(0) as app.model.Consulta : null ;
+				var consulta:app.model.Consulta = General.consultaAtual ;
 				pesos = new ArrayCollection();
 				
 				minIdade = 0 ;
@@ -128,10 +128,28 @@
 				}
 				
 				if( consulta ){
+					
+					if( consulta.recomendacoes != '' ) txtRecomendacoes.text = consulta.recomendacoes ;
+					
 					verificaResumo(consulta);
 					verificaAntropometria(consulta);
 					verificaExames(consulta);
 					verificaMAN(consulta);
+				}
+			}
+			
+			private function verificaResumo(c:app.model.Consulta):void
+			{
+				var r:ResumoConsulta = c.resumo ;
+				if( r ){
+					txtTMB.text = r.metabolismoBasal.toFixed(2) + ' kcal/dia' ;
+					if( c.semanaGestacional > 0 ){
+						txtEER.text = r.necessidadeEnergeticaGestacional.toFixed(2) + ' kcal/dia' ;
+					} else {
+						txtEER.text = r.necessidadeEnergetica.toFixed(2) + ' kcal/dia' ;
+					}
+				} else {
+					hgTMB.visible = hgTMB.includeInLayout = false ;
 				}
 			}
 			
@@ -159,15 +177,8 @@
 						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
 						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
 						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
-						{ nome:'IMC', 									valor: a.imc.toPrecision(2), 			medida:'' }
+						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' }
 					];
-					
-					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
-						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
-							campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: a.circunferenciaCintura / a.circunferenciaQuadril, medida: '' })
-						}
-					}
 					
 					for (var i:int = 0; i < campos.length; i++) 
 					{
@@ -175,6 +186,30 @@
 						if( ! isNaN( o.valor ) ){
 							if( o.valor > 0 ) containerDadosAntropometria.addElement( getLineGroup(o.nome, o.valor + ' ' + o.medida ) ) ;
 						}
+					}
+					
+					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
+						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
+							txtCircCintura.text = a.circunferenciaCintura.toFixed(2) + ' cm';
+							txtRCQ.text = ( a.circunferenciaCintura / a.circunferenciaQuadril ).toFixed(2);
+							
+							txtCCDescricao.text = a.getCircunferenciaCinturaDescription(c.paciente.sexo) ;
+							txtRCQDescricao.text = a.getRCQDescription(c.paciente.sexo) ;
+							
+						} else {
+							gpRCQ.visible = false ;
+							gpCircCintura.visible = false ;
+						}
+					} else {
+						gpRCQ.visible = false ;
+						gpCircCintura.visible = false ;
+					}
+					
+					if( ! isNaN( a.imc ) ){
+						if( a.imc > 0 ) txtIMC.text = a.imc.toFixed(2);
+						txtIMCDescricao.text = a.getIMCDescription() ;
+					} else {
+						gpIMC.visible = false ;
 					}
 				}
 			}
@@ -274,26 +309,11 @@
 				var pj:FlexPrintJob = new FlexPrintJob();
 				pj.start();
 				
-				pj.addObject( containerFull, FlexPrintJobScaleType.SHOW_ALL );
+				pj.addObject( containerFull, FlexPrintJobScaleType.MATCH_WIDTH );
 				pj.send();
 				
 				btnImprimir.visible = true ;
 				this.close();
-			}
-			
-			private function verificaResumo(c:app.model.Consulta):void
-			{
-				var r:ResumoConsulta = c.resumo ;
-				if( r ){
-					txtTMB.text = r.metabolismoBasal.toPrecision(2) + ' kcal/dia' ;
-					if( c.semanaGestacional > 0 ){
-						txtEER.text = r.necessidadeEnergeticaGestacional.toPrecision(2) + ' kcal/dia' ;
-					} else {
-						txtEER.text = r.necessidadeEnergetica.toPrecision(2) + ' kcal/dia' ;
-					}
-				} else {
-					hgTMB.visible = hgTMB.includeInLayout = false ;
-				}
 			}
 			
 		]]>
@@ -305,7 +325,7 @@
 	<s:Scroller width="100%" height="100%">
 		<s:Group id="scrolado" width="100%" height="100%" clipAndEnableScrolling="true">
 			<s:Group id="containerFull" width="1000" height="1414">
-				<s:VGroup width="100%" paddingLeft="10" paddingTop="10" paddingRight="10" paddingBottom="10" gap="20">
+				<s:VGroup width="100%" paddingLeft="10" paddingTop="10" paddingRight="10" paddingBottom="10" gap="10">
 					<s:Group id="gpHeader" width="100%">
 						<s:Image id="imgLogo" x="0" y="0" width="500" height="100" scaleMode="letterbox" horizontalAlign="left" />
 						
@@ -347,12 +367,12 @@
 					</s:HGroup>
 					
 					<s:Group id="gpGraficos" width="100%">
-						<mx:ViewStack id="vsGraficos" x="120" y="0" width="740">
+						<mx:ViewStack id="vsGraficos" x="240" y="0" width="500">
 							<s:NavigatorContent width="100%" height="100%" label="Peso">
 								<s:VGroup gap="5">
-									<s:Label width="740" fontSize="20" styleName="bold" text="GRÁFICO DE VARIAÇÃO DE PESO" textAlign="center" />
+									<s:Label width="100%" fontSize="20" styleName="bold" text="GRÁFICO DE VARIAÇÃO DE PESO" textAlign="center" />
 									
-									<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="740" height="300" showDataTips="true" seriesFilters="{[]}">
+									<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="500" height="260" showDataTips="true" seriesFilters="{[]}">
 										<mx:horizontalAxis>
 											<mx:CategoryAxis categoryField="dataConsulta" title="Data da consulta" />
 										</mx:horizontalAxis>
@@ -378,9 +398,9 @@
 							</s:NavigatorContent>
 							<s:NavigatorContent width="100%" height="100%" label="Peso">
 								<s:VGroup gap="5">
-									<s:Label width="740" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO" textAlign="center" />
+									<s:Label width="100%" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO" textAlign="center" />
 									
-									<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="740" height="300" showDataTips="true" seriesFilters="{[]}">
+									<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="500" height="260" showDataTips="true" seriesFilters="{[]}">
 										<mx:horizontalAxis>
 											<mx:LinearAxis title="IDADE (meses)" minimum="{minIdade}" />
 										</mx:horizontalAxis>
@@ -406,9 +426,9 @@
 							</s:NavigatorContent>
 							<s:NavigatorContent width="100%" height="100%" label="Atalah">
 								<s:VGroup gap="5">
-									<s:Label width="740" fontSize="20" styleName="bold" text="CURVA DE ATALAH" textAlign="center" />
+									<s:Label width="100%" fontSize="20" styleName="bold" text="CURVA DE ATALAH" textAlign="center" />
 									
-									<mx:LineChart id="curvaDeAtalah" dataProvider="{pesos}" width="740" height="300" showDataTips="true">
+									<mx:LineChart id="curvaDeAtalah" dataProvider="{pesos}" width="500" height="260" showDataTips="true">
 										<mx:horizontalAxis>
 											<mx:LinearAxis title="IDADE GESTACIONAL EM SEMANAS" minimum="10" maximum="50" interval="2" />
 										</mx:horizontalAxis>
@@ -434,7 +454,7 @@
 								</s:VGroup>
 							</s:NavigatorContent>
 							<s:NavigatorContent width="100%" height="100%" label="MAN">
-								<s:VGroup x="120" width="500" gap="5">
+								<s:VGroup width="500" gap="5">
 									<s:Label width="100%" fontSize="20" styleName="bold" text="RESULTADO DA MINI AVALIAÇÃO NUTRICIONAL" textAlign="center" />
 									<s:VGroup id="containerMAN" width="100%" gap="10">
 										<s:VGroup width="100%">
@@ -491,37 +511,37 @@
 					</s:HGroup>
 					
 					<s:HGroup id="gpFinais" width="100%" gap="0" paddingLeft="40" paddingRight="40">
-						<s:Group width="30%">
+						<s:Group id="gpIMC" width="30%">
 							<s:Label x="0" y="0" width="100%" height="25" fontSize="18" styleName="bold" text="IMC" />
 							<s:HGroup x="0" y="25" gap="10" width="100%">
-								<s:Label fontSize="16" text="20,5" />
-								<s:Label fontSize="14" styleName="light" text="18,5 e 25&#xd;Adequado ou Eurofóbico" />
+								<s:Label id="txtIMC" fontSize="16" text="20,5" />
+								<s:Label id="txtIMCDescricao" fontSize="14" styleName="light" text="18,5 e 25&#xd;Adequado ou Eurofóbico" />
 							</s:HGroup>
 						</s:Group>
-						<s:Group width="40%">
+						<s:Group id="gpCircCintura" width="40%">
 							<s:Label x="0" y="0" width="100%" height="25" fontSize="18" styleName="bold" text="CIRCUNFERÊNCIA DA CINTURA" />
 							<s:HGroup x="0" y="25" gap="10" width="100%">
-								<s:Label fontSize="16" text="100 cm" />
-								<s:Label fontSize="14" styleName="light" text="[ Mulher &gt; 80 (elevado)&#xd;&gt; 88 (muito elevado) ]" />
+								<s:Label id="txtCircCintura" fontSize="16" text="100 cm" />
+								<s:Label id="txtCCDescricao" fontSize="14" styleName="light" text="[ Mulher &gt; 80 (elevado)&#xd;&gt; 88 (muito elevado) ]" />
 							</s:HGroup>
 						</s:Group>
-						<s:Group width="30%">
+						<s:Group id="gpRCQ" width="30%">
 							<s:Label x="0" y="0" width="100%" height="25" fontSize="18" styleName="bold" text="RELAÇÃO CINTURA X QUADRIL" />
 							<s:HGroup x="0" y="25" gap="10" width="100%">
-								<s:Label fontSize="16" text="0,85" />
-								<s:Label fontSize="14" styleName="light" text="[RCQ &gt; 0,85 para mulheres]" />
+								<s:Label id="txtRCQ" fontSize="16" text="0,85" />
+								<s:Label id="txtRCQDescricao" fontSize="14" styleName="light" text="[RCQ &gt; 0,85 para mulheres]" />
 							</s:HGroup>
 						</s:Group>
 					</s:HGroup>
 					
 					<s:VGroup id="gpDietas" width="100%" paddingLeft="10" paddingRight="10" gap="10">
 						<s:Label width="100%" height="25" fontSize="18" styleName="bold" text="ORIENTAÇÕES DE DIETAS" />
-						<s:Label width="100%" fontSize="16" text="" />
+						<s:Label id="txtRecomendacoes" width="100%" fontSize="16" text="" />
 					</s:VGroup>
 				</s:VGroup>
 				
-				<s:VGroup id="gpRodape" width="100%" gap="5" bottom="30" paddingLeft="10" paddingRight="10">
-					<mx:HRule width="100%"/>
+				<s:VGroup id="gpRodape" width="100%" gap="5" bottom="20" paddingLeft="10" paddingRight="10">
+					<mx:HRule width="100%" />
 					<s:Label id="txtEndereco" width="100%" fontSize="12" styleName="light" color="#999999" textAlign="center" text="" />
 				</s:VGroup>
 			</s:Group>

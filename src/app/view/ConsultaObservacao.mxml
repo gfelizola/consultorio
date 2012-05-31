@@ -59,7 +59,7 @@
 			<s:TextArea id="txtObservacao" x="10" y="110" skinClass="app.skin.TextArea" width="481" height="170" text="{bindObservacao}"/>
 			
 			<s:HGroup x="10" y="300" gap="10">
-				<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR CONSULTA" click="onSalvar(event)" skinClass="app.skin.Button"/>
+				<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
 				<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
 			</s:HGroup>
 			

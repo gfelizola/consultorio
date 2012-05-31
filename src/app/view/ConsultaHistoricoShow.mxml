@@ -96,12 +96,12 @@
 							{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
 							{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
 							{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
-							{ nome:'IMC', 									valor: a.imc.toPrecision(2), 			medida:'' }
+							{ nome:'IMC', 									valor: a.imc.toFixed(2), 				medida:'' }
 						];
 						
 						if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
 							if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
-								campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: a.circunferenciaCintura / a.circunferenciaQuadril, medida: '' })
+								campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: (a.circunferenciaCintura / a.circunferenciaQuadril).toFixed(2), medida: '' })
 							}
 						}
 						
@@ -227,14 +227,14 @@
 					
 					var rTexto:String = "<textformat tabstops='[300]'>" ;
 					
-					rTexto += "<p><b>Metabilismo Basal:</b> <tab/>" + r.metabolismoBasal.toPrecision(2) + "</p>" +
-						"<p><b>Necessidade energética:</b><tab/>" + r.necessidadeEnergetica.toPrecision(2) + "</p>" ;
+					rTexto += "<p><b>Metabilismo Basal:</b> <tab/>" + r.metabolismoBasal.toFixed(2) + " kcal/dia</p>" +
+						"<p><b>Necessidade energética:</b><tab/>" + r.necessidadeEnergetica.toFixed(2) + " kcal/dia</p>" ;
 					
 					if( General.consultaAtual.semanaGestacional > 12 ){
-						rTexto += "<p><b>Necessidade energética gestacional:</b><tab/>" + r.necessidadeEnergeticaGestacional + "</p>" ;
+						rTexto += "<p><b>Necessidade energética gestacional:</b><tab/>" + r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia</p>" ;
 					} else {
 						if( General.consultaAtual.semanaGestacional > 0 ){
-							rTexto += "<p><b>Necessidade energética gestacional:</b><tab/>" + r.necessidadeEnergeticaGestacional + " (menos de 12 semanas de gestação)</p>" ;
+							rTexto += "<p><b>Necessidade energética gestacional:</b><tab/>" + r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia (menos de 12 semanas de gestação)</p>" ;
 						}
 					}
 					
@@ -250,6 +250,7 @@
 			{
 				if( General.consultaAtual.dataConsulta ) dateConsulta = General.getFormattedDate(General.consultaAtual.dataConsulta.toString());
 				txtObservacao.text = General.consultaAtual.observacao;
+				txtRecomendacoes.text = General.consultaAtual.recomendacoes ;
 				
 				var cores:Array = [ 0xF6F9FE, 0xFCFDFF ];
 				var boxes:Array = [ scTMB, scAntropometria, scMAN, scAlimentos, scAtividades, scExames ];
@@ -279,6 +280,11 @@
 			
 			private function onImprimirResumo(e:MouseEvent):void
 			{
+				if( txtRecomendacoes.text != '' ){
+					General.consultaAtual.recomendacoes = txtRecomendacoes.text ;
+					General.salvaConsulta();
+				}
+				
 				var cr:ConsultaResumo = new ConsultaResumo();
 				cr.open();
 			}
@@ -345,10 +351,10 @@
 				</s:SkinnableContainer>
 			</s:VGroup>
 			
-			<s:HGroup width="974" verticalAlign="baseline" visible="false" includeInLayout="false">
+			<s:VGroup width="974">
 				<s:Label fontSize="15" styleName="bold" text="RECOMENDAÇÃO DE DIETA:" />
-				<s:Label id="txtRecomendaDieta" text="Texto da recomendação da dieta" />
-			</s:HGroup>
+				<s:TextArea id="txtRecomendacoes" width="100%" height="100" skinClass="app.skin.TextArea" />
+			</s:VGroup>
 		</s:VGroup>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

@@ -65,8 +65,6 @@
 					
 					txtDataNascimento.text = General.getFormattedDate( p.dataNascimento );
 					
-					trace( p.dataUltimaMenstruacao );
-					
 					if( p.dataUltimaMenstruacao ){
 						dtUltimaMestruacao.text = General.getFormattedDate( p.dataUltimaMenstruacao );
 					}
@@ -123,7 +121,9 @@
 			
 			private function onSexoChange(e:IndexChangeEvent = null):void
 			{
-				gpFeminino.visible = gpFeminino.includeInLayout = cmbSexo.selectedItem.valor == 'F' ;
+				trace('cmbSexo.selectedItem',cmbSexo.selectedItem);
+				if(typeof(cmbSexo.selectedItem) == 'object')
+					gpFeminino.visible = gpFeminino.includeInLayout = cmbSexo.selectedItem.valor == 'F' ;
 			}
 			
 			private function onGestanteChange(e:Event = null):void
@@ -243,7 +243,11 @@
 			
 			private function onTipoAtendimentoChange(e:IndexChangeEvent = null):void
 			{
-				var v:Boolean = TipoAtendimento( cmbTipoAtendimento.selectedItem ).nome.indexOf('Conv') > -1 ;
+				var v:Boolean = false;
+				if(typeof(cmbTipoAtendimento.selectedItem) == "object")
+				{
+					v = (cmbTipoAtendimento.selectedItem.nome == "Particular") ? false : true;
+				}
 				lblConvenio.visible = v ;
 				lblNCarteira.visible = v ;
 				txtConvenio.visible = v ;
@@ -264,18 +268,21 @@
 		<mx:StringValidator id="valTelRes" 			source="{txtTelResidencial}" 	property="text" required="true" requiredFieldError="O campo Telefone Residencial é obrigatório" />
 		<!--  mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" / -->
 		
-		<s:NumberValidator id="valSexo" source="{cmbSexo}" property="selectedIndex" minValue="0" />
-		<s:NumberValidator id="valEstado" source="{cmbEstados}" property="selectedIndex" minValue="0" />
+		<s:NumberValidator id="valSexo" source="{cmbSexo}" property="selectedIndex" minValue="0" required="true" requiredFieldError="O campo sexo é obrigatório" />
+		<s:NumberValidator id="valEstado" source="{cmbEstados}" property="selectedIndex" minValue="0" required="true" requiredFieldError="O campo Estado é obrigatório" />
 	</fx:Declarations>
 	
+	
 	<skin:ScrollerSemBug id="formScroller" x="10" y="10" width="984" height="520" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
+	
 		<s:VGroup id="formContainer" width="984" height="520" gap="20" paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
+	
 			
 			<s:Label color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DA CONSULTA" />
 			
 			<s:Group>
 				<s:Label x="0" y="10" text="TIPO DE ATENDIMENTO"/>
-				<s:ComboBox id="cmbTipoAtendimento" x="0" y="31" width="435" labelField="nome" dataProvider="{Constantes.tiposAtendimentos}" skinClass="app.skin.ComboBox" change="onTipoAtendimentoChange(event)" />
+				<s:ComboBox requireSelection="true" openOnInput="true" id="cmbTipoAtendimento" x="0" y="31" width="435" labelField="nome" dataProvider="{Constantes.tiposAtendimentos}" skinClass="app.skin.ComboBox" change="onTipoAtendimentoChange(event)" />
 				
 				<s:Label id="lblConvenio" x="480" y="10" text="CONVÊNIO"/>
 				<s:TextInput id="txtConvenio" x="480" y="31" width="225" skinClass="app.skin.TextInput" text="{paciente.convenio}" />
@@ -300,13 +307,13 @@
 				<s:TextInput id="txtSobrenome" x="480" y="31" width="435" skinClass="app.skin.TextInput" text="{paciente.sobrenome}" />
 				
 				<s:Label x="0" y="86" text="SEXO*"/>
-				<s:ComboBox id="cmbSexo" x="0" y="107" width="110" labelField="nome" dataProvider="{sexos}" skinClass="app.skin.ComboBox" change="onSexoChange(event)" />
+				<s:ComboBox requireSelection="true" openOnInput="true" id="cmbSexo" x="0" y="107" width="110" labelField="nome" dataProvider="{sexos}" skinClass="app.skin.ComboBox" change="onSexoChange(event)" />
 				
 				<s:Label x="125" y="86" text="DATA DE NASCIMENTO*"/>
 				<s:TextInput id="txtDataNascimento" x="125" y="107" width="309" skinClass="app.skin.TextInput" text="" prompt="DD/MM/AAAA" />
 				
 				<s:Label x="480" y="86" text="ESTADO CIVIL"/>
-				<s:ComboBox id="cmbEstadoCivil" x="480" y="107" width="155" labelField="nome" dataProvider="{Constantes.estadosCivis}" skinClass="app.skin.ComboBox" selectedItem="{paciente.estadoCivil}" />
+				<s:ComboBox requireSelection="true" openOnInput="true" id="cmbEstadoCivil" x="480" y="107" width="155" labelField="nome" dataProvider="{Constantes.estadosCivis}" skinClass="app.skin.ComboBox" selectedItem="{paciente.estadoCivil}" />
 				
 				<s:Label x="655" y="86" text="PROFISSÃO"/>
 				<s:TextInput id="txtProfissao" x="655" y="107" width="260" skinClass="app.skin.TextInput" text="{paciente.profissao}" />
@@ -342,7 +349,7 @@
 				<s:TextInput id="txtCidade" x="0" y="93" width="435" skinClass="app.skin.TextInput" text="{paciente.cidade}" />
 				
 				<s:Label x="480" y="70" text="ESTADO*"/>
-				<s:ComboBox id="cmbEstados" x="480" y="91" width="155" dataProvider="{bindEstadoArrayCollection}" skinClass="app.skin.ComboBox" selectedItem="{bindEstado}" />
+				<s:ComboBox requireSelection="true" openOnInput="true" id="cmbEstados" x="480" y="91" width="155" dataProvider="{bindEstadoArrayCollection}" skinClass="app.skin.ComboBox" selectedItem="{bindEstado}" />
 				
 				<s:Label x="655" y="70" text="CEP"/>
 				<s:TextInput id="txtCEP" x="655" y="91" width="260" skinClass="app.skin.TextInput" text="{paciente.CEP}" />
@@ -361,35 +368,43 @@
 			</s:Group>
 			
 			<s:Group width="100%">
-				<s:Label x="0" y="10" text="HISTÓRICO FAMILIAR"/>
-				<s:ComboBox id="cmbHistoricos" x="0" y="31" width="435" labelField="nome" dataProvider="{Constantes.historicos}" skinClass="app.skin.ComboBox" change="onHistoricoChange(event)" />
-				<s:List id="lstHistoricos" x="0" y="70" width="435" labelField="nome" dataProvider="{historicos}" borderVisible="false" allowMultipleSelection="true">
+				<s:Label x="0" y="55" text="HISTÓRICO FAMILIAR"/>
+				<s:Label x="0" y="12" text="Este campo deve ser utilizado para inserir informações relativas à história clínica e de saúde (uso pregresso de medicamentos, &#xd;realização de cirurgias ou procedimentos, etc.)"/>
+				<s:ComboBox requireSelection="true" openOnInput="true" id="cmbHistoricos" x="0" y="76" width="435" labelField="nome" dataProvider="{Constantes.historicos}" skinClass="app.skin.ComboBox" change="onHistoricoChange(event)" />
+				<s:List id="lstHistoricos" x="0" y="115" width="435" labelField="nome" dataProvider="{historicos}" borderVisible="false" allowMultipleSelection="true">
 					<s:layout>
 						<s:VerticalLayout gap="0" horizontalAlign="justify" requestedRowCount="5" />
 					</s:layout>
 				</s:List>
-				<mx:LinkButton x="0" y="185" icon="@Embed('assets/images/remover.png')" label="remover itens selecionados" click="onRemoverHistoricos(event)" />
+				<mx:LinkButton x="0" y="230" icon="@Embed('assets/images/remover.png')" label="remover itens selecionados" click="onRemoverHistoricos(event)" />
 				
-				<s:Label x="483" y="10" text="PATOLOGIAS"/>
-				<s:ComboBox id="cmbPatologias" x="483" y="31" width="435" labelField="nome" dataProvider="{Constantes.patologias}" skinClass="app.skin.ComboBox" change="onPatologiaChange(event)" />
-				<s:List id="lstPatologias" x="483" y="70" width="435" labelField="nome" dataProvider="{patologias}" borderVisible="false" allowMultipleSelection="true">
+				<s:Label x="483" y="55" text="PATOLOGIAS"/>
+				<s:ComboBox requireSelection="true" openOnInput="true" id="cmbPatologias" x="483" y="76" width="435" labelField="nome" dataProvider="{Constantes.patologias}" skinClass="app.skin.ComboBox" change="onPatologiaChange(event)" />
+				<s:List id="lstPatologias" x="483" y="115" width="435" labelField="nome" dataProvider="{patologias}" borderVisible="false" allowMultipleSelection="true">
 					<s:layout>
 						<s:VerticalLayout gap="0" horizontalAlign="justify" requestedRowCount="5" />
 					</s:layout>
 				</s:List>
-				<mx:LinkButton x="483" y="185" icon="@Embed('assets/images/remover.png')" label="remover itens selecionados" click="onRemoverPatologias(event)" />
+				<mx:LinkButton x="483" y="230" icon="@Embed('assets/images/remover.png')" label="remover itens selecionados" click="onRemoverPatologias(event)" />
+				<s:Group x="0" y="271" width="100%">
+					<s:Button id="btnSalvar" x="790" y="40" label="SALVAR DADOS" click="onSalvar(event)"
+							  skinClass="app.skin.Button"/>
+					<s:Label id="lblResposta" x="0" y="40" width="780" height="100" color="#FF0000"/>
+				</s:Group>
 			</s:Group>
 			
 			<s:Group width="100%" id="gpHistorico" visible="false" includeInLayout="false">
+			    <s:VGroup>
 				<s:Label x="0" y="0" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICO" />
+				<!--
 				<s:Label x="0" y="30" text="TEXTO EXPLICATIVO DE COMO ESTE CAMPO DEVE SER PREENCHIDO LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT.&#xd;MAECENAS EROS LECTUS, ALIQUET ORNARE FERMENTUM SIT AMET, ELEMENTUM A RISUS."/>
+				-->
 				<s:TextArea id="txtHistorico" x="0" y="66" width="924" height="167" skinClass="app.skin.TextArea" text="{paciente.historico}" />
+				</s:VGroup>
 			</s:Group>
-				
-			<s:Group width="100%">
-				<s:Button id="btnSalvar" x="790" label="SALVAR DADOS" skinClass="app.skin.Button" click="onSalvar(event)"/>
-				<s:Label id="lblResposta" x="0" width="780" height="100" color="#FF0000"/>
-			</s:Group>
+	
 		</s:VGroup>
+	
 	</skin:ScrollerSemBug>
+	
 </s:NavigatorContent>

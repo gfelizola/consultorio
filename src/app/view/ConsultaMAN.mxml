@@ -14,6 +14,8 @@
 			import app.util.General;
 			
 			import mx.controls.Alert;
+			import mx.core.UIComponent;
+			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.events.ValidationResultEvent;
 			import mx.validators.Validator;
@@ -257,8 +259,18 @@
 			
 			private function onFinalizar(e:MouseEvent):void
 			{
-				if( salvar() ){
-					Consulta.instance.vsPaciente.selectedIndex = 2 ;
+				Alert.yesLabel = 'Sim' ;
+				Alert.noLabel = 'Não' ;
+				Alert.show("Tem certeza que deseja finalizar a consulta?", "Cuidado", Alert.YES|Alert.NO, null, onAlertFinalizar);
+			}
+			
+			private function onAlertFinalizar(e:CloseEvent):void
+			{
+				if( e.detail == Alert.YES ){
+					if( salvar() ){
+						Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						General.dispatcher.rebuild();
+					}
 				}
 			}
 			

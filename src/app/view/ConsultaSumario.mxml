@@ -212,8 +212,9 @@
 	<mx:ViewStack id="vsGraficos" x="235" y="22" width="746" height="460">
 		<s:NavigatorContent width="100%" height="100%" label="Peso">
 			<s:VGroup gap="5">
+				
 				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="GRÁFICO DE VARIAÇÃO DE PESO"/>
-				<s:Label width="500" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+				<s:Label width="500" text="Evolução do peso corporal ao longo do acompanhamento nutricional." />
 				
 				<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="720" height="390" showDataTips="true" seriesFilters="{[]}">
 					<mx:horizontalAxis>
@@ -242,7 +243,7 @@
 		<s:NavigatorContent width="100%" height="100%" label="Peso">
 			<s:VGroup gap="5">
 				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO"/>
-				<s:Label width="500" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
+				<s:Label width="500" text="As novas curvas de acompanhamento estabelecem, internacionalmente, um padrão para avaliar o crescimento e estado nutricional de crianças e adolescentes. São preconizadas pela Organização Mundial da Saúde e Ministério da Saúde." />
 				
 				<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="720" height="390" showDataTips="true" seriesFilters="{[]}">
 					<mx:horizontalAxis>
@@ -271,7 +272,7 @@
 		<s:NavigatorContent width="100%" height="100%" label="Atalah">
 			<s:VGroup gap="5">
 				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE ATALAH"/>
-				<s:Label width="500" text="Ferramenta de avaliação do estado nutricional da gestante" />
+				<s:Label width="500" text="Trata-se da ferramenta preconizada pela Organização Mundial da Saúde e Ministério da Saúde para avaliar a evolução do Índice de Massa Corporal  (IMC) segundo a semana gestacional." />
 				
 				<mx:LineChart id="curvaDeAtalah" dataProvider="{pesos}" width="720" height="390" showDataTips="true">
 					<mx:horizontalAxis>
@@ -303,8 +304,7 @@
 				<s:Label width="500" color="#81BAEA" fontSize="20" styleName="bold" text="RESULTADO DA MINI AVALIAÇÃO NUTRICIONAL"/>
 				<s:Label width="500" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit." />
 			</s:VGroup>
-			<s:Label id="resultadoMAN" x="0" y="100" color="#81BAEA" fontSize="40" styleName="bold"
-					 text="DESNUTRIDO"/>
+			<s:Label id="resultadoMAN" x="0" y="100" color="#81BAEA" fontSize="40" styleName="bold" text=""/>
 		</s:NavigatorContent>
 	</mx:ViewStack>
 </s:NavigatorContent>

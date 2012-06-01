@@ -81,7 +81,7 @@
 	<s:Label x="476" y="36" width="352" color="#83BBEA" fontSize="19" styleName="bold"
 			 text="ÚLTIMOS PACIENTES ATENDIDOS"/>
 	<s:Label x="39" y="148" width="390" height="370"
-			 text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam ac mauris. Quisque eget metus eget tellus ultrices rhoncus. Phasellus id lacus semper lacus suscipit pretium. Nulla mollis ligula id tellus. Duis ac libero. Nulla facilisi. Lorem ipsum dolor sit.&#xd; &#xd;Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nulla commodo viverra malesuada. Quisque sodales turpis vulputate enim ornare venenatis. Aliquam scelerisque pretium orci, rutrum commodo lectus placerat vel. Suspendisse porta, orci at ornare porttitor, libero urna sagittis justo, et mollis odio elit sit amet massa. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nullam ac mauris. Quisque eget metus eget tellus ultrices rhoncus. Phasellus id lacus semper lacus suscipit pretium. Nulla mollis ligula id tellus. Duis ac libero. Nulla facilisi. Lorem ipsum dolor sit."/>
+			 text="O Consultório Nutri Saúde é uma ferramenta para facilitar o armazenamento de dados de seus pacientes e o cálculo de informações úteis para a prática clínica.&#xd;&#xd;Você pode acessar de forma rápida as informações de seus pacientes, além de incluir novos acompanhamentos. &#xd;Para localizar um paciente já cadastrado, digite seu nome no campo “Buscar paciente”.&#xd;Se deseja incluir um novo atendimento, é só escolher “Cadastrar Paciente”."/>
 	
 	<s:DataGrid id="dgPacientes" x="476" y="76" width="518" height="442" visible="false" dataProvider="{pacientes}" requestedMaxRowCount="16"
 				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"

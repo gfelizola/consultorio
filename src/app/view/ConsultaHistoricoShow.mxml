@@ -227,7 +227,7 @@
 					
 					var rTexto:String = "<textformat tabstops='[300]'>" ;
 					
-					rTexto += "<p><b>Metabilismo Basal:</b> <tab/>" + r.metabolismoBasal.toFixed(2) + " kcal/dia</p>" +
+					rTexto += "<p><b>Metabolismo Basal:</b> <tab/>" + r.metabolismoBasal.toFixed(2) + " kcal/dia</p>" +
 						"<p><b>Necessidade energética:</b><tab/>" + r.necessidadeEnergetica.toFixed(2) + " kcal/dia</p>" ;
 					
 					if( General.consultaAtual.semanaGestacional > 12 ){

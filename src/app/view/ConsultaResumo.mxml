@@ -330,21 +330,15 @@
 			<s:Group id="containerFull" width="1000" height="1414">
 				<s:VGroup width="100%" paddingLeft="10" paddingTop="10" paddingRight="10" paddingBottom="10" gap="10">
 					<s:Group id="gpHeader" width="100%">
-						<s:Image id="imgLogo" x="0" y="0" width="500" height="100" scaleMode="letterbox" horizontalAlign="left" />
-						
-						<s:Label x="0" y="111" width="195" height="30" fontSize="36" text="Consultório"
-								 textAlign="left"/>
-						<s:Label x="200" y="100" width="340" height="40" fontSize="36" styleName="bold"
-								 text="Nutri Saúde" textAlign="left"/>
-						
-						<s:Label id="txtData" right="0" y="43" width="176" fontSize="20" styleName="light"
-								 text="10/05/2012" textAlign="right"/>
-						<s:Label id="txtDoutor" right="0" y="77" width="470" height="30" fontSize="30"
-								 text="Dr. Helmer" textAlign="right"/>
-						<s:Label id="txtCRN" right="0" y="115" width="470" height="30" fontSize="30"
-								 text="CRN: 123123123" textAlign="right"/>
-						
-						<mx:HRule width="100%" x="0" y="145"/>
+						<s:VGroup width="100%" paddingLeft="10" paddingTop="10" paddingRight="10" paddingBottom="10" gap="10">
+							<s:Image id="imgLogo" x="0" y="0" width="500" height="100" scaleMode="letterbox" horizontalAlign="left" />
+							<s:HGroup width="100%">
+								<s:Label id="txtData" right="0" y="43" width="176" fontSize="20" styleName="light" text="10/05/2012" textAlign="center"/>
+								<s:Label id="txtDoutor" right="0" y="77" width="470" height="30" fontSize="30" text="Dr. Helmer" textAlign="center"/>
+								<s:Label id="txtCRN" right="0" y="115" width="470" height="30" fontSize="30" text="CRN: 123123123" textAlign="center"/>
+							</s:HGroup>
+							<mx:HRule width="100%" />
+						</s:VGroup>
 					</s:Group>
 					
 					<s:Group id="gpDadosPaciente">

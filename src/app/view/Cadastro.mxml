@@ -329,98 +329,111 @@
 		<s:NumberValidator id="valRegional" 		source="{cmbRegional}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Regional é obrigatório" />
 	</fx:Declarations>
 	
+	
 	<skin:ScrollerSemBug id="formScroller" x="10" y="10" width="984" height="520" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
 		<s:Group id="formContainer" width="984" height="520">
-			
-			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DE ACESSO" />
-			
-			<s:Label x="10" y="50" text="NOME DE USUARIO*"/>
-			<s:TextInput id="txtLogin" x="10" y="68" width="435" skinClass="app.skin.TextInput" text="{usuario.login}"/>
-			
-			<s:Label x="10" y="114" text="SENHA*"/>
-			<s:TextInput id="txtSenha" x="10" y="135" width="435" displayAsPassword="true" skinClass="app.skin.TextInput"/>
-			
-			<s:Label x="490" y="114" text="CONFIRMAÇÃO DA SENHA*"/>
-			<s:TextInput id="txtConfirmaSenha" x="490" y="135" width="435" displayAsPassword="true" skinClass="app.skin.TextInput"/>
-			
-			
-			
-			<s:Label x="10" y="182" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS PROFISSIONAIS"/>
-			
-			<s:Label x="10" y="219" text="NOME*"/>
-			<s:TextInput id="txtNome" x="10" y="240" width="435" skinClass="app.skin.TextInput" text="{usuario.nome}" />
-			
-			<s:Label x="490" y="219" text="SOBRENOME*"/>
-			<s:TextInput id="txtSobrenome" x="490" y="240" width="435" skinClass="app.skin.TextInput" text="{usuario.sobrenome}" />
-			
-			<s:Label x="10" y="295" text="CRN*"/>
-			<s:TextInput id="txtCrn" x="10" y="316" width="309" skinClass="app.skin.TextInput" text="{usuario.CRN}" />
-			
-			<s:Label x="327" y="294" text="REGIONAL*"/>
-			<s:ComboBox id="cmbRegional" x="327" y="315" width="118" dataProvider="{regionais}"
-						selectedItem="{usuario.regional}" skinClass="app.skin.ComboBox"/>
-			
-			<s:Label x="490" y="294" text="SEXO*"/>
-			<s:ComboBox id="cmbSexo" x="490" y="315" width="435" dataProvider="{sexos}"
-						labelField="nome" skinClass="app.skin.ComboBox"/>
-			
-			
-			
-			<s:Label x="10" y="372" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DO CONSULTÓRIO"/>
-			
-			<s:Label x="10" y="408" text="ENDEREÇO*"/>
-			<s:TextInput id="txtEndereco" x="10" y="429" width="435" skinClass="app.skin.TextInput" text="{usuario.endereco}" />
-			
-			<s:Label x="490" y="408" text="COMPLEMENTO"/>
-			<s:TextInput id="txtComplemento" x="490" y="429" width="435" skinClass="app.skin.TextInput" text="{usuario.complemento}" />
-			
-			<s:Label x="10" y="473" text="BAIRRO*"/>
-			<s:TextInput id="txtBairro" x="10" y="494" width="435" skinClass="app.skin.TextInput" text="{usuario.bairro}" />
+	
+	
+			<s:VGroup gap="15" y="10">
+				<s:Label x="10" y="21" text="Neste etapa inicial você deverá realizar o cadastro para acessar o aplicativo e incluir os dados adicionais que &#xd;aparecerão na geração dos formulários e relatórios para os pacientes."/>
+				<s:Label x="9" y="67" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DE ACESSO" />
+				<s:Label x="10" y="99" width="925" text="A configuração do nome do usuário e da senha permitirá o acesso seguro ao sistema&#xd;Os dados abaixo serão utilizados exclusivamente para acesso à ferramenta." />
+		
+				<s:Group>
+					<s:Label x="9" y="17" text="NOME DE USUARIO*"/>
+					<s:TextInput id="txtLogin" x="9" y="35" width="435" skinClass="app.skin.TextInput" text="{usuario.login}"/>
+					
+					<s:Label x="9" y="81" text="SENHA*"/>
+					<s:TextInput id="txtSenha" x="9" y="102" width="435" displayAsPassword="true" skinClass="app.skin.TextInput"/>
+					
+					<s:Label x="489" y="81" text="CONFIRMAÇÃO DA SENHA*"/>
+					<s:TextInput id="txtConfirmaSenha" x="489" y="102" width="435" displayAsPassword="true" skinClass="app.skin.TextInput"/>		
+				</s:Group>
 
-			<s:Label x="490" y="473" text="CEP"/>
-			<s:TextInput id="txtCEP" x="490" y="494" width="435" skinClass="app.skin.TextInput" text="{usuario.CEP}" />
-			
-			<s:Label x="10" y="538" text="CIDADE*"/>
-			<s:TextInput id="txtCidade" x="10" y="559" width="435" skinClass="app.skin.TextInput" text="{usuario.cidade}" />
-			
-			<s:Label x="490" y="536" text="ESTADO*"/>
-			<s:ComboBox id="cmbEstados" x="490" y="557" width="155" dataProvider="{bindEstadoArrayCollection}" skinClass="app.skin.ComboBox" selectedItem="{bindEstado}" />
-			
-			<s:Label x="664" y="536" text="TELEFONE*"/>
-			<s:TextInput id="txtTelefone" x="664" y="557" width="260" skinClass="app.skin.TextInput" text="{usuario.telefone}" />
-			
-			<s:Label x="10" y="615" text="INCLUIR LOGO"/>
-			<s:Button id="btnEscolherLogo" x="10" y="635" label="ESCOLHER ARQUIVO" skinClass="app.skin.Button" click="onEscolher(event)"/>
-			<s:Image id="imgLogo" x="182" y="615" width="742" height="78" scaleMode="letterbox" horizontalAlign="left" />
-			
-			
-			<s:Label x="10" y="726" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
-			
-			<s:Label x="10" y="758" text="REDE SOCIAL"/>
-			<s:ComboBox id="cmbRedeSocial" x="10" y="779" width="434" labelField="nome" dataProvider="{Constantes.redesSociais}" skinClass="app.skin.ComboBox" />
-			
-			<s:Label x="490" y="758" text="ENDEREÇO"/>
-			<s:TextInput id="txtEndRedeSocial" x="490" y="779" width="301" skinClass="app.skin.TextInput"/>
+				<s:Label x="9" y="287" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS PROFISSIONAIS"/>
+				<s:Label x="10" y="323" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos.&#xd;O preenchimento deles é opcional."/>
 				
-			<s:Button id="btnAdicionar" x="802" y="775" width="122" label="ADICIONAR"
-					  click="onAdicionar(event)" skinClass="app.skin.Button"/>
-			
-			<s:Group id="rsContainer" x="10" y="820" visible="false">
+				<s:Group>
+					<s:Label x="9" y="16" text="NOME*"/>
+					<s:TextInput id="txtNome" x="9" y="37" width="435" skinClass="app.skin.TextInput" text="{usuario.nome}" />
+					
+					<s:Label x="489" y="16" text="SOBRENOME*"/>
+					<s:TextInput id="txtSobrenome" x="489" y="37" width="435" skinClass="app.skin.TextInput" text="{usuario.sobrenome}" />
+					
+					<s:Label x="9" y="92" text="CRN*"/>
+					<s:TextInput id="txtCrn" x="9" y="113" width="309" skinClass="app.skin.TextInput" text="{usuario.CRN}" />
+					
+					<s:Label x="326" y="91" text="REGIONAL*"/>
+					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbRegional" x="326" y="112" width="118" dataProvider="{regionais}" selectedItem="{usuario.regional}" skinClass="app.skin.ComboBox"/>
+					
+					<s:Label x="489" y="91" text="SEXO*"/>
+					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbSexo" x="489" y="112" width="435" dataProvider="{sexos}" labelField="nome" skinClass="app.skin.ComboBox"/>
+				</s:Group>
 				
-			</s:Group>
+				<s:Label x="9" y="519" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DO CONSULTÓRIO"/>
+				<s:Label x="10" y="556" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos, que você pode entregar aos seus pacientes. "/>
+
+				<s:Group>
+					<s:Label x="11" y="16" text="ENDEREÇO*"/>
+					<s:TextInput id="txtEndereco" x="11" y="37" width="435" skinClass="app.skin.TextInput" text="{usuario.endereco}" />
+					
+					<s:Label x="491" y="16" text="COMPLEMENTO"/>
+					<s:TextInput id="txtComplemento" x="491" y="37" width="435" skinClass="app.skin.TextInput" text="{usuario.complemento}" />
+					
+					<s:Label x="11" y="81" text="BAIRRO*"/>
+					<s:TextInput id="txtBairro" x="11" y="102" width="435" skinClass="app.skin.TextInput" text="{usuario.bairro}" />
+		
+					<s:Label x="491" y="81" text="CEP"/>
+					<s:TextInput id="txtCEP" x="491" y="102" width="435" skinClass="app.skin.TextInput" text="{usuario.CEP}" />
+					
+					<s:Label x="11" y="146" text="CIDADE*"/>
+					<s:TextInput id="txtCidade" x="11" y="167" width="435" skinClass="app.skin.TextInput" text="{usuario.cidade}" />
+					
+					<s:Label x="491" y="144" text="ESTADO*"/>
+					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbEstados" x="491" y="165" width="155" dataProvider="{bindEstadoArrayCollection}" skinClass="app.skin.ComboBox" selectedItem="{bindEstado}" />
+					
+					<s:Label x="665" y="144" text="TELEFONE*"/>
+					<s:TextInput id="txtTelefone" x="665" y="165" width="260" skinClass="app.skin.TextInput" text="{usuario.telefone}" />
+					
+					<s:Label x="11" y="223" text="INCLUIR LOGO"/>
+					<s:Button id="btnEscolherLogo" x="11" y="243" label="ESCOLHER ARQUIVO" skinClass="app.skin.Button" click="onEscolher(event)"/>
+					<s:Image id="imgLogo" x="183" y="223" width="742" height="78" scaleMode="letterbox" horizontalAlign="left" />
+				</s:Group>
 			
-			<s:Group id="gpFinal" x="10" y="820">
-				<s:Label x="0" y="0" text="WEBSITE/BLOG"/>
-				<s:TextInput id="txtWebsite" x="0" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.site}" />
-				
-				<s:Label x="480" y="0" text="E-MAIL*"/>
-				<s:TextInput id="txtEmail" x="480" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.email}" />
-				
-				<s:Button id="btnSalvar" x="792" y="70" label="SALVAR DADOS" skinClass="app.skin.Button" click="onSalvar(event)"/>
-				<s:Label id="lblResposta" x="0" y="70" width="780" height="100" color="#FF0000"/>
-			</s:Group>
 			
+				<s:Label x="11" y="904" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
+				<s:Label x="10" y="556" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos, que você pode entregar aos seus pacientes."/>
+			
+			
+				<s:Group>
+					<s:Label x="11" y="16" text="REDE SOCIAL"/>
+					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbRedeSocial" x="11" y="37" width="434" labelField="nome" dataProvider="{Constantes.redesSociais}" skinClass="app.skin.ComboBox" />
+					
+					<s:Label x="491" y="16" text="ENDEREÇO"/>
+					<s:TextInput id="txtEndRedeSocial" x="491" y="37" width="301" skinClass="app.skin.TextInput"/>	
+				</s:Group>
+				
+				<s:Button id="btnAdicionar" x="803" width="122" label="ADICIONAR" click="onAdicionar(event)" skinClass="app.skin.Button"/>
+				
+				<s:Group id="rsContainer" x="10" visible="false"></s:Group>
+				
+				<s:Group id="gpFinal" x="11" y="998">
+					<s:Label x="0" y="0" text="WEBSITE/BLOG"/>
+					<s:TextInput id="txtWebsite" x="0" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.site}" />
+					
+					<s:Label x="480" y="0" text="E-MAIL*"/>
+					<s:TextInput id="txtEmail" x="480" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.email}" />
+					
+					<s:Button id="btnSalvar" x="792" y="70" label="SALVAR DADOS" skinClass="app.skin.Button" click="onSalvar(event)"/>
+					<s:Label id="lblResposta" x="0" y="70" width="780" height="100" color="#FF0000"/>
+				</s:Group>
+				
+			</s:VGroup>
+	
+	
+		
 		</s:Group>
 	</skin:ScrollerSemBug>
+	
 	
 </s:NavigatorContent>

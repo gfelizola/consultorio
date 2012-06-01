@@ -9,6 +9,7 @@
 			
 			import mx.controls.Alert;
 			import mx.core.UIComponent;
+			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.events.ValidationResultEvent;
 			import mx.validators.Validator;
@@ -44,8 +45,18 @@
 			
 			private function onFinalizar(e:MouseEvent):void
 			{
-				if( salvar() ){
-					Consulta.instance.vsPaciente.selectedIndex = 2 ;
+				Alert.yesLabel = 'Sim' ;
+				Alert.noLabel = 'Não' ;
+				Alert.show("Tem certeza que deseja finalizar a consulta?", "Cuidado", Alert.YES|Alert.NO, null, onAlertFinalizar);
+			}
+			
+			private function onAlertFinalizar(e:CloseEvent):void
+			{
+				if( e.detail == Alert.YES ){
+					if( salvar() ){
+						Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						General.dispatcher.rebuild();
+					}
 				}
 			}
 			
@@ -55,7 +66,7 @@
 	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
 		<s:Group width="984" height="390">
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="OBSERVAÇÃO"/>
-			<s:Label x="10" y="48" width="481" text="Texto explicativo de como este campo deve ser preenchido loasda Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "/>
+			<s:Label x="10" y="48" width="850" text="Este é um campo livre para registro de quaisquer informações que considera importante para o acompanhamento nutricional do paciente e que não estejam elencadas em outros campos do aplicativo."/>
 			<s:TextArea id="txtObservacao" x="10" y="110" skinClass="app.skin.TextArea" width="481" height="170" text="{bindObservacao}"/>
 			
 			<s:HGroup x="10" y="300" gap="10">

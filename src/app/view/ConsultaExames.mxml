@@ -19,6 +19,8 @@
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
+			import mx.core.UIComponent;
+			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.validators.StringValidator;
 			import mx.validators.Validator;
@@ -241,8 +243,18 @@
 			
 			private function onFinalizar(e:MouseEvent):void
 			{
-				if( salvar() ){
-					Consulta.instance.vsPaciente.selectedIndex = 2 ;
+				Alert.yesLabel = 'Sim' ;
+				Alert.noLabel = 'Não' ;
+				Alert.show("Tem certeza que deseja finalizar a consulta?", "Cuidado", Alert.YES|Alert.NO, null, onAlertFinalizar);
+			}
+			
+			private function onAlertFinalizar(e:CloseEvent):void
+			{
+				if( e.detail == Alert.YES ){
+					if( salvar() ){
+						Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						General.dispatcher.rebuild();
+					}
 				}
 			}
 		]]>
@@ -259,6 +271,7 @@
 		<s:Group>
 			<s:VGroup width="100%" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
+				<s:Label width="850" text="Inserção de valores atuais dos principais marcadores bioquímicos para o acompanhamento nutricional, para comparação com valores de referência. É possível adicionar outros exames conforme particularidade do paciente." />
 				<s:VGroup gap="10" id="ExameGroup">
 					<s:SkinnableContainer width="435" backgroundColor="#F6F9FE">
 						<s:HGroup gap="10" paddingTop="5" paddingRight="5" paddingBottom="5" paddingLeft="5" variableColumnWidth="false" verticalAlign="middle">

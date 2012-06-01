@@ -4,7 +4,9 @@
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="400" 
 					creationComplete="init(event)" xmlns:view="app.view.*" xmlns:skin="app.skin.*">
 	
+	<!--
 	<fx:Style source="app/style/Estilo.css" />
+	-->
 	
 	<fx:Script>
 		<![CDATA[

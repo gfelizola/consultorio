@@ -117,29 +117,6 @@
 				}
 			}
 			
-			/*
-			private function resetForm(e:Event):void
-			{
-				txtPeso.text =
-				txtPesoGestacional.text =
-				txtEstatura.text =
-				txtCircCintura.text = 
-				txtCircQuadril.text =
-				txtCircTriceps.text = 
-				txtCircCoxa.text = 
-				txtCircPanturrilha.text =
-				txtDobraBiceps.text =
-				txtDobraTriceps.text =
-				txtDobraSubescapular.text =
-				txtDobraAxilarMedia.text =
-				txtDobraSupraIliaca.text = 
-				txtDobraToracica.text =
-				txtDobraAbdominal.text = 
-				txtDobraCoxa.text =
-				txtDobraPanturrilha.text = "";
-			}
-			//*/
-			
 			private function onMouseWheel(e:MouseEvent):void
 			{
 				e.delta = e.delta > 0 ? 10 : -10;

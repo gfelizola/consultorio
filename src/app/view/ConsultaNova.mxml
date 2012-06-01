@@ -8,6 +8,7 @@
 			import app.model.Consulta;
 			import app.model.Paciente;
 			import app.util.General;
+			import app.util.Helpers;
 			
 			import mx.controls.Alert;
 			import mx.core.UIComponent;
@@ -26,7 +27,7 @@
 				var p:Paciente = General.pacienteAtual ;
 				if( p == null ) return ;
 				
-				var idade:Number = ( new Date().fullYear ) - p.dataNascimento.fullYear ;
+				var idade:Number = Helpers.idade(p.dataNascimento);
 				
 				var tabMAN:UIComponent = tbConsulta.dataGroup.getElementAt(1) as UIComponent;
 				if(tabMAN){tabMAN.includeInLayout = tabMAN.visible = idade > 65;}

@@ -6,7 +6,9 @@
 		  width="900" height="700" creationComplete="init()"
 		  showStatusBar="false" title="IMPRESSÃO DE CONSULTA">
 	
+	<!--
 	<fx:Style source="app/style/Estilo.css" />
+	-->
 	
 	<fx:Script>
 		<![CDATA[
@@ -21,6 +23,7 @@
 			import app.model.Usuario;
 			import app.model.UsuarioRedeSocial;
 			import app.util.General;
+			import app.util.Helpers;
 			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
@@ -51,7 +54,7 @@
 				if( u.sexo == 'F' ) usuarioNome += 'a' ;
 				usuarioNome += '. ' + u.nome + ' ' + u.sobrenome ;
 				
-				txtData.text = General.getFormattedDate( new Date().toString() );
+				txtData.text = General.getFormattedDate( new Date() );
 				txtCRN.text = "CRN: " + u.CRN
 				txtDoutor.text = usuarioNome ;
 				
@@ -76,7 +79,7 @@
 				txtEndereco.text = endereco ;
 				
 				var p:Paciente = General.pacienteAtual ;
-				var idade:Number = ( new Date().fullYear ) - p.dataNascimento.fullYear ;
+				var idade:Number = Helpers.idade(p.dataNascimento);
 				
 				txtNomePaciente.text = p.nomeCompleto ;
 				endereco = p.endereco + ' - ' ;
@@ -115,7 +118,7 @@
 					var cons:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
 					if( cons.antropometria ){
 						pesos.addItem({ 
-							dataConsulta:General.getFormattedDate(cons.dataConsulta.toString()), 
+							dataConsulta:General.getFormattedDate(cons.dataConsulta), 
 							peso:cons.antropometria.peso, 
 							imc:cons.antropometria.imc, 
 							altura:cons.antropometria.estatura,
@@ -220,7 +223,7 @@
 				if( eb ){
 					containerDadosExames.removeAllElements();
 					
-					containerDadosExames.addElement( getLineGroup( 'EXAME', General.getFormattedDate( eb.dataDoExame.toString() ) ) ) ;
+					containerDadosExames.addElement( getLineGroup( 'EXAME', General.getFormattedDate( eb.dataDoExame ) ) ) ;
 					
 					for (var i:int = 0; i < eb.exames.length; i++) 
 					{

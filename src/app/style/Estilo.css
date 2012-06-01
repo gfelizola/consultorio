@@ -28,12 +28,18 @@
 }
 
 
-/* Application { locale: 'pt-BR'; } */
-/* s|TextInput, s|Label, s|RichText, s|TextArea, s|Button, s|DataGrid { fontFamily:DinRegular; fontSize:13; color:#475766; } */
-s|TextInput, s|Label, s|TextArea, s|Button, s|DataGrid { fontFamily:DinRegular; fontSize:13; color:#475766; }
+s|Application { locale: 'pt-BR'; }
+s|TextInput,
+s|Label,
+/* s|RichText, */
+s|TextArea,
+s|Button,
+s|DataGrid { fontFamily:DinRegular; fontSize:13; color:#475766; }
+
 .light { fontFamily:DinLight; }
 .bold { fontFamily:DinBold; }
 .lightSmall { fontFamily:DinLight; fontSize:11; }
 
 .accHeader { backgroundColor:#FAFDFE; color:#333333; fontFamily:DinRegular; fontSize:13; textFieldClass:ClassReference("mx.core.UIFTETextField"); }
-mx|Accordion { headerStyleName:accHeader; headerHeight:30; borderVisible:false; }
+
+/* mx|Accordion { headerStyleName:accHeader; headerHeight:30; borderVisible:false; } */

@@ -4,7 +4,9 @@
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="460" height="650"
 					show="init()" creationComplete="init()">
 	
+	<!--
 	<fx:Style source="app/style/Estilo.css" />
+	-->
 	
 	<fx:Script>
 		<![CDATA[
@@ -31,6 +33,8 @@
 			public var etapa:int = 0 ;
 			
 			[Bindable]
+			private var currTitulo:String = '';
+			
 			private var titulos:Array = [];
 			
 			[Bindable]
@@ -81,7 +85,7 @@
 				
 				if( General.consultaAtual != null ){
 					var c:app.model.Consulta = General.consultaAtual ;
-					impData.text = c.dataConsulta ? General.getFormattedDate( c.dataConsulta.toString() ) : '';	
+					impData.text = c.dataConsulta ? General.getFormattedDate( c.dataConsulta ) : '';	
 					
 					switch(etapa)
 					{
@@ -92,6 +96,7 @@
 						case 4: 	verificaMAN(c);					break;
 						case 5: 	verificaObservacao(c);			break;
 					}
+					currTitulo = titulos[etapa];
 				}
 			}
 			
@@ -331,7 +336,7 @@
 				if( eb ){
 					containerExames.removeAllElements();
 					
-					containerExames.addElement( getExameGroup( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame.toString() ) ) ) ;
+					containerExames.addElement( getExameGroup( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame ) ) ) ;
 					
 					for (var i:int = 0; i < eb.exames.length; i++) 
 					{
@@ -457,7 +462,7 @@
 		<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
 		<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
 		
-		<s:Label id="impTitulo" x="10" y="77" color="#83BBEA" fontSize="19" styleName="bold" text="{titulos[etapa]}"/>
+		<s:Label id="impTitulo" x="10" y="77" color="#83BBEA" fontSize="19" styleName="bold" text="{currTitulo}"/>
 		<s:Label id="impData" x="285" y="84" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
 		
 		<s:Label x="10" y="107" styleName="bold" text="NOME:"/>

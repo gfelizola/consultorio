@@ -117,17 +117,20 @@
 			private function onSalvar(e:MouseEvent = null):void
 			{
 				lblResposta.text = "" ;
+				var erros:Array;
+				var senha:String;
+				var confirmacao:String;
 				
 				if( usuario.id > 0 ){ //alteração
 					if( ArrayUtil.containsAny(validators, [ valSenha, valConfirmaSenha ]) ){
 						ArrayUtil.removeItems(validators, [valSenha, valConfirmaSenha] );
 					}
 					
-					var erros:Array = Validator.validateAll(validators);
+					erros = Validator.validateAll(validators);
 					if (erros.length == 0) {
 					
-						var senha:String = txtSenha.text ;
-						var confirmacao:String = txtConfirmaSenha.text ;
+						senha = txtSenha.text ;
+						confirmacao = txtConfirmaSenha.text ;
 						
 						if( senha != '' ){
 							if( senha == confirmacao ) {
@@ -146,10 +149,10 @@
 					}
 						
 				} else { //cadastro de novo usuário
-					var erros:Array = Validator.validateAll(validators);
+					erros = Validator.validateAll(validators);
 					if (erros.length == 0) {
-						var senha:String = txtSenha.text ;
-						var confirmacao:String = txtConfirmaSenha.text ;
+						senha = txtSenha.text ;
+						confirmacao = txtConfirmaSenha.text ;
 						
 						if( senha == confirmacao )
 						{

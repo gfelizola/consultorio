@@ -63,12 +63,12 @@
 					patologias = p.patologias as ArrayCollection ;
 					historicos = p.historicos as ArrayCollection ;
 					
-					txtDataNascimento.text = General.getFormattedDate( p.dataNascimento.toString() );
+					txtDataNascimento.text = General.getFormattedDate( p.dataNascimento );
 					
 					trace( p.dataUltimaMenstruacao );
 					
 					if( p.dataUltimaMenstruacao ){
-						dtUltimaMestruacao.text = General.getFormattedDate( p.dataUltimaMenstruacao.toString() );
+						dtUltimaMestruacao.text = General.getFormattedDate( p.dataUltimaMenstruacao );
 					}
 				
 					gpHistorico.visible = gpHistorico.includeInLayout = ! isNaN( p.id );

@@ -148,7 +148,7 @@ package app.model
 		public function get idade():Number
 		{
 			if( dataNascimento ){
-				return ( new Date().fullYear ) - dataNascimento.fullYear ;
+				return Helpers.idade(dataNascimento);
 			} 
 			return 0;
 		}

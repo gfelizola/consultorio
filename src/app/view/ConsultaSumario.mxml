@@ -150,7 +150,7 @@
 					var cons:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
 					if( cons.antropometria ){
 						pesos.addItem({ 
-							dataConsulta:General.getFormattedDate(cons.dataConsulta.toString()), 
+							dataConsulta:General.getFormattedDate(cons.dataConsulta), 
 							peso:cons.antropometria.peso, 
 							imc:cons.antropometria.imc, 
 							altura:cons.antropometria.estatura,

@@ -207,7 +207,7 @@
 										import app.util.General;
 									]]>
 								</fx:Script>
-								<s:Button y="4" icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(Date(data.dataUltimaConsulta).toString())}" skinClass="app.skin.TextButton" />
+								<s:Button y="4" icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(data.dataUltimaConsulta)}" skinClass="app.skin.TextButton" />
 							</s:GridItemRenderer>
 						</fx:Component>
 					</s:itemRenderer>

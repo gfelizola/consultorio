@@ -8,6 +8,7 @@ package app.util
 	import app.model.DB;
 	import app.model.Paciente;
 	import app.model.Usuario;
+	import app.util.Helpers;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.Stage;
@@ -17,7 +18,6 @@ package app.util
 	import flash.text.ReturnKeyLabel;
 	
 	import mx.controls.Alert;
-	import mx.formatters.DateFormatter;
 
 	public class General
 	{
@@ -65,16 +65,6 @@ package app.util
 				consultaSalva = true ;
 				// Alert.show("Consulta salva com dados atuais");
 				
-				/*
-				if(General.salvaFinaliza)
-				{
-					// Dispara o reset Form
-					// General.dispatcher.resetForm();
-					General.dispatcher.rebuild();
-					General.salvaFinaliza = false;
-				}
-				//*/
-				
 				return true ;
 			}
 			return false ;
@@ -88,11 +78,9 @@ package app.util
 			return appVersion;
 		}
 		
-		public static function getFormattedDate( d:String ):String
+		public static function getFormattedDate( d:* ):String
 		{
-			var df:DateFormatter = new DateFormatter();
-			df.formatString = "DD/MM/YYYY" ;
-			return df.format(d);
+			return Helpers.dateFormat(d);
 		}
 		
 		public static function verificaAtualizacao():void 

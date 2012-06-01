@@ -39,7 +39,7 @@
 			private var exames:ArrayCollection = Constantes.exames;
 			
 			[Bindable]
-			private var dataDoExame:String = General.getFormattedDate(new Date().toString());
+			private var dataDoExame:String = General.getFormattedDate(new Date());
 			
 			[Bindable]
 			private var campos:Object;
@@ -152,7 +152,7 @@
 			{
 				if(General.consultaAtual != null)
 				{
-					dataDoExame = (General.consultaAtual.exameBioquimico != null) ? General.getFormattedDate(General.consultaAtual.exameBioquimico.dataDoExame.toString()) : General.getFormattedDate(new Date().toString());
+					dataDoExame = (General.consultaAtual.exameBioquimico != null) ? General.getFormattedDate(General.consultaAtual.exameBioquimico.dataDoExame.toString()) : General.getFormattedDate(new Date());
 				}
 				
 				new Mask(txtDateExame, "99/99/9999" );

@@ -167,7 +167,7 @@
 					var eb:ExameBioquimico = General.consultaAtual.exameBioquimico ;
 					var ebTexto:String = "<textformat tabstops='[400, 800]'>" ;
 					
-					ebTexto += '<p><b>Data da realização dos exames:</b> ' + General.getFormattedDate( eb.dataDoExame.toString() ) + '</p>' ;
+					ebTexto += '<p><b>Data da realização dos exames:</b> ' + General.getFormattedDate( eb.dataDoExame ) + '</p>' ;
 					ebTexto += '<p><b>Exame<tab/>Valor/Resultado</b></p>' ;
 					
 					for (var i:int = 0; i < eb.exames.length; i++) 
@@ -248,7 +248,7 @@
 			
 			private function buidlAll():void
 			{
-				if( General.consultaAtual.dataConsulta ) dateConsulta = General.getFormattedDate(General.consultaAtual.dataConsulta.toString());
+				if( General.consultaAtual.dataConsulta ) dateConsulta = General.getFormattedDate(General.consultaAtual.dataConsulta);
 				txtObservacao.text = General.consultaAtual.observacao;
 				txtRecomendacoes.text = General.consultaAtual.recomendacoes ;
 				

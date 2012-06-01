@@ -12,6 +12,7 @@
 			import app.model.Paciente;
 			import app.model.TipoAtendimento;
 			import app.util.General;
+			import app.util.Helpers
 			
 			import as3.utils.Mask;
 			
@@ -212,12 +213,12 @@
 				p.nome = txtNome.text ;
 				p.sobrenome = txtSobrenome.text ;
 				p.sexo = cmbSexo.selectedItem.valor ;
-				p.dataNascimento = new Date( txtDataNascimento.text ) ;
+				p.dataNascimento = Helpers.dateStringToObject(txtDataNascimento.text);
 				p.estadoCivil = cmbEstadoCivil.selectedItem ;
 				p.profissao = txtProfissao.text ;
 				p.gestante = Gestante.selectedValue == 'Sim' ;
 				p.nutriz = Nutriz.selectedValue == 'Sim' ;
-				p.dataUltimaMenstruacao = new Date( General.getFormattedDate( dtUltimaMestruacao.text ) );
+				p.dataUltimaMenstruacao = Helpers.dateStringToObject( dtUltimaMestruacao.text );
 				p.endereco = txtEndereco.text ;
 				p.complemento = txtComplemento.text ;
 				p.cidade = txtCidade.text ;

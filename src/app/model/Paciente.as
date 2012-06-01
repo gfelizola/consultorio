@@ -1,6 +1,7 @@
 package app.model
 {
 	import mx.collections.IList;
+	import app.util.Helpers;
 
 	[Bindable]
 	[Table(name="PACIENTES")]

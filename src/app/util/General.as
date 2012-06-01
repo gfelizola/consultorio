@@ -3,6 +3,7 @@ package app.util
 	import air.update.ApplicationUpdaterUI;
 	import air.update.events.UpdateEvent;
 	
+	import app.events.Dispatcher;
 	import app.model.Consulta;
 	import app.model.DB;
 	import app.model.Paciente;
@@ -11,6 +12,8 @@ package app.util
 	import flash.desktop.NativeApplication;
 	import flash.display.Stage;
 	import flash.events.ErrorEvent;
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.text.ReturnKeyLabel;
 	
 	import mx.controls.Alert;
@@ -20,6 +23,10 @@ package app.util
 	{
 		
 		public static var stage:Stage ;
+		
+		public static var dispatcher:Dispatcher = new Dispatcher();
+		
+		public static var salvaFinaliza:Boolean = false;
 		
 		public static var usuario:Usuario;
 		
@@ -56,7 +63,17 @@ package app.util
 				DB.em.save(pacienteAtual);
 				
 				consultaSalva = true ;
-//				Alert.show("Consulta salva com dados atuais");
+				// Alert.show("Consulta salva com dados atuais");
+				
+				/*
+				if(General.salvaFinaliza)
+				{
+					// Dispara o reset Form
+					// General.dispatcher.resetForm();
+					General.dispatcher.rebuild();
+					General.salvaFinaliza = false;
+				}
+				//*/
 				
 				return true ;
 			}

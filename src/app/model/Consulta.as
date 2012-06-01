@@ -1,6 +1,7 @@
 package app.model
 {
 	import app.util.General;
+	import app.util.Helpers;
 	import app.util.TimeSpan;
 
 	[Bindable]
@@ -65,11 +66,11 @@ package app.model
 				var eer:Number = 0 ;
 				var eerg:Number = 0 ;
 				var coeficiente:Number = 0 ;
-				var idade:Number = idadeNaConsulta() / 12 ;
+				var idade:Number = idadeNaConsulta();
 				
 				if( antropometria ){
 					if( paciente.sexo == 'M' ) {
-						tmb = 66.47 + (13.75 * antropometria.peso ) + ( 5 * antropometria.estatura ) - ( 6,76 * idade ) ;
+						tmb = 66.47 + (13.75 * antropometria.peso ) + ( 5 * antropometria.estatura ) - ( 6.76 * idade );
 					} else {
 						tmb = 655.1 + (9.56 * antropometria.peso ) + ( 1.85 * antropometria.estatura ) - ( 4.68 * idade );
 					}
@@ -122,13 +123,7 @@ package app.model
 		public function idadeNaConsulta():Number
 		{
 			var idade:Number = 0;
-			
-			if( paciente ){
-				var diasDeIdade:Number = TimeSpan.fromDates(paciente.dataNascimento, dataConsulta).totalDays;
-				var meses:Number = diasDeIdade / 365 * 12 ;
-				idade = Math.round( meses );
-			}
-			
+			if( paciente ) idade = Helpers.idade(paciente.dataNascimento, dataConsulta);
 			return idade ;
 		}
 		

@@ -20,6 +20,9 @@
 			
 			private function init():void
 			{
+				// Reset Form Listener
+				if(!General.dispatcher.hasEventListener(General.dispatcher.REBUILD))General.dispatcher.addEventListener(General.dispatcher.REBUILD,rebuildView);
+				
 				var p:Paciente = General.pacienteAtual ;
 				if( p == null ) return ;
 				
@@ -34,6 +37,29 @@
 					if( General.consultaAtual.id > 0 ){
 						General.consultaAtual = new app.model.Consulta();
 					}
+				}
+			}
+			
+			private function rebuildView(e:Event):void{
+				trace('Finalizou a consulta','hora de rebuildar as views');				
+				vsConsulta.removeAllElements();
+				this.buildViews();
+			}
+			
+			private function buildViews():void{
+				var views:Array = [
+					{v:new ConsultaAntropometria(),label:"ANTROPOMETRIA"},
+					{v:new ConsultaMAN(),label:"MAN"},
+					{v:new ConsultaDadosAlimentares(),label:"DADOS ALIMENTARES"},
+					{v:new ConsultaAtividadeFisica(),label:"ATIVIDADE FÍSICA"},
+					{v:new ConsultaExames(),label:"EXAMES BIOQUÍMICOS"},
+					{v:new ConsultaObservacao,label:"OBSERVAÇÃO"}
+				];
+				for (var i:String in views){
+					views[i]["v"].label = views[i]["label"];
+					views[i]["v"].width = "100%";
+					views[i]["v"].height = "100%";
+					vsConsulta.addChild(views[i]["v"]);
 				}
 			}
 			

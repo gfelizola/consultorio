@@ -23,7 +23,8 @@
 			
 			private function init(event:FlexEvent):void
 			{
-				scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
+				// Scroller Listener
+				if(!scroller.hasEventListener(MouseEvent.MOUSE_WHEEL))scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
 				
 				for each( var validator:Validator in validators )
 					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
@@ -111,9 +112,33 @@
 				if( e.detail == Alert.YES ){
 					if( salvar() ){
 						Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						General.dispatcher.rebuild();
 					}
 				}
 			}
+			
+			/*
+			private function resetForm(e:Event):void
+			{
+				txtPeso.text =
+				txtPesoGestacional.text =
+				txtEstatura.text =
+				txtCircCintura.text = 
+				txtCircQuadril.text =
+				txtCircTriceps.text = 
+				txtCircCoxa.text = 
+				txtCircPanturrilha.text =
+				txtDobraBiceps.text =
+				txtDobraTriceps.text =
+				txtDobraSubescapular.text =
+				txtDobraAxilarMedia.text =
+				txtDobraSupraIliaca.text = 
+				txtDobraToracica.text =
+				txtDobraAbdominal.text = 
+				txtDobraCoxa.text =
+				txtDobraPanturrilha.text = "";
+			}
+			//*/
 			
 			private function onMouseWheel(e:MouseEvent):void
 			{
@@ -135,7 +160,7 @@
 			<s:HGroup x="10" y="50" gap="30">
 				<s:Group>
 					<s:Label x="0" y="0" text="PESO*"/>
-					<s:TextInput id="txtPeso" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" />
+					<s:TextInput id="txtPeso" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" /><!-- colocar o ultimo -->
 					<s:Label x="124" y="35" color="#999999" styleName="light" text="(kg)"/>
 				</s:Group>
 				
@@ -147,7 +172,7 @@
 				
 				<s:Group>
 					<s:Label x="0" y="0" text="ESTATURA*"/>
-					<s:TextInput id="txtEstatura" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" />
+					<s:TextInput id="txtEstatura" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" /><!-- colocar o ultimo -->
 					<s:Label x="124" y="35" color="#999999" styleName="light" text="(cm)"/>
 				</s:Group>
 			</s:HGroup>

@@ -21,6 +21,12 @@
 			[Bindable]
 			private var formIsValid:Boolean = false;
 			
+			[Bindable]
+			private var bindPeso:Number = (General.consultaAtual) ? General.consultaAtual.antropometria.peso : 0;
+			
+			[Bindable]
+			private var bindEstatura:Number = (General.consultaAtual) ? General.consultaAtual.antropometria.estatura : 0;
+			
 			private function init(event:FlexEvent):void
 			{
 				// Scroller Listener
@@ -137,7 +143,7 @@
 			<s:HGroup x="10" y="50" gap="30">
 				<s:Group>
 					<s:Label x="0" y="0" text="PESO*"/>
-					<s:TextInput id="txtPeso" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" /><!-- colocar o ultimo -->
+					<s:TextInput id="txtPeso" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="{bindPeso}" /><!-- colocar o ultimo -->
 					<s:Label x="124" y="35" color="#999999" styleName="light" text="(kg)"/>
 				</s:Group>
 				
@@ -149,7 +155,7 @@
 				
 				<s:Group>
 					<s:Label x="0" y="0" text="ESTATURA*"/>
-					<s:TextInput id="txtEstatura" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" /><!-- colocar o ultimo -->
+					<s:TextInput id="txtEstatura" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="{bindEstatura}" /><!-- colocar o ultimo -->
 					<s:Label x="124" y="35" color="#999999" styleName="light" text="(cm)"/>
 				</s:Group>
 			</s:HGroup>

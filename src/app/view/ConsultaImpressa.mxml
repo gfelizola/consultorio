@@ -23,6 +23,9 @@
 			import app.model.Refeicao;
 			import app.model.Usuario;
 			import app.util.General;
+			import app.util.ImpressaoUtils;
+			
+			import avmplus.FLASH10_FLAGS;
 			
 			import mx.controls.HRule;
 			import mx.events.FlexEvent;
@@ -102,328 +105,27 @@
 			
 			private function verificaAntropometria(c:app.model.Consulta):void
 			{
-				var a:Antropometria = c.antropometria ;
-				
-				if( a != null ){
-					containerDadosAntropometria.removeAllElements();
-					
-					var campos:Array = [
-						{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
-						{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
-						{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA CINTURA', 			valor: a.circunferenciaCintura, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DO TRÍCEPS', 			valor: a.circunferenciaTriceps, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
-						{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
-						{ nome:'IMC', 									valor: a.imc.toFixed(2), 			medida:'' }
-					];
-					
-					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
-						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
-							campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: (a.circunferenciaCintura / a.circunferenciaQuadril).toFixed(2), medida: '' })
-						}
-					}
-					
-					for (var i:int = 0; i < campos.length; i++) 
-					{
-						var o:Object = campos[i] ;
-						if( ! isNaN( o.valor ) ){
-							if( o.valor > 0 ) containerDadosAntropometria.addElement( getAntropometriaGroup(o.nome, o.valor + ' ' + o.medida) ) ;
-						}
-					}
-				}
-			}
-			
-			private function getAntropometriaGroup( nome:String, valor:String ):Group
-			{
-				var lNome:Label = new Label();
-				lNome.styleName = 'bold' ;
-				lNome.x = 0 ;
-				lNome.y = 0 ;
-				lNome.setStyle('fontSize', 10);
-				lNome.text = nome.toUpperCase();
-				
-				var lValor:Label = new Label();
-				lValor.y = 0 ;
-				lValor.setStyle('textAlign', 'right');
-				lValor.width = 200 ;
-				lValor.x = 240 ;
-				lValor.setStyle('fontSize', 10);
-				lValor.text = valor ;
-				
-				var rule:HRule = new HRule();
-				rule.height = 1 ;
-				rule.width = 440 ;
-				rule.x = 0 ;
-				rule.y = 13 ;
-				
-				var g:Group = new Group();
-				g.height = 14 ;
-				g.addElement(lNome);
-				g.addElement(lValor);
-				g.addElement(rule);
-
-				return g;
+				ImpressaoUtils.criaAntropometria(c, containerDadosAntropometria);
 			}
 			
 			private function verificaAtividadesFisicas(c:app.model.Consulta):void
 			{
-				var af:AtividadeFisica = c.atividadeFisica ;
-				if( af ){
-					var txtNivel:String = "Nível de atividade física: " ;
-					switch(af.nivel)
-					{
-						case AtividadeFisica.MUITO_ATIVO: 	txtNivel += "muito ativo"; 	break;
-						case AtividadeFisica.ATIVO: 		txtNivel += "ativo"; 		break;
-						case AtividadeFisica.POUCO_ATIVO: 	txtNivel += "pouco ativo"; 	break;
-						case AtividadeFisica.SEDENTARIO: 	txtNivel += "sedentário"; 	break;
-					}
-					nivelAtividade.text = txtNivel ;
-					observacaoAtividade.text = af.observacao ;
-					
-					containerAtividades.removeAllElements();
-					containerAtividades.addElement( getAtividadeGroup("ATIVIDADE FÍSICA", "DIAS DA SEMANA", "HORÁRIO") );
-					for (var i:int = 0; i < af.atividades.length; i++) 
-					{
-						var at:Atividade = af.atividades[i] ;
-						containerAtividades.addElement( getAtividadeGroup(at.nome, at.dias, at.horario) );
-					}
-				}
-			}
-			
-			private function getAtividadeGroup( nome:String, dias:String, horario:String ):Group
-			{
-				var lNome:Label = new Label();
-				lNome.styleName = 'bold' ;
-				lNome.x = 0 ;
-				lNome.y = 0 ;
-				lNome.width = 210 ;
-				lNome.setStyle('fontSize', 10);
-				lNome.text = nome.toUpperCase();
-				
-				var lDias:Label = new Label();
-				lDias.y = 0 ;
-				lDias.x = 210 ;
-				lDias.setStyle('textAlign', 'center');
-				lDias.width = 180 ;
-				lDias.setStyle('fontSize', 10);
-				lDias.text = dias ;
-				
-				var lHorario:Label = new Label();
-				lHorario.y = 0 ;
-				lHorario.setStyle('textAlign', 'right');
-				lHorario.width = 50 ;
-				lHorario.x = 390 ;
-				lHorario.setStyle('fontSize', 10);
-				lHorario.text = horario ;
-				
-				var rule:HRule = new HRule();
-				rule.height = 1 ;
-				rule.width = 440 ;
-				rule.x = 0 ;
-				rule.y = 13 ;
-				
-				var g:Group = new Group();
-				g.height = 14 ;
-				g.addElement(lNome);
-				g.addElement(lDias);
-				g.addElement(lHorario);
-				g.addElement(rule);
-				
-				return g;
+				ImpressaoUtils.criaAtividadesFisicas(c, containerAtividades );
 			}
 			
 			private function verificaDadosalimentares(c:app.model.Consulta):void
 			{
-				var da:DadosAlimentares = c.dadosAlimentares ;
-				if( da ){
-					containerRefeicoes.removeAllElements();
-					containerRefeicoes.addElement( getRefeicaoGroup( 'REFEIÇÃO/HORARIO', 'ALIMENTO', 'QUANTIDADE' ) ) ;
-					
-					for (var i:int = 0; i < da.refeicoes.length; i++) 
-					{
-						var r:Refeicao = da.refeicoes[i] ;
-						containerRefeicoes.addElement( getRefeicaoGroup( r.nome, r.alimentos, r.quantidades ) ) ;
-					}
-					
-					containerRefeicoes.addElement( getLinhaGroup( 'QUANTIDADE DE ÁGUA POR DIA', da.qtdeAgua ) ) ;
-					containerRefeicoes.addElement( getLinhaGroup( 'FUNCIONALIDADE INTESTINAL', da.funcionamentoIntestinal ) ) ;
-					containerRefeicoes.addElement( getLinhaGroup( 'PREFERÊNCIAS ALIMENTARES', da.preferenciasAlimentares ) ) ;
-					containerRefeicoes.addElement( getLinhaGroup( 'AVERSÕES ALIMENTARES', da.aversoesAlimentares ) ) ;
-					containerRefeicoes.addElement( getLinhaGroup( 'OUTRAS INFORMAÇÕES / OBSERVAÇÕES', da.observacoes ) ) ;
-				}
-			}
-			
-			private function getRefeicaoGroup( nome:String, alimentos:String, qtdes:String ):Group
-			{
-				var lNome:Label = new Label();
-				lNome.styleName = 'bold' ;
-				lNome.x = 0 ;
-				lNome.y = 0 ;
-				lNome.width = 160 ;
-				lNome.setStyle('fontSize', 10);
-				lNome.text = nome.toUpperCase();
-				
-				var lAlimentos:Label = new Label();
-				lAlimentos.y = 0 ;
-				lAlimentos.x = 160 ;
-				lAlimentos.setStyle('textAlign', 'center');
-				lAlimentos.width = 180 ;
-				lAlimentos.setStyle('fontSize', 10);
-				lAlimentos.text = alimentos ;
-				
-				var lQtdes:Label = new Label();
-				lQtdes.y = 0 ;
-				lQtdes.setStyle('textAlign', 'right');
-				lQtdes.width = 100 ;
-				lQtdes.x = 340 ;
-				lQtdes.setStyle('fontSize', 10);
-				lQtdes.text = qtdes ;
-				
-				var rule:HRule = new HRule();
-				rule.height = 1 ;
-				rule.width = 440 ;
-				rule.x = 0 ;
-				
-				var g:Group = new Group();
-				g.addElement(lNome);
-				g.addElement(lAlimentos);
-				g.addElement(lQtdes);
-				
-				var vg:VGroup = new VGroup();
-				vg.gap = 3 ;
-				vg.addElement(g);
-				vg.addElement(rule);
-				
-				return vg;
-			}
-			
-			private function getLinhaGroup( titulo:String, valor:String ):Group
-			{
-				var lTitulo:Label = new Label();
-				lTitulo.styleName = 'bold' ;
-				lTitulo.x = 0 ;
-				lTitulo.width = 440 ;
-				lTitulo.setStyle('fontSize', 10);
-				lTitulo.text = titulo.toUpperCase();
-				
-				var lValor:Label = new Label();
-				lValor.x = 0 ;
-				lValor.width = 440 ;
-				lValor.setStyle('fontSize', 10);
-				lValor.text = valor;
-				
-				var vg:VGroup = new VGroup();
-				vg.addElement(lTitulo);
-				vg.addElement(lValor);
-				
-				return vg;
+				ImpressaoUtils.criaDadosAlimentares(c, containerRefeicoes);
 			}
 			
 			private function verificaExames(c:app.model.Consulta):void
 			{
-				var eb:ExameBioquimico = c.exameBioquimico ;
-				if( eb ){
-					containerExames.removeAllElements();
-					
-					containerExames.addElement( getExameGroup( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame ) ) ) ;
-					
-					for (var i:int = 0; i < eb.exames.length; i++) 
-					{
-						var e:ExameAdicional = eb.exames[i] ;
-						containerExames.addElement( getExameGroup( e.nome, e.referencia, e.valor ) ) ;
-					}
-				}
-			}
-			
-			private function getExameGroup( nome:String, referencia:String, resultado:String ):Group
-			{
-				var lNome:Label = new Label();
-				lNome.styleName = 'bold' ;
-				lNome.x = 0 ;
-				lNome.y = 0 ;
-				lNome.width = 160 ;
-				lNome.setStyle('fontSize', 10);
-				lNome.text = nome.toUpperCase();
-				
-				var lAlimentos:Label = new Label();
-				lAlimentos.y = 0 ;
-				lAlimentos.x = 160 ;
-				lAlimentos.setStyle('textAlign', 'center');
-				lAlimentos.width = 180 ;
-				lAlimentos.setStyle('fontSize', 10);
-				lAlimentos.text = referencia ;
-				
-				var lQtdes:Label = new Label();
-				lQtdes.y = 0 ;
-				lQtdes.setStyle('textAlign', 'right');
-				lQtdes.width = 100 ;
-				lQtdes.x = 340 ;
-				lQtdes.setStyle('fontSize', 10);
-				lQtdes.text = resultado ;
-				
-				var rule:HRule = new HRule();
-				rule.height = 1 ;
-				rule.width = 440 ;
-				rule.x = 0 ;
-				
-				var g:Group = new Group();
-				g.addElement(lNome);
-				g.addElement(lAlimentos);
-				g.addElement(lQtdes);
-				
-				var vg:VGroup = new VGroup();
-				vg.gap = 3 ;
-				vg.addElement(g);
-				vg.addElement(rule);
-				
-				return vg;
+				ImpressaoUtils.criaExamesBioquimicos(c, containerExames);
 			}
 			
 			private function verificaMAN(c:app.model.Consulta):void
 			{
-				var man:MAN = c.man ;
-				if( man ){
-					var p:Number = man.pontuacaoTriagem ;
-					var resultado:String = sPontos(man.pontuacaoTriagem) + ' - Estado nutricional: ' ;
-					
-					if( p < 8 ){
-						resultado += 'DESNUTRIDO' ;
-					} else if( p >= 8 && p < 12 ){
-						resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
-					} else {
-						resultado += 'NORMAL' ;
-					}
-					
-					txtPontosTriagem.text = sPontos(man.pontuacaoTriagem) ;
-					txtResultadoTriagem.text = resultado ;
-					
-					p = man.pontuacaoGlobal ;
-					var resultadoGlobal:String = '' ;
-					
-					if( p < 8 ){
-						resultadoGlobal += 'DESNUTRIDO' ;
-					} else if( p >= 8 && p < 12 ){
-						resultadoGlobal += 'SOB RISCO DE DESNUTRIÇÃO' ;
-					} else {
-						resultadoGlobal += 'NORMAL' ;
-					}
-					
-					txtPontosTriagem.text = sPontos(man.pontuacaoTriagem) ;
-					txtPontosGlobal.text = sPontos(man.pontuacaoGlobal) ;
-					txtPontuacaoFinal.text = sPontos( man.pontuacaoGlobal + man.pontuacaoTriagem) ;
-					txtEstadoNutricional.text = resultadoGlobal ;
-				}
+				ImpressaoUtils.criaMAN(c, containerMAN, true);
 			}
 			
 			private function verificaObservacao(c:app.model.Consulta):void
@@ -462,44 +164,45 @@
 		<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
 		<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
 		
-		<s:Label id="impTitulo" x="10" y="77" color="#83BBEA" fontSize="19" styleName="bold" text="{currTitulo}"/>
-		<s:Label id="impData" x="285" y="84" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
+		<s:Label id="impTitulo" x="10" y="70" color="#83BBEA" fontSize="19" styleName="bold" text="{currTitulo}"/>
+		<s:Label id="impData" right="10" y="70" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
 		
-		<s:Label x="10" y="107" styleName="bold" text="NOME:"/>
-		<s:Label id="impNomePaciente" x="53" y="110" width="156" styleName="light" text="Aline Maciel"/>
+		<s:Label x="10" y="100" styleName="bold" text="NOME:"/>
+		<s:Label id="impNomePaciente" x="53" y="103" width="156" styleName="light" text="Aline Maciel"/>
 		
-		<s:Label x="217" y="107" styleName="bold" text="IDADE:"/>
-		<s:Label id="impIdadePaciente" x="263" y="110" width="56" styleName="light" text="120 anos"/>
+		<s:Label x="217" y="100" styleName="bold" text="IDADE:"/>
+		<s:Label id="impIdadePaciente" x="263" y="103" width="56" styleName="light" text="120 anos"/>
 		
-		<s:Label x="327" y="107" styleName="bold" text="SEXO:"/>
-		<s:Label id="impSexoPaciente" x="364" y="110" width="86" styleName="light" text="MASCULINO"/>
+		<s:HGroup right="10" y="100">
+			<s:Label styleName="bold" text="SEXO:"/>
+			<s:Label id="impSexoPaciente" styleName="light"
+					 text="MASCULINO" textAlign="right" paddingTop="3" />
+		</s:HGroup>
 		
 		<mx:ViewStack id="conteudos" x="0" y="134" width="460" height="573" selectedIndex="{etapa}">
 			<s:NavigatorContent id="antropometria">
-				<s:VGroup id="containerDadosAntropometria" x="10" y="0" width="440" gap="10" />
+				<s:VGroup id="containerDadosAntropometria" width="440" x="10" y="0" gap="10" />
 			</s:NavigatorContent>
 			
 			<s:NavigatorContent id="atividadeFisica">
 				<s:VGroup gap="20" x="10">
-					<s:Label id="nivelAtividade" width="440" styleName="bold" text="Nível de atividade física: ativo" />
 					<s:VGroup id="containerAtividades" width="440" gap="10" />
-					<s:Label id="observacaoAtividade" width="440" text="" />
 				</s:VGroup>
 			</s:NavigatorContent>
 			
 			<s:NavigatorContent id="dadosAlimentares">
-				<s:VGroup id="containerRefeicoes" gap="10" x="10">
+				<s:VGroup id="containerRefeicoes" width="440" gap="10" x="10">
 					<s:Label styleName="bold" text="RECORDATÓRIO ALIMENTAR HABITUAL" />
 				</s:VGroup>
 			</s:NavigatorContent>
 			
 			<s:NavigatorContent id="examesBioquimicos">
-				<s:VGroup id="containerExames" gap="10" x="10">
+				<s:VGroup id="containerExames" width="440" gap="10" x="10">
 				</s:VGroup>
 			</s:NavigatorContent>
 			
 			<s:NavigatorContent id="man">
-				<s:VGroup id="containerMAN" x="10" width="440" gap="10">
+				<s:VGroup id="containerMAN" width="440" x="10" gap="10">
 					<s:VGroup>
 						<s:HGroup>
 							<s:Label fontSize="10" text="Pontos da triagem"/>
@@ -525,7 +228,7 @@
 						
 						<s:Group width="440">
 							<s:Label fontSize="11" styleName="bold" text="Pontos total"/>
-							<s:Label x="70" y="5" fontSize="9" styleName="light" text="{máximo 30 pontos)"/>
+							<s:Label x="70" y="5" fontSize="9" styleName="light" text="(máximo 30 pontos)"/>
 							<s:Label right="0" id="txtPontuacaoFinal" fontSize="10" text="28 pontos" textAlign="right"/>
 						</s:Group>
 						

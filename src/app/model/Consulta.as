@@ -88,10 +88,7 @@ package app.model
 								case AtividadeFisica.SEDENTARIO: 	coeficiente = 1 ;   	break;
 							}
 							
-							eer = 662 - ( 9.53 * idade ) ;
-							eer += ( coeficiente * (15.91 * antropometria.peso ) ) ;
-							eer -= ( 539.6 * ( antropometria.estatura / 100 ) ) ;
-							
+							eer = ( 662 - ( 9.53 * idade ) + ( coeficiente * ( ( 15.91 * antropometria.peso ) + ( 539.6 * ( antropometria.estatura / 100 ) ) ) ) );
 						} else {
 							switch(atividadeFisica.nivel)
 							{

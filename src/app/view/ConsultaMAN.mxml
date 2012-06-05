@@ -152,17 +152,18 @@
 				}
 				
 				if( allSel ){
-					var resultado:String = '' ;
+					pontuacaoGlobal = p ;
 					
-					if( p < 8 ){
+					var resultado:String = '' ;
+					var pf:Number = pontuacaoTriagem + pontuacaoGlobal ;
+					
+					if( pf < 17 ){
 						resultado += 'DESNUTRIDO' ;
-					} else if( p >= 8 && p < 12 ){
+					} else if( pf >= 17 && pf < 23.5 ){
 						resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
 					} else {
 						resultado += 'NORMAL' ;
 					}
-					
-					pontuacaoGlobal = p ;
 					
 					txtPontosTriagem.text = sPontos(pontuacaoTriagem) ;
 					txtPontosGlobal.text = sPontos(pontuacaoGlobal) ;
@@ -223,6 +224,9 @@
 					
 					a.pontuacaoGlobal = pontuacaoGlobal ;
 					a.pontuacaoTriagem = pontuacaoTriagem ;
+					
+					a.estadoNutricionalTriagem = a.getDescricaoTriagem();
+					a.estadoNutricionalGlobal = a.getDescricaoGlobal();
 					
 					var perguntas:Array = ['A','B','C','D','E','IMC','F','G','H','I','J','K1','K2','K3','L','M','N','O','P','Q','R'];
 					var letra:String = '';

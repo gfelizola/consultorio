@@ -3,38 +3,26 @@
 @namespace mx "library://ns.adobe.com/flex/mx";
 @namespace chartClasses "mx.charts.chartClasses.*";
 
-@font-face {
-	src:url("../../assets/fonts/DIN Black.ttf");
-	fontFamily: DinBlack;
-	embedAsCFF: true;
-}
-
-@font-face {
-	src:url("../../assets/fonts/DIN Bold.ttf");
-	fontFamily: DinBold;
-	embedAsCFF: true;
-}
-
-@font-face {
-	src:url("../../assets/fonts/DIN Medium.ttf");
-	fontFamily: DinRegular;
-	embedAsCFF: true;
-}
-
-@font-face {
-	src:url("../../assets/fonts/DIN Light.ttf");
-	fontFamily: DinLight;
-	embedAsCFF: true;
-}
+@font-face { src:url("../../assets/fonts/DIN Black.ttf"); 	fontFamily: DinBlack; 		embedAsCFF: true; }
+@font-face { src:url("../../assets/fonts/DIN Bold.ttf"); 	fontFamily: DinBold; 		embedAsCFF: true; }
+@font-face { src:url("../../assets/fonts/DIN Medium.ttf"); 	fontFamily: DinRegular; 	embedAsCFF: true; }
+@font-face { src:url("../../assets/fonts/DIN Light.ttf"); 	fontFamily: DinLight; 		embedAsCFF: true; }
+@font-face { src:url("../../assets/fonts/DIN Black.ttf"); 	fontFamily: DinBlackNo; 	embedAsCFF: false; }
+@font-face { src:url("../../assets/fonts/DIN Bold.ttf"); 	fontFamily: DinBoldNo; 		embedAsCFF: false; }
+@font-face { src:url("../../assets/fonts/DIN Medium.ttf"); 	fontFamily: DinRegularNo; 	embedAsCFF: false; }
+@font-face { src:url("../../assets/fonts/DIN Light.ttf"); 	fontFamily: DinLightNo; 	embedAsCFF: false; }
 
 
 s|Application { locale: 'pt-BR'; }
+
 s|TextInput,
 s|Label,
 /* s|RichText, */
 s|TextArea,
 s|Button,
 s|DataGrid { fontFamily:DinRegular; fontSize:13; color:#475766; }
+
+mx|Text { fontFamily:DinRegularNo; fontSize:13; color:#475766; }
 
 .light { fontFamily:DinLight; }
 .bold { fontFamily:DinBold; }

@@ -1,11 +1,11 @@
 <application xmlns="http://ns.adobe.com/air/application/3.1">
-  <id>ConsultorioNutrisaude</id>
+  <id>ConsultorioNutriSaude</id>
   <filename>ConsultorioNutrisaude</filename>
-  <name>ConsultorioNutrisaude</name>
-  <versionNumber>0.0.4</versionNumber>
+  <name>Consultorio Nutri Saúde</name>
+  <versionNumber>0.0.5</versionNumber>
   <initialWindow>
     <content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
-    <title>Consultório Nutrisaúde</title>
+    <title>Consultório Nutri Saúde</title>
     <systemChrome>none</systemChrome>
     <transparent>true</transparent>
     <minimizable>true</minimizable>

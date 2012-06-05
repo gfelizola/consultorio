@@ -20,6 +20,8 @@
 			import app.skin.TextArea;
 			import app.skin.TextInput;
 			import app.util.General;
+			import app.util.ImpressaoUtils;
+			import app.util.Tabela;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
@@ -36,6 +38,8 @@
 			import spark.components.supportClasses.Skin;
 			
 			private var focusedFormControl:DisplayObject;
+			private var cores:Array;
+			private var corTexto:uint = 0x777777 ;
 			
 			[Bindable]
 			private var dateConsulta:String;
@@ -51,18 +55,7 @@
 			private function buildMan():void
 			{
 				if(General.consultaAtual.man != null) {
-					var m:MAN = General.consultaAtual.man ;
-					var manTexto:String = "<textformat tabstops='[200, 500, 750]'>" ;
-					
-					manTexto += "<p><b>Pontos da triagem</b> (subtotal, máximo 14 pontos) </p>" +
-						"<p><font size='20'>" + m.pontuacaoTriagem + " pontos</font></p><p></p>" +
-						"<p><b>Pontuação</b></p>" +
-						"<p><b>Avaliação global </b> (subtotal, máximo 16 pontos) <tab/> <font size='20'>" + m.pontuacaoGlobal + " pontos</font></p>" +
-						"<p><b>Pontos da triagem</b> <tab/> <font size='20'>" + m.pontuacaoTriagem + " pontos</font></p>" +
-						"<p><b>Pontouação total</b> (subtotal, máximo 30 pontos) <tab/> <font size='20'>" + ( m.pontuacaoTriagem + m.pontuacaoGlobal) + " pontos</font></p>" ;
-					
-					manTexto += "</textformat>";
-					manInfo.htmlText = manTexto ;
+					ImpressaoUtils.criaMAN(General.consultaAtual, vgMAN, false, 13, corTexto);					
 					scMAN.visible = scMAN.includeInLayout = true ;
 				} else {
 					scMAN.visible = scMAN.includeInLayout = false ;
@@ -71,61 +64,8 @@
 			
 			private function buildAntropo():void
 			{
-				if(General.consultaAtual.antropometria != null)
-				{
-					var a:Antropometria = General.consultaAtual.antropometria ;
-					
-					if( a != null ){
-						var antroTexto:String = "<textformat tabstops='[300, 400, 700]'><p>";
-						
-						var campos:Array = [
-							{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
-							{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
-							{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
-							{ nome:'CIRCUNFERÊNCIA DA CINTURA', 			valor: a.circunferenciaCintura, 		medida:'cm' },
-							{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
-							{ nome:'CIRCUNFERÊNCIA DO TRÍCEPS', 			valor: a.circunferenciaTriceps, 		medida:'cm' },
-							{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
-							{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
-							{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
-							{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
-							{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
-							{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
-							{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
-							{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
-							{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
-							{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
-							{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
-							{ nome:'IMC', 									valor: a.imc.toFixed(2), 				medida:'' }
-						];
-						
-						if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
-							if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
-								campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL', valor: (a.circunferenciaCintura / a.circunferenciaQuadril).toFixed(2), medida: '' })
-							}
-						}
-						
-						var lado:uint = 0 ;
-						for (var i:int = 0; i < campos.length; i++) 
-						{
-							var o:Object = campos[i] ;
-							if( ! isNaN( o.valor ) ){
-								if( o.valor > 0 ){
-									antroTexto += "<b>" + o.nome + "</b> <tab/>" + o.valor + ' ' + o.medida ;
-									lado ++ ;
-									if( lado == 2 ){
-										lado = 0 ;
-										antroTexto += "</p><p>"
-									} else {
-										antroTexto += "<tab/>"
-									}
-								}
-							}
-						}
-					}
-					
-					antroTexto = antroTexto.substr(0, antroTexto.length - 3) + "</textformat>";
-					antroInfo.htmlText = antroTexto;
+				if(General.consultaAtual.antropometria != null) {
+					ImpressaoUtils.criaAntropometria(General.consultaAtual, vgAntropometria, false, 12, corTexto, true, 0xbbbbbb, 10);
 					scAntropometria.visible = scAntropometria.includeInLayout = true ;
 				} else {
 					scAntropometria.visible = scAntropometria.includeInLayout = false ;
@@ -135,26 +75,7 @@
 			private function buildAlimentos():void
 			{
 				if(General.consultaAtual.dadosAlimentares != null) {
-					var da:DadosAlimentares = General.consultaAtual.dadosAlimentares ;
-					var daTexto:String = "<textformat tabstops='[300, 600]'>" ;
-					
-					daTexto += '<p><b>Refeição/Horaio<tab/>Alimento<tab/>Quantidade</b></p>' ;
-					
-					for (var i:int = 0; i < da.refeicoes.length; i++) 
-					{
-						var r:Refeicao = da.refeicoes[i] ;
-						daTexto += '<p>' + r.nome + '<tab/>' + r.alimentos + '<tab/>' + r.quantidades + '</b></p>' ;
-					}
-					
-					daTexto += '<p>&nbsp;</p>' ;
-					daTexto += '<p><b>Quantidade de água por dia:</b> ' + da.qtdeAgua + '</p>' ;
-					daTexto += '<p><b>Funcionalidade intestinal:</b> ' + da.funcionamentoIntestinal + '</p>' ;
-					daTexto += '<p><b>Preferências alimentares:</b> ' + da.preferenciasAlimentares + '</p>' ;
-					daTexto += '<p><b>Aversões alimentares:</b> ' + da.aversoesAlimentares + '</p>' ;
-					daTexto += '<p><b>Outras informações / Observações:</b> ' + da.observacoes + '</p>' ;
-					
-					daTexto += "</textformat>";
-					alimentosInfo.htmlText = daTexto ;
+					ImpressaoUtils.criaDadosAlimentares( General.consultaAtual, vgAlimentos, false, 12, corTexto );
 					scAlimentos.visible = scAlimentos.includeInLayout = true ;
 				} else {
 					scAlimentos.visible = scAlimentos.includeInLayout = false ;
@@ -164,20 +85,7 @@
 			private function buildExames():void
 			{
 				if(General.consultaAtual.exameBioquimico != null) {
-					var eb:ExameBioquimico = General.consultaAtual.exameBioquimico ;
-					var ebTexto:String = "<textformat tabstops='[400, 800]'>" ;
-					
-					ebTexto += '<p><b>Data da realização dos exames:</b> ' + General.getFormattedDate( eb.dataDoExame ) + '</p>' ;
-					ebTexto += '<p><b>Exame<tab/>Valor/Resultado</b></p>' ;
-					
-					for (var i:int = 0; i < eb.exames.length; i++) 
-					{
-						var r:ExameAdicional = eb.exames[i] ;
-						ebTexto += '<p>' + r.nome + '<tab/>' + r.valor + '</b></p>' ;
-					}
-					
-					ebTexto += "</textformat>";
-					examesInfo.htmlText = ebTexto ;
+					ImpressaoUtils.criaExamesBioquimicos(General.consultaAtual, vgExames, false, 12, corTexto );
 					scExames.visible = scExames.includeInLayout = true ;
 				} else {
 					scExames.visible = scExames.includeInLayout = false ;
@@ -187,33 +95,7 @@
 			private function buildAtividades():void
 			{
 				if(General.consultaAtual.atividadeFisica != null) {
-					
-					var af:AtividadeFisica = General.consultaAtual.atividadeFisica ;
-					var afTexto:String = "<textformat tabstops='[300, 600]'>" ;
-					
-					afTexto += "<p><b>Nível de atividade física: </b>" ;
-					switch(af.nivel)
-					{
-						case AtividadeFisica.MUITO_ATIVO: 	afTexto += "muito ativo"; 	break;
-						case AtividadeFisica.ATIVO: 		afTexto += "ativo"; 		break;
-						case AtividadeFisica.POUCO_ATIVO: 	afTexto += "pouco ativo"; 	break;
-						case AtividadeFisica.SEDENTARIO: 	afTexto += "sedentário"; 	break;
-					}
-					
-					afTexto += '</p>' ;
-					
-					if( af.atividades.length > 0 ){
-						afTexto += '<p><b>Atividades<tab/>Dias da semana<tab/>Horários</b></p>' ;
-						
-						for (var i:int = 0; i < af.atividades.length; i++) 
-						{
-							var r:app.model.Atividade = af.atividades[i] ;
-							afTexto += '<p>' + r.nome + '<tab/>' + r.dias + '<tab/>' + r.horario + '</b></p>' ;
-						}
-					}
-					
-					afTexto += "</textformat>";
-					atividadesInfo.htmlText = afTexto ;
+					ImpressaoUtils.criaAtividadesFisicas( General.consultaAtual, vgAtividades, false, 12, corTexto );
 					scAtividades.visible = scAtividades.includeInLayout = true ;
 				} else {
 					scAtividades.visible = scAtividades.includeInLayout = false ;
@@ -223,23 +105,7 @@
 			private function buildMetabolismo():void
 			{
 				if(General.consultaAtual.resumo != null){
-					var r:ResumoConsulta = General.consultaAtual.resumo ;
-					
-					var rTexto:String = "<textformat tabstops='[300]'>" ;
-					
-					rTexto += "<p><b>Metabolismo Basal:</b> <tab/>" + r.metabolismoBasal.toFixed(2) + " kcal/dia</p>" +
-						"<p><b>Necessidade energética:</b><tab/>" + r.necessidadeEnergetica.toFixed(2) + " kcal/dia</p>" ;
-					
-					if( General.consultaAtual.semanaGestacional > 12 ){
-						rTexto += "<p><b>Necessidade energética gestacional:</b><tab/>" + r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia</p>" ;
-					} else {
-						if( General.consultaAtual.semanaGestacional > 0 ){
-							rTexto += "<p><b>Necessidade energética gestacional:</b><tab/>" + r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia (menos de 12 semanas de gestação)</p>" ;
-						}
-					}
-					
-					rTexto += "</textformat>";
-					tmbInfo.htmlText = rTexto ;
+					ImpressaoUtils.criaTMB(General.consultaAtual, vgTMB, false, 13, corTexto );
 					scTMB.visible = scTMB.includeInLayout = true ;
 				} else {
 					scTMB.visible = scTMB.includeInLayout = false ;
@@ -249,10 +115,16 @@
 			private function buidlAll():void
 			{
 				if( General.consultaAtual.dataConsulta ) dateConsulta = General.getFormattedDate(General.consultaAtual.dataConsulta);
-				txtObservacao.text = General.consultaAtual.observacao;
+				
+				if( General.consultaAtual.observacao ){
+					txtObservacao.text = General.consultaAtual.observacao;
+				}else{
+					txtObservacao.visible = txtObservacao.includeInLayout = false ;
+				}
+				
 				txtRecomendacoes.text = General.consultaAtual.recomendacoes ;
 				
-				var cores:Array = [ 0xF6F9FE, 0xFCFDFF ];
+				cores = [ 0xF6F9FE, 0xFCFDFF ];
 				var boxes:Array = [ scTMB, scAntropometria, scMAN, scAlimentos, scAtividades, scExames ];
 				
 				buildAntropo();
@@ -261,6 +133,7 @@
 				buildAtividades();
 				buildExames();
 				buildMetabolismo();
+				
 				
 				var c:uint = 0 ;
 				for (var i:int = 0; i < boxes.length; i++) 
@@ -301,58 +174,54 @@
 		
 	<skin:ScrollerSemBug id="scroller" x="0" y="52" width="994" height="438" skinClass="app.skin.Scroller">
 		<s:VGroup width="994" height="438" gap="10" paddingBottom="10" paddingLeft="10" paddingRight="0" paddingTop="10">
-			<s:SkinnableContainer width="974" backgroundColor="#F6F9FE">
-				<s:Label id="txtObservacao" width="974" text="Texto da observação" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
-			</s:SkinnableContainer>
 			
 			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="DADOS DA CONSULTA"/>
 			
 			<s:VGroup id="vgDadosConsulta" width="984">
 				<s:SkinnableContainer id="scTMB" width="974" backgroundColor="#FCFDFF">
-					<s:VGroup width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="METABOLISMO BASAL / NECESSIDADES ENERGÉTICAS" />
-						<mx:Text id="tmbInfo" condenseWhite="true" width="974" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<s:VGroup id="vgTMB" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+						<s:Label text="METABOLISMO BASAL / NECESSIDADES ENERGÉTICAS" fontSize="20" styleName="bold" />
 					</s:VGroup>
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer id="scAntropometria" width="974" backgroundColor="#F6F9FE">
-					<s:VGroup width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="ANTROPOMETRIA"/>
-						<mx:Text id="antroInfo" condenseWhite="true" width="974" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<s:VGroup id="vgAntropometria" width="974" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+						<s:Label text="ANTROPOMETRIA" fontSize="20" styleName="bold" />
 					</s:VGroup>
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer id="scMAN" width="974" backgroundColor="#FCFDFF">
-					<s:VGroup width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="MAN"/>
-						<mx:Text id="manInfo" condenseWhite="true" width="974" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<s:VGroup id="vgMAN" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+						<s:Label text="MAN" fontSize="20" styleName="bold" />
 					</s:VGroup>
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer id="scAlimentos" width="974" backgroundColor="#F6F9FE">
-					<s:VGroup width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="HÁBITOS ALIMENTARES"/>
-						<mx:Text id="alimentosInfo" condenseWhite="true" width="974" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<s:VGroup id="vgAlimentos" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+						<s:Label text="HÁBITOS ALIMENTARES" fontSize="20" styleName="bold" />
 					</s:VGroup>
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer id="scAtividades" width="974" backgroundColor="#FCFDFF">
-					<s:VGroup width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="ATIVIDADES FÍSICAS"/>
-						<mx:Text id="atividadesInfo" condenseWhite="true" width="974" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<s:VGroup id="vgAtividades" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+						<s:Label text="ATIVIDADES FÍSICAS" fontSize="20" styleName="bold"/>
 					</s:VGroup>
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer id="scExames" width="974" backgroundColor="#F6F9FE">
-					<s:VGroup width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="EXAMES BIOQUÍMICOS"/>
-						<mx:Text id="examesInfo" condenseWhite="true" width="974" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10" />
+					<s:VGroup id="vgExames" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+						<s:Label text="EXAMES BIOQUÍMICOS" fontSize="20" styleName="bold"/>
 					</s:VGroup>
+				</s:SkinnableContainer>
+				
+				<s:SkinnableContainer width="974" backgroundColor="#F6F9FE">
+					<s:Label x="10" y="10" fontSize="20" styleName="bold" text="OBSERVAÇÕES OU OUTRAS INFORMAÇÕES:" />
+					<s:Label id="txtObservacao" x="10" y="30" width="954" text="" paddingBottom="10" paddingLeft="0" paddingRight="0" paddingTop="10" />
 				</s:SkinnableContainer>
 			</s:VGroup>
 			
 			<s:VGroup width="974">
-				<s:Label fontSize="15" styleName="bold" text="RECOMENDAÇÃO DE DIETA:" />
+				<s:Label fontSize="20" styleName="bold" text="RECOMENDAÇÃO DE DIETA:" />
 				<s:TextArea id="txtRecomendacoes" width="100%" height="100" skinClass="app.skin.TextArea" />
 			</s:VGroup>
 		</s:VGroup>

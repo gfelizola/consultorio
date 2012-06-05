@@ -363,7 +363,7 @@
 				<s:Label x="630" y="142" text="TELEFONE CELULAR"/>
 				<s:TextInput id="txtCelular" x="630" y="163" width="284" skinClass="app.skin.TextInput" text="{paciente.celular}" />
 				
-				<s:Label x="0" y="208" text="E-MAIL*"/>
+				<s:Label x="0" y="208" text="E-MAIL"/>
 				<s:TextInput id="txtEmail" x="0" y="229" width="435" skinClass="app.skin.TextInput" text="{paciente.email}" />
 			</s:Group>
 			

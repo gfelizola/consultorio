@@ -3,7 +3,7 @@
 		  xmlns:s="library://ns.adobe.com/flex/spark"
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
 		  xmlns:skin="app.skin.*"
-		  width="900" height="700" creationComplete="init()"
+		  width="1000" height="700" creationComplete="init()"
 		  showStatusBar="false" title="IMPRESSÃO DE CONSULTA">
 	
 	<!--
@@ -24,6 +24,7 @@
 			import app.model.UsuarioRedeSocial;
 			import app.util.General;
 			import app.util.Helpers;
+			import app.util.ImpressaoUtils;
 			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
@@ -41,6 +42,9 @@
 			[Bindable]
 			private var pesos:ArrayCollection;
 			
+			[Bindable]
+			private var man:MAN;
+			
 			private function init():void
 			{
 				var u:Usuario = General.usuario ;
@@ -55,7 +59,7 @@
 				usuarioNome += '. ' + u.nome + ' ' + u.sobrenome ;
 				
 				txtData.text = General.getFormattedDate( new Date() );
-				txtCRN.text = "CRN: " + u.CRN
+				txtCRN.text = "CRN-" + u.regional + ": " + u.CRN
 				txtDoutor.text = usuarioNome ;
 				
 				var endereco:String = u.endereco + ' - ' ;
@@ -237,6 +241,7 @@
 			{
 				var man:MAN = c.man ;
 				if( man ){
+					/*
 					var p:Number = man.pontuacaoTriagem ;
 					var resultado:String = sPontos(man.pontuacaoTriagem) + ' - Estado nutricional: ' ;
 					
@@ -266,6 +271,9 @@
 					txtPontosGlobal.text = sPontos(man.pontuacaoGlobal) ;
 					txtPontuacaoFinal.text = sPontos( man.pontuacaoGlobal + man.pontuacaoTriagem) ;
 					txtEstadoNutricional.text = resultadoGlobal ;
+					*/
+					
+//					ImpressaoUtils.criaMAN(c, containerMAN, true, 14);
 				}
 			}
 			
@@ -319,6 +327,11 @@
 				this.close();
 			}
 			
+			private function onManShow(event:FlexEvent):void
+			{
+				ImpressaoUtils.criaMAN(General.consultaAtual, containerMAN, true, 14);
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -328,14 +341,15 @@
 	<s:Scroller width="100%" height="100%">
 		<s:Group id="scrolado" width="100%" height="100%" clipAndEnableScrolling="true">
 			<s:Group id="containerFull" width="1000" height="1414">
-				<s:VGroup width="100%" paddingLeft="10" paddingTop="10" paddingRight="10" paddingBottom="10" gap="10">
+				<s:VGroup width="100%" paddingLeft="0" paddingTop="0" paddingRight="0" paddingBottom="0" gap="10">
 					<s:Group id="gpHeader" width="100%">
 						<s:VGroup width="100%" paddingLeft="10" paddingTop="10" paddingRight="10" paddingBottom="10" gap="10">
-							<s:Image id="imgLogo" x="0" y="0" width="500" height="100" scaleMode="letterbox" horizontalAlign="left" />
-							<s:HGroup width="100%">
-								<s:Label id="txtData" right="0" y="43" width="176" fontSize="20" styleName="light" text="10/05/2012" textAlign="center"/>
-								<s:Label id="txtDoutor" right="0" y="77" width="470" height="30" fontSize="30" text="Dr. Helmer" textAlign="center"/>
-								<s:Label id="txtCRN" right="0" y="115" width="470" height="30" fontSize="30" text="CRN: 123123123" textAlign="center"/>
+							<s:Image id="imgLogo" x="0" y="0" width="980" height="100" scaleMode="letterbox" horizontalAlign="left" />
+							<s:HGroup width="100%" gap="0">
+								<s:Label id="txtData" right="0" y="43" width="200" fontSize="30" styleName="light" text="10/05/2012" textAlign="left"/>
+								<s:Label id="txtDoutor" right="0" y="77" width="530" height="30" fontSize="30" text="Dr. Helmer" textAlign="center"/>
+								<s:Label id="txtCRN" right="159" width="250" height="30"
+										 fontSize="30" text="CRN-3: 4096" textAlign="right" styleName="light"/>
 							</s:HGroup>
 							<mx:HRule width="100%" />
 						</s:VGroup>
@@ -348,25 +362,27 @@
 								 text="Endereco do paciente" textAlign="center"/>
 					</s:Group>
 					
-					<s:HGroup id="hgTMB" width="100%" gap="0" paddingLeft="120" paddingRight="120">
-						<s:Group width="50%">
-							<s:Label x="0" y="0" width="100%" height="25" fontSize="20" styleName="bold"
+					<s:HGroup id="hgTMB" width="100%" gap="20" paddingLeft="110" paddingRight="110">
+						<s:VGroup width="50%" gap="5">
+							<s:Label width="100%" height="25" fontSize="20" styleName="bold"
 									 text="METABOLISMO BASAL" textAlign="center"/>
-							<s:Label id="txtTMB" x="0" y="30" width="100%" height="25" fontSize="20"
-									 text="1.028 kcal/dia" textAlign="center"/>
-						</s:Group>
-						<s:Group width="50%">
+							<s:Label id="txtTMB" width="100%" height="25" fontSize="20" text="1.028 kcal/dia" textAlign="center"/>
+							<s:Label width="100%" fontSize="9" color="#BBBBBB" text="Harris J, Benedict F. A biometric study of basal metabolism in man. Washington D.C. Carnegie Institute of Washington. 1919." textAlign="center"/>
+						</s:VGroup>
+						<s:VGroup width="50%">
 							<s:Label x="0" y="0" width="100%" height="25" fontSize="20" styleName="bold"
 									 text="NECESSIDADE ENERGÉTICA" textAlign="center"/>
 							<s:Label id="txtEER" x="0" y="30" width="100%" height="25" fontSize="20"
 									 text="1.028 kcal/dia" textAlign="center"/>
-						</s:Group>
+							
+							<s:Label width="100%" fontSize="9" color="#BBBBBB" text="Institute of Medicine. Dietary reference intakes: applications in dietary planning. Washington, DC: National Academies Press, 2002." textAlign="center"/>
+						</s:VGroup>
 					</s:HGroup>
 					
 					<s:Group id="gpGraficos" width="100%">
-						<mx:ViewStack id="vsGraficos" x="240" y="0" width="500">
-							<s:NavigatorContent width="100%" height="100%" label="Peso">
-								<s:VGroup gap="5">
+						<mx:ViewStack id="vsGraficos" x="120" y="0" width="740">
+							<s:NavigatorContent width="740" height="100%">
+								<s:VGroup gap="5" paddingLeft="120">
 									<s:Label width="100%" fontSize="20" styleName="bold" text="GRÁFICO DE VARIAÇÃO DE PESO" textAlign="center" />
 									
 									<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="500" height="260" showDataTips="true" seriesFilters="{[]}">
@@ -393,8 +409,8 @@
 									</mx:LineChart>
 								</s:VGroup>
 							</s:NavigatorContent>
-							<s:NavigatorContent width="100%" height="100%" label="Peso">
-								<s:VGroup gap="5">
+							<s:NavigatorContent width="740" height="100%">
+								<s:VGroup gap="5" paddingLeft="120">
 									<s:Label width="100%" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO" textAlign="center" />
 									
 									<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="500" height="260" showDataTips="true" seriesFilters="{[]}">
@@ -421,8 +437,8 @@
 									</mx:LineChart>
 								</s:VGroup>
 							</s:NavigatorContent>
-							<s:NavigatorContent width="100%" height="100%" label="Atalah">
-								<s:VGroup gap="5">
+							<s:NavigatorContent width="740" height="100%">
+								<s:VGroup gap="5" paddingLeft="120">
 									<s:Label width="100%" fontSize="20" styleName="bold" text="CURVA DE ATALAH" textAlign="center" />
 									
 									<mx:LineChart id="curvaDeAtalah" dataProvider="{pesos}" width="500" height="260" showDataTips="true">
@@ -450,8 +466,8 @@
 									</mx:LineChart>
 								</s:VGroup>
 							</s:NavigatorContent>
-							<s:NavigatorContent width="100%" height="100%" label="MAN">
-								<s:VGroup width="500" gap="5">
+							<s:NavigatorContent width="740" height="100%" label="MAN" show="onManShow(event)">
+								<s:VGroup width="740" gap="5">
 									<s:Label width="100%" fontSize="20" styleName="bold" text="RESULTADO DA MINI AVALIAÇÃO NUTRICIONAL" textAlign="center" />
 									<s:VGroup id="containerMAN" width="100%" gap="10">
 										<s:VGroup width="100%">
@@ -460,7 +476,7 @@
 												<s:Label fontSize="12" text="(subtotal máximo de 14 pontos)"/>
 											</s:HGroup>
 											<mx:HRule width="100%"/>
-											<s:Label id="txtResultadoTriagem" width="100%" fontSize="14" styleName="bold" text="8 pontos - Estado nutricional: DESNUTRIDO"/>
+											<s:Label id="txtResultadoTriagem" width="100%" fontSize="14" styleName="bold" text="{ man.pontuacaoTriagem.toString() + ' pontos - Estado nutricional:' + man.estadoNutricionalTriagem }"/>
 										</s:VGroup>
 										<s:VGroup width="100%">
 											<s:Label text="Pontuação"/>
@@ -469,25 +485,25 @@
 											<s:Group width="100%">
 												<s:Label fontSize="14" styleName="bold" text="Avaliação global"/>
 												<s:Label x="112" y="7" fontSize="11" styleName="light" text="(máximo 16 pontos)"/>
-												<s:Label right="0" id="txtPontosGlobal" fontSize="12" text="15 pontos" textAlign="right"/>
+												<s:Label right="0" id="txtPontosGlobal" fontSize="12" text="{ man.pontuacaoGlobal.toString() + ' pontos' }" textAlign="right"/>
 											</s:Group>
 											
 											<s:Group width="100%">
 												<s:Label fontSize="14" styleName="bold" text="Pontos da triagem"/>
-												<s:Label right="0" id="txtPontosTriagem" fontSize="12" text="13 pontos" textAlign="right"/>
+												<s:Label right="0" id="txtPontosTriagem" fontSize="12" text="{ man.pontuacaoTriagem.toString() + ' pontos' }" textAlign="right"/>
 											</s:Group>
 											
 											<s:Group width="100%">
 												<s:Label fontSize="14" styleName="bold" text="Pontos total"/>
 												<s:Label x="84" y="7" fontSize="11" styleName="light" text="{máximo 30 pontos)"/>
-												<s:Label right="0" id="txtPontuacaoFinal" fontSize="12" text="28 pontos" textAlign="right"/>
+												<s:Label right="0" id="txtPontuacaoFinal" fontSize="12" text="{ (man.pontuacaoTriagem + man.pontuacaoGlobal ).toString() + ' pontos' }" textAlign="right"/>
 											</s:Group>
 											
 											<mx:HRule width="100%"/>
 											
 											<s:HGroup width="100%" horizontalAlign="center" verticalAlign="baseline">
 												<s:Label text="Avaliação do estado nutricional"/>
-												<s:Label id="txtEstadoNutricional" fontSize="14" styleName="bold" text="NORMAL" />
+												<s:Label id="txtEstadoNutricional" fontSize="14" styleName="bold" text="{man.estadoNutricionalGlobal}" />
 											</s:HGroup>
 										</s:VGroup>
 									</s:VGroup>
@@ -507,28 +523,34 @@
 						</s:Group>
 					</s:HGroup>
 					
-					<s:HGroup id="gpFinais" width="100%" gap="0" paddingLeft="40" paddingRight="40">
-						<s:Group id="gpIMC" width="30%">
-							<s:Label x="0" y="0" width="100%" height="25" fontSize="18" styleName="bold" text="IMC" />
-							<s:HGroup x="0" y="25" gap="10" width="100%">
+					<s:HGroup id="gpFinais" width="100%" gap="10" paddingLeft="20" paddingRight="20">
+						<s:VGroup id="gpIMC" width="33%" gap="5">
+							<s:Label width="100%" height="25" fontSize="18" styleName="bold" text="IMC" />
+							<s:HGroup gap="10" width="100%">
 								<s:Label id="txtIMC" fontSize="16" text="20,5" />
-								<s:Label id="txtIMCDescricao" fontSize="14" styleName="light" text="18,5 e 25&#xd;Adequado ou Eurofóbico" />
+								<s:Label id="txtIMCDescricao" fontSize="14" styleName="light" text="18,5 e 25 - Adequado ou Eurofóbico" />
 							</s:HGroup>
-						</s:Group>
-						<s:Group id="gpCircCintura" width="40%">
+							<s:Label width="100%" color="#BBBBBB" fontSize="9"
+									 text="OMS. Organização Mundial da Saúde. Diet, nutrition and the prevention of chronic diseases. Geneva, WHO; 2003."/>
+						</s:VGroup>
+						<s:VGroup id="gpCircCintura" width="34%" gap="5">
 							<s:Label x="0" y="0" width="100%" height="25" fontSize="18" styleName="bold" text="CIRCUNFERÊNCIA DA CINTURA" />
 							<s:HGroup x="0" y="25" gap="10" width="100%">
 								<s:Label id="txtCircCintura" fontSize="16" text="100 cm" />
 								<s:Label id="txtCCDescricao" fontSize="14" styleName="light" text="[ Mulher &gt; 80 (elevado)&#xd;&gt; 88 (muito elevado) ]" />
 							</s:HGroup>
-						</s:Group>
-						<s:Group id="gpRCQ" width="30%">
+							<s:Label width="100%" color="#BBBBBB" fontSize="9"
+									 text="BRASIL. Ministério da Saúde. Vigilância Alimentar e Nutricional – SISVAN. Orientações básicas para a coleta, o processamento, a analise de dados e a informação em serviços de saúde. Diário Oficial da União Brasília, 2004"/>
+						</s:VGroup>
+						<s:VGroup id="gpRCQ" width="33%" gap="5">
 							<s:Label x="0" y="0" width="100%" height="25" fontSize="18" styleName="bold" text="RELAÇÃO CINTURA X QUADRIL" />
 							<s:HGroup x="0" y="25" gap="10" width="100%">
 								<s:Label id="txtRCQ" fontSize="16" text="0,85" />
 								<s:Label id="txtRCQDescricao" fontSize="14" styleName="light" text="[RCQ &gt; 0,85 para mulheres]" />
 							</s:HGroup>
-						</s:Group>
+							<s:Label width="100%" color="#BBBBBB" fontSize="9"
+									 text="WORLD HEALTH ORGANIZATION . Obesity: Preventing and managing the global epidemic – Report of a WHO consultation on obesity. Geneva, 1998."/>
+						</s:VGroup>
 					</s:HGroup>
 					
 					<s:VGroup id="gpDietas" width="100%" paddingLeft="10" paddingRight="10" gap="10">

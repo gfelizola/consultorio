@@ -78,6 +78,38 @@ package app.model
 		public var opcaoR:String;
 		public var pontosR:int;
 		
+		[Transient]
+		public function getDescricaoTriagem():String
+		{
+			var resultado:String = '' ;
+			if( pontuacaoTriagem < 8 ){
+				resultado += 'DESNUTRIDO' ;
+			} else if( pontuacaoTriagem >= 8 && pontuacaoTriagem < 12 ){
+				resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
+			} else {
+				resultado += 'NORMAL' ;
+			}
+			
+			return resultado;
+		}
+		
+		[Transient]
+		public function getDescricaoGlobal():String
+		{
+			var resultado:String = '' ;
+			var pf:Number = pontuacaoTriagem + pontuacaoGlobal ;
+			
+			if( pf < 17 ){
+				resultado += 'DESNUTRIDO' ;
+			} else if( pf >= 17 && pf < 23.5 ){
+				resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
+			} else {
+				resultado += 'NORMAL' ;
+			}
+			
+			return resultado;
+		}
+		
 		public function MAN(){}
 	}
 }

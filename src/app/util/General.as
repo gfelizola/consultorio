@@ -63,7 +63,7 @@ package app.util
 				DB.em.save(pacienteAtual);
 				
 				consultaSalva = true ;
-				// Alert.show("Consulta salva com dados atuais");
+				 Alert.show("Consulta salva com dados atuais");
 				
 				return true ;
 			}

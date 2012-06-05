@@ -7,8 +7,11 @@
 	<fx:Script>
 		<![CDATA[
 			import app.model.Antropometria;
+			import app.model.Consulta;
+			import app.model.DB;
 			import app.util.General;
 			
+			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.core.UIComponent;
 			import mx.events.CloseEvent;
@@ -16,16 +19,13 @@
 			import mx.events.ValidationResultEvent;
 			import mx.validators.Validator;
 			
+			import nz.co.codec.flexorm.criteria.Criteria;
+			import nz.co.codec.flexorm.criteria.Sort;
+			
 			private var focusedFormControl:DisplayObject;
 			
 			[Bindable]
 			private var formIsValid:Boolean = false;
-			
-			[Bindable]
-			private var bindPeso:Number = (General.consultaAtual) ? General.consultaAtual.antropometria.peso : 0;
-			
-			[Bindable]
-			private var bindEstatura:Number = (General.consultaAtual) ? General.consultaAtual.antropometria.estatura : 0;
 			
 			private function init(event:FlexEvent):void
 			{
@@ -36,11 +36,30 @@
 					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
 					
 				gpPreGestacional.visible = gpPreGestacional.includeInLayout = General.pacienteAtual.gestante ;
+				
+				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
+				c.addJunction( c.createAndJunction()
+					.addNotNullCondition('antropometria')
+					.addLikeCondition('paciente', General.pacienteAtual.id.toString() )
+				);
+				c.addSort("dataConsulta", Sort.DESC );
+				
+				var consultas:ArrayCollection = DB.em.fetchCriteria(c);
+				if( consultas.length > 0 ){
+					var co:app.model.Consulta = consultas.getItemAt(0) as app.model.Consulta ;
+					if( co.antropometria ){
+						if( co.antropometria.peso ) txtPeso.text = co.antropometria.peso.toString() ;
+						if( co.antropometria.pesoPreGestacional ) txtPesoGestacional.text = co.antropometria.pesoPreGestacional.toString() ;
+						if( co.antropometria.estatura ) txtEstatura.text = co.antropometria.estatura.toString() ;
+						
+						validateForm();
+					}
+				}
 			}
 			
-			private function validateForm(event:Event):void
+			private function validateForm(e:Event = null):void
 			{
-				focusedFormControl = event.target as DisplayObject;
+//				focusedFormControl = e.target as DisplayObject;
 				formIsValid = true;
 				
 				for each( var validator:Validator in validators )
@@ -68,25 +87,25 @@
 				else
 				{
 					var a:Antropometria = new Antropometria();
-					a.peso = Number(txtPeso.text);
-					a.pesoPreGestacional = Number(txtPesoGestacional.text);
-					a.estatura = Number(txtEstatura.text);
+					a.peso = Number(txtPeso.text.replace(',','.'));
+					a.pesoPreGestacional = Number(txtPesoGestacional.text.replace(',','.'));
+					a.estatura = Number(txtEstatura.text.replace(',','.'));
 					
-					a.circunferenciaCintura = Number(txtCircCintura.text);
-					a.circunferenciaQuadril = Number(txtCircQuadril.text);
-					a.circunferenciaTriceps = Number(txtCircTriceps.text);
-					a.circunferenciaCoxa = Number(txtCircCoxa.text);
-					a.circunferenciaPanturrilha = Number(txtCircPanturrilha.text);
+					a.circunferenciaCintura = Number(txtCircCintura.text.replace(',','.'));
+					a.circunferenciaQuadril = Number(txtCircQuadril.text.replace(',','.'));
+					a.circunferenciaTriceps = Number(txtCircTriceps.text.replace(',','.'));
+					a.circunferenciaCoxa = Number(txtCircCoxa.text.replace(',','.'));
+					a.circunferenciaPanturrilha = Number(txtCircPanturrilha.text.replace(',','.'));
 					
-					a.dobraCutaneaBiciptal = Number(txtDobraBiceps.text);
-					a.dobraCutaneaTriciptal = Number(txtDobraTriceps.text);
-					a.dobraCutaneaSubescapular = Number(txtDobraSubescapular.text);
-					a.dobraCutaneaAxilarMedia = Number(txtDobraAxilarMedia.text);
-					a.dobraCutaneaSupraIliaca = Number(txtDobraSupraIliaca.text);
-					a.dobraCutaneaToracica = Number(txtDobraToracica.text);
-					a.dobraCutaneaAbdominal = Number(txtDobraAbdominal.text);
-					a.dobraCutaneaCoxa = Number(txtDobraCoxa.text);
-					a.dobraCutaneaPanturrilhaMedial = Number(txtDobraPanturrilha.text);
+					a.dobraCutaneaBiciptal = Number(txtDobraBiceps.text.replace(',','.'));
+					a.dobraCutaneaTriciptal = Number(txtDobraTriceps.text.replace(',','.'));
+					a.dobraCutaneaSubescapular = Number(txtDobraSubescapular.text.replace(',','.'));
+					a.dobraCutaneaAxilarMedia = Number(txtDobraAxilarMedia.text.replace(',','.'));
+					a.dobraCutaneaSupraIliaca = Number(txtDobraSupraIliaca.text.replace(',','.'));
+					a.dobraCutaneaToracica = Number(txtDobraToracica.text.replace(',','.'));
+					a.dobraCutaneaAbdominal = Number(txtDobraAbdominal.text.replace(',','.'));
+					a.dobraCutaneaCoxa = Number(txtDobraCoxa.text.replace(',','.'));
+					a.dobraCutaneaPanturrilhaMedial = Number(txtDobraPanturrilha.text.replace(',','.'));
 					
 					General.consultaAtual.antropometria = a ;
 					General.salvaConsulta();
@@ -117,7 +136,7 @@
 			{
 				if( e.detail == Alert.YES ){
 					if( salvar() ){
-						Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						app.view.Consulta.instance.vsPaciente.selectedIndex = 2 ;
 						General.dispatcher.rebuild();
 					}
 				}
@@ -143,19 +162,19 @@
 			<s:HGroup x="10" y="50" gap="30">
 				<s:Group>
 					<s:Label x="0" y="0" text="PESO*"/>
-					<s:TextInput id="txtPeso" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="{bindPeso}" /><!-- colocar o ultimo -->
+					<s:TextInput id="txtPeso" x="0" y="20" width="120" skinClass="app.skin.TextInput" />
 					<s:Label x="124" y="35" color="#999999" styleName="light" text="(kg)"/>
 				</s:Group>
 				
 				<s:Group id="gpPreGestacional" x="170" y="50">
 					<s:Label x="0" y="0" text="PESO PRÉ-GESTACIONAL"/>
-					<s:TextInput id="txtPesoGestacional" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="" />
+					<s:TextInput id="txtPesoGestacional" x="0" y="20" width="120" skinClass="app.skin.TextInput" />
 					<s:Label x="124" y="35" color="#999999" styleName="light" text="(kg)"/>
 				</s:Group>
 				
 				<s:Group>
 					<s:Label x="0" y="0" text="ESTATURA*"/>
-					<s:TextInput id="txtEstatura" x="0" y="20" width="120" skinClass="app.skin.TextInput" text="{bindEstatura}" /><!-- colocar o ultimo -->
+					<s:TextInput id="txtEstatura" x="0" y="20" width="120" skinClass="app.skin.TextInput" />
 					<s:Label x="124" y="35" color="#999999" styleName="light" text="(cm)"/>
 				</s:Group>
 			</s:HGroup>

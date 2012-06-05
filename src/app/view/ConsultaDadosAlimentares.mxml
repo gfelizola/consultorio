@@ -141,13 +141,12 @@
 	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
 		<s:Group width="984" height="390">
 			
-			<s:VGroup  gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+			<s:VGroup width="440" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 			
 				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="DADOS ALIMENTARES" />
-				
 				<s:Label x="10" text="Relatório alimentar habitual" />
 				
-				<s:VGroup width="435" gap="15">
+				<s:VGroup width="440" gap="0">
 					<s:SkinnableContainer width="100%" height="30" backgroundColor="#F6F9FE">
 						<s:Label x="10" y="10" text="REFEIÇÃO / HORÁRIO"/>
 						<s:Label x="165" y="10" text="ALIMENTO"/>
@@ -197,41 +196,41 @@
 					</s:SkinnableContainer>
 					
 					<s:SkinnableContainer width="100%" backgroundColor="#F6F9FE">
-						<s:VGroup gap="5">
+						<s:VGroup gap="5" width="440" paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
 							<s:Label x="10" y="10" text="QUANTIDADE DE ÁGUA POR DIA" />
-							<s:Label x="10" y="10" text="Quantidade relacionada a ingestão diária  total de água relatada pelo paciente." />
-							<s:TextArea id="txtAgua" x="10" y="31" width="415" height="39" skinClass="app.skin.TextArea" />
+							<s:Label x="10" y="10" width="420" text="Quantidade relacionada a ingestão diária  total de água relatada pelo paciente." />
+							<s:TextArea id="txtAgua" x="10" y="31" width="420" height="40" skinClass="app.skin.TextArea" />
 						</s:VGroup>
 					</s:SkinnableContainer>
 					
 					<s:SkinnableContainer width="100%" backgroundColor="#FCFDFF">
-						<s:VGroup gap="5">
+						<s:VGroup gap="5" width="440" paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
 							<s:Label x="10" y="10" text="FUNCIONAMENTO INTESTINAL" />
-							<s:Label x="10" y="10" width="800" text="Padrão habitual de funcionamento intestinal (ocorrência de constipação; fezes amolecidas; diarreia; desconforto gastrointestinal; gases). Consistência e frequência das fezes." />
-							<s:TextArea id="txtIntestinal" x="10" y="31" width="415" height="39" skinClass="app.skin.TextArea" />
+							<s:Label x="10" y="10" width="420" text="Padrão habitual de funcionamento intestinal (ocorrência de constipação; fezes amolecidas; diarreia; desconforto gastrointestinal; gases). Consistência e frequência das fezes." />
+							<s:TextArea id="txtIntestinal" x="10" y="31" width="420" height="40" skinClass="app.skin.TextArea" />
 						</s:VGroup>
 					</s:SkinnableContainer>
 					
 					<s:SkinnableContainer width="100%" backgroundColor="#F6F9FE">
-						<s:VGroup gap="5">
+						<s:VGroup gap="5" width="440" paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
 							<s:Label x="10" y="10" text="PREFERÊNCIAS ALIMENTARES" />
-							<s:Label x="10" y="10" text="Alimentos que o paciente mais gosta de comer e/ou que tem dificuldade de excluir ou reduzir seu consumo." />
-							<s:TextArea id="txtPreferencias" x="10" y="31" width="415" height="39" skinClass="app.skin.TextArea" />
+							<s:Label x="10" y="10" width="420" text="Alimentos que o paciente mais gosta de comer e/ou que tem dificuldade de excluir ou reduzir seu consumo." />
+							<s:TextArea id="txtPreferencias" x="10" y="31" width="420" height="40" skinClass="app.skin.TextArea" />
 						</s:VGroup>
 					</s:SkinnableContainer>
 					
 					<s:SkinnableContainer width="100%" backgroundColor="#FCFDFF">
-						<s:VGroup gap="5">
+						<s:VGroup gap="5" width="440" paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
 							<s:Label x="10" y="10" text="AVERSÕES ALIMENTARES" />
-							<s:Label x="10" y="10" text="Alimentos, texturas e demais peculiaridades alimentares que o paciente não gosta." />
-							<s:TextArea id="txtAversoes" x="10" y="31" width="415" height="39" skinClass="app.skin.TextArea" />
+							<s:Label x="10" y="10" width="420" text="Alimentos, texturas e demais peculiaridades alimentares que o paciente não gosta." />
+							<s:TextArea id="txtAversoes" x="10" y="31" width="420" height="40" skinClass="app.skin.TextArea" />
 						</s:VGroup>
 					</s:SkinnableContainer>
 					
 					<s:SkinnableContainer width="100%" backgroundColor="#F6F9FE">
-						<s:VGroup gap="5">
+						<s:VGroup gap="5" width="440" paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
 							<s:Label x="10" y="10" text="OUTRAS INFORMAÇÕES / OBSERVAÇÕES" />
-							<s:TextArea id="txtObservacoes" x="10" y="31" width="415" height="79" skinClass="app.skin.TextArea" />
+							<s:TextArea id="txtObservacoes" x="10" y="31" width="420" height="79" skinClass="app.skin.TextArea" />
 						</s:VGroup>
 					</s:SkinnableContainer>
 				</s:VGroup>

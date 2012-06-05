@@ -12,7 +12,7 @@
 			import app.model.Paciente;
 			import app.model.TipoAtendimento;
 			import app.util.General;
-			import app.util.Helpers
+			import app.util.Helpers;
 			
 			import as3.utils.Mask;
 			
@@ -205,6 +205,11 @@
 			private function salvarPaciente():void
 			{
 				var p:Paciente = new Paciente();
+				
+				if( ! isNaN( paciente.id ) ){
+					p = DB.em.load(Paciente, paciente.id) as Paciente
+				}
+				
 				p.tipo = cmbTipoAtendimento.selectedItem ;
 				p.convenio = txtConvenio.text ;
 				p.carteira = txtCarteira.text ;
@@ -232,8 +237,6 @@
 				p.patologias = patologias ;
 				p.historicos = historicos ;
 				p.usuario = General.usuario ;
-				
-				if( ! isNaN( paciente.id ) ) p.id = paciente.id ;
 				
 				DB.em.save(p);
 				

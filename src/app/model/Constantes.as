@@ -2,7 +2,14 @@ package app.model
 {
 	import app.util.General;
 	
+	import flash.desktop.NativeApplication;
+	import flash.events.Event;
+	import flash.filesystem.File;
+	import flash.net.Responder;
+	
 	import mx.collections.ArrayCollection;
+	import mx.controls.Alert;
+	import mx.events.CloseEvent;
 	import mx.formatters.DateBase;
 	
 	import nz.co.codec.flexorm.EntityErrorEvent;
@@ -15,6 +22,8 @@ package app.model
 	import nz.co.codec.flexorm.metamodel.Entity;
 	
 	import org.casalib.util.ArrayUtil;
+	
+	import spark.components.Application;
 
 	public class Constantes
 	{
@@ -112,7 +121,11 @@ package app.model
 					adicionaItens( full[i], tipos[i] );
 				}
 				
-				atualizaVersao(versaoAtual);
+				if( ! DB.first ){
+					zeraBanco();
+				} else {
+					atualizaVersao(versaoAtual);
+				}
 			} else {
 				if( versaoAtual != ultimaVersao.nome ) //atualização de versão
 				{
@@ -141,8 +154,12 @@ package app.model
 						}
 					}
 					
-					atualizaVersao(versaoAtual);
-					trace("aplicação atualizada para a versao:", versaoAtual);
+					if( ! DB.first ){
+						zeraBanco();
+					} else {
+						atualizaVersao(versaoAtual);
+						trace("aplicação atualizada para a versao:", versaoAtual);
+					}
 				}
 				else
 				{
@@ -150,7 +167,25 @@ package app.model
 				}
 			}
 			
-			getObjectFromDatabase();
+			if( DB.em.sqlConnection.connected ) getObjectFromDatabase();
+		}
+		
+		private static function zeraBanco():void
+		{
+			DB.em.sqlConnection.close( new Responder( onClose ) );
+		}
+		
+		private static function onClose(e:Event = null):void
+		{
+			var db:File = File.applicationStorageDirectory.resolvePath("nutrisaude_co.db");
+			db.copyTo( File.applicationStorageDirectory.resolvePath("nutrisaude_co_bkp1.db"), true );
+			
+			Alert.show('O programa foi atualizado. Por favor, execute novamente.', 'Aviso', Alert.OK, null, onAlertClose);
+		}
+		
+		private static function onAlertClose(e:CloseEvent):void
+		{
+			NativeApplication.nativeApplication.exit();			
 		}
 		
 		private static function getObjectFromDatabase():void

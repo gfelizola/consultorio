@@ -45,6 +45,8 @@ package app.model
 					var mest:Date = paciente.dataUltimaMenstruacao ;
 					var diferenca:Number = hoje.time - mest.time ;
 					
+					trace( hoje, mest, diferenca );
+					
 					if (diferenca> 0)
 					{
 						var seconds:Number = diferenca / 1000;
@@ -55,6 +57,8 @@ package app.model
 					}
 				}
 			}
+			
+			trace("Consulta.setSemanaGestacional()", semanaGestacional);
 		}
 		
 		public function setResumo():void
@@ -67,6 +71,8 @@ package app.model
 				var eerg:Number = 0 ;
 				var coeficiente:Number = 0 ;
 				var idade:Number = idadeNaConsulta();
+				
+				if( paciente.gestante ) setSemanaGestacional();
 				
 				if( antropometria ){
 					if( paciente.sexo == 'M' ) {
@@ -101,7 +107,6 @@ package app.model
 							eer = 354 - ( 6.91 * idade ) + coeficiente * ( (9.36 * antropometria.peso ) + ( 726 * ( antropometria.estatura / 100 ) ) ) ;
 							
 							if( paciente.gestante ){
-								setSemanaGestacional();
 								if( semanaGestacional > 12 ) {
 									eerg += eer + ( 8 * semanaGestacional ) + 180 ;
 								} else {

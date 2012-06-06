@@ -4,7 +4,7 @@
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
 		  xmlns:skin="app.skin.*"
 		  width="1000" height="700" creationComplete="init()"
-		  showStatusBar="false" title="IMPRESSÃO DE CONSULTA">
+		  showStatusBar="false" title="IMPRESSÃO DE CONSULTA" xmlns:view="app.view.*">
 	
 	<!--
 	<fx:Style source="app/style/Estilo.css" />
@@ -35,12 +35,6 @@
 			import nz.co.codec.flexorm.criteria.Sort;
 			
 			private var consultas:ArrayCollection;
-			
-			[Bindable]
-			private var minIdade:Number;
-			
-			[Bindable]
-			private var pesos:ArrayCollection;
 			
 			[Bindable]
 			private var man:MAN;
@@ -91,48 +85,12 @@
 				endereco += p.cidade + ', ' + p.estado ;
 				txtEnderecoPaciente.text = endereco ;
 				
-				if( idade > 60 )
-				{
-					vsGraficos.selectedIndex = 3 ;
-				}
-				else if( idade < 20 )
-				{
-					vsGraficos.selectedIndex = 1 ;
-				}
-				else 
-				{
-					if( p.gestante )
-					{
-						vsGraficos.selectedIndex = 2 ;
-					}
-				}
-				
 				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
 				c.addEqualsCondition("paciente", p.id );
 				c.addSort("dataConsulta");
 				
 				consultas = DB.em.fetchCriteria(c);
 				var consulta:app.model.Consulta = General.consultaAtual ;
-				pesos = new ArrayCollection();
-				
-				minIdade = 0 ;
-				
-				for (var i:int = 0; i < consultas.length; i++) 
-				{
-					var cons:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
-					if( cons.antropometria ){
-						pesos.addItem({ 
-							dataConsulta:General.getFormattedDate(cons.dataConsulta), 
-							peso:cons.antropometria.peso, 
-							imc:cons.antropometria.imc, 
-							altura:cons.antropometria.estatura,
-							semana:cons.semanaGestacional,
-							idade:cons.idadeNaConsulta()
-						});
-						
-						if( minIdade == 0 ) minIdade = cons.idadeNaConsulta() ;
-					}
-				}
 				
 				if( consulta ){
 					
@@ -141,7 +99,6 @@
 					verificaResumo(consulta);
 					verificaAntropometria(consulta);
 					verificaExames(consulta);
-					verificaMAN(consulta);
 				}
 			}
 			
@@ -165,35 +122,7 @@
 				var a:Antropometria = c.antropometria ;
 				
 				if( a != null ){
-					containerDadosAntropometria.removeAllElements();
-					
-					var campos:Array = [
-						{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
-						{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
-						{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA CINTURA', 			valor: a.circunferenciaCintura, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DO TRÍCEPS', 			valor: a.circunferenciaTriceps, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
-						{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' }
-					];
-					
-					for (var i:int = 0; i < campos.length; i++) 
-					{
-						var o:Object = campos[i] ;
-						if( ! isNaN( o.valor ) ){
-							if( o.valor > 0 ) containerDadosAntropometria.addElement( getLineGroup(o.nome, o.valor + ' ' + o.medida ) ) ;
-						}
-					}
+					ImpressaoUtils.criaAntropometria(c, containerDadosAntropometria, true, 14);
 					
 					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
 						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
@@ -225,92 +154,8 @@
 			{
 				var eb:ExameBioquimico = c.exameBioquimico ;
 				if( eb ){
-					containerDadosExames.removeAllElements();
-					
-					containerDadosExames.addElement( getLineGroup( 'EXAME', General.getFormattedDate( eb.dataDoExame ) ) ) ;
-					
-					for (var i:int = 0; i < eb.exames.length; i++) 
-					{
-						var e:ExameAdicional = eb.exames[i] ;
-						containerDadosExames.addElement( getLineGroup( e.nome, e.valor ) ) ;
-					}
+					ImpressaoUtils.criaExamesBioquimicos(c, containerDadosExames, true, 14);
 				}
-			}
-			
-			private function verificaMAN(c:app.model.Consulta):void
-			{
-				var man:MAN = c.man ;
-				if( man ){
-					/*
-					var p:Number = man.pontuacaoTriagem ;
-					var resultado:String = sPontos(man.pontuacaoTriagem) + ' - Estado nutricional: ' ;
-					
-					if( p < 8 ){
-						resultado += 'DESNUTRIDO' ;
-					} else if( p >= 8 && p < 12 ){
-						resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
-					} else {
-						resultado += 'NORMAL' ;
-					}
-					
-					txtPontosTriagem.text = sPontos(man.pontuacaoTriagem) ;
-					txtResultadoTriagem.text = resultado ;
-					
-					p = man.pontuacaoGlobal ;
-					var resultadoGlobal:String = '' ;
-					
-					if( p < 8 ){
-						resultadoGlobal += 'DESNUTRIDO' ;
-					} else if( p >= 8 && p < 12 ){
-						resultadoGlobal += 'SOB RISCO DE DESNUTRIÇÃO' ;
-					} else {
-						resultadoGlobal += 'NORMAL' ;
-					}
-					
-					txtPontosTriagem.text = sPontos(man.pontuacaoTriagem) ;
-					txtPontosGlobal.text = sPontos(man.pontuacaoGlobal) ;
-					txtPontuacaoFinal.text = sPontos( man.pontuacaoGlobal + man.pontuacaoTriagem) ;
-					txtEstadoNutricional.text = resultadoGlobal ;
-					*/
-					
-//					ImpressaoUtils.criaMAN(c, containerMAN, true, 14);
-				}
-			}
-			
-			private function getLineGroup( nome:String, valor:String ):Group
-			{
-				var lNome:Label = new Label();
-				lNome.styleName = 'bold' ;
-				lNome.x = 0 ;
-				lNome.y = 0 ;
-				lNome.setStyle('fontSize', 12);
-				lNome.text = nome.toUpperCase();
-				
-				var lValor:Label = new Label();
-				lValor.y = 0 ;
-				lValor.setStyle('textAlign', 'right');
-				lValor.right = 0 ;
-				lValor.setStyle('fontSize', 12);
-				lValor.text = valor ;
-				
-				var rule:HRule = new HRule();
-				rule.height = 1 ;
-				rule.percentWidth = 100 ;
-				rule.x = 0 ;
-				rule.y = 15 ;
-				
-				var g:Group = new Group();
-				g.percentWidth = 100 ;
-				g.addElement(lNome);
-				g.addElement(lValor);
-				g.addElement(rule);
-				
-				return g;
-			}
-			
-			private function sPontos(p:int):String
-			{
-				return p + ( p > 1 ? ' pontos' : ' ponto') ;
 			}
 			
 			private function onImprimir(e:MouseEvent):void
@@ -326,12 +171,6 @@
 				btnImprimir.visible = true ;
 				this.close();
 			}
-			
-			private function onManShow(event:FlexEvent):void
-			{
-				ImpressaoUtils.criaMAN(General.consultaAtual, containerMAN, true, 14);
-			}
-			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -380,136 +219,7 @@
 					</s:HGroup>
 					
 					<s:Group id="gpGraficos" width="100%">
-						<mx:ViewStack id="vsGraficos" x="120" y="0" width="740">
-							<s:NavigatorContent width="740" height="100%">
-								<s:VGroup gap="5" paddingLeft="120">
-									<s:Label width="100%" fontSize="20" styleName="bold" text="GRÁFICO DE VARIAÇÃO DE PESO" textAlign="center" />
-									
-									<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="500" height="260" showDataTips="true" seriesFilters="{[]}">
-										<mx:horizontalAxis>
-											<mx:CategoryAxis categoryField="dataConsulta" title="Data da consulta" />
-										</mx:horizontalAxis>
-										<mx:verticalAxis>
-											<mx:LinearAxis title="Peso" />
-										</mx:verticalAxis>
-										
-										<mx:series>
-											<mx:LineSeries displayName="Peso" form="curve" yField="peso">
-												<mx:lineStroke>
-													<mx:SolidColorStroke color="#81BAEA" weight="7" />
-												</mx:lineStroke>
-												<mx:itemRenderer>
-													<fx:Component>
-														<mx:CrossItemRenderer />
-													</fx:Component>
-												</mx:itemRenderer>
-											</mx:LineSeries>
-										</mx:series>
-										
-									</mx:LineChart>
-								</s:VGroup>
-							</s:NavigatorContent>
-							<s:NavigatorContent width="740" height="100%">
-								<s:VGroup gap="5" paddingLeft="120">
-									<s:Label width="100%" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO" textAlign="center" />
-									
-									<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="500" height="260" showDataTips="true" seriesFilters="{[]}">
-										<mx:horizontalAxis>
-											<mx:LinearAxis title="IDADE (meses)" minimum="{minIdade}" />
-										</mx:horizontalAxis>
-										<mx:verticalAxis>
-											<mx:LinearAxis title="PESO (kg)" />
-										</mx:verticalAxis>
-										
-										<mx:series>
-											<mx:LineSeries displayName="Peso" form="curve" yField="peso" xField="idade">
-												<mx:lineStroke>
-													<mx:SolidColorStroke color="#81BAEA" weight="7" />
-												</mx:lineStroke>
-												<mx:itemRenderer>
-													<fx:Component>
-														<mx:CrossItemRenderer />
-													</fx:Component>
-												</mx:itemRenderer>
-											</mx:LineSeries>
-										</mx:series>
-										
-									</mx:LineChart>
-								</s:VGroup>
-							</s:NavigatorContent>
-							<s:NavigatorContent width="740" height="100%">
-								<s:VGroup gap="5" paddingLeft="120">
-									<s:Label width="100%" fontSize="20" styleName="bold" text="CURVA DE ATALAH" textAlign="center" />
-									
-									<mx:LineChart id="curvaDeAtalah" dataProvider="{pesos}" width="500" height="260" showDataTips="true">
-										<mx:horizontalAxis>
-											<mx:LinearAxis title="IDADE GESTACIONAL EM SEMANAS" minimum="10" maximum="50" interval="2" />
-										</mx:horizontalAxis>
-										<mx:verticalAxis>
-											<mx:LinearAxis title="IMC" minimum="10" maximum="60" />
-										</mx:verticalAxis>
-										<mx:seriesFilters>
-											<fx:Array/>
-										</mx:seriesFilters>
-										<mx:series>
-											<mx:LineSeries displayName="IMC" form="curve" yField="imc" xField="semana">
-												<mx:lineStroke>
-													<mx:SolidColorStroke color="#81BAEA" weight="7" />
-												</mx:lineStroke>
-												<mx:itemRenderer>
-													<fx:Component>
-														<mx:CrossItemRenderer />
-													</fx:Component>
-												</mx:itemRenderer>
-											</mx:LineSeries>
-										</mx:series>
-									</mx:LineChart>
-								</s:VGroup>
-							</s:NavigatorContent>
-							<s:NavigatorContent width="740" height="100%" label="MAN" show="onManShow(event)">
-								<s:VGroup width="740" gap="5">
-									<s:Label width="100%" fontSize="20" styleName="bold" text="RESULTADO DA MINI AVALIAÇÃO NUTRICIONAL" textAlign="center" />
-									<s:VGroup id="containerMAN" width="100%" gap="10">
-										<s:VGroup width="100%">
-											<s:HGroup>
-												<s:Label fontSize="14" text="Pontos da triagem"/>
-												<s:Label fontSize="12" text="(subtotal máximo de 14 pontos)"/>
-											</s:HGroup>
-											<mx:HRule width="100%"/>
-											<s:Label id="txtResultadoTriagem" width="100%" fontSize="14" styleName="bold" text="{ man.pontuacaoTriagem.toString() + ' pontos - Estado nutricional:' + man.estadoNutricionalTriagem }"/>
-										</s:VGroup>
-										<s:VGroup width="100%">
-											<s:Label text="Pontuação"/>
-											<mx:HRule width="100%"/>
-											
-											<s:Group width="100%">
-												<s:Label fontSize="14" styleName="bold" text="Avaliação global"/>
-												<s:Label x="112" y="7" fontSize="11" styleName="light" text="(máximo 16 pontos)"/>
-												<s:Label right="0" id="txtPontosGlobal" fontSize="12" text="{ man.pontuacaoGlobal.toString() + ' pontos' }" textAlign="right"/>
-											</s:Group>
-											
-											<s:Group width="100%">
-												<s:Label fontSize="14" styleName="bold" text="Pontos da triagem"/>
-												<s:Label right="0" id="txtPontosTriagem" fontSize="12" text="{ man.pontuacaoTriagem.toString() + ' pontos' }" textAlign="right"/>
-											</s:Group>
-											
-											<s:Group width="100%">
-												<s:Label fontSize="14" styleName="bold" text="Pontos total"/>
-												<s:Label x="84" y="7" fontSize="11" styleName="light" text="{máximo 30 pontos)"/>
-												<s:Label right="0" id="txtPontuacaoFinal" fontSize="12" text="{ (man.pontuacaoTriagem + man.pontuacaoGlobal ).toString() + ' pontos' }" textAlign="right"/>
-											</s:Group>
-											
-											<mx:HRule width="100%"/>
-											
-											<s:HGroup width="100%" horizontalAlign="center" verticalAlign="baseline">
-												<s:Label text="Avaliação do estado nutricional"/>
-												<s:Label id="txtEstadoNutricional" fontSize="14" styleName="bold" text="{man.estadoNutricionalGlobal}" />
-											</s:HGroup>
-										</s:VGroup>
-									</s:VGroup>
-								</s:VGroup>
-							</s:NavigatorContent>
-						</mx:ViewStack>
+						<view:Graficos x="140"/>
 					</s:Group>
 					
 					<s:HGroup id="gpListas" width="100%" gap="0" paddingLeft="40" paddingRight="40">

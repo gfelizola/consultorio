@@ -67,7 +67,8 @@
 			private function buildAntropo():void
 			{
 				if(General.consultaAtual.antropometria != null) {
-					ImpressaoUtils.criaAntropometria(General.consultaAtual, vgAntropometria, false, 12, corTexto, true, 0xbbbbbb, 10);
+					ImpressaoUtils.criaAntropometria(General.consultaAtual, vgAntropometria, true, 12, corTexto, true, 0xbbbbbb, 10);
+					vgAntropometria.addElementAt( criaTitulo('antropometria'),0 );
 					scAntropometria.visible = scAntropometria.includeInLayout = true ;
 				} else {
 					scAntropometria.visible = scAntropometria.includeInLayout = false ;
@@ -77,7 +78,8 @@
 			private function buildAlimentos():void
 			{
 				if(General.consultaAtual.dadosAlimentares != null) {
-					ImpressaoUtils.criaDadosAlimentares( General.consultaAtual, vgAlimentos, false, 12, corTexto );
+					ImpressaoUtils.criaDadosAlimentares( General.consultaAtual, vgAlimentos, true, 12, corTexto );
+					vgAlimentos.addElementAt( criaTitulo('Dados Alimentares'),0 );
 					scAlimentos.visible = scAlimentos.includeInLayout = true ;
 				} else {
 					scAlimentos.visible = scAlimentos.includeInLayout = false ;
@@ -87,7 +89,8 @@
 			private function buildExames():void
 			{
 				if(General.consultaAtual.exameBioquimico != null) {
-					ImpressaoUtils.criaExamesBioquimicos(General.consultaAtual, vgExames, false, 12, corTexto );
+					ImpressaoUtils.criaExamesBioquimicos(General.consultaAtual, vgExames, true, 12, corTexto );
+					vgExames.addElementAt( criaTitulo('Exames Bioquímicos'),0 );
 					scExames.visible = scExames.includeInLayout = true ;
 				} else {
 					scExames.visible = scExames.includeInLayout = false ;
@@ -97,7 +100,9 @@
 			private function buildAtividades():void
 			{
 				if(General.consultaAtual.atividadeFisica != null) {
-					ImpressaoUtils.criaAtividadesFisicas( General.consultaAtual, vgAtividades, false, 12, corTexto );
+					ImpressaoUtils.criaAtividadesFisicas( General.consultaAtual, vgAtividades, true, 12, corTexto );
+					vgAtividades.addElementAt( criaTitulo('Atividades Físicas'),0 );
+					
 					scAtividades.visible = scAtividades.includeInLayout = true ;
 				} else {
 					scAtividades.visible = scAtividades.includeInLayout = false ;
@@ -107,7 +112,8 @@
 			private function buildMetabolismo():void
 			{
 				if(General.consultaAtual.resumo != null){
-					ImpressaoUtils.criaTMB(General.consultaAtual, vgTMB, false, 13, corTexto );
+					ImpressaoUtils.criaTMB(General.consultaAtual, vgTMB, true, 13, corTexto );
+					vgTMB.addElementAt( criaTitulo('metabolismo basal / necessidade energética'),0 );
 					scTMB.visible = scTMB.includeInLayout = true ;
 				} else {
 					scTMB.visible = scTMB.includeInLayout = false ;
@@ -146,6 +152,15 @@
 						c++ ;
 					}
 				}
+			}
+			
+			private function criaTitulo(titulo:String):Label
+			{
+				var l:Label = new Label();
+				l.styleName = 'bold' ;
+				l.text = titulo.toUpperCase() ;
+				l.setStyle('fontSize', 20);
+				return l
 			}
 			
 			private function backToList(event:MouseEvent = null):void

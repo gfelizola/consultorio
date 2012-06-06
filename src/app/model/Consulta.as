@@ -70,7 +70,7 @@ package app.model
 				var eer:Number = 0 ;
 				var eerg:Number = 0 ;
 				var coeficiente:Number = 0 ;
-				var idade:Number = idadeNaConsulta();
+				var idade:Number = Math.floor( idadeNaConsulta() / 12 );
 				
 				if( paciente.gestante ) setSemanaGestacional();
 				

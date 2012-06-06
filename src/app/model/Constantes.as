@@ -178,7 +178,7 @@ package app.model
 		private static function onClose(e:Event = null):void
 		{
 			var db:File = File.applicationStorageDirectory.resolvePath("nutrisaude_co.db");
-			db.copyTo( File.applicationStorageDirectory.resolvePath("nutrisaude_co_bkp1.db"), true );
+			db.moveTo( File.applicationStorageDirectory.resolvePath("nutrisaude_co_bkp1.db"), true );
 			
 			Alert.show('O programa foi atualizado. Por favor, execute novamente.', 'Aviso', Alert.OK, null, onAlertClose);
 		}

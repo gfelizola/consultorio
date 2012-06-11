@@ -49,7 +49,6 @@
 				if(General.consultaAtual)
 				{
 					General.consultaAtual.setResumo();
-					
 					buidlAll();
 				}
 			}
@@ -89,7 +88,7 @@
 			private function buildExames():void
 			{
 				if(General.consultaAtual.exameBioquimico != null) {
-					ImpressaoUtils.criaExamesBioquimicos(General.consultaAtual, vgExames, true, 12, corTexto );
+					ImpressaoUtils.criaExamesBioquimicos(General.consultaAtual, vgExames, true, false, 12, corTexto );
 					vgExames.addElementAt( criaTitulo('Exames Bioquímicos'),0 );
 					scExames.visible = scExames.includeInLayout = true ;
 				} else {
@@ -135,12 +134,12 @@
 				cores = [ 0xF6F9FE, 0xFCFDFF ];
 				var boxes:Array = [ scTMB, scAntropometria, scMAN, scAlimentos, scAtividades, scExames ];
 				
+				buildMetabolismo();
 				buildAntropo();
 				buildMan();
 				buildAlimentos();
 				buildAtividades();
 				buildExames();
-				buildMetabolismo();
 				
 				
 				var c:uint = 0 ;
@@ -197,7 +196,6 @@
 			<s:VGroup id="vgDadosConsulta" width="984">
 				<s:SkinnableContainer id="scTMB" width="974" backgroundColor="#FCFDFF">
 					<s:VGroup id="vgTMB" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="METABOLISMO BASAL / NECESSIDADES ENERGÉTICAS" fontSize="20" styleName="bold" />
 					</s:VGroup>
 				</s:SkinnableContainer>
 				
@@ -232,13 +230,13 @@
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer width="974" backgroundColor="#F6F9FE">
-					<s:Label x="10" y="10" fontSize="20" styleName="bold" text="OBSERVAÇÕES OU OUTRAS INFORMAÇÕES:" />
+					<s:Label x="10" y="10" fontSize="20" styleName="bold" text="OBSERVAÇÕES OU OUTRAS INFORMAÇÕES" />
 					<s:Label id="txtObservacao" x="10" y="30" width="954" text="" paddingBottom="10" paddingLeft="0" paddingRight="0" paddingTop="10" />
 				</s:SkinnableContainer>
 			</s:VGroup>
 			
 			<s:VGroup width="974">
-				<s:Label fontSize="20" styleName="bold" text="RECOMENDAÇÃO DE DIETA:" />
+				<s:Label fontSize="20" styleName="bold" text="RECOMENDAÇÃO DE DIETA" />
 				<s:TextArea id="txtRecomendacoes" width="100%" height="100" skinClass="app.skin.TextArea" />
 			</s:VGroup>
 		</s:VGroup>

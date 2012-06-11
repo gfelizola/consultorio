@@ -27,7 +27,7 @@
 				var p:Paciente = General.pacienteAtual ;
 				if( p == null ) return ;
 				
-				var idade:Number = Helpers.idade(p.dataNascimento);
+				var idade:Number = Math.floor( Helpers.idade(p.dataNascimento) / 12 );
 				
 				var tabMAN:UIComponent = tbConsulta.dataGroup.getElementAt(1) as UIComponent;
 				if(tabMAN){tabMAN.includeInLayout = tabMAN.visible = idade > 59;}

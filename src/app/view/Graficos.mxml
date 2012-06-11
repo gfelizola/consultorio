@@ -63,8 +63,8 @@
 					faixas = new ArrayCollection();
 					faixas.addItem({ nome:'NASCIMENTO AOS 2 ANOS', valor:[0,24] });
 					faixas.addItem({ nome:'NASCIMENTO AOS 5 ANOS', valor:[0,60] });
-					if( idade > 24 ) faixas.addItem({ nome:'2 AOS 5 ANOS', valor:[24,60] });
-					if( idade > 60 ){
+					if( idade > 2 ) faixas.addItem({ nome:'2 AOS 5 ANOS', valor:[24,60] });
+					if( idade > 5 ){
 						faixas.addItem({ nome:'5 AOS 10 ANOS', valor:[60,120] });
 						faixas.addItem({ nome:'5 AOS 19 ANOS', valor:[60,228] });
 					}
@@ -171,6 +171,8 @@
 							dados = EDadosGraficos.CRESCIMENTO_MASCULINO_PESO_IDADE;
 							axisVerticalCrescimento.title = 'PESO (KG)';
 							axisVerticalCrescimento.displayName = 'Peso (kg)' ;
+							axisHorizontalCrescimento.minimum = minSemana ;
+							axisHorizontalCrescimento.maximum = maxSemana > 120 ? 120 : maxSemana ;
 							lsComparado.yField = 'peso' ;
 							lsComparado.displayName = 'Peso' ;
 							
@@ -178,6 +180,8 @@
 							dados = EDadosGraficos.CRESCIMENTO_MASCULINO_ESTATURA_IDADE;
 							axisVerticalCrescimento.title = 'ESTATURA (cm)' ;
 							axisVerticalCrescimento.displayName = 'Estatura (cm)' ;
+							axisHorizontalCrescimento.minimum = minSemana ;
+							axisHorizontalCrescimento.maximum = maxSemana ;
 							lsComparado.yField = 'estatura' ;
 							lsComparado.displayName = 'estatura' ;
 							
@@ -185,6 +189,8 @@
 							dados = EDadosGraficos.CRESCIMENTO_MASCULINO_IMC_IDADE;
 							axisVerticalCrescimento.title = 'IMC' ;
 							axisVerticalCrescimento.displayName = 'IMC' ;
+							axisHorizontalCrescimento.minimum = minSemana ;
+							axisHorizontalCrescimento.maximum = maxSemana ;
 							lsComparado.yField = 'imc' ;
 							lsComparado.displayName = 'imc' ;
 						}
@@ -193,6 +199,8 @@
 							dados = EDadosGraficos.CRESCIMENTO_FEMININO_PESO_IDADE;
 							axisVerticalCrescimento.title = 'PESO (KG)';
 							axisVerticalCrescimento.displayName = 'Peso (kg)' ;
+							axisHorizontalCrescimento.minimum = minSemana ;
+							axisHorizontalCrescimento.maximum = maxSemana > 120 ? 120 : maxSemana ;
 							lsComparado.yField = 'peso' ;
 							lsComparado.displayName = 'Peso' ;
 							
@@ -200,12 +208,16 @@
 							dados = EDadosGraficos.CRESCIMENTO_FEMININO_ESTATURA_IDADE;
 							axisVerticalCrescimento.title = 'ESTATURA (cm)' ;
 							axisVerticalCrescimento.displayName = 'Estatura (cm)' ;
+							axisHorizontalCrescimento.minimum = minSemana ;
+							axisHorizontalCrescimento.maximum = maxSemana ;
 							lsComparado.yField = 'estatura' ;
 							lsComparado.displayName = 'estatura' ;
 						} else {
 							dados = EDadosGraficos.CRESCIMENTO_FEMININO_IMC_IDADE;
 							axisVerticalCrescimento.title = 'IMC' ;
 							axisVerticalCrescimento.displayName = 'IMC' ;
+							axisHorizontalCrescimento.minimum = minSemana ;
+							axisHorizontalCrescimento.maximum = maxSemana ;
 							lsComparado.yField = 'imc' ;
 							lsComparado.displayName = 'imc' ;
 						}
@@ -278,8 +290,6 @@
 					curvaDeCrescimento.dataProvider = crescimento ;
 					curvaDeCrescimento.visible = true ;
 					
-					trace( minValor, maxValor );
-					
 					axisVerticalCrescimento.maximum = Math.ceil( maxValor );
 					axisVerticalCrescimento.minimum = Math.floor( minValor );
 				}
@@ -344,72 +354,20 @@
 					<s:ComboBox id="cmbTipo" skinClass="app.skin.ComboBox" dataProvider="{tipos}" labelField="nome" width="200" change="onTipoChange(event)" />
 				</s:HGroup>
 				
-				<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="720" height="330" showDataTips="true" seriesFilters="{[]}" visible="false">
+				<mx:LineChart id="curvaDeCrescimento" dataProvider="{pesos}" width="720" height="300" showDataTips="true" seriesFilters="{[]}" visible="false">
 					<mx:backgroundElements>
 						<mx:GridLines gridDirection="both" />
 					</mx:backgroundElements>
 					
 					<mx:horizontalAxis>
-						<mx:LinearAxis title="IDADE (meses)" displayName="Idade (semanas)" interval="3" />
+						<mx:LinearAxis id="axisHorizontalCrescimento" title="IDADE (meses)" displayName="Idade (semanas)" interval="3" />
 					</mx:horizontalAxis>
 					<mx:verticalAxis>
 						<mx:LinearAxis id="axisVerticalCrescimento" title="PESO (kg)" />
 					</mx:verticalAxis>
-					<!-- 
-					<mx:series>
-						<mx:LineSeries displayName="Peso" yField="peso" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-						<mx:LineSeries displayName="P 0,1" yField="p01" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="2" alpha="0.7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-						<mx:LineSeries displayName="P 3" yField="p3" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="2" alpha="0.7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-						<mx:LineSeries displayName="P 5" yField="p5" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="2" alpha="0.7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-						<mx:LineSeries displayName="P 10" yField="p10" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="2" alpha="0.7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-						<mx:LineSeries displayName="P 15" yField="p15" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="2" alpha="0.7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-						<mx:LineSeries displayName="P 50" yField="p50" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="2" alpha="0.7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-						<mx:LineSeries displayName="P 85" yField="p85" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="2" alpha="0.7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-						<mx:LineSeries displayName="P 97" yField="p97" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="2" alpha="0.7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-						<mx:LineSeries displayName="P 99,9" yField="p999" xField="idade" form="curve">
-							<mx:lineStroke>
-								<mx:SolidColorStroke color="{corLinhasCrescimento}" weight="2" alpha="0.7" />
-							</mx:lineStroke>
-						</mx:LineSeries>
-					</mx:series>
-					-->
 				</mx:LineChart>
+				
+				<mx:Legend dataProvider="{curvaDeCrescimento}" direction="horizontal" />
 			</s:VGroup>
 		</s:NavigatorContent>
 		<s:NavigatorContent width="100%" height="100%" label="Atalah">

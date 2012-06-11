@@ -76,7 +76,7 @@
 				if( General.pacienteAtual != null ) {
 					var p:Paciente = General.pacienteAtual ;
 					impNomePaciente.text = p.nomeCompleto.toUpperCase() ;
-					impIdadePaciente.text = p.idade + ' ANOS' ;
+					impIdadePaciente.text = Math.floor( p.idade / 12 ) + ' ANOS' ;
 					impSexoPaciente.text = p.sexo == 'M' ? 'MASCULINO' : 'FEMININO' ;
 					antropometria.visible = true ;
 				} else {

@@ -115,17 +115,18 @@ package app.model
 			
 			if( ultimaVersao == null ) //primeira instalação - adiciona todas as contastantes
 			{
-				trace("primeira instalação");
+				
 				for (i = 0; i < tipos.length; i++) 
 				{
 					adicionaItens( full[i], tipos[i] );
 				}
 				
-				if( ! DB.first ){
-					zeraBanco();
-				} else {
+//				if( ! DB.first ){
+//					zeraBanco();
+//				} else {
+					trace("primeira instalação");
 					atualizaVersao(versaoAtual);
-				}
+//				}
 			} else {
 				if( versaoAtual != ultimaVersao.nome ) //atualização de versão
 				{
@@ -154,12 +155,12 @@ package app.model
 						}
 					}
 					
-					if( ! DB.first ){
-						zeraBanco();
-					} else {
+//					if( ! DB.first ){
+//						zeraBanco();
+//					} else {
 						atualizaVersao(versaoAtual);
 						trace("aplicação atualizada para a versao:", versaoAtual);
-					}
+//					}
 				}
 				else
 				{

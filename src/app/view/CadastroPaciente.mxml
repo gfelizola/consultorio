@@ -87,6 +87,8 @@
 			
 			private function init():void
 			{
+				if(!scroller.hasEventListener(MouseEvent.MOUSE_WHEEL))scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
+				
 				new Mask(txtTelResidencial, "(99) 9999-99999" );
 				new Mask(txtTelComercial, "(99) 9999-99999" );
 				new Mask(txtCelular, "(99) 9999-99999" );
@@ -117,6 +119,8 @@
 				}
 				
 				atualizaPaciente(p);
+				
+				
 			}
 			
 			private function onSexoChange(e:IndexChangeEvent = null):void
@@ -207,7 +211,8 @@
 				var p:Paciente = new Paciente();
 				
 				if( ! isNaN( paciente.id ) ){
-					p = DB.em.load(Paciente, paciente.id) as Paciente
+					if( paciente.id > 0 ) var np:Paciente = DB.em.load(Paciente, paciente.id) as Paciente;
+					if( np ) p = np ;
 				}
 				
 				p.tipo = cmbTipoAtendimento.selectedItem ;
@@ -257,6 +262,11 @@
 				txtCarteira.visible = v ;
 			}
 			
+			private function onMouseWheel(e:MouseEvent):void
+			{
+				e.delta = e.delta > 0 ? 10 : -10;
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -276,13 +286,9 @@
 	</fx:Declarations>
 	
 	
-	<skin:ScrollerSemBug id="formScroller" x="10" y="10" width="984" height="520" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
-	
+	<skin:ScrollerSemBug id="scroller" x="10" y="10" width="984" height="520" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
 		<s:VGroup id="formContainer" width="984" height="520" gap="20" paddingBottom="10" paddingLeft="10" paddingTop="10" paddingRight="10">
-	
-			
 			<s:Label color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DA CONSULTA" />
-			
 			<s:Group>
 				<s:Label x="0" y="10" text="TIPO DE ATENDIMENTO"/>
 				<s:ComboBox requireSelection="true" openOnInput="true" id="cmbTipoAtendimento" x="0" y="31" width="435" labelField="nome" dataProvider="{Constantes.tiposAtendimentos}" skinClass="app.skin.ComboBox" change="onTipoAtendimentoChange(event)" />
@@ -389,25 +395,22 @@
 					</s:layout>
 				</s:List>
 				<mx:LinkButton x="483" y="230" icon="@Embed('assets/images/remover.png')" label="remover itens selecionados" click="onRemoverPatologias(event)" />
-				<s:Group x="0" y="271" width="100%">
-					<s:Button id="btnSalvar" x="790" y="40" label="SALVAR DADOS" click="onSalvar(event)"
-							  skinClass="app.skin.Button"/>
-					<s:Label id="lblResposta" x="0" y="40" width="780" height="100" color="#FF0000"/>
-				</s:Group>
 			</s:Group>
 			
 			<s:Group width="100%" id="gpHistorico" visible="false" includeInLayout="false">
 			    <s:VGroup>
-				<s:Label x="0" y="0" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICO" />
-				<!--
-				<s:Label x="0" y="30" text="TEXTO EXPLICATIVO DE COMO ESTE CAMPO DEVE SER PREENCHIDO LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT.&#xd;MAECENAS EROS LECTUS, ALIQUET ORNARE FERMENTUM SIT AMET, ELEMENTUM A RISUS."/>
-				-->
-				<s:TextArea id="txtHistorico" x="0" y="66" width="924" height="167" skinClass="app.skin.TextArea" text="{paciente.historico}" />
+					<s:Label x="0" y="0" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICO" />
+					<!--
+					<s:Label x="0" y="30" text="TEXTO EXPLICATIVO DE COMO ESTE CAMPO DEVE SER PREENCHIDO LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT.&#xd;MAECENAS EROS LECTUS, ALIQUET ORNARE FERMENTUM SIT AMET, ELEMENTUM A RISUS."/>
+					-->
+					<s:TextArea id="txtHistorico" x="0" y="66" width="924" height="167" skinClass="app.skin.TextArea" text="{paciente.historico}" />
 				</s:VGroup>
 			</s:Group>
-	
+			
+			<s:Group width="100%">
+				<s:Button id="btnSalvar" right="0" y="0" label="SALVAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
+				<s:Label id="lblResposta" x="0" y="0" width="780" height="100" color="#FF0000"/>
+			</s:Group>
 		</s:VGroup>
-	
 	</skin:ScrollerSemBug>
-	
 </s:NavigatorContent>

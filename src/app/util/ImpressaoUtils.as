@@ -102,7 +102,7 @@ package app.util
 					container.addElement( ImpressaoUtils.getTresColunas(at.nome, at.dias, at.horario, textoSize, cor) );
 				}
 				
-				container.addElement( ImpressaoUtils.getUmaColuna( "Observações: ", af.observacao, textoSize, cor) );
+				if( af.observacao != '' ) container.addElement( ImpressaoUtils.getUmaColuna( "Observações: ", af.observacao, textoSize, cor) );
 			}
 		}
 		
@@ -119,25 +119,34 @@ package app.util
 					container.addElement( ImpressaoUtils.getTresColunas( r.nome, r.alimentos, r.quantidades, textoSize, cor ) ) ;
 				}
 				
-				container.addElement( ImpressaoUtils.getUmaColuna( 'QUANTIDADE DE ÁGUA POR DIA', da.qtdeAgua, textoSize, cor ) ) ;
-				container.addElement( ImpressaoUtils.getUmaColuna( 'FUNCIONALIDADE INTESTINAL', da.funcionamentoIntestinal, textoSize, cor ) ) ;
-				container.addElement( ImpressaoUtils.getUmaColuna( 'PREFERÊNCIAS ALIMENTARES', da.preferenciasAlimentares, textoSize, cor ) ) ;
-				container.addElement( ImpressaoUtils.getUmaColuna( 'AVERSÕES ALIMENTARES', da.aversoesAlimentares, textoSize, cor ) ) ;
-				container.addElement( ImpressaoUtils.getUmaColuna( 'OUTRAS INFORMAÇÕES / OBSERVAÇÕES', da.observacoes, textoSize, cor ) ) ;
+				if( da.qtdeAgua 				!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'QUANTIDADE DE ÁGUA POR DIA', da.qtdeAgua, textoSize, cor ) ) ;
+				if( da.funcionamentoIntestinal 	!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'FUNCIONALIDADE INTESTINAL', da.funcionamentoIntestinal, textoSize, cor ) ) ;
+				if( da.preferenciasAlimentares 	!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'PREFERÊNCIAS ALIMENTARES', da.preferenciasAlimentares, textoSize, cor ) ) ;
+				if( da.aversoesAlimentares 		!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'AVERSÕES ALIMENTARES', da.aversoesAlimentares, textoSize, cor ) ) ;
+				if( da.observacoes 				!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'OUTRAS INFORMAÇÕES / OBSERVAÇÕES', da.observacoes, textoSize, cor ) ) ;
 			}
 		}
 		
-		public static function criaExamesBioquimicos( c:Consulta, container:VGroup, removeAll:Boolean = true, textoSize:uint = 10, cor:uint = 0x475766  ):void
+		public static function criaExamesBioquimicos( c:Consulta, container:VGroup, removeAll:Boolean = true, mostrarReferencias:Boolean = true, textoSize:uint = 10, cor:uint = 0x475766  ):void
 		{
 			var eb:ExameBioquimico = c.exameBioquimico ;
 			if( eb ){
 				if( removeAll ) container.removeAllElements();
-				container.addElement( ImpressaoUtils.getTresColunas( 'EXAME', 'REFERÊNCIA', General.getFormattedDate( eb.dataDoExame ), textoSize, cor ) ) ;
+				if( mostrarReferencias ){
+					container.addElement( ImpressaoUtils.getTresColunas( 'EXAME', 'REFERÊNCIA', 'DATA DO EXAME: ' + General.getFormattedDate( eb.dataDoExame ), textoSize, cor ) ) ;
+				} else {
+					container.addElement( ImpressaoUtils.getDuasColunas( 'EXAME', General.getFormattedDate( eb.dataDoExame ), textoSize, cor ) ) ;
+				}
 				
 				for (var i:int = 0; i < eb.exames.length; i++) 
 				{
 					var e:ExameAdicional = eb.exames[i] ;
-					container.addElement( ImpressaoUtils.getTresColunas( e.nome, e.referencia, e.valor, textoSize, cor ) ) ;
+					if( mostrarReferencias ){
+						container.addElement( ImpressaoUtils.getTresColunas( e.nome, e.referencia, e.valor, textoSize, cor ) ) ;
+					} else {
+						container.addElement( ImpressaoUtils.getDuasColunas( e.nome, e.valor, textoSize, cor ) ) ;
+					}
+					
 				}
 			}
 		}

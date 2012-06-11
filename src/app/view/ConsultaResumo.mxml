@@ -122,7 +122,7 @@
 				var a:Antropometria = c.antropometria ;
 				
 				if( a != null ){
-					ImpressaoUtils.criaAntropometria(c, containerDadosAntropometria, true, 14);
+					ImpressaoUtils.criaAntropometria(c, containerDadosAntropometria, true, 12);
 					
 					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
 						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
@@ -154,7 +154,7 @@
 			{
 				var eb:ExameBioquimico = c.exameBioquimico ;
 				if( eb ){
-					ImpressaoUtils.criaExamesBioquimicos(c, containerDadosExames, true, 14);
+					ImpressaoUtils.criaExamesBioquimicos(c, containerDadosExames, true, false, 12);
 				}
 			}
 			

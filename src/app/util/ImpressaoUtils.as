@@ -21,6 +21,13 @@ package app.util
 
 	public class ImpressaoUtils
 	{
+		public static const ANTROPOMETRIA:String 		= 'imprimirAntropometria';
+		public static const MAN:String 					= 'imprimirMAN';
+		public static const DADOS_ALIMENTARES:String 	= 'imprimirDadosAlimentares';
+		public static const ATIVIDADES_FISICAS:String 	= 'imprimirAtivida';
+		public static const EXAMES_BIOQUIMICOS:String 	= 'imprimirExamesBioquimicos';
+		public static const OBSERVACOES:String 			= 'imprimirObservacoes';
+		
 		public static function criaAntropometria( c:Consulta, container:VGroup, removeAll:Boolean = true, textoSize:uint = 10, cor:uint = 0x475766, legendaAdd:Boolean = true, legendaCor:uint = 0xbbbbbb, legendaSize:uint = 9 ):void
 		{
 			if( c.antropometria ){
@@ -153,7 +160,7 @@ package app.util
 		
 		public static function criaMAN( c:Consulta, container:VGroup, removeAll:Boolean = true, textoSize:uint = 10, cor:uint = 0x475766 ):void
 		{
-			var man:MAN = c.man ;
+			var man:app.model.MAN = c.man ;
 			if( man ){
 				if( removeAll ) container.removeAllElements();
 				
@@ -192,6 +199,8 @@ package app.util
 		public static function criaTMB( c:Consulta, container:VGroup, removeAll:Boolean = true, textoSize:uint = 10, cor:uint = 0x475766  ):void
 		{
 			var r:ResumoConsulta = c.resumo ;
+			if( removeAll ) container.removeAllElements();
+			
 			if( r ){
 				container.addElement( ImpressaoUtils.getDuasColunas( 'Metabolismo Basal:', r.metabolismoBasal.toFixed(2) + " kcal/dia", textoSize, cor));
 				if( r.necessidadeEnergetica ){
@@ -219,6 +228,16 @@ package app.util
 			return vg;
 		}
 		
+		public static function getUmaLinha( v1:String, isBold:Boolean = false, tamanho:uint = 10, cor:uint = 0x475766, addRule:Boolean = true ):Group
+		{
+			var vg:VGroup = new VGroup();
+			vg.percentWidth = 100 ;
+			vg.addElement( ImpressaoUtils.getLabel( v1, 100, true, isBold, 'left', tamanho, cor ) );
+			if( addRule ) vg.addElement( ImpressaoUtils.getRule() );
+			
+			return vg;
+		}
+		
 		public static function getDuasColunas( v1:String, v2:String, tamanho:uint = 10, cor:uint = 0x475766, addRule:Boolean = true ):Group
 		{
 			var hg:HGroup = new HGroup();
@@ -229,6 +248,7 @@ package app.util
 			
 			var vg:VGroup = new VGroup();
 			vg.percentWidth = 100 ;
+			vg.gap = 2 ;
 			vg.addElement(hg);
 			if( addRule )vg.addElement( ImpressaoUtils.getRule() );
 			
@@ -246,6 +266,7 @@ package app.util
 			
 			var vg:VGroup = new VGroup();
 			vg.percentWidth = 100 ;
+			vg.gap = 2 ;
 			vg.addElement(hg);
 			if( addRule ) vg.addElement( ImpressaoUtils.getRule() );
 			

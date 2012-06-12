@@ -45,8 +45,6 @@ package app.model
 					var mest:Date = paciente.dataUltimaMenstruacao ;
 					var diferenca:Number = hoje.time - mest.time ;
 					
-					trace( hoje, mest, diferenca );
-					
 					if (diferenca> 0)
 					{
 						var seconds:Number = diferenca / 1000;
@@ -57,8 +55,6 @@ package app.model
 					}
 				}
 			}
-			
-			trace("Consulta.setSemanaGestacional()", semanaGestacional);
 		}
 		
 		public function setResumo():void

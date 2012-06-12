@@ -3,7 +3,7 @@
 		  xmlns:s="library://ns.adobe.com/flex/spark"
 		  xmlns:mx="library://ns.adobe.com/flex/mx"
 		  xmlns:skin="app.skin.*"
-		  width="1000" height="700" creationComplete="init()"
+		  width="1020" height="700" creationComplete="init()"
 		  showStatusBar="false" title="IMPRESSÃO DE CONSULTA" xmlns:view="app.view.*">
 	
 	<!--
@@ -13,11 +13,8 @@
 	<fx:Script>
 		<![CDATA[
 			import app.model.Antropometria;
-			import app.model.AtividadeFisica;
 			import app.model.Consulta;
 			import app.model.DB;
-			import app.model.DadosAlimentares;
-			import app.model.ExameBioquimico;
 			import app.model.Paciente;
 			import app.model.ResumoConsulta;
 			import app.util.General;
@@ -25,13 +22,21 @@
 			import app.util.ImpressaoUtils;
 			
 			import mx.collections.ArrayCollection;
+			import mx.events.FlexEvent;
 			import mx.printing.FlexPrintJob;
 			import mx.printing.FlexPrintJobScaleType;
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			
+			import org.casalib.util.ArrayUtil;
+			
+			public var impressos:Array = [];
+			
 			private var consultas:ArrayCollection;
-			private var paginas:Array = [ pagina1 ];
+			private var paginas:Array = [];
+			private var conteudos:Array = [];
+
+			private var currentConsulta:app.model.Consulta;
 			
 			private function init():void
 			{
@@ -52,6 +57,8 @@
 				consultas = DB.em.fetchCriteria(c);
 				var consulta:app.model.Consulta = General.consultaAtual ;
 				
+				paginas.push( pagina1 );
+				
 				var pagina2:Group = criaPagina();
 				var pagina3:Group = criaPagina();
 				paginas.push( pagina2 );
@@ -60,8 +67,8 @@
 				if( consulta ){
 					if( consulta.recomendacoes != '' ) txtRecomendacoes.text = consulta.recomendacoes ;
 					
-					buidlAll(consulta);
 					verificaResumo(consulta);
+					buidlAll(consulta);
 				}
 			}
 			
@@ -85,7 +92,7 @@
 				var a:Antropometria = c.antropometria ;
 				if( a != null ){
 					
-					ImpressaoUtils.criaAntropometria(c, container, true, 12);
+					ImpressaoUtils.criaAntropometria(c, container, true, 14);
 					
 					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
 						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
@@ -115,20 +122,31 @@
 			
 			private function buidlAll(c:app.model.Consulta):void
 			{
-				var p1:Group = paginas[1] ;
-				var c1:HGroup = p1.getChildByName('colunas') as HGroup;
-				var d1:VGroup = c1.getChildByName('colunaDireita') as VGroup;
-				var e1:VGroup = c1.getChildByName('colunaEsquerda') as VGroup;
+				currentConsulta = c;
 				
-				var p2:Group = paginas[1] ;
-				var c2:HGroup = p2.getChildByName('colunas') as HGroup;
-				var d2:VGroup = c2.getChildByName('colunaDireita') as VGroup;
-				var e2:VGroup = c2.getChildByName('colunaEsquerda') as VGroup;
+				var cs:Array = getContainers();
+				
+				var d1:VGroup = cs[0];
+				var e1:VGroup = cs[1];
+				var d2:VGroup = cs[2];
+				var e2:VGroup = cs[3];
 				
 				buildAntropometria(	c, d1 );
-				ImpressaoUtils.criaExamesBioquimicos(	c, e1, true, false, 12);
-				ImpressaoUtils.criaDadosAlimentares(	c, d2, true, 		12);
-				ImpressaoUtils.criaAtividadesFisicas(	c, e2, true, 		12);
+				d1.addElementAt( criaTitulo('antropometria'), 0 );
+				
+				ImpressaoUtils.criaExamesBioquimicos(	c, e1, true, false, 14);
+				e1.addElementAt( criaTitulo('exames bioquímicos'), 0 );
+				
+				ImpressaoUtils.criaDadosAlimentares(	c, d2, true, 		14);
+				d2.addElementAt( criaTitulo('dados alimentares'), 0 );
+				
+				ImpressaoUtils.criaAtividadesFisicas(	c, e2, true, 		14);
+				e2.addElementAt( criaTitulo('atividades físicas'), 0 );
+				
+				d1.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreation);
+				d2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreation);
+				e1.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreation);
+				e2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreation);
 			}
 			
 			private function criaTitulo(titulo:String):Label
@@ -158,7 +176,9 @@
 				var colunas:HGroup = new HGroup();
 				colunas.percentWidth = 100 ;
 				colunas.y = 180 ;
-				colunas.gap = 20 ;
+				colunas.gap = 50 ;
+				colunas.paddingLeft = 10 ;
+				colunas.paddingRight = 10 ;
 				colunas.name = 'colunas' ;
 				
 				var colunaDireita:VGroup 	= new VGroup();
@@ -178,6 +198,21 @@
 				return g;
 			}
 			
+			private function getContainers():Array
+			{
+				var p1:Group = paginas[1] ;
+				var c1:HGroup = p1.getChildByName('colunas') as HGroup;
+				var d1:VGroup = c1.getChildByName('colunaDireita') as VGroup;
+				var e1:VGroup = c1.getChildByName('colunaEsquerda') as VGroup;
+				
+				var p2:Group = paginas[2] ;
+				var c2:HGroup = p2.getChildByName('colunas') as HGroup;
+				var d2:VGroup = c2.getChildByName('colunaDireita') as VGroup;
+				var e2:VGroup = c2.getChildByName('colunaEsquerda') as VGroup;
+				
+				return [ d1, e1, d2, e2 ];
+			}
+			
 			private function onImprimir(e:MouseEvent):void
 			{
 				btnImprimir.visible = false ;
@@ -187,13 +222,98 @@
 				
 				for (var i:int = 0; i < paginas.length; i++) 
 				{
-					pj.addObject( paginas[i], FlexPrintJobScaleType.MATCH_HEIGHT );
+					if( paginas[i].visible ) pj.addObject( paginas[i], FlexPrintJobScaleType.MATCH_HEIGHT );
 				}
 				
 				pj.send();
 				
 				btnImprimir.visible = true ;
 				this.close();
+			}
+			
+			private function onContainerCreation(e:FlexEvent):void
+			{
+				if ( ! ArrayUtil.contains( conteudos, e.currentTarget ) > 0 ) 
+				{
+					conteudos.push(e.currentTarget);
+					if( conteudos.length == 4 ){
+						var visiveis:Array = [];
+						var verObservacao:Boolean = false ;
+						
+						for (var i:int = 0; i < impressos.length; i++) 
+						{
+							if( impressos[i] == ImpressaoUtils.ANTROPOMETRIA ) 		visiveis.push(0);
+							if( impressos[i] == ImpressaoUtils.EXAMES_BIOQUIMICOS ) visiveis.push(1);
+							if( impressos[i] == ImpressaoUtils.DADOS_ALIMENTARES ) 	visiveis.push(2);
+							if( impressos[i] == ImpressaoUtils.ATIVIDADES_FISICAS ) visiveis.push(3);
+							if( impressos[i] == ImpressaoUtils.OBSERVACOES ) 		verObservacao = true ;
+						}
+						
+						var cs:Array = getContainers();
+						var p1:Group = paginas[1] as Group ;
+						var p2:Group = paginas[2] as Group ;
+						var d1:VGroup = cs[0];
+						var e1:VGroup = cs[1];
+						var d2:VGroup = cs[2];
+						var e2:VGroup = cs[3];
+						var hd:Number = 0;
+						var he:Number = 0;
+						var margem:Number = 50 ;
+						var cols:HGroup = p1.getChildByName('colunas') as HGroup;
+						
+						p1.visible = p1.includeInLayout = visiveis.length > 0 ;
+						p2.visible = p2.includeInLayout = visiveis.length > 2 ;
+						
+						if( visiveis.length <= 2 && visiveis.length > 0 ){
+							cols.removeAllElements();
+							
+							for (var j:int = 0; j < visiveis.length; j++) 
+							{
+								cols.addElement( cs[ visiveis[j] ] );
+							}
+							
+						} else if( visiveis.length == 3 ){
+							
+							var vs:Array = [];
+							var combinacoes:Array = [ [0,1], [0,2], [1,2] ];
+							
+							for (var j:int = 0; j < visiveis.length; j++) 
+							{
+								vs.push( cs[ visiveis[j] ] );
+							}
+							
+							for (var k:int = 0; k < vs.length; k++) 
+							{
+								var c1:VGroup = vs[ combinacoes[k][0] ];
+								var c2:VGroup = vs[ combinacoes[k][1] ];
+								var hc:Number = c1.height + c2.height + margem ;
+								
+								if( hc <= 1000 ){
+									c2.paddingTop = margem ;
+									c1.addElement(c2);
+									
+									p2.visible = p2.includeInLayout = false ;
+									break ;
+								}
+							}
+							
+						} else if( visiveis.length == 4 ){
+							hd = d1.height + d2.height + margem ;
+							he = e1.height + e2.height + margem ;
+							
+							if( hd <= 1000 ){
+								d2.paddingTop = margem ;
+								d1.addElement(d2);
+							}
+							if( he <= 1000 ){
+								e2.paddingTop = margem ;
+								e1.addElement(e2);
+							}
+							
+							p2.visible = p2.includeInLayout = hd > 1000 || he > 1000 ;
+						}
+					}
+				}
 			}
 		]]>
 	</fx:Script>
@@ -266,7 +386,7 @@
 					</s:HGroup>
 					
 					<s:VGroup id="gpDietas" width="100%" paddingLeft="10" paddingRight="10" gap="10">
-						<s:Label width="100%" height="25" fontSize="18" styleName="bold" text="ORIENTAÇÕES DE DIETAS" />
+						<s:Label id="txtTitRecomendacoes" width="100%" height="25" fontSize="18" styleName="bold" text="ORIENTAÇÕES DE DIETAS" />
 						<s:Label id="txtRecomendacoes" width="100%" fontSize="16" text="" />
 					</s:VGroup>
 				</s:VGroup>

@@ -171,10 +171,17 @@
 			{
 				if( txtRecomendacoes.text != '' ){
 					General.consultaAtual.recomendacoes = txtRecomendacoes.text ;
-					General.salvaConsulta();
+					General.salvaConsulta( null, false );
 				}
 				
+				var impressos:Array = [];
+				if( chAntropometria.selected ) 		impressos.push( ImpressaoUtils.ANTROPOMETRIA );
+				if( chExames.selected ) 			impressos.push( ImpressaoUtils.EXAMES_BIOQUIMICOS );
+				if( chAlimentos.selected ) 			impressos.push( ImpressaoUtils.DADOS_ALIMENTARES );
+				if( chAtividades.selected ) 		impressos.push( ImpressaoUtils.ATIVIDADES_FISICAS );
+				
 				var cr:ConsultaResumo = new ConsultaResumo();
+				cr.impressos = impressos ;
 				cr.open();
 			}
 			
@@ -200,6 +207,8 @@
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer id="scAntropometria" width="974" backgroundColor="#F6F9FE">
+					<s:CheckBox y="10" right="10" id="chAntropometria" label="Adicionar a impressão" selected="true"/>
+					
 					<s:VGroup id="vgAntropometria" width="974" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 						<s:Label text="ANTROPOMETRIA" fontSize="20" styleName="bold" />
 					</s:VGroup>
@@ -212,18 +221,24 @@
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer id="scAlimentos" width="974" backgroundColor="#F6F9FE">
+					<s:CheckBox y="10" right="10" id="chAlimentos" label="Adicionar a impressão" selected="true"/>
+					
 					<s:VGroup id="vgAlimentos" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
 						<s:Label text="HÁBITOS ALIMENTARES" fontSize="20" styleName="bold" />
 					</s:VGroup>
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer id="scAtividades" width="974" backgroundColor="#FCFDFF">
+					<s:CheckBox y="10" right="10" id="chAtividades" label="Adicionar a impressão" selected="true"/>
+					
 					<s:VGroup id="vgAtividades" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
 						<s:Label text="ATIVIDADES FÍSICAS" fontSize="20" styleName="bold"/>
 					</s:VGroup>
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer id="scExames" width="974" backgroundColor="#F6F9FE">
+					<s:CheckBox y="10" right="10" id="chExames" label="Adicionar a impressão" selected="true"/>
+					
 					<s:VGroup id="vgExames" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
 						<s:Label text="EXAMES BIOQUÍMICOS" fontSize="20" styleName="bold"/>
 					</s:VGroup>

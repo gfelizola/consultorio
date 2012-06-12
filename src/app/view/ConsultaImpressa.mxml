@@ -120,7 +120,7 @@
 			
 			private function verificaExames(c:app.model.Consulta):void
 			{
-				ImpressaoUtils.criaExamesBioquimicos(c, containerExames);
+				ImpressaoUtils.criaExamesBioquimicos(c, containerExames, true, false);
 			}
 			
 			private function verificaMAN(c:app.model.Consulta):void

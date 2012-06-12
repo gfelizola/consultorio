@@ -47,23 +47,24 @@ package app.util
 			
 		}
 		
-		public static function salvaConsulta( callback:Function = null ):Boolean
+		public static function salvaConsulta( callback:Function = null, showSaveAlert:Boolean = true ):Boolean
 		{
 			if( consultaAtual != null ){
+				consultaAtual.paciente = pacienteAtual ;
+				
 				if( ! consultaAtual.dataConsulta )
 				{
 					consultaAtual.dataConsulta = new Date();
 					pacienteAtual.dataUltimaConsulta = new Date();
+					DB.em.save(pacienteAtual);
 				}
 				
-				consultaAtual.paciente = pacienteAtual ;
-				consultaAtual.setResumo();
+				if( ! consultaAtual.resumo ) consultaAtual.setResumo();
 				
 				DB.em.save(consultaAtual);
-				DB.em.save(pacienteAtual);
 				
 				consultaSalva = true ;
-				 Alert.show("Consulta salva com dados atuais");
+				if( showSaveAlert ) Alert.show("Consulta salva com dados atuais");
 				
 				return true ;
 			}

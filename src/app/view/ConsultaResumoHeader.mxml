@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="init()">
+	<fx:Script>
+		<![CDATA[
+			import app.model.Usuario;
+			import app.util.General;
+			
+			import mx.events.FlexEvent;
+			
+			private function init():void
+			{
+				var u:Usuario = General.usuario ;
+				
+				if( u.logo != "" ) {
+					var logo:File = File.applicationStorageDirectory.resolvePath("images/" + u.logo );
+					if( logo.exists ) imgLogo.source = logo.url ;
+				}
+				
+				var usuarioNome:String = 'Dr' ;
+				if( u.sexo == 'F' ) usuarioNome += 'a' ;
+				usuarioNome += '. ' + u.nome + ' ' + u.sobrenome ;
+				
+				txtData.text = General.getFormattedDate( new Date() );
+				txtCRN.text = "CRN-" + u.regional + ": " + u.CRN
+				txtDoutor.text = usuarioNome ;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Group id="gpHeader" width="100%">
+		<s:VGroup width="100%" paddingLeft="10" paddingTop="10" paddingRight="10" paddingBottom="10" gap="10">
+			<s:Image id="imgLogo" x="0" y="0" width="980" height="100" scaleMode="letterbox" horizontalAlign="left" />
+			<s:HGroup width="100%" gap="0">
+				<s:Label id="txtData" right="0" y="43" width="200" fontSize="30" styleName="light" text="10/05/2012" textAlign="left"/>
+				<s:Label id="txtDoutor" right="0" y="77" width="530" height="30" fontSize="30" text="Dr. Helmer" textAlign="center"/>
+				<s:Label id="txtCRN" right="159" width="250" height="30"
+						 fontSize="30" text="CRN-3: 4096" textAlign="right" styleName="light"/>
+			</s:HGroup>
+			<mx:HRule width="100%" />
+		</s:VGroup>
+	</s:Group>
+</s:NavigatorContent>

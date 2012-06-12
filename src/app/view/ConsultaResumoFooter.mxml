@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx"
+					creationComplete="init()">
+	<fx:Script>
+		<![CDATA[
+			import app.model.Usuario;
+			import app.model.UsuarioRedeSocial;
+			import app.util.General;
+			
+			import mx.events.FlexEvent;
+			
+			private function init():void
+			{
+				var u:Usuario = General.usuario ;
+				
+				var endereco:String = u.endereco + ' - ' ;
+				if( u.complemento != '' ) endereco += u.complemento + ' - ' ;
+				endereco += u.cidade + ', ' + u.estado ;
+				if( u.telefone ) endereco += ' | Tel.: ' + u.telefone ;
+				endereco += '\nE-mail: ' + u.email ;
+				if( u.redesSociais ){
+					if( u.redesSociais.length > 0 ){
+						endereco += ' | ' ;
+						for (var j:int = 0; j < u.redesSociais.length; j++) 
+						{
+							var usr:UsuarioRedeSocial = u.redesSociais[j] ;
+							endereco += usr.rede.nome + ': ' + usr.endereco + ' | ' ;
+						}
+						endereco = endereco.substr( 0, endereco.length - 3 );
+					}
+				}
+				if( u.site != '' ) endereco += '\nSite: ' + u.site ;
+				
+				txtEndereco.text = endereco ;
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:VGroup id="gpFooter" width="100%" gap="5" bottom="20" paddingLeft="10" paddingRight="10">
+		<mx:HRule width="100%" />
+		<s:Label id="txtEndereco" width="100%" fontSize="12" styleName="light" color="#999999" textAlign="center" text="" />
+	</s:VGroup>
+</s:NavigatorContent>

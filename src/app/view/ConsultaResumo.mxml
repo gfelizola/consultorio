@@ -13,71 +13,31 @@
 	<fx:Script>
 		<![CDATA[
 			import app.model.Antropometria;
+			import app.model.AtividadeFisica;
 			import app.model.Consulta;
 			import app.model.DB;
-			import app.model.ExameAdicional;
+			import app.model.DadosAlimentares;
 			import app.model.ExameBioquimico;
-			import app.model.MAN;
 			import app.model.Paciente;
 			import app.model.ResumoConsulta;
-			import app.model.Usuario;
-			import app.model.UsuarioRedeSocial;
 			import app.util.General;
 			import app.util.Helpers;
 			import app.util.ImpressaoUtils;
 			
 			import mx.collections.ArrayCollection;
-			import mx.events.FlexEvent;
 			import mx.printing.FlexPrintJob;
 			import mx.printing.FlexPrintJobScaleType;
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
-			import nz.co.codec.flexorm.criteria.Sort;
 			
 			private var consultas:ArrayCollection;
-			
-			[Bindable]
-			private var man:MAN;
+			private var paginas:Array = [ pagina1 ];
 			
 			private function init():void
 			{
-				var u:Usuario = General.usuario ;
-				
-				if( u.logo != "" ) {
-					var logo:File = File.applicationStorageDirectory.resolvePath("images/" + u.logo );
-					if( logo.exists ) imgLogo.source = logo.url ;
-				}
-				
-				var usuarioNome:String = 'Dr' ;
-				if( u.sexo == 'F' ) usuarioNome += 'a' ;
-				usuarioNome += '. ' + u.nome + ' ' + u.sobrenome ;
-				
-				txtData.text = General.getFormattedDate( new Date() );
-				txtCRN.text = "CRN-" + u.regional + ": " + u.CRN
-				txtDoutor.text = usuarioNome ;
-				
-				var endereco:String = u.endereco + ' - ' ;
-				if( u.complemento != '' ) endereco += u.complemento + ' - ' ;
-				endereco += u.cidade + ', ' + u.estado ;
-				if( u.telefone ) endereco += ' | Tel.: ' + u.telefone ;
-				endereco += '\nE-mail: ' + u.email ;
-				if( u.redesSociais ){
-					if( u.redesSociais.length > 0 ){
-						endereco += ' | ' ;
-						for (var j:int = 0; j < u.redesSociais.length; j++) 
-						{
-							var usr:UsuarioRedeSocial = u.redesSociais[j] ;
-							endereco += usr.rede.nome + ': ' + usr.endereco + ' | ' ;
-						}
-						endereco = endereco.substr( 0, endereco.length - 3 );
-					}
-				}
-				if( u.site != '' ) endereco += '\nSite: ' + u.site ;
-				
-				txtEndereco.text = endereco ;
-				
 				var p:Paciente = General.pacienteAtual ;
 				var idade:Number = Helpers.idade(p.dataNascimento);
+				var endereco:String = '';
 				
 				txtNomePaciente.text = p.nomeCompleto ;
 				endereco = p.endereco + ' - ' ;
@@ -92,13 +52,16 @@
 				consultas = DB.em.fetchCriteria(c);
 				var consulta:app.model.Consulta = General.consultaAtual ;
 				
+				var pagina2:Group = criaPagina();
+				var pagina3:Group = criaPagina();
+				paginas.push( pagina2 );
+				paginas.push( pagina3 );
+				
 				if( consulta ){
-					
 					if( consulta.recomendacoes != '' ) txtRecomendacoes.text = consulta.recomendacoes ;
 					
+					buidlAll(consulta);
 					verificaResumo(consulta);
-					verificaAntropometria(consulta);
-					verificaExames(consulta);
 				}
 			}
 			
@@ -117,12 +80,12 @@
 				}
 			}
 			
-			private function verificaAntropometria(c:app.model.Consulta):void
+			private function buildAntropometria(c:app.model.Consulta, container:VGroup):void
 			{
 				var a:Antropometria = c.antropometria ;
-				
 				if( a != null ){
-					ImpressaoUtils.criaAntropometria(c, containerDadosAntropometria, true, 12);
+					
+					ImpressaoUtils.criaAntropometria(c, container, true, 12);
 					
 					if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
 						if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
@@ -150,12 +113,69 @@
 				}
 			}
 			
-			private function verificaExames(c:app.model.Consulta):void
+			private function buidlAll(c:app.model.Consulta):void
 			{
-				var eb:ExameBioquimico = c.exameBioquimico ;
-				if( eb ){
-					ImpressaoUtils.criaExamesBioquimicos(c, containerDadosExames, true, false, 12);
-				}
+				var p1:Group = paginas[1] ;
+				var c1:HGroup = p1.getChildByName('colunas') as HGroup;
+				var d1:VGroup = c1.getChildByName('colunaDireita') as VGroup;
+				var e1:VGroup = c1.getChildByName('colunaEsquerda') as VGroup;
+				
+				var p2:Group = paginas[1] ;
+				var c2:HGroup = p2.getChildByName('colunas') as HGroup;
+				var d2:VGroup = c2.getChildByName('colunaDireita') as VGroup;
+				var e2:VGroup = c2.getChildByName('colunaEsquerda') as VGroup;
+				
+				buildAntropometria(	c, d1 );
+				ImpressaoUtils.criaExamesBioquimicos(	c, e1, true, false, 12);
+				ImpressaoUtils.criaDadosAlimentares(	c, d2, true, 		12);
+				ImpressaoUtils.criaAtividadesFisicas(	c, e2, true, 		12);
+			}
+			
+			private function criaTitulo(titulo:String):Label
+			{
+				var l:Label = new Label();
+				l.styleName = 'bold' ;
+				l.text = titulo.toUpperCase() ;
+				l.setStyle('fontSize', 20);
+				return l
+			}
+			
+			private function criaPagina():Group
+			{
+				var g:Group = new Group();
+				g.width = 1000 ;
+				g.height = 1414 ;
+				
+				var header:ConsultaResumoHeader = new ConsultaResumoHeader();
+				header.percentWidth = 100 ;
+				g.addElementAt(header, 0);
+				
+				var footer:ConsultaResumoFooter = new ConsultaResumoFooter();
+				footer.bottom = 30;
+				footer.percentWidth = 100 ;
+				g.addElementAt(footer, 0);
+				
+				var colunas:HGroup = new HGroup();
+				colunas.percentWidth = 100 ;
+				colunas.y = 180 ;
+				colunas.gap = 20 ;
+				colunas.name = 'colunas' ;
+				
+				var colunaDireita:VGroup 	= new VGroup();
+				var colunaEsquerda:VGroup 	= new VGroup();
+				
+				colunaDireita.name 			= 'colunaDireita' ;
+				colunaEsquerda.name 		= 'colunaEsquerda' ;
+				
+				colunaDireita.percentWidth 	= colunaEsquerda.percentWidth 	= 100 ;
+				colunaDireita.maxHeight 	= colunaEsquerda.maxHeight 		= 1000 ;
+				
+				colunas.addElement(colunaDireita);
+				colunas.addElement(colunaEsquerda);
+				g.addElement(colunas);
+				scrolado.addElement(g);
+				
+				return g;
 			}
 			
 			private function onImprimir(e:MouseEvent):void
@@ -165,7 +185,11 @@
 				var pj:FlexPrintJob = new FlexPrintJob();
 				pj.start();
 				
-				pj.addObject( containerFull, FlexPrintJobScaleType.MATCH_WIDTH );
+				for (var i:int = 0; i < paginas.length; i++) 
+				{
+					pj.addObject( paginas[i], FlexPrintJobScaleType.MATCH_HEIGHT );
+				}
+				
 				pj.send();
 				
 				btnImprimir.visible = true ;
@@ -178,21 +202,10 @@
 	</fx:Declarations>
 	
 	<s:Scroller width="100%" height="100%">
-		<s:Group id="scrolado" width="100%" height="100%" clipAndEnableScrolling="true">
-			<s:Group id="containerFull" width="1000" height="1414">
+		<s:VGroup id="scrolado" width="100%" height="100%" clipAndEnableScrolling="true">
+			<s:Group id="pagina1" width="1000" height="1414">
 				<s:VGroup width="100%" paddingLeft="0" paddingTop="0" paddingRight="0" paddingBottom="0" gap="10">
-					<s:Group id="gpHeader" width="100%">
-						<s:VGroup width="100%" paddingLeft="10" paddingTop="10" paddingRight="10" paddingBottom="10" gap="10">
-							<s:Image id="imgLogo" x="0" y="0" width="980" height="100" scaleMode="letterbox" horizontalAlign="left" />
-							<s:HGroup width="100%" gap="0">
-								<s:Label id="txtData" right="0" y="43" width="200" fontSize="30" styleName="light" text="10/05/2012" textAlign="left"/>
-								<s:Label id="txtDoutor" right="0" y="77" width="530" height="30" fontSize="30" text="Dr. Helmer" textAlign="center"/>
-								<s:Label id="txtCRN" right="159" width="250" height="30"
-										 fontSize="30" text="CRN-3: 4096" textAlign="right" styleName="light"/>
-							</s:HGroup>
-							<mx:HRule width="100%" />
-						</s:VGroup>
-					</s:Group>
+					<view:ConsultaResumoHeader width="100%" />
 					
 					<s:Group id="gpDadosPaciente">
 						<s:Label id="txtNomePaciente" x="0" y="0" width="980" height="40" fontSize="30"
@@ -221,17 +234,6 @@
 					<s:Group id="gpGraficos" width="100%">
 						<view:Graficos x="140"/>
 					</s:Group>
-					
-					<s:HGroup id="gpListas" width="100%" gap="0" paddingLeft="40" paddingRight="40">
-						<s:Group width="50%">
-							<s:Label x="0" y="0" width="90%" height="25" fontSize="20" styleName="bold" text="CIRCUNFERÊNCIAS E DOBRAS" textAlign="center"/>
-							<s:VGroup id="containerDadosAntropometria" x="0" y="25" width="90%" gap="10" />
-						</s:Group>
-						<s:Group width="50%">
-							<s:Label right="0" y="0" width="90%" height="25" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" textAlign="center"/>
-							<s:VGroup id="containerDadosExames" right="0" y="25" width="90%" gap="10" />
-						</s:Group>
-					</s:HGroup>
 					
 					<s:HGroup id="gpFinais" width="100%" gap="10" paddingLeft="20" paddingRight="20">
 						<s:VGroup id="gpIMC" width="33%" gap="5">
@@ -269,12 +271,9 @@
 					</s:VGroup>
 				</s:VGroup>
 				
-				<s:VGroup id="gpRodape" width="100%" gap="5" bottom="20" paddingLeft="10" paddingRight="10">
-					<mx:HRule width="100%" />
-					<s:Label id="txtEndereco" width="100%" fontSize="12" styleName="light" color="#999999" textAlign="center" text="" />
-				</s:VGroup>
+				<view:ConsultaResumoFooter width="100%" bottom="30" />
 			</s:Group>
-		</s:Group>
+		</s:VGroup>
 	</s:Scroller>
 	
 	<s:Button id="btnImprimir" top="10" right="30" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)" />

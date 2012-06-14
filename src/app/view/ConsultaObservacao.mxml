@@ -63,17 +63,18 @@
 		]]>
 	</fx:Script>
 	
-	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
-		<s:Group width="984" height="390">
-			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="OBSERVAÇÃO"/>
-			<s:Label x="10" y="48" width="850" text="Este é um campo livre para registro de quaisquer informações que considera importante para o acompanhamento nutricional do paciente e que não estejam elencadas em outros campos do aplicativo."/>
-			<s:TextArea id="txtObservacao" x="10" y="110" skinClass="app.skin.TextArea" width="481" height="170" text=""/>
-			
-			<s:HGroup x="10" y="300" gap="10">
-				<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
-				<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
-			</s:HGroup>
-			
+	<skin:ScrollerSemBug id="scroller" top="10" bottom="10" left="0" right="0">
+		<s:Group width="100%" height="100%">
+			<s:VGroup left="10" width="480" gap="10">
+				<s:Label color="#83BBEA" fontSize="20" styleName="bold" text="OUTRAS INFORMAÇÕES IMPORTANTES"/>
+				<s:Label width="481" text="Este é um campo livre para registro de quaisquer informações que considera importante para o acompanhamento nutricional do paciente e que não estejam elencadas em outros campos do aplicativo. &#xd;Ex: inclua aqui dados da História do paciente, da anamnese, o registro de conduta ou qualquer outra informação que julgue importante"/>
+				<s:TextArea id="txtObservacao" skinClass="app.skin.TextArea" width="480" height="170" text=""/>
+				
+				<s:HGroup gap="20">
+					<s:Button id="btnSalvar" width="230" label="SALVAR E VISUALIZAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
+					<s:Button id="btnFinalizar" width="230" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
+				</s:HGroup>
+			</s:VGroup>
 			<view:ConsultaImpressa id="impressao" etapa="5" x="516" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
 	</skin:ScrollerSemBug>	

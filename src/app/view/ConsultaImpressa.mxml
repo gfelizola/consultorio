@@ -63,8 +63,8 @@
 				
 				usuarioDesc = 'CRN: ' + usuario.CRN + ' - REGIONAL: ' + usuario.regional +
 					'\n' + usuario.endereco.toUpperCase() + ' - ' + usuario.complemento.toUpperCase() + ', ' + usuario.cidade.toUpperCase() + ' - ' +  usuario.estado.toUpperCase() + '\n' +
-					'TEL: ' + usuario.telefone + ' - E-MAIL: ' + usuario.email.toUpperCase() + '\n' +
-					'SITE: ' + usuario.site.toUpperCase() ;
+					'TEL: ' + usuario.telefone + ' - E-MAIL: ' + usuario.email + '\n' +
+					'SITE: ' + usuario.site ;
 				
 				titulos = ['ANTROPOMETRIA', 'ATIVIDADES FÍSICAS', 'DADOS ALIMENTARES', 'EXAMES BIOQUÍMICOS', 'MAN - MINI AVALIAÇÃO NUTRICIONAL', 'OBSERVAÇÃO'];
 				
@@ -143,7 +143,7 @@
 				var pj:FlexPrintJob = new FlexPrintJob();
 				pj.start();
 				
-				pj.addObject( scImpressao, FlexPrintJobScaleType.SHOW_ALL );
+				pj.addObject( scImpressao, FlexPrintJobScaleType.MATCH_HEIGHT );
 				pj.send();
 				
 				btnImprimir.visible = true ;
@@ -160,103 +160,102 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<s:SkinnableContainer id="scImpressao" x="0" y="0" width="460" height="650" backgroundColor="#F6FAFE">
-		<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
-		<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
-		
-		<s:Label id="impTitulo" x="10" y="70" color="#83BBEA" fontSize="19" styleName="bold" text="{currTitulo}"/>
-		<s:Label id="impData" right="10" y="70" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
-		
-		<s:Label x="10" y="100" styleName="bold" text="NOME:"/>
-		<s:Label id="impNomePaciente" x="53" y="103" width="156" styleName="light" text="Aline Maciel"/>
-		
-		<s:Label x="217" y="100" styleName="bold" text="IDADE:"/>
-		<s:Label id="impIdadePaciente" x="263" y="103" width="56" styleName="light" text="120 anos"/>
-		
-		<s:HGroup right="10" y="100">
-			<s:Label styleName="bold" text="SEXO:"/>
-			<s:Label id="impSexoPaciente" styleName="light"
-					 text="MASCULINO" textAlign="right" paddingTop="3" />
-		</s:HGroup>
-		
-		<mx:ViewStack id="conteudos" x="0" y="134" width="460" height="573" selectedIndex="{etapa}">
-			<s:NavigatorContent id="antropometria">
-				<s:VGroup id="containerDadosAntropometria" width="440" x="10" y="0" gap="10" />
-			</s:NavigatorContent>
-			
-			<s:NavigatorContent id="atividadeFisica">
-				<s:VGroup gap="20" x="10">
-					<s:VGroup id="containerAtividades" width="440" gap="10" />
-				</s:VGroup>
-			</s:NavigatorContent>
-			
-			<s:NavigatorContent id="dadosAlimentares">
-				<s:VGroup id="containerRefeicoes" width="440" gap="10" x="10">
-					<s:Label styleName="bold" text="RECORDATÓRIO ALIMENTAR HABITUAL" />
-				</s:VGroup>
-			</s:NavigatorContent>
-			
-			<s:NavigatorContent id="examesBioquimicos">
-				<s:VGroup id="containerExames" width="440" gap="10" x="10">
-				</s:VGroup>
-			</s:NavigatorContent>
-			
-			<s:NavigatorContent id="man">
-				<s:VGroup id="containerMAN" width="440" x="10" gap="10">
-					<s:VGroup>
-						<s:HGroup>
-							<s:Label fontSize="10" text="Pontos da triagem"/>
-							<s:Label fontSize="9" text="(subtotal máximo de 14 pontos)"/>
-						</s:HGroup>
-						<mx:HRule width="440"/>
-						<s:Label id="txtResultadoTriagem" x="10" y="46" width="415" fontSize="12" styleName="bold" text="8 pontos - Estado nutricional: DESNUTRIDO"/>
+	<s:SkinnableContainer id="scImpressao" x="0" y="0" width="460" backgroundColor="#F6FAFE">
+		<s:VGroup width="100%">
+			<s:Group>
+				<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
+				<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
+				
+				<s:Label id="impTitulo" x="10" y="70" color="#83BBEA" fontSize="19" styleName="bold" text="{currTitulo}"/>
+				<s:Label id="impData" right="10" y="70" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
+				
+				<s:Label x="10" y="100" styleName="bold" text="NOME:"/>
+				<s:Label id="impNomePaciente" x="53" y="103" width="156" styleName="light" text="Aline Maciel"/>
+				
+				<s:Label x="217" y="100" styleName="bold" text="IDADE:"/>
+				<s:Label id="impIdadePaciente" x="263" y="103" width="56" styleName="light" text="120 anos"/>
+				
+				<s:HGroup right="10" y="100">
+					<s:Label styleName="bold" text="SEXO:"/>
+					<s:Label id="impSexoPaciente" styleName="light"
+							 text="MASCULINO" textAlign="right" paddingTop="3" />
+				</s:HGroup>
+			</s:Group>
+
+			<mx:ViewStack id="conteudos" x="0" y="134" width="460" height="573" selectedIndex="{etapa}">
+				<s:NavigatorContent id="antropometria">
+					<s:VGroup id="containerDadosAntropometria" width="440" x="10" y="0" gap="10" />
+				</s:NavigatorContent>
+				
+				<s:NavigatorContent id="atividadeFisica">
+					<s:VGroup gap="20" x="10">
+						<s:VGroup id="containerAtividades" width="440" gap="10" />
 					</s:VGroup>
-					<s:VGroup>
-						<s:Label text="Pontuação"/>
-						<mx:HRule width="440"/>
-						
-						<s:Group width="440">
-							<s:Label fontSize="11" styleName="bold" text="Avaliação global"/>
-							<s:Label x="90" y="4" fontSize="9" styleName="light" text="(máximo 16 pontos)"/>
-							<s:Label right="0" id="txtPontosGlobal" fontSize="10" text="15 pontos" textAlign="right"/>
-						</s:Group>
-						
-						<s:Group width="440">
-							<s:Label fontSize="11" styleName="bold" text="Pontos da triagem"/>
-							<s:Label right="0" id="txtPontosTriagem" fontSize="10" text="13 pontos" textAlign="right"/>
-						</s:Group>
-						
-						<s:Group width="440">
-							<s:Label fontSize="11" styleName="bold" text="Pontos total"/>
-							<s:Label x="70" y="5" fontSize="9" styleName="light" text="(máximo 30 pontos)"/>
-							<s:Label right="0" id="txtPontuacaoFinal" fontSize="10" text="28 pontos" textAlign="right"/>
-						</s:Group>
-						
-						<mx:HRule width="440"/>
-						
-						<s:HGroup>
-							<s:Label text="Avaliação do estado nutricional"/>
-							<s:Label id="txtEstadoNutricional" fontSize="10" styleName="bold" text="NORMAL"/>
-						</s:HGroup>
+				</s:NavigatorContent>
+				
+				<s:NavigatorContent id="dadosAlimentares">
+					<s:VGroup id="containerRefeicoes" width="440" gap="10" x="10">
+						<s:Label styleName="bold" text="RECORDATÓRIO ALIMENTAR HABITUAL" />
 					</s:VGroup>
-				</s:VGroup>
-			</s:NavigatorContent>
+				</s:NavigatorContent>
+				
+				<s:NavigatorContent id="examesBioquimicos">
+					<s:VGroup id="containerExames" width="440" gap="10" x="10">
+					</s:VGroup>
+				</s:NavigatorContent>
+				
+				<s:NavigatorContent id="man">
+					<s:VGroup id="containerMAN" width="440" x="10" gap="10">
+						<s:VGroup>
+							<s:HGroup>
+								<s:Label fontSize="10" text="Pontos da triagem"/>
+								<s:Label fontSize="9" text="(subtotal máximo de 14 pontos)"/>
+							</s:HGroup>
+							<mx:HRule width="440"/>
+							<s:Label id="txtResultadoTriagem" x="10" y="46" width="415" fontSize="12" styleName="bold" text="8 pontos - Estado nutricional: DESNUTRIDO"/>
+						</s:VGroup>
+						<s:VGroup>
+							<s:Label text="Pontuação"/>
+							<mx:HRule width="440"/>
+							
+							<s:Group width="440">
+								<s:Label fontSize="11" styleName="bold" text="Avaliação global"/>
+								<s:Label x="90" y="4" fontSize="9" styleName="light" text="(máximo 16 pontos)"/>
+								<s:Label right="0" id="txtPontosGlobal" fontSize="10" text="15 pontos" textAlign="right"/>
+							</s:Group>
+							
+							<s:Group width="440">
+								<s:Label fontSize="11" styleName="bold" text="Pontos da triagem"/>
+								<s:Label right="0" id="txtPontosTriagem" fontSize="10" text="13 pontos" textAlign="right"/>
+							</s:Group>
+							
+							<s:Group width="440">
+								<s:Label fontSize="11" styleName="bold" text="Pontos total"/>
+								<s:Label x="70" y="5" fontSize="9" styleName="light" text="(máximo 30 pontos)"/>
+								<s:Label right="0" id="txtPontuacaoFinal" fontSize="10" text="28 pontos" textAlign="right"/>
+							</s:Group>
+							
+							<mx:HRule width="440"/>
+							
+							<s:HGroup>
+								<s:Label text="Avaliação do estado nutricional"/>
+								<s:Label id="txtEstadoNutricional" fontSize="10" styleName="bold" text="NORMAL"/>
+							</s:HGroup>
+						</s:VGroup>
+					</s:VGroup>
+				</s:NavigatorContent>
+				
+				<s:NavigatorContent id="observacoes">
+					<s:Group width="440">
+						<s:Label id="textoObservacao" x="10" width="440" styleName="light" />
+					</s:Group>
+				</s:NavigatorContent>
+			</mx:ViewStack>
 			
-			<s:NavigatorContent id="observacoes">
-				<s:Group width="440">
-					<s:Label id="textoObservacao" x="10" width="440" styleName="light" />
-				</s:Group>
-			</s:NavigatorContent>
-		</mx:ViewStack>
-		
-		<s:Group id="gDados" left="10" bottom="10" right="10">
-			<s:Label width="100%" text="{usuarioNome}" styleName="bold" fontSize="11" textAlign="center" />
-			<s:Label width="100%" y="20" lineHeight="12" text="{usuarioDesc}" styleName="light" fontSize="10" textAlign="center" />
-		</s:Group> 
+			<s:Group id="gDados" width="100%">
+				<s:Label width="100%" text="{usuarioNome}" styleName="bold" fontSize="11" textAlign="center" />
+				<s:Label width="100%" y="20" lineHeight="12" text="{usuarioDesc}" styleName="light" fontSize="10" textAlign="center" />
+			</s:Group> 
+		</s:VGroup>
 	</s:SkinnableContainer>
-	<!-- 
-	<s:Group id="versaoreal" x="100" y="0" width="2480" height="3508" scaleX="0.3" scaleY="0.3" >
-		<s:Image id="imgLogoGrande" x="50" y="50" width="80%" height="10%" scaleMode="letterbox" horizontalAlign="left" />
-	</s:Group>
-	-->
 </s:NavigatorContent>

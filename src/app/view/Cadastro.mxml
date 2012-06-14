@@ -34,6 +34,7 @@
 			import spark.components.FormItem;
 			import spark.events.IndexChangeEvent;
 			import spark.layouts.BasicLayout;
+			import spark.layouts.VerticalLayout;
 			
 			[Bindable]
 			private var usuario:Usuario = new Usuario();
@@ -96,13 +97,14 @@
 				validators.push(valConfirmaSenha);
 				validators.push(valNome);
 				validators.push(valSobrenome);
-				validators.push(valSexo);
 				validators.push(valCRN);
 				validators.push(valRegional);
-				validators.push(valEndereco);
-				validators.push(valBairro);
-				validators.push(valCidade);
-				validators.push(valEmail);
+				validators.push(valTelefone);
+//				validators.push(valSexo);
+//				validators.push(valEndereco);
+//				validators.push(valBairro);
+//				validators.push(valCidade);
+//				validators.push(valEmail);
 				
 				for (var i:int = 1; i <= 10; i++) 
 				{
@@ -318,7 +320,7 @@
 		<mx:StringValidator id="valSenha" 			source="{txtSenha}" 			property="text" required="true" requiredFieldError="O campo Senha é obrigatório" />
 		<mx:StringValidator id="valConfirmaSenha" 	source="{txtConfirmaSenha}" 	property="text" required="true" requiredFieldError="O campo Confirmação de Senha é obrigatório" />
 		<mx:StringValidator id="valCRN" 			source="{txtCrn}" 				property="text" required="true" requiredFieldError="O campo CRN é obrigatório" />
-		<mx:StringValidator id="valTelelefone" 		source="{txtTelefone}" 			property="text" required="true" requiredFieldError="O campo Telefone é obrigatório" />
+		<mx:StringValidator id="valTelefone" 		source="{txtTelefone}" 			property="text" required="true" requiredFieldError="O campo Telefone é obrigatório" />
 		<mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" />
 		<mx:StringValidator id="valEndereco" 		source="{txtEndereco}" 			property="text" required="true" requiredFieldError="O campo Endereco é obrigatório" />
 		<mx:StringValidator id="valBairro" 			source="{txtBairro}" 			property="text" required="true" requiredFieldError="O campo Bairro é obrigatório" />
@@ -330,14 +332,12 @@
 	</fx:Declarations>
 	
 	
-	<skin:ScrollerSemBug id="formScroller" x="10" y="10" width="984" height="520" skinClass="app.skin.Scroller" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
-		<s:Group id="formContainer" width="984" height="520">
-	
-	
-			<s:VGroup gap="15" y="10">
-				<s:Label x="10" y="21" text="Neste etapa inicial você deverá realizar o cadastro para acessar o aplicativo e incluir os dados adicionais que &#xd;aparecerão na geração dos formulários e relatórios para os pacientes."/>
-				<s:Label x="9" y="67" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DE ACESSO" />
-				<s:Label x="10" y="99" width="925" text="A configuração do nome do usuário e da senha permitirá o acesso seguro ao sistema&#xd;Os dados abaixo serão utilizados exclusivamente para acesso à ferramenta." />
+	<skin:ScrollerSemBug id="formScroller" top="10" bottom="10" left="0" right="0" mouseFocusEnabled="false" mouseChildren="true" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
+		<s:Group id="formContainer" width="100%" height="100%">
+			<s:VGroup id="vg" gap="15" y="10" paddingLeft="20">
+				<s:Label text="Neste etapa inicial você deverá realizar o cadastro para acessar o aplicativo e incluir os dados adicionais que &#xd;aparecerão na geração dos formulários e relatórios para os pacientes."/>
+				<s:Label color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DE ACESSO" />
+				<s:Label width="925" text="A configuração do nome do usuário e da senha permitirá o acesso seguro ao sistema&#xd;Os dados abaixo serão utilizados exclusivamente para acesso à ferramenta." />
 		
 				<s:Group>
 					<s:Label x="9" y="17" text="NOME DE USUARIO*"/>
@@ -351,7 +351,7 @@
 				</s:Group>
 
 				<s:Label x="9" y="287" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS PROFISSIONAIS"/>
-				<s:Label x="10" y="323" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos.&#xd;O preenchimento deles é opcional."/>
+				<s:Label x="10" y="323" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos."/>
 				
 				<s:Group>
 					<s:Label x="9" y="16" text="NOME*"/>
@@ -371,10 +371,10 @@
 				</s:Group>
 				
 				<s:Label x="9" y="519" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DO CONSULTÓRIO"/>
-				<s:Label x="10" y="556" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos, que você pode entregar aos seus pacientes. "/>
+				<s:Label x="10" y="556" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos, que você pode entregar aos seus pacientes. &#xd;O preenchimento deles é opcional."/>
 
 				<s:Group>
-					<s:Label x="11" y="16" text="ENDEREÇO*"/>
+					<s:Label x="10" y="16" text="ENDEREÇO*"/>
 					<s:TextInput id="txtEndereco" x="11" y="37" width="435" skinClass="app.skin.TextInput" text="{usuario.endereco}" />
 					
 					<s:Label x="491" y="16" text="COMPLEMENTO"/>
@@ -400,40 +400,31 @@
 					<s:Image id="imgLogo" x="183" y="223" width="742" height="78" scaleMode="letterbox" horizontalAlign="left" />
 				</s:Group>
 			
+				<s:Label x="10" y="904" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
+				<s:Label x="10" y="556" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos, que você pode entregar aos seus pacientes.&#xd;O preenchimento deles é opcional."/>
 			
-				<s:Label x="11" y="904" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
-				<s:Label x="10" y="556" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos, que você pode entregar aos seus pacientes."/>
-			
-			
-				<s:Group>
-					<s:Label x="11" y="16" text="REDE SOCIAL"/>
-					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbRedeSocial" x="11" y="37" width="434" labelField="nome" dataProvider="{Constantes.redesSociais}" skinClass="app.skin.ComboBox" />
+				<s:Group x="10">
+					<s:Label x="10" y="0" text="REDE SOCIAL"/>
+					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbRedeSocial" x="10" y="20" width="435" labelField="nome" dataProvider="{Constantes.redesSociais}" skinClass="app.skin.ComboBox" />
 					
-					<s:Label x="491" y="16" text="ENDEREÇO"/>
-					<s:TextInput id="txtEndRedeSocial" x="491" y="37" width="301" skinClass="app.skin.TextInput"/>	
+					<s:Label x="485" y="0" text="ENDEREÇO"/>
+					<s:TextInput id="txtEndRedeSocial" x="485" y="20" width="301" skinClass="app.skin.TextInput"/>
+					<s:Button id="btnAdicionar" x="800" y="17" width="122" label="ADICIONAR" click="onAdicionar(event)" skinClass="app.skin.Button"/>
 				</s:Group>
-				
-				<s:Button id="btnAdicionar" x="803" width="122" label="ADICIONAR" click="onAdicionar(event)" skinClass="app.skin.Button"/>
 				
 				<s:Group id="rsContainer" x="10" visible="false"></s:Group>
 				
-				<s:Group id="gpFinal" x="11" y="998">
-					<s:Label x="0" y="0" text="WEBSITE/BLOG"/>
-					<s:TextInput id="txtWebsite" x="0" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.site}" />
+				<s:Group id="gpFinal" x="10" width="100%">
+					<s:Label x="10" y="0" text="WEBSITE/BLOG"/>
+					<s:TextInput id="txtWebsite" x="10" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.site}" />
 					
-					<s:Label x="480" y="0" text="E-MAIL*"/>
-					<s:TextInput id="txtEmail" x="480" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.email}" />
+					<s:Label x="485" y="0" text="E-MAIL*"/>
+					<s:TextInput id="txtEmail" x="485" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.email}" />
 					
 					<s:Button id="btnSalvar" x="792" y="70" label="SALVAR DADOS" skinClass="app.skin.Button" click="onSalvar(event)"/>
 					<s:Label id="lblResposta" x="0" y="70" width="780" height="100" color="#FF0000"/>
 				</s:Group>
-				
 			</s:VGroup>
-	
-	
-		
 		</s:Group>
 	</skin:ScrollerSemBug>
-	
-	
 </s:NavigatorContent>

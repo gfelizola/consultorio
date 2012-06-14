@@ -10,7 +10,7 @@ package app.skin
 		{
 			super();
 			
-			this.setStyle('skinClass', app.skin.Scroller);
+//			this.setStyle('skinClass', app.skin.Scroller);
 		}
 		
 		override protected function focusInHandler(event:FocusEvent):void

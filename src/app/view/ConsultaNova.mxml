@@ -107,7 +107,7 @@
 		</s:filters>
 	</s:Rect>
 	
-	<mx:ViewStack id="vsConsulta" x="0" y="100" width="100%" height="100%" change="onConsultaChangeTela(event)" backgroundColor="#ffffff" creationPolicy="all">
+	<mx:ViewStack id="vsConsulta" x="0" y="50" width="100%" height="100%" change="onConsultaChangeTela(event)" backgroundColor="#ffffff" creationPolicy="all">
 		<view:ConsultaAntropometria 	width="100%" height="100%" label="ANTROPOMETRIA" />
 		<view:ConsultaMAN 				width="100%" height="100%" label="MAN" />
 		<view:ConsultaDadosAlimentares 	width="100%" height="100%" label="DADOS ALIMENTARES" />

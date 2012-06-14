@@ -48,9 +48,9 @@
 				if( consultas.length > 0 ){
 					var co:app.model.Consulta = consultas.getItemAt(0) as app.model.Consulta ;
 					if( co.antropometria ){
-						if( co.antropometria.peso ) txtPeso.text = co.antropometria.peso.toString() ;
-						if( co.antropometria.pesoPreGestacional ) txtPesoGestacional.text = co.antropometria.pesoPreGestacional.toString() ;
-						if( co.antropometria.estatura ) txtEstatura.text = co.antropometria.estatura.toString() ;
+//						if( co.antropometria.peso ) txtPeso.text = co.antropometria.peso.toString() ;
+//						if( co.antropometria.pesoPreGestacional ) txtPesoGestacional.text = co.antropometria.pesoPreGestacional.toString() ;
+						if( co.antropometria.estatura && General.pacienteAtual.idade / 12 > 20 ) txtEstatura.text = co.antropometria.estatura.toString() ;
 						
 						validateForm();
 					}
@@ -155,8 +155,9 @@
 			<mx:StringValidator property="text" required="true" requiredFieldError="Este campo é obrigatório" id="valEstatura" source="{txtEstatura}" />
 		</fx:Array>
 	</fx:Declarations>
-	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="994" height="390" skinClass="app.skin.Scroller">
-		<s:Group width="994" height="390">
+	
+	<skin:ScrollerSemBug id="scroller" top="10" bottom="10" left="0" right="0">
+		<s:Group width="100%" height="100%">
 			<s:Label x="10" y="10" color="#83BBEA" fontSize="19" styleName="bold" text="ANTROPOMETRIA"/>
 			
 			<s:HGroup x="10" y="50" gap="30">

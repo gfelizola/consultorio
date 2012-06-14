@@ -245,7 +245,7 @@
 				</s:SkinnableContainer>
 				
 				<s:SkinnableContainer width="974" backgroundColor="#F6F9FE">
-					<s:Label x="10" y="10" fontSize="20" styleName="bold" text="OBSERVAÇÕES OU OUTRAS INFORMAÇÕES" />
+					<s:Label x="10" y="10" fontSize="20" styleName="bold" text="OUTRAS INFORMAÇÕES IMPORTANTES" />
 					<s:Label id="txtObservacao" x="10" y="30" width="954" text="" paddingBottom="10" paddingLeft="0" paddingRight="0" paddingTop="10" />
 				</s:SkinnableContainer>
 			</s:VGroup>

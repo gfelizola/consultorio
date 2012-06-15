@@ -53,7 +53,6 @@
         }
     ]]>
     </fx:Script>
-    
     <fx:Declarations>
         <!---  A vertical scrollbar that lets you control the portion of data that is displayed 
         when there is too much data to fit vertically in a display area.

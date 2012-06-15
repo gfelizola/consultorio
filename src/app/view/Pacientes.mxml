@@ -64,6 +64,7 @@
 				b.label = "SOBRENOME" ;
 				b.setStyle('skinClass', app.skin.WhiteButton);
 				b.height = 30 ;
+				b.addEventListener(MouseEvent.CLICK, onOrderClick );
 				
 				containerOrders.addElement(b);
 				
@@ -72,6 +73,7 @@
 				b.setStyle('skinClass', app.skin.WhiteButton);
 				b.height = 30 ;
 				b.right = 0 ;
+				b.addEventListener(MouseEvent.CLICK, onOrderClick );
 				
 				containerOrders.addElement(b);
 				
@@ -96,9 +98,11 @@
 					}
 
 					if( atualSort != '' ){
-						var sortDirection:String = sortDirection == 'DESC' ? Sort.DESC : Sort.ASC ;
+						var sortDirection:String = atualDirection == 'DESC' ? Sort.DESC : Sort.ASC ;
 						c.addSort(atualSort, sortDirection);
 					}
+					
+					trace( c.sorts );
 					
 					pacientes = DB.em.fetchCriteria(c);
 				} 
@@ -157,22 +161,22 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	<s:Rect y="0" x="0" width="100%" height="43" radiusX="10" radiusY="10">
+	<s:Rect y="7" x="0" width="100%" height="43" radiusX="10" radiusY="10">
 		<s:fill>
 			<s:SolidColor color="#81BAEA" />
 		</s:fill>
 	</s:Rect>
 	
-	<s:HGroup id="containerLetras" x="0" y="0" height="43" paddingLeft="10" paddingTop="5" paddingRight="10" gap="5" />
-	<s:HGroup id="containerOrders" paddingLeft="10" paddingTop="5" paddingRight="10" gap="5" right="0" />
+	<s:HGroup id="containerLetras" left="0" y="8" height="43" paddingLeft="10" paddingTop="5" paddingRight="10" gap="5" />
+	<s:HGroup id="containerOrders" right="0" top="8" paddingLeft="10" paddingTop="5" paddingRight="10" gap="5" />
 	
 	
-	<s:DataGrid id="dgPacientes" x="10" y="53" width="984" height="470" dataProvider="{pacientes}" rowHeight="30" focusEnabled="false"
+	<s:DataGrid id="dgPacientes" left="10" top="63" right="10" bottom="0" dataProvider="{pacientes}" rowHeight="30" focusEnabled="false"
 				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
 				skinClass="app.skin.DataGridSkin">
 		<s:columns>
 			<s:ArrayList>
-				<s:GridColumn dataField="nome" headerText="Nome" width="682">
+				<s:GridColumn dataField="nome" headerText="Nome" minWidth="650">
 					<s:itemRenderer>
 						<fx:Component>
 							<s:GridItemRenderer verticalCenter="1">
@@ -198,7 +202,7 @@
 					</s:itemRenderer>
 				</s:GridColumn>
 				
-				<s:GridColumn dataField="nome" headerText="Data" width="150">
+				<s:GridColumn dataField="nome" headerText="Data">
 					<s:itemRenderer>
 						<fx:Component>
 							<s:GridItemRenderer>
@@ -213,7 +217,7 @@
 					</s:itemRenderer>
 				</s:GridColumn>
 				
-				<s:GridColumn  headerText="Editar" width="150">
+				<s:GridColumn  headerText="Editar">
 					<s:itemRenderer>
 						<fx:Component>
 							<s:GridItemRenderer>

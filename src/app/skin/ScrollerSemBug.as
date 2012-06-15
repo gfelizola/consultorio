@@ -3,6 +3,7 @@ package app.skin
 	import flash.events.FocusEvent;
 	
 	import spark.components.Scroller;
+	import spark.skins.spark.ScrollerSkin;
 	
 	public class ScrollerSemBug extends Scroller
 	{
@@ -10,7 +11,7 @@ package app.skin
 		{
 			super();
 			
-//			this.setStyle('skinClass', app.skin.Scroller);
+			this.setStyle('skinClass', spark.skins.spark.ScrollerSkin);
 		}
 		
 		override protected function focusInHandler(event:FocusEvent):void

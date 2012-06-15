@@ -63,7 +63,6 @@ declarations define DataGrid skin parts except <code>headerColumnSeparator</code
     </s:states>
     
     <fx:Declarations>
-        <!--- @private -->        
         <fx:Component id="alternatingRowColorsBackground">
             <s:Rect implements="spark.components.gridClasses.IGridVisualElement">
                 <fx:Script>
@@ -268,7 +267,7 @@ declarations define DataGrid skin parts except <code>headerColumnSeparator</code
                 </s:Line>          
                 
                 <!--- @private -->
-                <skin:ScrollerSemBug id="scroller" minViewportInset="1" hasFocusableChildren="false" height="100%" skinClass="app.skin.Scroller">
+                <skin:ScrollerSemBug id="scroller" minViewportInset="1" hasFocusableChildren="false" height="100%">
                     <!--- @private -->
                     <s:Grid id="grid" itemRenderer="spark.skins.spark.DefaultGridItemRenderer">
                         <s:GridLayer name="backgroundLayer"/>

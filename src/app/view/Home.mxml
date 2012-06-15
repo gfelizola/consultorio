@@ -19,7 +19,7 @@
 			import nz.co.codec.flexorm.criteria.Sort;
 			
 			[Bindable]
-			public var pacientes:ArrayCollection =  new ArrayCollection();
+//			public var pacientes:ArrayCollection =  new ArrayCollection();
 			
 			public function init():void
 			{
@@ -38,10 +38,13 @@
 					.addSort("nome")
 					.addSort("sobrenome");
 					
-					pacientes = DB.em.fetchCriteria(c);
+					var pacientes:ArrayCollection = DB.em.fetchCriteria(c);
 					
 					if( pacientes.length < 1 ) addSemPacientes();
-					else dgPacientes.visible = true ;
+					else {
+						dgPacientes.dataProvider = pacientes ;
+						dgPacientes.visible = true ;
+					}
 				} 
 				catch(error:Error) 
 				{
@@ -83,7 +86,7 @@
 	<s:Label x="39" y="148" width="390" height="370"
 			 text="O Consultório Nutri Saúde é uma ferramenta para facilitar o armazenamento de dados de seus pacientes e o cálculo de informações úteis para a prática clínica.&#xd;&#xd;Você pode acessar de forma rápida as informações de seus pacientes, além de incluir novos acompanhamentos. &#xd;Para localizar um paciente já cadastrado, digite seu nome no campo “Buscar paciente”.&#xd;Se deseja incluir um novo atendimento, é só escolher “Cadastrar Paciente”."/>
 	
-	<s:DataGrid id="dgPacientes" x="476" y="76" width="518" height="442" visible="false" dataProvider="{pacientes}" requestedMaxRowCount="16"
+	<s:DataGrid id="dgPacientes" x="476" y="76" width="518" height="442" visible="false" requestedMaxRowCount="16"
 				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
 				skinClass="app.skin.DataGridSkin">
 		<s:columns>

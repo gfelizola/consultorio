@@ -267,7 +267,7 @@
 		<s:RadioButtonGroup id="NivelAtividade"/>
 	</fx:Declarations>
 	
-	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
+	<skin:ScrollerSemBug id="scroller" top="10" bottom="10" left="0" right="0">
 		<s:Group>
 			<s:VGroup width="100%" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
 				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="EXAMES BIOQUÍMICOS" />
@@ -285,13 +285,8 @@
 					</s:SkinnableContainer>
 				</s:VGroup>
 				<s:HGroup gap="10">
-					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS"
-							  alpha="{formIsValid ? 1 : 0.5}" click="onSalvar(event)"
-							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
-					
-					<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA"
-							  alpha="{formIsValid ? 1 : 0.5}" click="onFinalizar(event)"
-							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
+					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
+					<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
 				</s:HGroup>
 			</s:VGroup>
 			

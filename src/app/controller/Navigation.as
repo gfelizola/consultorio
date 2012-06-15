@@ -81,6 +81,8 @@ package app.controller
 			
 			var type:Class = areaAtual.className as Class;
 			var area:UIComponent = new type();
+			area.percentWidth = 100 ;
+			area.percentHeight = 100 ;
 			
 			areaAtual.areaInstance = area ;
 			container.addElement(area);

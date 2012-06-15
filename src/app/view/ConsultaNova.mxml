@@ -113,6 +113,6 @@
 		<view:ConsultaDadosAlimentares 	width="100%" height="100%" label="DADOS ALIMENTARES" />
 		<view:ConsultaAtividadeFisica 	width="100%" height="100%" label="ATIVIDADE FÍSICA" />
 		<view:ConsultaExames 			width="100%" height="100%" label="EXAMES BIOQUÍMICOS" />
-		<view:ConsultaObservacao 		width="100%" height="100%" label="OBSERVAÇÃO" />
+		<view:ConsultaObservacao 		width="100%" height="100%" label="OUTRAS INFORMAÇÕES IMPORTANTES" />
 	</mx:ViewStack>
 </s:NavigatorContent>

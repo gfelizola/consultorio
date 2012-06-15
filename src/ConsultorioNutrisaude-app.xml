@@ -9,7 +9,7 @@
     <systemChrome>none</systemChrome>
     <transparent>true</transparent>
     <minimizable>true</minimizable>
-    <maximizable>false</maximizable>
+    <maximizable>true</maximizable>
     <resizable>false</resizable>
     <width>1024</width>
     <height>768</height>

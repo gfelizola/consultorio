@@ -138,7 +138,7 @@
 		</fx:Array>
 	</fx:Declarations>
 	
-	<skin:ScrollerSemBug id="scroller" x="0" y="0" width="984" height="390" skinClass="app.skin.Scroller">
+	<skin:ScrollerSemBug id="scroller" top="10" bottom="10" left="0" right="0">
 		<s:Group width="984" height="390">
 			
 			<s:VGroup width="440" gap="20" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">

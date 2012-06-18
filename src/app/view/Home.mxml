@@ -76,87 +76,96 @@
 			
 		]]>
 	</fx:Script>
+	<s:HGroup width="100%" height="100%" gap="50" paddingLeft="20" paddingRight="20" paddingTop="50" paddingBottom="20">
+		<s:VGroup width="100%">
+			<s:Label id="txtBemVindo" 	width="100%" color="#83BBEA" fontSize="30" styleName="bold" text="Bem-vindo"/>
+			<s:Label id="txtNome" 		width="100%" color="#83BBEA" fontSize="39" styleName="bold" text="Ana Maria"/>
+			<s:Label width="100%" text="O Consultório Nutri Saúde é uma ferramenta para facilitar o armazenamento de dados de seus pacientes e o cálculo de informações úteis para a prática clínica.&#xd;&#xd;Você pode acessar de forma rápida as informações de seus pacientes, além de incluir novos acompanhamentos. &#xd;Para localizar um paciente já cadastrado, digite seu nome no campo “Buscar paciente”.&#xd;Se deseja incluir um novo atendimento, é só escolher “Cadastrar Paciente”."/>
+		</s:VGroup>
+		
+		<s:VGroup width="100%" height="100%">
+			<s:Label width="100%" color="#83BBEA" fontSize="19" styleName="bold" text="ÚLTIMOS PACIENTES ATENDIDOS"/>
+			
+			<s:DataGrid id="dgPacientes" width="100%" height="100%" visible="false"
+						alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
+						skinClass="app.skin.DataGridSkin">
+				<s:columns>
+					<s:ArrayList>
+						<s:GridColumn dataField="nome" headerText="Nome">
+							<s:itemRenderer>
+								<fx:Component>
+									<s:GridItemRenderer verticalCenter="1">
+										
+										<fx:Script>
+											<![CDATA[
+												import app.controller.Navigation;
+												import app.enums.EAreas;
+												import app.model.Paciente;
+												import app.util.General;
+												private function goPaciente(e:MouseEvent):void
+												{
+													var p:Paciente = data as Paciente;
+													General.pacienteAtual = p;
+													Navigation.navega(EAreas.CONSULTA);
+												}
+											]]>
+										</fx:Script>
+										
+										<s:Button y="4" label="{data.nome.toUpperCase() + ' ' + data.sobrenome.toUpperCase()}" skinClass="app.skin.TextButton" buttonMode="true" click="goPaciente(event)" />
+									</s:GridItemRenderer>
+								</fx:Component>
+							</s:itemRenderer>
+						</s:GridColumn>
+						<s:GridColumn dataField="nome" headerText="Data" width="150">
+							<s:itemRenderer>
+								<fx:Component>
+									<s:GridItemRenderer>
+										<fx:Script>
+											<![CDATA[
+												import app.util.General;
+											]]>
+										</fx:Script>
+										<s:Button y="4" icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(new Date(data.dataUltimaConsulta))}" skinClass="app.skin.TextButton" />
+									</s:GridItemRenderer>
+								</fx:Component>
+							</s:itemRenderer>
+						</s:GridColumn>
+						<s:GridColumn  headerText="Editar" width="150">
+							<s:itemRenderer>
+								<fx:Component>
+									<s:GridItemRenderer>
+										
+										<fx:Script>
+											<![CDATA[
+												import app.controller.Navigation;
+												import app.enums.EAreas;
+												import app.model.Paciente;
+												import app.util.General;
+												private function editarPaciente(event:MouseEvent):void
+												{
+													var p:Paciente = data as Paciente;
+													General.pacienteAtual = p;
+													Navigation.navega(EAreas.CADASTRO_PACIENTE);
+												}
+											]]>
+										</fx:Script>
+										
+										<s:Button y="4" icon="assets/images/icoEditar.png" label="EDITAR PACIENTE" skinClass="app.skin.TextButton" buttonMode="true" click="editarPaciente(event)" />
+									</s:GridItemRenderer>
+								</fx:Component>
+							</s:itemRenderer>
+						</s:GridColumn>
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>
+		</s:VGroup>
+	</s:HGroup>
 	
-	<s:Label id="txtBemVindo" x="39" y="43" color="#83BBEA" fontSize="30" styleName="bold"
-			 text="Bem-vindo"/>
-	<s:Label id="txtNome" x="39" y="76" width="352" color="#83BBEA" fontSize="39" styleName="bold"
-			 text="Ana Maria"/>
-	<s:Label x="476" y="36" width="352" color="#83BBEA" fontSize="19" styleName="bold"
-			 text="ÚLTIMOS PACIENTES ATENDIDOS"/>
-	<s:Label x="39" y="148" width="390" height="370"
-			 text="O Consultório Nutri Saúde é uma ferramenta para facilitar o armazenamento de dados de seus pacientes e o cálculo de informações úteis para a prática clínica.&#xd;&#xd;Você pode acessar de forma rápida as informações de seus pacientes, além de incluir novos acompanhamentos. &#xd;Para localizar um paciente já cadastrado, digite seu nome no campo “Buscar paciente”.&#xd;Se deseja incluir um novo atendimento, é só escolher “Cadastrar Paciente”."/>
 	
-	<s:DataGrid id="dgPacientes" x="476" y="76" width="518" height="442" visible="false" requestedMaxRowCount="16"
-				alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}"
-				skinClass="app.skin.DataGridSkin">
-		<s:columns>
-			<s:ArrayList>
-				<s:GridColumn dataField="nome" headerText="Nome">
-					<s:itemRenderer>
-						<fx:Component>
-							<s:GridItemRenderer verticalCenter="1">
-								
-								<fx:Script>
-									<![CDATA[
-										import app.controller.Navigation;
-										import app.enums.EAreas;
-										import app.model.Paciente;
-										import app.util.General;
-										private function goPaciente(e:MouseEvent):void
-										{
-											var p:Paciente = data as Paciente;
-											General.pacienteAtual = p;
-											Navigation.navega(EAreas.CONSULTA);
-										}
-									]]>
-								</fx:Script>
-								
-								<s:Button y="4" label="{data.nome.toUpperCase() + ' ' + data.sobrenome.toUpperCase()}" skinClass="app.skin.TextButton" buttonMode="true" click="goPaciente(event)" />
-							</s:GridItemRenderer>
-						</fx:Component>
-					</s:itemRenderer>
-				</s:GridColumn>
-				<s:GridColumn dataField="nome" headerText="Data" width="150">
-					<s:itemRenderer>
-						<fx:Component>
-							<s:GridItemRenderer>
-								<fx:Script>
-									<![CDATA[
-										import app.util.General;
-									]]>
-								</fx:Script>
-								<s:Button y="4" icon="assets/images/icoAgenda.png" label="{General.getFormattedDate(new Date(data.dataUltimaConsulta))}" skinClass="app.skin.TextButton" />
-							</s:GridItemRenderer>
-						</fx:Component>
-					</s:itemRenderer>
-				</s:GridColumn>
-				<s:GridColumn  headerText="Editar" width="150">
-					<s:itemRenderer>
-						<fx:Component>
-							<s:GridItemRenderer>
-								
-								<fx:Script>
-									<![CDATA[
-										import app.controller.Navigation;
-										import app.enums.EAreas;
-										import app.model.Paciente;
-										import app.util.General;
-										private function editarPaciente(event:MouseEvent):void
-										{
-											var p:Paciente = data as Paciente;
-											General.pacienteAtual = p;
-											Navigation.navega(EAreas.CADASTRO_PACIENTE);
-										}
-									]]>
-								</fx:Script>
-								
-								<s:Button y="4" icon="assets/images/icoEditar.png" label="EDITAR PACIENTE" skinClass="app.skin.TextButton" buttonMode="true" click="editarPaciente(event)" />
-							</s:GridItemRenderer>
-						</fx:Component>
-					</s:itemRenderer>
-				</s:GridColumn>
-			</s:ArrayList>
-		</s:columns>
-	</s:DataGrid>
+	
+	
+	
+	
+	
 	
 </s:NavigatorContent>

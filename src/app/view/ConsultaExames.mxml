@@ -14,6 +14,7 @@
 			import app.skin.TextArea;
 			import app.skin.TextInput;
 			import app.util.General;
+			import app.util.Helpers;
 			
 			import as3.utils.Mask;
 			
@@ -76,10 +77,32 @@
 				var o:Object;
 				campos = {};
 				
+				var exs:ArrayCollection = new ArrayCollection();
+				var exsAds:ArrayCollection = new ArrayCollection();
+				var ea:ExameAdicional = new ExameAdicional();
+				var eNome:String = '';
+				var eRef:String = '';
+				var eValor:String = '';
+				
+				
+				if( General.editandoConsulta ){
+					var e:ExameBioquimico = General.consultaAtual.exameBioquimico ;
+					if( e ){
+						txtDateExame.text = Helpers.dateFormat( e.dataDoExame );
+						exs = e.exames ;
+						
+						for (var i:int = 0; i < exs.length; i++) 
+						{
+							var ea:ExameAdicional = exs.getItemAt(i) as ExameAdicional;
+							if( ! ea.exame ) exsAds.addItem( ea );
+						}
+					}
+				}
+				
 				// Build
 				for each(var exame:Exame in exames)
 				{
-					o = {};
+					o = { ex:exame };
 					o['sc'] = new SkinnableContainer();
 					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
 					o['sc'].width = 435;
@@ -87,6 +110,16 @@
 					o['hg'] = new HGroup();
 					o['hg'].paddingTop = o['hg'].paddingRight = o['hg'].paddingBottom = o['hg'].paddingLeft = 5;
 					o['hg'].gap = 10;
+					
+					for (var i:int = 0; i < exs.length; i++) 
+					{
+						ea = exs.getItemAt(i) as ExameAdicional;
+						if( ea.exame ){
+							if( ea.exame.id == exame.id ){
+								eValor = ea.valor ;
+							}
+						}
+					}
 					
 					o['nome'] = new Label();
 					o['nome'].text = exame.nome;
@@ -98,6 +131,7 @@
 					o['valor'] = new spark.components.TextInput();
 					o['valor'].setStyle('skinClass', app.skin.TextInput);
 					o['valor'].width = 90;
+					o['valor'].text = eValor;
 					
 					o['hg'].addElement(o['nome']);
 					o['hg'].addElement(o['referencia']);
@@ -111,10 +145,15 @@
 					cc++;
 				}
 				
+				eNome = '' ;
+				eRef = '' ;
+				eValor = '' ;
+				
 				// Campos adicionais
 				for(var adicional:uint = 0; adicional < quantidadeAdicionais; adicional++)
 				{
-					o = {};
+					o = { ex:null };
+					
 					
 					o['sc'] = new SkinnableContainer();
 					o['sc'].setStyle("backgroundColor",colors[((cc%2) ? 0 : 1)]);
@@ -124,18 +163,28 @@
 					o['hg'].paddingTop = o['hg'].paddingRight = o['hg'].paddingBottom = o['hg'].paddingLeft = 5;
 					o['hg'].gap = 10;
 					
+					if( exsAds.length > adicional ){
+						ea = exsAds.getItemAt( adicional ) as ExameAdicional;
+						eNome = ea.nome ;
+						eRef = ea.referencia ;
+						eValor = ea.valor ;
+					}
+					
 					o['nome'] = new spark.components.TextInput();
 					o['nome'].setStyle('skinClass', app.skin.TextInput);
 					o['nome'].prompt = "Exame adicional";
 					o['nome'].width = 135;
+					o['nome'].text = eNome;
 					o['referencia'] = new spark.components.TextArea();
 					o['referencia'].setStyle('skinClass', app.skin.TextArea);
 					o['referencia'].prompt = "Referência adicional";
 					o['referencia'].width = 150;
 					o['referencia'].height = 90;
+					o['referencia'].text = eRef;
 					o['valor'] = new spark.components.TextInput();
 					o['valor'].setStyle('skinClass', app.skin.TextInput);
 					o['valor'].width = 90;
+					o['valor'].text = eValor;
 					
 					o['hg'].addElement(o['nome']);
 					o['hg'].addElement(o['referencia']);
@@ -206,6 +255,7 @@
 							ea.nome = i['nome'].text;
 							ea.referencia = i['referencia'].text;
 							ea.valor = i['valor'].text;
+							if( i['ex'] ) ea.exame = i['ex'];
 							exameCollection.addItem(ea);
 							cc++;
 						}

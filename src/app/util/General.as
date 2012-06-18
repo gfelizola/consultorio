@@ -36,6 +36,8 @@ package app.util
 		
 		public static var consultaSalva:Boolean;
 		
+		public static var editandoConsulta:Boolean;
+		
 		public static var buscaAtual:String = '' ;
 		
 		public static const APLICACAO_CARREGADA:String = "AplicacaoCarregada" ;

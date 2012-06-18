@@ -13,6 +13,8 @@ package app.model
 		
 		public var valor:String;
 		
+		public var exame:Exame;
+		
 		public function ExameAdicional()
 		{
 		}

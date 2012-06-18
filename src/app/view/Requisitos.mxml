@@ -11,7 +11,7 @@
 		<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="REQUISITOS DO SISTEMA" />
 		<s:Label fontSize="16" styleName="bold" text="Pré-requisitos de instalação do Consultório Nutri Saúde" />
 		
-		<s:VGroup gap="0" width="974">
+		<s:VGroup gap="0" width="100%">
 			<s:SkinnableContainer width="100%" height="30" backgroundColor="#FCFDFF">
 				<s:Label x="10" y="10" text="ITENS" />
 				<s:Label x="200" y="10" text="REQUISITOS MÍNIMOS" />
@@ -19,18 +19,18 @@
 			
 			<s:SkinnableContainer width="100%" height="30" backgroundColor="#F6F9FE">
 				<s:Label x="10" y="10" text="WINDOWS" />
-				<mx:HRule x="200" y="15" width="764"/>
+				<mx:HRule x="200" y="15" width="100%"/>
 			</s:SkinnableContainer>
 			
 			<s:SkinnableContainer width="100%" height="45" backgroundColor="#FCFDFF">
 				<s:Label x="10" y="10" text="Computador / Sistema" />
-				<s:Label x="200" y="10" width="764"
+				<s:Label x="200" y="10" width="100%"
 						 text="Computador com processador de 2,33 GHz ou mais veloz compatível com x86 ou processador Intel Atom de 1,6 GHz ou mais veloz para notebooks"/>
 			</s:SkinnableContainer>
 			
 			<s:SkinnableContainer width="100%" height="45" backgroundColor="#F6F9FE">
 				<s:Label x="10" y="10" text="Sistema operacional" />
-				<s:Label x="200" y="10" width="764"
+				<s:Label x="200" y="10" width="100%"
 						 text="Microsoft Windows XP Home ou Professional; Windows Server 2003; Windows Server 2008; Windows Vista Home Premium; Business, Ultimate ou Enterprise (inclusive versões de 64 bits) com Service Pack 2; ou Windows 7"/>
 			</s:SkinnableContainer>
 			
@@ -41,7 +41,7 @@
 			
 			<s:SkinnableContainer width="100%" height="30" backgroundColor="#F6F9FE">
 				<s:Label x="10" y="10" text="MAC OS X" />
-				<mx:HRule x="200" y="15" width="764"/>
+				<mx:HRule x="200" y="15" width="100%"/>
 			</s:SkinnableContainer>
 			
 			<s:SkinnableContainer width="100%" height="30" backgroundColor="#FCFDFF">

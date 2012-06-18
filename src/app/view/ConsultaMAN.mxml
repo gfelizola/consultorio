@@ -68,6 +68,33 @@
 				pergsTriagem.push(PerguntaE);
 				pergsTriagem.push(PerguntaIMC);
 				pergsTriagem.push('');
+				
+				if( General.editandoConsulta ){
+					var a:MAN = General.consultaAtual.man ;
+					
+					if( a ){
+						a.pontuacaoGlobal = pontuacaoGlobal ;
+						a.pontuacaoTriagem = pontuacaoTriagem ;
+						
+						a.estadoNutricionalTriagem = a.getDescricaoTriagem();
+						a.estadoNutricionalGlobal = a.getDescricaoGlobal();
+						
+						var perguntas:Array = ['A','B','C','D','E','IMC','F','G','H','I','J','K1','K2','K3','L','M','N','O','P','Q','R'];
+						var letra:String = '';
+						
+						for (var i:int = 0; i < perguntas.length; i++) 
+						{
+							if( perguntas[i] == 'F' ){
+								letra = PerguntaIMC.selectedValue == 0 ? 'F1' : 'F2' ;
+							} else {
+								letra = perguntas[i];
+							}
+							
+							this['Pergunta' + letra].selectedValue = a['pontos' + perguntas[i] ] ;
+							this['Pergunta' + letra].dispatchEvent( new Event( Event.CHANGE ) ) ;
+						}
+					}
+				}
 			}
 			
 			private function tentaCalcularTriagem():void
@@ -93,8 +120,6 @@
 						allSel = false ;
 					}
 				}
-				
-				trace( 'allSel triagem', allSel ); 
 				
 				if( allSel ){
 					vgGlobal.visible = vgGlobal.includeInLayout = p < 12 ;
@@ -184,10 +209,7 @@
 				formIsValid = true;
 				
 				for( var i:int = 0; i < validators.length ; i++  ){
-					var validator:Validator = validators[i] ;
-					if( ! validate(validator) ){
-						//trace( i, validator, validator.source );
-					}
+					validate( validators[i] ) ;
 				}
 				
 				if( e.target == PerguntaIMC ){

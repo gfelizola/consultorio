@@ -11,10 +11,11 @@
 			import app.model.Refeicao;
 			import app.util.General;
 			
+			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
+			import mx.controls.Text;
 			import mx.core.UIComponent;
 			import mx.events.CloseEvent;
-			import mx.controls.Text;
 			import mx.events.FlexEvent;
 			import mx.events.ValidationResultEvent;
 			import mx.validators.Validator;
@@ -29,7 +30,33 @@
 				scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
 				
 				for each( var validator:Validator in validators ){
-						validator.source.addEventListener(Event.CHANGE, validateForm);
+					validator.source.addEventListener(Event.CHANGE, validateForm);
+				}
+				
+				if( General.editandoConsulta ){
+					var af:AtividadeFisica = General.consultaAtual.atividadeFisica;
+					
+					if( af ){
+						if( ! isNaN( af.nivel ) ){
+							NivelAtividade.selectedValue 			= af.nivel ;
+							formIsValid 							= true ;
+						}
+						if( af.observacao ) txtObservacoes.text 	= af.observacao ;
+						
+						var ats:ArrayCollection = af.atividades ;
+						var fim:int = ats.length > 3 ? 3 : ats.length;
+						
+						for (var i:int = 0; i < fim; i++) 
+						{
+							var cAtividade:spark.components.TextInput 	= this['txtAtividade' + (i+1)];
+							var cDias:spark.components.TextArea 		= this['txtDias' + (i+1)];
+							var cHorario:spark.components.TextArea 		= this['txtHorario' + (i+1)];
+							var at:Atividade 							= ats.getItemAt(i) as Atividade;
+							cAtividade.text 							= at.nome ;
+							cDias.text 									= at.dias ;
+							cHorario.text 								= at.horario ;
+						}
+					}
 				}
 			}
 			

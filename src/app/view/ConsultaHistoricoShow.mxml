@@ -185,14 +185,21 @@
 				cr.open();
 			}
 			
+			private function onEditarConsulta(e:MouseEvent):void
+			{
+				General.editandoConsulta = true ;
+				app.view.Consulta.instance.vsPaciente.selectedIndex = 3 ;
+			}
+			
 		]]>
 	</fx:Script>
 	
 	
 	<s:Group width="984" x="10" y="10">
 		<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="{dateConsulta}"/>
-		<s:Button right="0" label="CONSULTAS ANTERIORES" skinClass="app.skin.Button" click="backToList(event)" />
-		<s:Button y="0" right="202" label="VISUALIZAR IMPRESSÃO" skinClass="app.skin.Button" click="onImprimirResumo(event)"/>
+		<s:Button right="0" 	width="210" label="CONSULTAS ANTERIORES" skinClass="app.skin.Button" click="backToList(event)" />
+		<s:Button right="220" 	width="210" label="EDITAR CONSULTA" skinClass="app.skin.Button" click="onEditarConsulta(event)" />
+		<s:Button right="440" 	width="210" label="VISUALIZAR IMPRESSÃO" skinClass="app.skin.Button" click="onImprimirResumo(event)" />
 	</s:Group>
 		
 	<skin:ScrollerSemBug id="scroller" x="0" y="52" width="994" height="438">

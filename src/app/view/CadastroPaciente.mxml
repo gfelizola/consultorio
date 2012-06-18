@@ -333,7 +333,7 @@
 					<s:TextInput id="txtConvenio" x="480" y="31" width="225" skinClass="app.skin.TextInput" text="{paciente.convenio}" />
 					
 					<s:Label id="lblNCarteira" x="725" y="10" text="N. DA CARTEIRA"/>
-					<s:TextInput id="txtCarteira" x="725" y="31" width="200" skinClass="app.skin.TextInput" text="{paciente.carteira}" />
+					<s:TextInput id="txtCarteira" x="725" y="31" width="190" skinClass="app.skin.TextInput" text="{paciente.carteira}" />
 					
 					<s:Label x="0" y="74" text="OBJETIVO DA CONSULTA"/>
 					<s:TextInput id="txtObjetivo" x="0" y="95" width="435" skinClass="app.skin.TextInput" text="{paciente.objetivo}"/>
@@ -364,7 +364,7 @@
 					<s:TextInput id="txtProfissao" x="655" y="107" width="260" skinClass="app.skin.TextInput" text="{paciente.profissao}" />
 				</s:Group>
 				
-				<s:HGroup id="gpFeminino" width="100%" gap="30" visible="false" includeInLayout="false">
+				<s:HGroup id="gpFeminino" width="994" gap="30" visible="false" includeInLayout="false">
 					<s:Group id="gpGestante" x="0" y="0" width="145" height="57">
 						<s:Label x="0" y="0" text="É GESTANTE?"/>
 						<s:RadioButton id="gestanteSim" x="0" y="20" label="Sim" groupName="Gestante"/>
@@ -412,7 +412,7 @@
 					<s:TextInput id="txtEmail" x="0" y="229" width="435" skinClass="app.skin.TextInput" text="{paciente.email}" />
 				</s:Group>
 				
-				<s:HGroup width="100%" gap="20">
+				<s:HGroup width="100%" maxWidth="965" gap="20">
 					<s:VGroup width="100%">
 						<s:Label text="HISTÓRICO FAMILIAR"/>
 						<s:ComboBox id="cmbHistoricos" width="435" labelField="nome" dataProvider="{Constantes.historicos}" selectedIndex="-1" skinClass="app.skin.ComboBox" change="onHistoricoChange(event)" />
@@ -420,17 +420,17 @@
 					</s:VGroup>
 					
 					<s:VGroup width="100%">
-						<s:Label x="483" y="55" text="PATOLOGIAS"/>
-						<s:ComboBox id="cmbPatologias" x="483" y="76" width="435" labelField="nome" dataProvider="{Constantes.patologias}" selectedIndex="-1" skinClass="app.skin.ComboBox" change="onPatologiaChange(event)" />
+						<s:Label text="PATOLOGIAS"/>
+						<s:ComboBox id="cmbPatologias" width="435" labelField="nome" dataProvider="{Constantes.patologias}" selectedIndex="-1" skinClass="app.skin.ComboBox" change="onPatologiaChange(event)" />
 						<s:VGroup id="vgPatologias" width="100%" />
 					</s:VGroup>
 				</s:HGroup>
 				
-				<s:Group width="100%" id="gpHistorico" visible="false" includeInLayout="false">
+				<s:Group width="100%" maxWidth="965" id="gpHistorico" visible="false" includeInLayout="false">
 				    <s:VGroup>
 						<s:Label color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICO" />
 						<s:Label width="100%" text="Este campo deve ser utilizado para inserir informações relativas à história clínica e de saúde (uso pregresso de medicamentos, &#xd;realização de cirurgias ou procedimentos, etc.)"/>
-						<s:TextArea id="txtHistorico" x="0" y="66" width="924" height="167" skinClass="app.skin.TextArea" text="{paciente.historico}" />
+						<s:TextArea id="txtHistorico" x="0" y="66" width="925" height="167" skinClass="app.skin.TextArea" text="{paciente.historico}" />
 					</s:VGroup>
 				</s:Group>
 				

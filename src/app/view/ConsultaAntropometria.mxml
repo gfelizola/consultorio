@@ -2,8 +2,9 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009"
 					xmlns:s="library://ns.adobe.com/flex/spark"
 					xmlns:mx="library://ns.adobe.com/flex/mx"
-					xmlns:view="app.view.*"
-					width="994" height="400" creationComplete="init(event)" xmlns:skin="app.skin.*">
+					xmlns:view="app.view.*" xmlns:skin="app.skin.*"
+					width="994" height="400" 
+					creationComplete="init(event)" show="init(event)">
 	<fx:Script>
 		<![CDATA[
 			import app.model.Antropometria;
@@ -27,32 +28,56 @@
 			[Bindable]
 			private var formIsValid:Boolean = false;
 			
-			private function init(event:FlexEvent):void
+			private function init(e:FlexEvent):void
 			{
 				// Scroller Listener
-				if(!scroller.hasEventListener(MouseEvent.MOUSE_WHEEL))scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
+//				if(!scroller.hasEventListener(MouseEvent.MOUSE_WHEEL))scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
 				
 				for each( var validator:Validator in validators )
 					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
 					
 				gpPreGestacional.visible = gpPreGestacional.includeInLayout = General.pacienteAtual.gestante ;
 				
-				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
-				c.addJunction( c.createAndJunction()
-					.addNotNullCondition('antropometria')
-					.addLikeCondition('paciente', General.pacienteAtual.id.toString() )
-				);
-				c.addSort("dataConsulta", Sort.DESC );
-				
-				var consultas:ArrayCollection = DB.em.fetchCriteria(c);
-				if( consultas.length > 0 ){
-					var co:app.model.Consulta = consultas.getItemAt(0) as app.model.Consulta ;
-					if( co.antropometria ){
-//						if( co.antropometria.peso ) txtPeso.text = co.antropometria.peso.toString() ;
-//						if( co.antropometria.pesoPreGestacional ) txtPesoGestacional.text = co.antropometria.pesoPreGestacional.toString() ;
-						if( co.antropometria.estatura && General.pacienteAtual.idade / 12 > 20 ) txtEstatura.text = co.antropometria.estatura.toString() ;
+				if( General.editandoConsulta ){
+					var a:Antropometria = General.consultaAtual.antropometria;
+					
+					if( a ){
+						var campos:Array = [ 
+							txtPeso, txtPesoGestacional, txtEstatura, txtCircCintura, txtCircQuadril, txtCircTriceps, 
+							txtCircCoxa, txtCircPanturrilha, txtDobraBiceps, txtDobraTriceps, txtDobraSubescapular, txtDobraAxilarMedia, 
+							txtDobraSupraIliaca, txtDobraToracica, txtDobraAbdominal, txtDobraCoxa, txtDobraPanturrilha ];
+						var valores:Array = [
+							a.peso, a.pesoPreGestacional, a.estatura, a.circunferenciaCintura, a.circunferenciaQuadril, a.circunferenciaTriceps, 
+							a.circunferenciaCoxa, a.circunferenciaPanturrilha, a.dobraCutaneaBiciptal, a.dobraCutaneaTriciptal, a.dobraCutaneaSubescapular, a.dobraCutaneaAxilarMedia,
+							a.dobraCutaneaSupraIliaca, a.dobraCutaneaToracica, a.dobraCutaneaAbdominal, a.dobraCutaneaCoxa, a.dobraCutaneaPanturrilhaMedial
+						];
 						
-						validateForm();
+						for (var i:int = 0; i < campos.length; i++) 
+						{
+							if( ! isNaN( valores[i] ) && valores[i] > 0 ) campos[i].text = valores[i].toString();
+						}
+					}
+					
+					validateForm();
+					
+				} else {
+					var c:Criteria = DB.em.createCriteria(app.model.Consulta);
+					c.addJunction( c.createAndJunction()
+						.addNotNullCondition('antropometria')
+						.addLikeCondition('paciente', General.pacienteAtual.id.toString() )
+					);
+					c.addSort("dataConsulta", Sort.DESC );
+					
+					var consultas:ArrayCollection = DB.em.fetchCriteria(c);
+					if( consultas.length > 0 ){
+						var co:app.model.Consulta = consultas.getItemAt(0) as app.model.Consulta ;
+						if( co.antropometria ){
+							// if( co.antropometria.peso ) txtPeso.text = co.antropometria.peso.toString() ;
+							// if( co.antropometria.pesoPreGestacional ) txtPesoGestacional.text = co.antropometria.pesoPreGestacional.toString() ;
+							if( co.antropometria.estatura && General.pacienteAtual.idade / 12 > 20 ) txtEstatura.text = co.antropometria.estatura.toString() ;
+							
+							validateForm();
+						}
 					}
 				}
 			}
@@ -106,6 +131,12 @@
 					a.dobraCutaneaAbdominal = Number(txtDobraAbdominal.text.replace(',','.'));
 					a.dobraCutaneaCoxa = Number(txtDobraCoxa.text.replace(',','.'));
 					a.dobraCutaneaPanturrilhaMedial = Number(txtDobraPanturrilha.text.replace(',','.'));
+					
+					if( General.editandoConsulta ){
+						if( General.consultaAtual.antropometria ){
+							if( General.consultaAtual.antropometria.id > 0 ) a.id = General.consultaAtual.antropometria.id ;
+						}
+					}
 					
 					General.consultaAtual.antropometria = a ;
 					General.salvaConsulta();

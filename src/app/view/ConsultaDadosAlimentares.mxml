@@ -9,6 +9,7 @@
 			import app.model.Refeicao;
 			import app.util.General;
 			
+			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.core.UIComponent;
 			import mx.events.CloseEvent;
@@ -28,6 +29,32 @@
 				for each( var validator:Validator in validators ){
 					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
 				}
+				
+				if( General.editandoConsulta ){
+					var da:DadosAlimentares = General.consultaAtual.dadosAlimentares;
+					
+					if( da ){
+						if( da.aversoesAlimentares 		) txtAversoes.text 		= da.aversoesAlimentares ;
+						if( da.preferenciasAlimentares 	) txtPreferencias.text 	= da.preferenciasAlimentares ;
+						if( da.qtdeAgua 				) txtAgua.text 			= da.qtdeAgua ;
+						if( da.funcionamentoIntestinal 	) txtIntestinal.text 	= da.funcionamentoIntestinal ;
+						if( da.observacoes 				) txtObservacoes.text 	= da.observacoes ;
+						
+						var refs:ArrayCollection = da.refeicoes ;
+						var fim:int = refs.length > 6 ? 6 : refs.length;
+						
+						for (var i:int = 0; i < fim; i++) 
+						{
+							var cAlimento:spark.components.TextArea 	= this['txtAlimento' + (i+1)];
+							var cQtde:spark.components.TextArea 		= this['txtQtde' + (i+1)];
+							var cRefeicao:spark.components.TextInput 	= this['txtRefeicao' + (i+1)];
+							var r:Refeicao 								= refs.getItemAt(i) as Refeicao;
+							cAlimento.text 								= r.alimentos ;
+							cQtde.text 									= r.quantidades ;
+							cRefeicao.text 								= r.nome ;
+						}
+					}
+				}
 			}
 			private function validateForm(e:Event):void
 			{
@@ -35,13 +62,8 @@
 				formIsValid = true;
 				
 				for( var i:int = 0; i < validators.length ; i++  ){
-					var validator:Validator = validators[i] ;
-					if( ! validate(validator) ){
-						//trace( i, validator, validator.source );
-					}
+					validate( validators[i] );
 				}
-
-				trace( formIsValid );
 			}
 			
 			private function validate(validator:Validator):Boolean
@@ -57,7 +79,6 @@
 			
 			private function salvar():Boolean
 			{
-				trace("salvando");
 				if( Validator.validateAll(validators).length > 0 )
 				{
 					Alert.show("Existem erros no formulário. Por favor, valide os campos vermelhos", "Erro", Alert.OK );

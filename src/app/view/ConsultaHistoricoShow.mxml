@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="500"
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="1280" height="1000"
 					creationComplete="init()" show="init()" xmlns:skin="app.skin.*">
 	
 	<fx:Script>
@@ -194,73 +194,75 @@
 		]]>
 	</fx:Script>
 	
-	
-	<s:Group width="984" x="10" y="10">
-		<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="{dateConsulta}"/>
-		<s:Button right="0" 	width="210" label="CONSULTAS ANTERIORES" skinClass="app.skin.Button" click="backToList(event)" />
-		<s:Button right="220" 	width="210" label="EDITAR CONSULTA" skinClass="app.skin.Button" click="onEditarConsulta(event)" />
-		<s:Button right="440" 	width="210" label="VISUALIZAR IMPRESSÃO" skinClass="app.skin.Button" click="onImprimirResumo(event)" />
-	</s:Group>
+	<s:VGroup gap="20" width="100%" height="100%" paddingLeft="10" paddingTop="10" paddingBottom="10">
+		<s:Group width="100%">
+			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="{dateConsulta}"/>
+			<s:Button right="20" 	width="210" label="CONSULTAS ANTERIORES" skinClass="app.skin.Button" click="backToList(event)" />
+			<s:Button right="240" 	width="210" label="EDITAR CONSULTA" skinClass="app.skin.Button" click="onEditarConsulta(event)" />
+			<s:Button right="460" 	width="210" label="VISUALIZAR IMPRESSÃO" skinClass="app.skin.Button" click="onImprimirResumo(event)" />
+		</s:Group>
 		
-	<skin:ScrollerSemBug id="scroller" x="0" y="52" width="994" height="438">
-		<s:VGroup width="994" height="438" gap="10" paddingBottom="10" paddingLeft="10" paddingRight="0" paddingTop="10">
-			
-			<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="DADOS DA CONSULTA"/>
-			
-			<s:VGroup id="vgDadosConsulta" width="984">
-				<s:SkinnableContainer id="scTMB" width="974" backgroundColor="#FCFDFF">
-					<s:VGroup id="vgTMB" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-					</s:VGroup>
-				</s:SkinnableContainer>
-				
-				<s:SkinnableContainer id="scAntropometria" width="974" backgroundColor="#F6F9FE">
-					<s:CheckBox y="10" right="10" id="chAntropometria" label="Adicionar a impressão" selected="true"/>
+		<skin:ScrollerSemBug id="scroller" width="100%" height="100%">
+			<s:Group width="100%" height="100%">
+				<s:VGroup width="100%" height="100%" gap="10" paddingBottom="10" paddingTop="10">
+					<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="DADOS DA CONSULTA"/>
 					
-					<s:VGroup id="vgAntropometria" width="974" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
-						<s:Label text="ANTROPOMETRIA" fontSize="20" styleName="bold" />
+					<s:VGroup id="vgDadosConsulta" width="100%">
+						<s:SkinnableContainer id="scTMB" width="100%" backgroundColor="#FCFDFF">
+							<s:VGroup id="vgTMB" width="100%" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+							</s:VGroup>
+						</s:SkinnableContainer>
+						
+						<s:SkinnableContainer id="scAntropometria" width="100%" backgroundColor="#F6F9FE">
+							<s:CheckBox y="10" right="10" id="chAntropometria" label="Adicionar a impressão" selected="true"/>
+							
+							<s:VGroup id="vgAntropometria" width="100%" paddingBottom="10" paddingLeft="10" paddingRight="10" paddingTop="10">
+								<s:Label text="ANTROPOMETRIA" fontSize="20" styleName="bold" />
+							</s:VGroup>
+						</s:SkinnableContainer>
+						
+						<s:SkinnableContainer id="scMAN" width="100%" backgroundColor="#FCFDFF">
+							<s:VGroup id="vgMAN" width="100%" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+								<s:Label text="MAN" fontSize="20" styleName="bold" />
+							</s:VGroup>
+						</s:SkinnableContainer>
+						
+						<s:SkinnableContainer id="scAlimentos" width="100%" backgroundColor="#F6F9FE">
+							<s:CheckBox y="10" right="10" id="chAlimentos" label="Adicionar a impressão" selected="true"/>
+							
+							<s:VGroup id="vgAlimentos" width="100%" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+								<s:Label text="HÁBITOS ALIMENTARES" fontSize="20" styleName="bold" />
+							</s:VGroup>
+						</s:SkinnableContainer>
+						
+						<s:SkinnableContainer id="scAtividades" width="100%" backgroundColor="#FCFDFF">
+							<s:CheckBox y="10" right="10" id="chAtividades" label="Adicionar a impressão" selected="true"/>
+							
+							<s:VGroup id="vgAtividades" width="100%" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+								<s:Label text="ATIVIDADES FÍSICAS" fontSize="20" styleName="bold"/>
+							</s:VGroup>
+						</s:SkinnableContainer>
+						
+						<s:SkinnableContainer id="scExames" width="100%" backgroundColor="#F6F9FE">
+							<s:CheckBox y="10" right="10" id="chExames" label="Adicionar a impressão" selected="true"/>
+							
+							<s:VGroup id="vgExames" width="100%" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+								<s:Label text="EXAMES BIOQUÍMICOS" fontSize="20" styleName="bold"/>
+							</s:VGroup>
+						</s:SkinnableContainer>
+						
+						<s:SkinnableContainer width="100%" backgroundColor="#F6F9FE">
+							<s:Label x="10" y="10" fontSize="20" styleName="bold" text="OUTRAS INFORMAÇÕES IMPORTANTES" />
+							<s:Label id="txtObservacao" x="10" y="30" width="100%" text="" paddingBottom="10" paddingLeft="0" paddingRight="0" paddingTop="10" />
+						</s:SkinnableContainer>
 					</s:VGroup>
-				</s:SkinnableContainer>
-				
-				<s:SkinnableContainer id="scMAN" width="974" backgroundColor="#FCFDFF">
-					<s:VGroup id="vgMAN" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="MAN" fontSize="20" styleName="bold" />
-					</s:VGroup>
-				</s:SkinnableContainer>
-				
-				<s:SkinnableContainer id="scAlimentos" width="974" backgroundColor="#F6F9FE">
-					<s:CheckBox y="10" right="10" id="chAlimentos" label="Adicionar a impressão" selected="true"/>
 					
-					<s:VGroup id="vgAlimentos" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="HÁBITOS ALIMENTARES" fontSize="20" styleName="bold" />
+					<s:VGroup width="100%">
+						<s:Label fontSize="20" styleName="bold" text="RECOMENDAÇÃO DE DIETA" />
+						<s:TextArea id="txtRecomendacoes" width="100%" height="100" skinClass="app.skin.TextArea" />
 					</s:VGroup>
-				</s:SkinnableContainer>
-				
-				<s:SkinnableContainer id="scAtividades" width="974" backgroundColor="#FCFDFF">
-					<s:CheckBox y="10" right="10" id="chAtividades" label="Adicionar a impressão" selected="true"/>
-					
-					<s:VGroup id="vgAtividades" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="ATIVIDADES FÍSICAS" fontSize="20" styleName="bold"/>
-					</s:VGroup>
-				</s:SkinnableContainer>
-				
-				<s:SkinnableContainer id="scExames" width="974" backgroundColor="#F6F9FE">
-					<s:CheckBox y="10" right="10" id="chExames" label="Adicionar a impressão" selected="true"/>
-					
-					<s:VGroup id="vgExames" width="974" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
-						<s:Label text="EXAMES BIOQUÍMICOS" fontSize="20" styleName="bold"/>
-					</s:VGroup>
-				</s:SkinnableContainer>
-				
-				<s:SkinnableContainer width="974" backgroundColor="#F6F9FE">
-					<s:Label x="10" y="10" fontSize="20" styleName="bold" text="OUTRAS INFORMAÇÕES IMPORTANTES" />
-					<s:Label id="txtObservacao" x="10" y="30" width="954" text="" paddingBottom="10" paddingLeft="0" paddingRight="0" paddingTop="10" />
-				</s:SkinnableContainer>
-			</s:VGroup>
-			
-			<s:VGroup width="964">
-				<s:Label fontSize="20" styleName="bold" text="RECOMENDAÇÃO DE DIETA" />
-				<s:TextArea id="txtRecomendacoes" width="100%" height="100" skinClass="app.skin.TextArea" />
-			</s:VGroup>
-		</s:VGroup>
-	</skin:ScrollerSemBug>
+				</s:VGroup>
+			</s:Group>
+		</skin:ScrollerSemBug>
+	</s:VGroup>
 </s:NavigatorContent>

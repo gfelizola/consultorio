@@ -76,7 +76,7 @@
 		</s:layout>
 	</s:TabBar>
 	
-	<s:Rect id="bgVsPaciente" top="60" left="0" right="0" bottom="0" height="490" topLeftRadiusX="10"
+	<s:Rect id="bgVsPaciente" top="60" left="0" right="0" bottom="0" height="100%" topLeftRadiusX="10"
 			topLeftRadiusY="10" topRightRadiusX="10" topRightRadiusY="10">
 		<s:fill>
 			<s:SolidColor color="#ffffff" />
@@ -86,7 +86,7 @@
 		</s:filters>
 	</s:Rect>
 	
-	<mx:ViewStack id="vsPaciente" x="0" y="60" width="100%" height="480" creationPolicy="all" change="onTelaConsultaChange(event)">
+	<mx:ViewStack id="vsPaciente" x="0" y="60" width="100%" height="100%" creationPolicy="all" change="onTelaConsultaChange(event)">
 		<view:ConsultaSumario 		width="100%" height="100%" label="{bindNomeSobrenomePaciente}" />
 		<view:ConsultaDadosPaciente width="100%" height="100%" label="DADOS DO PACIENTE" />
 		<view:ConsultaHistorico 	width="100%" height="100%" label="HISTÓRICO DE CONSULTAS" />

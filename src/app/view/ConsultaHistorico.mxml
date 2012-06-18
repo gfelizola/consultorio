@@ -25,9 +25,9 @@
 	</fx:Declarations>
 	
 	
-	<mx:ViewStack id="vsHistoricoConsulta" x="0" y="0" width="1004" height="500">
-		<view:ConsultaHistoricoLista id="vLista"></view:ConsultaHistoricoLista>
-		<view:ConsultaHistoricoShow></view:ConsultaHistoricoShow>
+	<mx:ViewStack id="vsHistoricoConsulta" x="0" y="0" width="100%" height="100%">
+		<view:ConsultaHistoricoLista width="100%" height="100%" id="vLista"></view:ConsultaHistoricoLista>
+		<view:ConsultaHistoricoShow width="100%" height="100%"></view:ConsultaHistoricoShow>
 	</mx:ViewStack>
 	
 	

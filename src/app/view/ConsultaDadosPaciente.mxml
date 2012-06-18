@@ -31,11 +31,14 @@
 				txtEstadoCivil.text = p.estadoCivil.nome ;
 				txtProfissao.text = p.profissao ;
 				
-				var endereco:String = p.endereco ;
-					if( p.complemento.length > 0 ) endereco += ' - ' + p.complemento ;
-					endereco += ' - ' + p.cidade + ', ' + p.estado
+				var endereco:String = '';
 				
-				txtEndereco.text = endereco.toUpperCase() ;
+				if( p.endereco != '' ) 		endereco = 			p.endereco ;
+				if( p.complemento != '' ) 	endereco += ' - ' + p.complemento ;
+				if( p.cidade != '' ) 		endereco += ' - ' + p.cidade ;
+				if( p.estado != '' && p.estado != null ) 		endereco += ' - ' + p.estado ;
+				txtEndereco.text = endereco ;
+				
 				txtTelRes.text = p.telefone ;
 				txtTelCom.text = p.comercial ;
 				txtCelular.text = p.celular ;

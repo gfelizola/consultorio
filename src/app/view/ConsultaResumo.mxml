@@ -46,8 +46,6 @@
 				
 				txtNomePaciente.text = p.nomeCompleto ;
 				
-				trace( p.endereco != '',p.complemento != '',p.cidade != '',p.estado != '' );
-				
 				if( p.endereco != '' ) 		endereco = 			p.endereco ;
 				if( p.complemento != '' ) 	endereco += ' - ' + p.complemento ;
 				if( p.cidade != '' ) 		endereco += ' - ' + p.cidade ;

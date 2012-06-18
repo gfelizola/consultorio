@@ -46,23 +46,26 @@
 		]]>
 	</fx:Script>
 	
-	<s:Label x="10" y="10" color="#81BAEA" fontSize="20" styleName="bold" text="CONSULTAS ANTERIORES"/>
-	<s:DataGrid x="10" y="50" width="984" height="440" rowHeight="30" focusEnabled="false" alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}" skinClass="app.skin.DataGridSkin" click="onClickHandler(event)">
-		<s:columns>
-			<s:ArrayList>
-				<s:GridColumn headerText="Data da Consulta" dataField="dataConsulta" labelFunction="{function(data:* = null, data2:* = null):String{ return General.getFormattedDate( data.dataConsulta );}}" />
-				<s:GridColumn headerText="Visualizar" width="150">
-					<s:itemRenderer>
-						<fx:Component>
-							<s:GridItemRenderer>
-								<s:Button y="4" icon="assets/images/icoLupa.png" label="Ver consulta" skinClass="app.skin.TextButton" buttonMode="true" />
-							</s:GridItemRenderer>
-						</fx:Component>
-					</s:itemRenderer>
-				</s:GridColumn>
-			</s:ArrayList>
-		</s:columns>
-		<s:ArrayCollection id="historicoCollection"></s:ArrayCollection>
-	</s:DataGrid>
+	<s:VGroup width="100%" height="100%" gap="20" paddingLeft="10" paddingRight="10" paddingTop="20">
+		<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="CONSULTAS ANTERIORES"/>
+		<s:DataGrid width="100%" height="100%" rowHeight="30" focusEnabled="false" alternatingRowColors="{[0xF6F9FE, 0xFCFDFF]}" skinClass="app.skin.DataGridSkin" click="onClickHandler(event)">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn headerText="Data da Consulta" dataField="dataConsulta" labelFunction="{function(data:* = null, data2:* = null):String{ return General.getFormattedDate( data.dataConsulta );}}" />
+					<s:GridColumn headerText="Visualizar" width="150">
+						<s:itemRenderer>
+							<fx:Component>
+								<s:GridItemRenderer>
+									<s:Button y="4" icon="assets/images/icoLupa.png" label="Ver consulta" skinClass="app.skin.TextButton" buttonMode="true" />
+								</s:GridItemRenderer>
+							</fx:Component>
+						</s:itemRenderer>
+					</s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+			<s:ArrayCollection id="historicoCollection"></s:ArrayCollection>
+		</s:DataGrid>
+	</s:VGroup>
+	
 	
 </s:NavigatorContent>

@@ -59,9 +59,8 @@
 				estruturaView.visible = true ;
 				estruturaView.initWithoutUser();
 			}
-			
 		]]>
 	</fx:Script>
-	<views:Login id="loginView" top="0" bottom="0" left="0" right="0"></views:Login>
-	<views:Estrutura id="estruturaView" x="0" y="0" width="100%" height="100%" visible="false"></views:Estrutura>
+	<views:Login 		id="loginView" 		x="0" y="0" width="100%" height="100%"></views:Login>
+	<views:Estrutura 	id="estruturaView" 	x="0" y="0" width="100%" height="100%" visible="false"></views:Estrutura>
 </s:WindowedApplication>

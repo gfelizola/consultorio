@@ -1,5 +1,7 @@
 package app.skin
 {
+	import app.util.ScrollUtil;
+	
 	import flash.events.FocusEvent;
 	
 	import spark.components.Scroller;
@@ -19,6 +21,8 @@ package app.skin
 			if(focusManager != null) {
 				super.focusInHandler(event);
 			}
+			
+			ScrollUtil.autoScroll(event)
 		}
 	}
 }

@@ -72,6 +72,22 @@
 					verificaResumo(consulta);
 					buidlAll(consulta);
 				}
+				
+				var grafico:Graficos = new Graficos();
+				grafico.height = 420 ;
+				
+				if( p.idade / 12 < 20 ){ 
+					grafico.percentWidth = 100 ;
+					grafico.height = 800 ;
+					
+					var container:VGroup = pagina2.getChildByName('container') as VGroup;
+					container.addElement( gpDietas );
+				} else {
+					grafico.width = 720 ;
+					grafico.x = 140 ;
+				}
+				
+				gpGraficos.addElement( grafico );
 			}
 			
 			private function verificaResumo(c:app.model.Consulta):void
@@ -86,8 +102,6 @@
 							vgEER.visible = vgEER.includeInLayout = false ;
 						}
 					} else {
-						trace("ConsultaResumo.verificaResumo(c)", isNaN(r.necessidadeEnergetica));
-						
 						if( ! isNaN(r.necessidadeEnergetica) ){
 							txtEER.text = r.necessidadeEnergetica.toFixed(2) + ' kcal/dia' ;
 						} else {
@@ -176,9 +190,15 @@
 				g.width = 1000 ;
 				g.height = 1414 ;
 				
+				var vContainer:VGroup = new VGroup();
+				vContainer.percentWidth = 100 ;
+				vContainer.height = 1200 ;
+				vContainer.name = 'container' ;
+				g.addElement(vContainer);
+				
 				var header:ConsultaResumoHeader = new ConsultaResumoHeader();
 				header.percentWidth = 100 ;
-				g.addElementAt(header, 0);
+				vContainer.addElementAt(header, 0);
 				
 				var footer:ConsultaResumoFooter = new ConsultaResumoFooter();
 				footer.bottom = 30;
@@ -204,7 +224,7 @@
 				
 				colunas.addElement(colunaDireita);
 				colunas.addElement(colunaEsquerda);
-				g.addElement(colunas);
+				vContainer.addElement(colunas);
 				scrolado.addElement(g);
 				
 				return g;
@@ -213,12 +233,14 @@
 			private function getContainers():Array
 			{
 				var p1:Group = paginas[1] ;
-				var c1:HGroup = p1.getChildByName('colunas') as HGroup;
+				var v1:VGroup = p1.getChildByName('container') as VGroup;
+				var c1:HGroup = v1.getChildByName('colunas') as HGroup;
 				var d1:VGroup = c1.getChildByName('colunaDireita') as VGroup;
 				var e1:VGroup = c1.getChildByName('colunaEsquerda') as VGroup;
 				
 				var p2:Group = paginas[2] ;
-				var c2:HGroup = p2.getChildByName('colunas') as HGroup;
+				var v2:VGroup = p2.getChildByName('container') as VGroup;
+				var c2:HGroup = v2.getChildByName('colunas') as HGroup;
 				var d2:VGroup = c2.getChildByName('colunaDireita') as VGroup;
 				var e2:VGroup = c2.getChildByName('colunaEsquerda') as VGroup;
 				
@@ -363,9 +385,7 @@
 						</s:VGroup>
 					</s:HGroup>
 					
-					<s:Group id="gpGraficos" width="100%">
-						<view:Graficos x="140"/>
-					</s:Group>
+					<s:Group id="gpGraficos" width="100%" />
 					
 					<s:HGroup id="gpFinais" width="100%" gap="10" paddingLeft="20" paddingRight="20">
 						<s:VGroup id="gpIMC" width="33%" gap="5">

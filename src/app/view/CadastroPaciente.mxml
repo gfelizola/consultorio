@@ -9,11 +9,13 @@
 			import app.enums.EAreas;
 			import app.model.Constantes;
 			import app.model.DB;
+			import app.model.Historico;
 			import app.model.Paciente;
 			import app.model.Patologia;
 			import app.model.TipoAtendimento;
 			import app.util.General;
 			import app.util.Helpers;
+			import app.util.ScrollUtil;
 			
 			import as3.utils.Mask;
 			
@@ -143,14 +145,22 @@
 			
 			private function onHistoricoChange(e:IndexChangeEvent):void
 			{
-				historicos.addItem( cmbHistoricos.selectedItem );
-				atualizaPatologias( historicos, vgHistoricos );
+				var item:Object = cmbHistoricos.selectedItem ;
+				if( item is Historico ){
+					historicos.addItem( item );
+					atualizaPatologias( historicos, vgHistoricos );
+				} 
+				cmbHistoricos.selectedIndex = -1 ;
 			}
 			
 			private function onPatologiaChange(e:IndexChangeEvent):void
 			{
-				patologias.addItem( cmbPatologias.selectedItem );
-				atualizaPatologias( patologias, vgPatologias );
+				var item:Object = cmbPatologias.selectedItem ;
+				if( item is Patologia ){
+					patologias.addItem( item );
+					atualizaPatologias( patologias, vgPatologias );
+				}
+				cmbPatologias.selectedIndex = -1 ;
 			}
 			
 			private function atualizaPatologias( lista:ArrayCollection, container:VGroup ):void
@@ -313,17 +323,17 @@
 		<mx:StringValidator id="valDtNascimento" 	source="{txtDataNascimento}" 	property="text" required="true" requiredFieldError="O campo Data de Nascimento é obrigatório" />
 		<mx:StringValidator id="valEndereco" 		source="{txtEndereco}" 			property="text" required="true" requiredFieldError="O campo Endereço é obrigatório" />
 		<mx:StringValidator id="valCidade" 			source="{txtCidade}" 			property="text" required="true" requiredFieldError="O campo Cidade é obrigatório" />
-		<mx:StringValidator id="valTelRes" 			source="{txtTelResidencial}" 	property="text" required="true" requiredFieldError="O campo Telefone Residencial é obrigatório" />
-		<!--  mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" / -->
+		<!--<mx:StringValidator id="valTelRes" 			source="{txtTelResidencial}" 	property="text" required="true" requiredFieldError="O campo Telefone Residencial é obrigatório" />
+		<mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" />-->
 		
 		<s:NumberValidator id="valSexo" source="{cmbSexo}" property="selectedIndex" minValue="0" required="true" requiredFieldError="O campo sexo é obrigatório" />
 		<s:NumberValidator id="valEstado" source="{cmbEstados}" property="selectedIndex" minValue="0" required="true" requiredFieldError="O campo Estado é obrigatório" />
 	</fx:Declarations>
 	
 	
-	<skin:ScrollerSemBug id="formScroller" top="20" bottom="10" left="0" right="0" mouseFocusEnabled="false" mouseChildren="true" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
-		<s:Group width="100%" height="100%">
-			<s:VGroup id="formContainer" width="100%" height="100%" gap="20" paddingLeft="20">
+	<skin:ScrollerSemBug id="formScroller" top="20" bottom="10" left="0" right="0" horizontalCenter="0" verticalCenter="0">
+		<s:Group id="formContainer" width="100%" height="100%">
+			<s:VGroup width="100%" height="100%" gap="20" paddingLeft="20">
 				<s:Label color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DA CONSULTA" />
 				<s:Group>
 					<s:Label x="0" y="10" text="TIPO DE ATENDIMENTO"/>

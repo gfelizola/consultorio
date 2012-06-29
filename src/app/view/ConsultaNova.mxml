@@ -43,6 +43,9 @@
 				var idade:Number = Math.floor( Helpers.idade(p.dataNascimento) / 12 );
 				var tabMAN:UIComponent = tbConsulta.dataGroup.getElementAt(1) as UIComponent;
 				if(tabMAN){tabMAN.includeInLayout = tabMAN.visible = idade > 59;}
+				
+				verificarTroca = false ;
+				vsConsulta.selectedIndex = 0 ;
 			}
 			
 			private function rebuildView(e:Event = null):void{
@@ -59,7 +62,8 @@
 					{v:new ConsultaDadosAlimentares(),label:"DADOS ALIMENTARES"},
 					{v:new ConsultaAtividadeFisica(),label:"ATIVIDADE FÍSICA"},
 					{v:new ConsultaExames(),label:"EXAMES BIOQUÍMICOS"},
-					{v:new ConsultaObservacao,label:"OBSERVAÇÃO"}
+					{v:new ConsultaObservacao(),label:"OBSERVAÇÃO"},
+					{v:new NavigatorContent(),label:"CANCELAR"}
 				];
 				for (var i:String in views){
 					views[i]["v"].label = views[i]["label"];
@@ -71,16 +75,24 @@
 			
 			private function onConsultaChangeTela(e:IndexChangedEvent):void
 			{
-				if( ! General.consultaSalva && verificarTroca ){
+				if( e.newIndex == 6 ){
 					telaAnterior = e.oldIndex ;
 					
 					Alert.yesLabel = "Sim" ;
 					Alert.noLabel = "Não" ;
-					Alert.show("Você ainda não salvou os dados dessa parte da consulta. Tem certeza que deseja trocar de aba?", "Aviso", Alert.YES|Alert.NO, null, onAlertaFechado );
-					
+					Alert.show("Tem certeza que deseja cancelar a consulta? (Todos os dados modificados serão perdidos. Essa ação não tem como ser desfeita).", "Aviso", Alert.YES|Alert.NO, null, onAlertaCancelar );
 				} else {
-					verificarTroca = true ;
-					General.consultaSalva = false ;
+					if( ! General.consultaSalva && verificarTroca ){
+						telaAnterior = e.oldIndex ;
+						
+						Alert.yesLabel = "Sim" ;
+						Alert.noLabel = "Não" ;
+						Alert.show("Você ainda não salvou os dados dessa parte da consulta. Tem certeza que deseja trocar de aba?", "Aviso", Alert.YES|Alert.NO, null, onAlertaFechado );
+						
+					} else {
+						verificarTroca = true ;
+						General.consultaSalva = false ;
+					}
 				}
 			}
 			
@@ -88,6 +100,20 @@
 			{
 				if( e.detail == Alert.YES ){
 					General.consultaSalva = false ;
+				} else {
+					verificarTroca = false ;
+					vsConsulta.selectedIndex = telaAnterior ;
+				}
+			}
+			
+			private function onAlertaCancelar(e:CloseEvent):void
+			{
+				if( e.detail == Alert.YES ){
+					General.consultaSalva = false ;
+					General.editandoConsulta = false ;
+					General.consultaAtual = null;
+					
+					app.view.Consulta.instance.vsPaciente.selectedIndex = 0 ;
 				} else {
 					verificarTroca = false ;
 					vsConsulta.selectedIndex = telaAnterior ;
@@ -119,5 +145,6 @@
 		<view:ConsultaAtividadeFisica 	width="100%" height="100%" label="ATIVIDADE FÍSICA" />
 		<view:ConsultaExames 			width="100%" height="100%" label="EXAMES BIOQUÍMICOS" />
 		<view:ConsultaObservacao 		width="100%" height="100%" label="OUTRAS INFORMAÇÕES IMPORTANTES" />
+		<s:NavigatorContent 			width="100%" height="100%" label="CANCELAR" />
 	</mx:ViewStack>
 </s:NavigatorContent>

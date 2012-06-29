@@ -38,7 +38,7 @@ package app.util
 					{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
 					{ nome:'CIRCUNFERÊNCIA DA CINTURA***', 			valor: a.circunferenciaCintura, 		medida:'cm ' + a.getCircunferenciaCinturaDescription(c.paciente.sexo) },
 					{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
-					{ nome:'CIRCUNFERÊNCIA DO TRÍCEPS', 			valor: a.circunferenciaTriceps, 		medida:'cm' },
+					{ nome:'CIRCUNFERÊNCIA DO BRAÇO', 				valor: a.circunferenciaTriceps, 		medida:'cm' },
 					{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
 					{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
 					{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
@@ -118,12 +118,12 @@ package app.util
 			var da:DadosAlimentares = c.dadosAlimentares ;
 			if( da ){
 				if( removeAll ) container.removeAllElements();
-				container.addElement( ImpressaoUtils.getTresColunas( 'REFEIÇÃO/HORARIO', 'ALIMENTO', 'QUANTIDADE', textoSize, cor ) ) ;
+				container.addElement( ImpressaoUtils.getDuasColunas( 'REFEIÇÃO/HORARIO', 'ALIMENTO/QUANTIDADE', textoSize, cor ) ) ;
 				
 				for (var i:int = 0; i < da.refeicoes.length; i++) 
 				{
 					var r:Refeicao = da.refeicoes[i] ;
-					container.addElement( ImpressaoUtils.getTresColunas( r.nome, r.alimentos, r.quantidades, textoSize, cor ) ) ;
+					container.addElement( ImpressaoUtils.getDuasColunas( r.nome, r.alimentos, textoSize, cor ) ) ;
 				}
 				
 				if( da.qtdeAgua 				!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'QUANTIDADE DE ÁGUA POR DIA', da.qtdeAgua, textoSize, cor ) ) ;

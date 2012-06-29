@@ -321,14 +321,16 @@
 		<mx:StringValidator id="valConfirmaSenha" 	source="{txtConfirmaSenha}" 	property="text" required="true" requiredFieldError="O campo Confirmação de Senha é obrigatório" />
 		<mx:StringValidator id="valCRN" 			source="{txtCrn}" 				property="text" required="true" requiredFieldError="O campo CRN é obrigatório" />
 		<mx:StringValidator id="valTelefone" 		source="{txtTelefone}" 			property="text" required="true" requiredFieldError="O campo Telefone é obrigatório" />
-		<mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" />
+		<s:NumberValidator id="valSexo" 			source="{cmbSexo}" 				property="selectedIndex" minValue="0" lessThanMinError="O campo Sexo é obrigatório" />
+		<s:NumberValidator id="valRegional" 		source="{cmbRegional}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Regional é obrigatório" />
+		
+		<!-- mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" />
 		<mx:StringValidator id="valEndereco" 		source="{txtEndereco}" 			property="text" required="true" requiredFieldError="O campo Endereco é obrigatório" />
 		<mx:StringValidator id="valBairro" 			source="{txtBairro}" 			property="text" required="true" requiredFieldError="O campo Bairro é obrigatório" />
 		<mx:StringValidator id="valCidade" 			source="{txtCidade}" 			property="text" required="true" requiredFieldError="O campo Cidade é obrigatório" />
 		
-		<s:NumberValidator id="valSexo" 			source="{cmbSexo}" 				property="selectedIndex" minValue="0" lessThanMinError="O campo Sexo é obrigatório" />
-		<s:NumberValidator id="valEstado" 			source="{cmbEstados}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Estado é obrigatório" />
-		<s:NumberValidator id="valRegional" 		source="{cmbRegional}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Regional é obrigatório" />
+		
+		<s:NumberValidator id="valEstado" 			source="{cmbEstados}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Estado é obrigatório" /-->
 	</fx:Declarations>
 	
 	
@@ -374,22 +376,22 @@
 				<s:Label x="10" y="556" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos, que você pode entregar aos seus pacientes. &#xd;O preenchimento deles é opcional."/>
 
 				<s:Group>
-					<s:Label x="10" y="16" text="ENDEREÇO*"/>
+					<s:Label x="10" y="16" text="ENDEREÇO"/>
 					<s:TextInput id="txtEndereco" x="11" y="37" width="435" skinClass="app.skin.TextInput" text="{usuario.endereco}" />
 					
 					<s:Label x="491" y="16" text="COMPLEMENTO"/>
 					<s:TextInput id="txtComplemento" x="491" y="37" width="435" skinClass="app.skin.TextInput" text="{usuario.complemento}" />
 					
-					<s:Label x="11" y="81" text="BAIRRO*"/>
+					<s:Label x="11" y="81" text="BAIRRO"/>
 					<s:TextInput id="txtBairro" x="11" y="102" width="435" skinClass="app.skin.TextInput" text="{usuario.bairro}" />
 		
 					<s:Label x="491" y="81" text="CEP"/>
 					<s:TextInput id="txtCEP" x="491" y="102" width="435" skinClass="app.skin.TextInput" text="{usuario.CEP}" />
 					
-					<s:Label x="11" y="146" text="CIDADE*"/>
+					<s:Label x="11" y="146" text="CIDADE"/>
 					<s:TextInput id="txtCidade" x="11" y="167" width="435" skinClass="app.skin.TextInput" text="{usuario.cidade}" />
 					
-					<s:Label x="491" y="144" text="ESTADO*"/>
+					<s:Label x="491" y="144" text="ESTADO"/>
 					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbEstados" x="491" y="165" width="155" dataProvider="{bindEstadoArrayCollection}" skinClass="app.skin.ComboBox" selectedItem="{bindEstado}" />
 					
 					<s:Label x="665" y="144" text="TELEFONE*"/>
@@ -418,7 +420,7 @@
 					<s:Label x="10" y="0" text="WEBSITE/BLOG"/>
 					<s:TextInput id="txtWebsite" x="10" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.site}" />
 					
-					<s:Label x="485" y="0" text="E-MAIL*"/>
+					<s:Label x="485" y="0" text="E-MAIL"/>
 					<s:TextInput id="txtEmail" x="485" y="20" width="435" skinClass="app.skin.TextInput" text="{usuario.email}" />
 					
 					<s:Button id="btnSalvar" x="792" y="70" label="SALVAR DADOS" skinClass="app.skin.Button" click="onSalvar(event)"/>

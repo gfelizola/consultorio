@@ -28,6 +28,8 @@
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			
+			import org.casalib.util.DateUtil;
+			
 			import spark.components.HGroup;
 			import spark.components.SkinnableContainer;
 			import spark.components.TextArea;
@@ -206,8 +208,6 @@
 					dataDoExame = (General.consultaAtual.exameBioquimico != null) ? General.getFormattedDate(General.consultaAtual.exameBioquimico.dataDoExame.toString()) : General.getFormattedDate(new Date());
 				}
 				
-				new Mask(txtDateExame, "99/99/9999" );
-				
 				exames = this.getExames();
 				if(exames.length > 0)
 				{
@@ -234,6 +234,16 @@
 				
 				var erros:Array = Validator.validateAll(validators);
 				formIsValid = (erros.length == 0) ? true : false;
+				
+				var dataExame:String = txtDateExame.text ;
+				
+				if( formIsValid ){
+					trace( dataExame, Date.parse( dataExame ), Helpers.validateDate( dataExame ) );
+					if( ! Helpers.validateDate( dataExame ) ){
+						formIsValid = false ;
+						Alert.show("A data dos exames é inválida.", "Erro", Alert.OK );
+					}
+				}
 				
 				if(!formIsValid)
 				{
@@ -264,7 +274,7 @@
 					if(cc > 0)
 					{
 						var eb:ExameBioquimico = new ExameBioquimico();
-						eb.dataDoExame = txtDateExame.text;
+						eb.dataDoExame = dataExame;
 						eb.exames = exameCollection;
 						
 						General.consultaAtual.exameBioquimico = eb;
@@ -329,7 +339,7 @@
 							<s:Label width="150" text="Referência" />
 							<s:HGroup width="150" verticalAlign="middle">
 								<s:Label text="Data" />
-								<s:TextInput width="90" id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" />
+								<s:TextInput width="90" id="txtDateExame" skinClass="app.skin.TextInput" text="{dataDoExame}" restrict="0-9\/" maxChars="10" />
 							</s:HGroup>
 						</s:HGroup>
 					</s:SkinnableContainer>

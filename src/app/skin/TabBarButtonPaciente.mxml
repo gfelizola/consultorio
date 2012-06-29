@@ -44,7 +44,7 @@
     <!--- @private -->
     <s:Rect id="fill" left="5" right="5" top="0" bottom="0" topLeftRadiusX="10" topLeftRadiusY="10" topRightRadiusX="10" topRightRadiusY="10" >
         <s:fill>
-            <s:SolidColor color="#80BAEA" color.selectedStates="#ffffff" />
+            <s:SolidColor color="#528aba" color.selectedStates="#f0f8ff" />
         </s:fill>
 		<s:filters>
 			<s:GlowFilter color="#000000" alpha="0.3" blurX="10" blurY="10" />

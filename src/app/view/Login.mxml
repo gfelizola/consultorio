@@ -26,6 +26,12 @@
 				validators = new Array();
 				validators.push( valLogin );
 				validators.push( valSenha );
+				
+				if( Capabilities.isDebugger ){
+					txtLogin.text = "gustavo" ;
+					txtSenha.text = "123" ;
+					focusManager.setFocus(txtLogin);
+				}
 			}
 			
 			private function onNovoEvent(e:MouseEvent):void
@@ -66,22 +72,24 @@
 			}
 		]]>
 	</fx:Script>
+	<s:Group verticalCenter="1" horizontalCenter="1">
+		<s:Image x="0" y="0" source="assets/images/LoginBg.png" />
+		<s:Label x="59" y="80" color="#475767" styleName="light" fontSize="30" text="Seja bem-vindo ao"/>
+		<s:Label x="33" y="340" color="#475767" styleName="light" fontSize="11" text="Copyright © Nestlé - Todos os direitos reservados"/>
+		<s:Label id="lblResposta" x="33" y="304" width="316" height="28" color="#FF0000" fontSize="13"
+				 styleName="light"/>
+		<s:Label x="29" y="120" color="#475767" fontSize="30" text="Consultório"/>
+		<s:Label x="194" y="111" color="#475767" styleName="bold" fontSize="30" text="Nutri Saúde"/>
+		<mx:HRule x="32" y="156" width="320"/>
+		
+		<s:Form id="formLogin" defaultButton="{btnEntrar}" x="21" y="162" keyUp="checkKey(event)">
+			<s:TextInput id="txtLogin" x="0" y="162" width="321" prompt="LOGIN" text="" skinClass="app.skin.LoginTextInput"/>
+			<s:TextInput id="txtSenha" x="0" y="203" width="321" prompt="SENHA" text="" skinClass="app.skin.LoginTextInput" displayAsPassword="true" />
+			<s:Button id="btnEntrar" x="0" y="244" label="ENTRAR" skinClass="app.skin.Button" click="onEntrar(event)" />
+		</s:Form>
+		
+		<s:Label id="lblNovoUsuario" x="218" y="266" color="#474747" text="CRIAR NOVO USUÁRIO"
+				 textAlign="right" textDecoration="underline" click="onNovoEvent(event)" buttonMode="true" rollOver="onNovoEvent(event)" rollOut="onNovoEvent(event)" />
+	</s:Group>
 	
-	<s:Image x="0" y="0" source="assets/images/LoginBg.png" />
-	<s:Label x="59" y="80" color="#475767" styleName="light" fontSize="30" text="Seja bem-vindo ao"/>
-	<s:Label x="33" y="340" color="#475767" styleName="light" fontSize="11" text="Copyright © Nestlé - Todos os direitos reservados"/>
-	<s:Label id="lblResposta" x="33" y="304" width="316" height="28" color="#FF0000" fontSize="13"
-			 styleName="light"/>
-	<s:Label x="29" y="120" color="#475767" fontSize="30" text="Consultório"/>
-	<s:Label x="194" y="111" color="#475767" styleName="bold" fontSize="30" text="Nutri Saúde"/>
-	<mx:HRule x="32" y="156" width="320"/>
-	
-	<s:Form id="formLogin" defaultButton="{btnEntrar}" x="21" y="162" keyUp="checkKey(event)">
-		<s:TextInput id="txtLogin" x="0" y="162" width="321" prompt="LOGIN" text="" skinClass="app.skin.LoginTextInput"/>
-		<s:TextInput id="txtSenha" x="0" y="203" width="321" prompt="SENHA" text="" skinClass="app.skin.LoginTextInput" displayAsPassword="true" />
-		<s:Button id="btnEntrar" x="0" y="244" label="ENTRAR" skinClass="app.skin.Button" click="onEntrar(event)" />
-	</s:Form>
-	
-	<s:Label id="lblNovoUsuario" x="218" y="266" color="#474747" text="CRIAR NOVO USUÁRIO"
-			 textAlign="right" textDecoration="underline" click="onNovoEvent(event)" buttonMode="true" rollOver="onNovoEvent(event)" rollOut="onNovoEvent(event)" />
 </s:NavigatorContent>

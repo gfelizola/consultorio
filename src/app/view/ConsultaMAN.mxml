@@ -2,7 +2,8 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" width="994" height="400" 
-					creationComplete="init(event)" xmlns:view="app.view.*" xmlns:skin="app.skin.*">
+					creationComplete="init(event)" show="init(event)" 
+					xmlns:view="app.view.*" xmlns:skin="app.skin.*">
 	
 	<!--
 	<fx:Style source="app/style/Estilo.css" />
@@ -10,6 +11,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import app.model.Antropometria;
 			import app.model.MAN;
 			import app.util.General;
 			
@@ -92,6 +94,25 @@
 							
 							this['Pergunta' + letra].selectedValue = a['pontos' + perguntas[i] ] ;
 							this['Pergunta' + letra].dispatchEvent( new Event( Event.CHANGE ) ) ;
+						}
+					}
+				} else {
+					if( General.consultaAtual ){
+						if( General.consultaAtual.antropometria ){
+							var ant:Antropometria = General.consultaAtual.antropometria ;
+							if( ! isNaN( ant.circunferenciaPanturrilha ) && ant.circunferenciaPanturrilha > 0 ){
+								PerguntaF2.selectedValue = ant.circunferenciaPanturrilha < 31 ? 0 : 3 ;
+							}
+							
+							if( ! isNaN( ant.circunferenciaTriceps ) && ant.circunferenciaTriceps > 0 ){
+								if( ant.circunferenciaTriceps <= 21 ){
+									PerguntaQ.selectedValue = 0 ;
+								} else if( ant.circunferenciaTriceps > 21 && ant.circunferenciaTriceps <= 22 ){
+									PerguntaQ.selectedValue = 0.5 ;
+								} else if( ant.circunferenciaTriceps > 22 ){
+									PerguntaQ.selectedValue = 1 ;
+								} 
+							}
 						}
 					}
 				}
@@ -506,7 +527,7 @@
 					</s:HGroup>
 					
 					<s:Label width="435"
-							 text="L) O paciente consome duas ou mais porções diárias de fruta ouprodutos hortícolas?"/>
+							 text="L) O paciente consome duas ou mais porções diárias de fruta ou produtos hortícolas?"/>
 					<s:HGroup gap="20">
 						<s:RadioButton label="Sim" groupName="PerguntaL" value="1" skinClass="app.skin.RadioButton"/>
 						<s:RadioButton label="Não" groupName="PerguntaL" value="0" skinClass="app.skin.RadioButton"/>

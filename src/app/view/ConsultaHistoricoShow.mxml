@@ -114,9 +114,14 @@
 					ImpressaoUtils.criaTMB(General.consultaAtual, vgTMB, true, 13, corTexto );
 					vgTMB.addElementAt( criaTitulo('metabolismo basal / necessidade energética'),0 );
 					scTMB.visible = scTMB.includeInLayout = true ;
-				} else {
-					scTMB.visible = scTMB.includeInLayout = false ;
 				}
+				
+				var grafico:Graficos = new Graficos();
+				grafico.percentWidth = 100 ;
+				grafico.height = 500 ;
+				grafico.mostrarTitulos = false ;
+				
+				vgTMB.addElement( grafico );
 			}
 			
 			private function buidlAll():void
@@ -125,8 +130,9 @@
 				
 				if( General.consultaAtual.observacao ){
 					txtObservacao.text = General.consultaAtual.observacao;
+					scObservacoes.visible = scObservacoes.includeInLayout = true ;
 				}else{
-					txtObservacao.visible = txtObservacao.includeInLayout = false ;
+					scObservacoes.visible = scObservacoes.includeInLayout = false ;
 				}
 				
 				txtRecomendacoes.text = General.consultaAtual.recomendacoes ;
@@ -251,14 +257,15 @@
 							</s:VGroup>
 						</s:SkinnableContainer>
 						
-						<s:SkinnableContainer width="100%" backgroundColor="#F6F9FE">
+						<s:SkinnableContainer id="scObservacoes" width="100%" backgroundColor="#F6F9FE">
 							<s:Label x="10" y="10" fontSize="20" styleName="bold" text="OUTRAS INFORMAÇÕES IMPORTANTES" />
 							<s:Label id="txtObservacao" x="10" y="30" width="100%" text="" paddingBottom="10" paddingLeft="0" paddingRight="0" paddingTop="10" />
 						</s:SkinnableContainer>
 					</s:VGroup>
 					
 					<s:VGroup width="100%">
-						<s:Label fontSize="20" styleName="bold" text="RECOMENDAÇÃO DE DIETA" />
+						<s:Label fontSize="20" styleName="bold" text="ORIENTAÇÕES NUTRICIONAIS" />
+						<s:Label text="Essa área é destinada para você escrever as orientações alimentares para seu paciente" />
 						<s:TextArea id="txtRecomendacoes" width="100%" height="100" skinClass="app.skin.TextArea" />
 					</s:VGroup>
 				</s:VGroup>

@@ -8,39 +8,26 @@ package app.util
 	import app.model.DB;
 	import app.model.Paciente;
 	import app.model.Usuario;
-	import app.util.Helpers;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.Stage;
 	import flash.events.ErrorEvent;
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.text.ReturnKeyLabel;
 	
 	import mx.controls.Alert;
 
 	public class General
 	{
+		public static const APLICACAO_CARREGADA:String = "AplicacaoCarregada" ;
 		
 		public static var stage:Stage ;
-		
 		public static var dispatcher:Dispatcher = new Dispatcher();
-		
 		public static var salvaFinaliza:Boolean = false;
-		
 		public static var usuario:Usuario;
-		
 		public static var pacienteAtual:Paciente;
-		
 		public static var consultaAtual:Consulta;
-		
 		public static var consultaSalva:Boolean;
-		
 		public static var editandoConsulta:Boolean;
-		
 		public static var buscaAtual:String = '' ;
-		
-		public static const APLICACAO_CARREGADA:String = "AplicacaoCarregada" ;
 
 		private static var appUpdater:ApplicationUpdaterUI;
 		

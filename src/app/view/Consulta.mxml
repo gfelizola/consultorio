@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
-					xmlns:s="library://ns.adobe.com/flex/spark" 
-					xmlns:mx="library://ns.adobe.com/flex/mx" width="1004" height="540" 
-					xmlns:view="app.view.*" creationComplete="init()">
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009"
+					xmlns:s="library://ns.adobe.com/flex/spark"
+					xmlns:mx="library://ns.adobe.com/flex/mx"
+					xmlns:view="app.view.*"
+					width="1004" height="540" creationComplete="init()" focusColor="#528ABA">
 	<fx:Script>
 		<![CDATA[
+			import app.model.Consulta;
 			import app.skin.TabBar;
+			import app.skin.TabBarButtonPaciente;
 			import app.util.General;
 			
 			import mx.controls.Alert;
@@ -21,17 +24,23 @@
 			
 			public static var instance:Consulta;
 			
+			private var verificaTroca:Boolean = false;
+			
 			[Bindable]
 			private var bindNomeSobrenomePaciente:String = General.pacienteAtual ? General.pacienteAtual.nome.toUpperCase() + ' ' + General.pacienteAtual.sobrenome.toUpperCase() : '';
 			
 			private function onTelaConsultaChange(event:IndexChangedEvent):void
 			{
-				if( event.oldIndex == 3 ){
+				if( event.oldIndex == 3 && verificaTroca ){
 					if( General.consultaAtual != null && ! General.consultaSalva ){
 						Alert.yesLabel = "Sim" ;
 						Alert.noLabel = "Não" ;
 						Alert.show("Você está cadastrando uma nova consulta. Caso saia dessa tela, a consulta será gravada somente até o ultimo momento que foi salva. Deseja continuar e sair?", "Aviso", Alert.YES|Alert.NO, null, onAlertTrocar );
 						return ;
+					}
+				} else if( event.newIndex == 3 ){
+					if( General.consultaAtual != null && ! General.editandoConsulta ){
+						General.consultaAtual = new app.model.Consulta();
 					}
 				}
 			}
@@ -47,6 +56,9 @@
 					var bt:ButtonBarButton = tbPaciente.dataGroup.getChildAt(i) as ButtonBarButton;
 					bt.height = bt.maxHeight = c == 0 ? 50 : 40 ;
 					bt.y = c == 0 ? 0 : 10 ;
+					if( c == 0 ){
+						bt.setStyle('skinClass', app.skin.TabBarButtonPaciente);
+					}
 					Label( bt.labelDisplay ).setStyle("fontSize", c == 0 ? 18 : 13 ) ;
 					
 					var larg:Number = ( tbPaciente.width - 15 ) / 4 ; 
@@ -54,6 +66,10 @@
 					bt.x = ( pos[c] * bt.width ) + ( c== 0 ? 5 : 85 ) ; 
 					c++ ;
 				}
+				
+				verificaTroca = false ;
+				vsPaciente.selectedIndex = 0;
+				verificaTroca = true ;
 				
 			}
 			
@@ -66,6 +82,15 @@
 			
 		]]>
 	</fx:Script>
+	
+	<fx:Style>
+		@namespace s "library://ns.adobe.com/flex/spark";
+		.nomePaciente {
+			chromeColor: #663366;
+			color: #9999CC;
+		}
+	</fx:Style>
+	
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>

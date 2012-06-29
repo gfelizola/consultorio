@@ -36,5 +36,27 @@ package app.util
 //			}
 			return age;
 		}
+		
+		static public function validateDate( s:String ):Boolean
+		{
+			if ( s.indexOf("/") == -1 ) return false;
+			var dateParts:Array = s.split("/");
+			if ( dateParts.length != 3) return false;
+			for (var i:int = 0; i < dateParts.length; i++)
+			{
+				if (isNaN(dateParts[i])) return false;
+			}
+
+			if (Number(dateParts[0]) < 1 || Number(dateParts[0]) > 31 ) return false;
+			if (Number(dateParts[1]) < 1 || Number(dateParts[1]) > 12 ) return false;
+			if (Number(dateParts[2]) < 1000 || Number(dateParts[2]) > 9999 ) return false;
+			
+			var day:Number 		= Number(dateParts[0]);
+			var month:Number 	= Number(dateParts[1]) - 1;
+			var year:Number 	= Number(dateParts[2]);
+			var date:Date 		= new Date (year, month, day); 
+			if ( date.getMonth() != month ) return false;
+			return true;
+		}
 	}
 }

@@ -80,7 +80,7 @@
 		<s:VGroup width="100%">
 			<s:Label id="txtBemVindo" 	width="100%" color="#83BBEA" fontSize="30" styleName="bold" text="Bem-vindo"/>
 			<s:Label id="txtNome" 		width="100%" color="#83BBEA" fontSize="39" styleName="bold" text="Ana Maria"/>
-			<s:Label width="100%" text="O Consultório Nutri Saúde é uma ferramenta para facilitar o armazenamento de dados de seus pacientes e o cálculo de informações úteis para a prática clínica.&#xd;&#xd;Você pode acessar de forma rápida as informações de seus pacientes, além de incluir novos acompanhamentos. &#xd;Para localizar um paciente já cadastrado, digite seu nome no campo “Buscar paciente”.&#xd;Se deseja incluir um novo atendimento, é só escolher “Cadastrar Paciente”."/>
+			<s:Label width="100%" text="O Consultório Nutri Saúde é uma ferramenta para facilitar o armazenamento de dados de seus pacientes e o cálculo de informações úteis para a prática clínica.&#xd;&#xd;Você pode acessar de forma rápida as informações de seus pacientes, além de incluir novos acompanhamentos. &#xd;Para localizar um paciente já cadastrado, digite seu nome no campo “Buscar paciente”.&#xd;Se deseja incluir um novo atendimento, é só escolher “Cadastrar”."/>
 		</s:VGroup>
 		
 		<s:VGroup width="100%" height="100%">

@@ -106,6 +106,8 @@
 							<s:VGroup width="100%" height="100%" paddingRight="20" gap="20">
 								<s:Label width="100%" text="Editar Dados do Profissional" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="Para alterar os dados pessoais ou gerais, é preciso clicar no item “Alterar Dados”, no canto superior da página. É importante manter esses dados sempre atualizados, já que eles aparecem nas impressões de documentos para o paciente. " />
+								
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
 							</s:VGroup>
 						</s:Group>	
 					</skin:ScrollerSemBug>
@@ -140,7 +142,8 @@
 							<s:VGroup width="100%" height="100%" paddingRight="20" gap="20">
 								<s:Label width="100%" text="Buscar paciente" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="Para encontrar um paciente de forma rápida, é possível utilizar o campo “Buscar paciente”. Também é possível clicar em “Meus Pacientes” e buscar através da lista existente ou dos botões com a primeira letra do nome." />
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/busca.png" />
 							</s:VGroup>
 						</s:Group>	
 					</skin:ScrollerSemBug>
@@ -152,6 +155,9 @@
 							<s:VGroup width="100%" height="100%" paddingRight="20" gap="20">
 								<s:Label width="100%" text="Sumário do Paciente" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="É possível acompanhar, a partir da finalização da primeira consulta do paciente, um resumo com  os dados nutricionais. A aba sempre terá o nome do paciente. Clicando nela, é possível visualizar um resumo dos dados deste paciente, incluindo idade, nível de atividade física, principais patologias, IMC e data da última consulta." />
+								
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/sumario_variacao_peso.png" />
+								
 								<s:Label width="100%" text="Além disso, é possível acompanhar a evolução do paciente por meio dos gráficos presentes na tela, conforme perfil do paciente. " />
 								<s:Label width="100%" text="No caso de crianças, é possível selecionar qual dos gráficos (IMC por idade/ Peso por idade/ Estatura por idade/ Peso por estatura) de evolução é o mais adequado para visualização." />
 								<s:Label width="100%" text="Se o paciente for adulto, aparecerá o gráfico “Variação de peso”, com a evolução de peso deste paciente. " />
@@ -168,6 +174,8 @@
 							<s:VGroup width="100%" height="100%" paddingRight="20" gap="20">
 								<s:Label width="100%" text="Histórico da Consulta" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="Todas as consultas realizadas podem ser resgatadas no Consultório Nutri Saúde. Basta clicar em “Histórico de Consulta”. Desta maneira, é possível acessar em ordem cronológica as consultas do paciente selecionado. " />
+								
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/editar_consulta.png" />
 							</s:VGroup>
 						</s:Group>	
 					</skin:ScrollerSemBug>
@@ -191,23 +199,23 @@
 								<s:Label width="100%" text="Imputar dados no Consultório Nutri Saúde" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="Após concluir o cadastro, já é possível salvar os dados das consultas do paciente. Não há uma ordem determinada de preencimento das abas (Antropometria, Dados Alimentares, Atividade Física, Exames Bioquímicos e Observação) para seguir. Estes dados podem ser preenchidos de maneira aleatória. " />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/nova_consulta.png" />
 								
 								<s:Label width="100%" text="Também pode-se imprimir o conteúdo de cada uma das abas separadamente, tanto para arquivar a versão impressa, quanto para entregar para o paciente, se necessário." />
 								<s:Label width="100%" text="Apesar de não ser obrigatório preencher todas as abas, há alguns campos que são  importantes, já que são utilizados para gerar os resultados da avaliação nutricional. São eles: Peso, Estatura e Nível de Atividade Física. " />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/peso_estatura_atividade_fisica_1.png" />
 								
 								<s:Label width="100%" text="Em todas as abas, após o preenchimento dos campos, clique em “Salvar e Visualizar Dados” antes de trocar de tela. Toda vez que clicar neste botão, será carregada, do lado direito da tela, a visualização da impressão destes dados. Se desejar, é possível imprimir, clicando no botão “Imprimir”. " />
-								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
-								
 								<s:Label width="100%" text="Quando acessar uma aba específica, como “Antropometria”, por exemplo, preencha os campos e clique em “Salvar e Visualizar Dados” antes de trocar de tela. Caso contrário, as informações preenchidas não serão salvas. " />
 								<s:Label width="100%" text="Ao preencher todas as informações do paciente, é possível finalizar a consulta e gerar um relatório de avaliação nutricional, que também inclui um resumo de todas as informações cadastradas na consulta atual." />
-								<s:Label width="100%" text="Para finalizar a consulta, basta clicar no botão  “Finalizar consulta” a qualquer momento e em qualquer aba. Porém, ao após clicar neste botão, a inserção de dados da consulta será encerrada e, desta maneira, serão considerados, para o cálculo do metabolismo basal e da necessidade energética, apenas os dados salvos anteriormente. " />
-								<s:Label width="100%" text="Após finalizar a consulta, uma tela com os resultados de avaliação nutricional e o resumo dos dados salvos aparecerá (ver Passo 3). Neste momento, é possível configurar os dados que deseja imprimir. Para isso, basta clicar em “Adicionar a impressão”. Também pode-se incluir outras informações necessárias no campo “Orientações nutricionais”. " />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/Salavr_e_finalizarconsulta.png" />
+								
+								<s:Label width="100%" text="Para finalizar a consulta, basta clicar no botão  “Finalizar consulta” a qualquer momento e em qualquer aba. Porém, ao após clicar neste botão, a inserção de dados da consulta será encerrada e, desta maneira, serão considerados, para o cálculo do metabolismo basal e da necessidade energética, apenas os dados salvos anteriormente. " />
+								<s:Label width="100%" text="Após finalizar a consulta, uma tela com os resultados de avaliação nutricional e o resumo dos dados salvos aparecerá. Neste momento, é possível configurar os dados que deseja imprimir. Para isso, basta clicar em “Adicionar a impressão”. Também pode-se incluir outras informações necessárias no campo “Orientações nutricionais”. " />
+								
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/orientacoes_nutricionais.png" />
 							</s:VGroup>
 						</s:Group>	
 					</skin:ScrollerSemBug>
@@ -220,7 +228,7 @@
 								<s:Label width="100%" text="Aba Antropometria" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="Nesta aba, é importante informar os dados antropométricos do paciente. É importante informar o peso e a altura para cálculo do IMC e das necessidades energéticas. O IMC é importante para avaliação do peso do paciente e diagnóstico um eventual desvio na massa corporal, como desnutrição, sobrepeso e obesidade. Já a circunferência da cintura também permite a identificação do risco cardiovascular. Porém, é relevante lembrar que a interpretação destes resultados deve ser criteriosa e levar em conta outras variáveis individuais. Além disso, um alto percentual de massa magra pode invalidar o resultado do IMC e, por isso, a viabilidade de utilização deste índice deve ser cuidadosamente avaliada pelo nutricionista. " />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/antropometria.png" />
 								
 								<s:Label width="100%" text="Antes de mudar de tela, é importante clicar em “Salvar e Visualizar Dados”, para não perder as informações. " />
 							</s:VGroup>
@@ -235,7 +243,7 @@
 								<s:Label width="100%" text="Aba MAN – Mini Avaliação Nutricional" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="A aba “MAN” é exclusiva para avaliação de pacientes idosos. Portanto, ela só aparece para pacientes com idade superior a 60 anos. Trata-se de um método subjetivo para a avaliação nutricional do idoso que  possui duas etapas. A primeira é caracterizada pela triagem e contém seis questões, com pontuação máxima de 14 pontos. Em caso de pontuação inferior a 12 pontos, há possibilidade de desnutrição, sendo necessário continuar a avaliação na segunda etapa de Avaliação Global. Esta, por sua vez, é composta por doze questões e classifica o idoso quanto ao risco de desnutrição ou desnutrição." />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/MAN_2.png" />
 							</s:VGroup>
 						</s:Group>	
 					</skin:ScrollerSemBug>
@@ -248,7 +256,7 @@
 								<s:Label width="100%" text="Aba Dados Alimentares" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="Nesta tela, não há campos obrigatórios. Nela, é possível preencher os hábitos alimentares do paciente e inserior o recordatório alimentar habitual ou aplicar um recordatório de 24h identificando o consumo alimentar do paciente, além de horários e número e frequencia das refeições." />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/dados_alimentares.png" />
 								
 								<s:Label width="100%" text="Também estão disponíveis campos para o preenchimento das informações: ingestão hídrica, funcionamento intestinal, preferências e aversões alimentares. Há também um campo para “Outras informações” para dados complementares. " />
 								<s:Label width="100%" text="Mostrar os campos de preenchimento de igestao de agua, funcional mesnto intestinal, etc" />
@@ -265,7 +273,7 @@
 								<s:Label width="100%" text="Aba Exames bioquímicos" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="Nesta aba, é possível informar os níveis dos principais exames bioquímicos para acompanhamento nutricional, avaliando ainda a adequação conforme os valores de referência. É possível também incluir outros três exames conforme a necessidade, nos campos abertos." />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/exames_bioquimicos.png" />
 								
 								<s:Label width="100%" text="Antes de mudar de tela, é importante clicar em “Salvar e Visualizar Dados”, para não perder as informações. " />
 							</s:VGroup>
@@ -281,7 +289,7 @@
 								<s:Label width="100%" text="Nesta aba, há um campo vazio e sem limites de caracteres para registro de quaisquer informações importantes para o acompanhamento nutricional do paciente que não estejam elencadas nas outras Abas." />
 								<s:Label width="100%" text="Não é necessário incluir nesta Aba as Orientações para o paciente, já que há um campo expecífico para isto, que é apresentado junto com a Avaliação nutricional do paciente." />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/observacao.png" />
 								
 								<s:Label width="100%" text="Antes de mudar de tela, é importante clicar em “Salvar e Visualizar Dados”, para não perder as informações. " />
 							</s:VGroup>
@@ -296,17 +304,15 @@
 								<s:Label width="100%" text="Resultado da Avaliação Nutricional e Orientações Nutricionais" styleName="bold" fontSize="20" />
 								<s:Label width="100%" text="Ao finalizar a consulta, a avaliação nutricional será gerada de acordo com estágio de vida do paciente (criança, adolescente, adulto, gestante ou idoso). Serão visualizados os dados informados nas etapas anteriores além do resultado da avaliação nutricional. " />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/nova_consulta_2.png" />
 								
 								<s:Label width="100%" text="Conforme perfil do paciente, poderão ser visualizados índices antropométricos, como o IMC, ou ainda as Curvas de crescimento e de Acompanhamento do peso gestacional em semanas. " />
 								<s:Label width="100%" text="É fundamental ressaltar que a viabilidade de utilização de cada avaliação constante na ferramenta, assim como o estabelecimento do diagnóstico nutricional, deverão ser criteriosamente analisados pelo nutricionista de acordo com o raciocínio clínico. Os métodos de avaliação utilizados no programa apresentam-se caráter meramente sugestivo e a viabilidade de utilização deve ser feita individualmente pelo profissional.  " />
 								<s:Label width="100%" text="Para complementar os dados do paciente, é possível incluir também as Orientações para o paciente, no campo “Orientações Nutricionais”, com base nas informações apresentadas." />
 								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
+								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/orientacoes_nutricionais.png" />
 								
 								<s:Label width="100%" text="Todas as informações que aparecem nesta tela podem ser impressas, para que sejam arquivadas, ou mesmo para entrega para o paciente É possível selecionar quais os dados que devem aparecer na impressão, selecionando-os em “Adicionar a impressão”. Para visualizar a impressão, é preciso clicar no botão “Visualizar impressão”. Também é possível editar os dados preenchidos, caso necessário, clicando no botão “Editar consulta”." />
-								
-								<s:Image width="100%" maxWidth="1025" verticalAlign="top" source="assets/images/manual/alterar_dados_nutricionista.png" />
 							</s:VGroup>
 						</s:Group>	
 					</skin:ScrollerSemBug>

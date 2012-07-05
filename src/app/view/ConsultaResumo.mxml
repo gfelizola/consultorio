@@ -42,15 +42,15 @@
 			{
 				var p:Paciente = General.pacienteAtual ;
 				var idade:Number = Helpers.idade(p.dataNascimento);
-				var endereco:String = '';
+//				var endereco:String = '';
 				
 				txtNomePaciente.text = p.nomeCompleto ;
 				
-				if( p.endereco != '' ) 		endereco = 			p.endereco ;
-				if( p.complemento != '' ) 	endereco += ' - ' + p.complemento ;
-				if( p.cidade != '' ) 		endereco += ' - ' + p.cidade ;
-				if( p.estado != '' && p.estado != null ) 		endereco += ' - ' + p.estado ;
-				txtEnderecoPaciente.text = endereco ;
+//				if( p.endereco != '' ) 		endereco = 			p.endereco ;
+//				if( p.complemento != '' ) 	endereco += ' - ' + p.complemento ;
+//				if( p.cidade != '' ) 		endereco += ' - ' + p.cidade ;
+//				if( p.estado != '' && p.estado != null ) 		endereco += ' - ' + p.estado ;
+//				txtEnderecoPaciente.text = endereco ;
 				
 				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
 				c.addEqualsCondition("paciente", p.id );
@@ -274,6 +274,8 @@
 						var visiveis:Array = [];
 						var verObservacao:Boolean = false ;
 						
+						gpDietas.visible = gpDietas.includeInLayout = false ;
+						
 						for (var i:int = 0; i < impressos.length; i++) 
 						{
 							if( impressos[i] == ImpressaoUtils.ANTROPOMETRIA ) 		visiveis.push(0);
@@ -281,6 +283,7 @@
 							if( impressos[i] == ImpressaoUtils.DADOS_ALIMENTARES ) 	visiveis.push(2);
 							if( impressos[i] == ImpressaoUtils.ATIVIDADES_FISICAS ) visiveis.push(3);
 							if( impressos[i] == ImpressaoUtils.OBSERVACOES ) 		verObservacao = true ;
+							if( impressos[i] == ImpressaoUtils.ORIENTACOES ) 		gpDietas.visible = gpDietas.includeInLayout = true ;
 						}
 						
 						var cs:Array = getContainers();
@@ -364,8 +367,8 @@
 					<s:Group id="gpDadosPaciente">
 						<s:Label id="txtNomePaciente" x="0" y="0" width="980" height="40" fontSize="30"
 								 styleName="bold" text="Nome do paciente" textAlign="center"/>
-						<s:Label id="txtEnderecoPaciente" x="0" y="40" width="980" height="50" fontSize="24"
-								 text="Endereco do paciente" textAlign="center"/>
+						<!--<s:Label id="txtEnderecoPaciente" x="0" y="40" width="980" height="50" fontSize="24"
+								 text="Endereco do paciente" textAlign="center"/>-->
 					</s:Group>
 					
 					<s:HGroup id="hgTMB" width="100%" gap="20" paddingLeft="110" paddingRight="110">
@@ -391,8 +394,8 @@
 						<s:VGroup id="gpIMC" width="33%" gap="5">
 							<s:Label width="100%" height="25" fontSize="18" styleName="bold" text="IMC" />
 							<s:HGroup gap="10" width="100%">
-								<s:Label id="txtIMC" fontSize="16" text="" />
-								<s:Label id="txtIMCDescricao" fontSize="14" styleName="light" text="" />
+								<s:Label id="txtIMC" width="30%" fontSize="16" text="" />
+								<s:Label id="txtIMCDescricao" width="70%" fontSize="14" styleName="light" text="" />
 							</s:HGroup>
 							<s:Label width="100%" color="#BBBBBB" fontSize="9"
 									 text="OMS. Organização Mundial da Saúde. Diet, nutrition and the prevention of chronic diseases. Geneva, WHO; 2003."/>
@@ -400,8 +403,8 @@
 						<s:VGroup id="gpCircCintura" width="34%" gap="5">
 							<s:Label x="0" y="0" width="100%" height="25" fontSize="18" styleName="bold" text="CIRCUNFERÊNCIA DA CINTURA" />
 							<s:HGroup x="0" y="25" gap="10" width="100%">
-								<s:Label id="txtCircCintura" fontSize="16" text="" />
-								<s:Label id="txtCCDescricao" fontSize="14" styleName="light" text="" />
+								<s:Label id="txtCircCintura" width="30%" fontSize="16" text="" />
+								<s:Label id="txtCCDescricao" width="70%" fontSize="14" styleName="light" text="" />
 							</s:HGroup>
 							<s:Label width="100%" color="#BBBBBB" fontSize="9"
 									 text="BRASIL. Ministério da Saúde. Vigilância Alimentar e Nutricional – SISVAN. Orientações básicas para a coleta, o processamento, a analise de dados e a informação em serviços de saúde. Diário Oficial da União Brasília, 2004"/>
@@ -409,8 +412,8 @@
 						<s:VGroup id="gpRCQ" width="33%" gap="5">
 							<s:Label x="0" y="0" width="100%" height="25" fontSize="18" styleName="bold" text="RELAÇÃO CINTURA X QUADRIL" />
 							<s:HGroup x="0" y="25" gap="10" width="100%">
-								<s:Label id="txtRCQ" fontSize="16" text="" />
-								<s:Label id="txtRCQDescricao" fontSize="14" styleName="light" text="" />
+								<s:Label id="txtRCQ" fontSize="16" width="30%" text="" />
+								<s:Label id="txtRCQDescricao" fontSize="14" width="70%" styleName="light" text="" />
 							</s:HGroup>
 							<s:Label width="100%" color="#BBBBBB" fontSize="9"
 									 text="WORLD HEALTH ORGANIZATION . Obesity: Preventing and managing the global epidemic – Report of a WHO consultation on obesity. Geneva, 1998."/>
@@ -418,7 +421,7 @@
 					</s:HGroup>
 					
 					<s:VGroup id="gpDietas" width="100%" paddingLeft="20" paddingRight="20" gap="10">
-						<s:Label id="txtTitRecomendacoes" width="100%" height="25" fontSize="18" styleName="bold" text="ORIENTAÇÕES DE DIETAS" />
+						<s:Label id="txtTitRecomendacoes" width="100%" height="25" fontSize="18" styleName="bold" text="ORIENTAÇÕES NUTRICIONAIS" />
 						<s:Label id="txtRecomendacoes" width="100%" fontSize="16" text="" />
 					</s:VGroup>
 				</s:VGroup>

@@ -139,7 +139,7 @@
 			{
 				if( e.detail == Alert.YES ){
 					if( salvar() ){
-						Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						Consulta.instance.abreHistorico();
 						General.dispatcher.rebuild();
 					}
 				}
@@ -257,12 +257,12 @@
 				</s:VGroup>
 				
 				<s:HGroup gap="10">
-					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
-					<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
+					<s:Button id="btnSalvar" x="10" y="760" width="230" label="SALVAR E VISUALIZAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
+					<s:Button id="btnFinalizar" x="270" y="760" width="230" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
 				</s:HGroup>
 			</s:VGroup>
 			
-			<view:ConsultaImpressa id="impressao" etapa="2" x="516" y="10" visible="false" includeInLayout="false" />
+			<view:ConsultaImpressa id="impressao" etapa="2" x="525" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

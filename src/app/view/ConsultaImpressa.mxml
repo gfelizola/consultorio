@@ -61,12 +61,23 @@
 				if( usuario.sexo == 'F' ) usuarioNome += 'a' ;
 				usuarioNome += '. ' + usuario.nome + ' ' + usuario.sobrenome ;
 				
-				usuarioDesc = 'CRN: ' + usuario.CRN + ' - REGIONAL: ' + usuario.regional +
-					'\n' + usuario.endereco.toUpperCase() + ' - ' + usuario.complemento.toUpperCase() + ', ' + usuario.cidade.toUpperCase() + ' - ' +  usuario.estado.toUpperCase() + '\n' +
-					'TEL: ' + usuario.telefone + ' - E-MAIL: ' + usuario.email + '\n' +
-					'SITE: ' + usuario.site ;
+				usuarioDesc = 'CRN: ' + usuario.CRN + ' - REGIONAL: ' + usuario.regional + '\n' ;
 				
-				titulos = ['ANTROPOMETRIA', 'ATIVIDADES FÍSICAS', 'DADOS ALIMENTARES', 'EXAMES BIOQUÍMICOS', 'MAN - MINI AVALIAÇÃO NUTRICIONAL', 'OBSERVAÇÃO'];
+				var endereco:String = '' ;
+				if( usuario.endereco ) endereco += usuario.endereco.toUpperCase() ;
+				if( usuario.complemento ) endereco += ' - ' + usuario.complemento.toUpperCase() ;
+				if( usuario.cidade ) endereco += ', ' + usuario.cidade.toUpperCase() ;
+				if( usuario.estado ) endereco += ' - ' + usuario.estado.toUpperCase() ;
+				
+				if( endereco != '' ) usuarioDesc += endereco + '\n' ;
+				
+				var contatos:String = ''
+				if( usuario.telefone ) contatos += 'TEL: ' + usuario.telefone + ' - ' ;
+				if( usuario.email ) contatos += 'E-MAIL: ' + usuario.email + '\n' ;
+				if( usuario.site ) contatos += 'SITE: ' + usuario.site ;
+				usuarioDesc += contatos ;
+				
+				titulos = ['ANTROPOMETRIA', 'ATIVIDADES FÍSICAS', 'DADOS ALIMENTARES', 'EXAMES BIOQUÍMICOS', 'MAN - MINI AVALIAÇÃO NUTRICIONAL', 'OBSERVAÇÕES'];
 				
 				verificaConsultaAtual();
 			}
@@ -105,7 +116,7 @@
 			
 			private function verificaAntropometria(c:app.model.Consulta):void
 			{
-				ImpressaoUtils.criaAntropometria(c, containerDadosAntropometria);
+				ImpressaoUtils.criaAntropometria(c, containerDadosAntropometria, true, 10, 0x475766, true, 0xbbbbbb, 7);
 			}
 			
 			private function verificaAtividadesFisicas(c:app.model.Consulta):void
@@ -160,31 +171,30 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<s:SkinnableContainer id="scImpressao" x="0" y="0" width="460" backgroundColor="#F6FAFE">
+	<s:SkinnableContainer id="scImpressao" x="0" y="0" width="100%" height="100%" backgroundColor="#F6FAFE">
 		<s:VGroup width="100%">
 			<s:Group>
 				<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
 				<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
 				
-				<s:Label id="impTitulo" x="10" y="70" color="#83BBEA" fontSize="19" styleName="bold" text="{currTitulo}"/>
-				<s:Label id="impData" right="10" y="70" width="145" styleName="bold" text="17/02/2012" textAlign="right"/>
+				<s:Label id="impTitulo" x="10" y="75" color="#83BBEA" fontSize="19" styleName="bold" text="{currTitulo}"/>
+				<s:Label id="impData" right="10" y="75" width="145" styleName="bold" text="" textAlign="right"/>
 				
 				<s:Label x="10" y="100" styleName="bold" text="NOME:"/>
-				<s:Label id="impNomePaciente" x="53" y="103" width="156" styleName="light" text="Aline Maciel"/>
+				<s:Label id="impNomePaciente" x="53" y="100" width="156" styleName="light" text=""/>
 				
 				<s:Label x="217" y="100" styleName="bold" text="IDADE:"/>
-				<s:Label id="impIdadePaciente" x="263" y="103" width="56" styleName="light" text="120 anos"/>
+				<s:Label id="impIdadePaciente" x="263" y="100" width="56" styleName="light" text=""/>
 				
 				<s:HGroup right="10" y="100">
 					<s:Label styleName="bold" text="SEXO:"/>
-					<s:Label id="impSexoPaciente" styleName="light"
-							 text="MASCULINO" textAlign="right" paddingTop="3" />
+					<s:Label id="impSexoPaciente" styleName="light" text="MASCULINO" textAlign="right" />
 				</s:HGroup>
 			</s:Group>
 
 			<mx:ViewStack id="conteudos" x="0" y="134" width="460" height="573" selectedIndex="{etapa}">
 				<s:NavigatorContent id="antropometria">
-					<s:VGroup id="containerDadosAntropometria" width="440" x="10" y="0" gap="10" />
+					<s:VGroup id="containerDadosAntropometria" width="440" x="10" y="0" gap="5" />
 				</s:NavigatorContent>
 				
 				<s:NavigatorContent id="atividadeFisica">
@@ -194,7 +204,7 @@
 				</s:NavigatorContent>
 				
 				<s:NavigatorContent id="dadosAlimentares">
-					<s:VGroup id="containerRefeicoes" width="440" gap="10" x="10">
+					<s:VGroup id="containerRefeicoes" width="440" gap="5" x="10">
 						<s:Label styleName="bold" text="RECORDATÓRIO ALIMENTAR HABITUAL" />
 					</s:VGroup>
 				</s:NavigatorContent>
@@ -251,11 +261,11 @@
 					</s:Group>
 				</s:NavigatorContent>
 			</mx:ViewStack>
-			
-			<s:Group id="gDados" width="100%">
-				<s:Label width="100%" text="{usuarioNome}" styleName="bold" fontSize="11" textAlign="center" />
-				<s:Label width="100%" y="20" lineHeight="12" text="{usuarioDesc}" styleName="light" fontSize="10" textAlign="center" />
-			</s:Group> 
 		</s:VGroup>
+		
+		<s:Group id="gDados" width="100%" bottom="10">
+			<s:Label width="100%" text="{usuarioNome}" styleName="bold" fontSize="11" textAlign="center" />
+			<s:Label width="100%" y="20" lineHeight="12" text="{usuarioDesc}" styleName="light" fontSize="10" textAlign="center" />
+		</s:Group>
 	</s:SkinnableContainer>
 </s:NavigatorContent>

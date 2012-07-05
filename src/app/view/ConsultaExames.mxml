@@ -44,7 +44,7 @@
 			private var exames:ArrayCollection = Constantes.exames;
 			
 			[Bindable]
-			private var dataDoExame:String = General.getFormattedDate(new Date());
+			private var dataDoExame:String = '';
 			
 			[Bindable]
 			private var campos:Object;
@@ -86,11 +86,10 @@
 				var eRef:String = '';
 				var eValor:String = '';
 				
-				
 				if( General.editandoConsulta ){
 					var e:ExameBioquimico = General.consultaAtual.exameBioquimico ;
 					if( e ){
-						txtDateExame.text = Helpers.dateFormat( e.dataDoExame );
+						dataDoExame = Helpers.dateFormat( e.dataDoExame );
 						exs = e.exames ;
 						
 						for (var i:int = 0; i < exs.length; i++) 
@@ -99,6 +98,8 @@
 							if( ! ea.exame ) exsAds.addItem( ea );
 						}
 					}
+				} else {
+					dataDoExame = '' ;
 				}
 				
 				// Build
@@ -312,7 +313,7 @@
 			{
 				if( e.detail == Alert.YES ){
 					if( salvar() ){
-						Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						Consulta.instance.abreHistorico();
 						General.dispatcher.rebuild();
 					}
 				}
@@ -345,12 +346,12 @@
 					</s:SkinnableContainer>
 				</s:VGroup>
 				<s:HGroup gap="10">
-					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
-					<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
+					<s:Button id="btnSalvar" x="10" y="760" width="230" label="SALVAR E VISUALIZAR DADOS" click="onSalvar(event)" skinClass="app.skin.Button"/>
+					<s:Button id="btnFinalizar" x="270" y="760" width="230" label="FINALIZAR CONSULTA" click="onFinalizar(event)" skinClass="app.skin.Button"/>
 				</s:HGroup>
 			</s:VGroup>
 			
-			<view:ConsultaImpressa id="impressao" etapa="3" x="516" y="10" visible="false" includeInLayout="false" />
+			<view:ConsultaImpressa id="impressao" etapa="3" x="525" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

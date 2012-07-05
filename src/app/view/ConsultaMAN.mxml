@@ -113,6 +113,18 @@
 									PerguntaQ.selectedValue = 1 ;
 								} 
 							}
+							
+							if( ! isNaN( ant.imc ) ){
+								if( ant.imc < 19 ){
+									PerguntaF1.selectedValue = 0 ;
+								} else if( ant.imc >= 19 && ant.imc < 21 ){
+									PerguntaF1.selectedValue = 1 ;
+								} else if( ant.imc >= 21 && ant.imc < 23 ){
+									PerguntaF1.selectedValue = 2 ;
+								} else {
+									PerguntaF1.selectedValue = 3 ;
+								} 
+							}
 						}
 					}
 				}
@@ -142,6 +154,8 @@
 					}
 				}
 				
+				formIsValid = false ;
+				
 				if( allSel ){
 					vgGlobal.visible = vgGlobal.includeInLayout = p < 12 ;
 					var resultado:String = sPontos(p) + ' - Estado nutricional: ' ;
@@ -152,6 +166,7 @@
 						resultado += 'SOB RISCO DE DESNUTRIÇÃO' ;
 					} else {
 						resultado += 'NORMAL' ;
+						formIsValid = true ;
 					}
 					
 					pontuacaoTriagem = p ;
@@ -216,6 +231,10 @@
 					txtPontuacaoFinal.text = sPontos(pontuacaoGlobal+pontuacaoTriagem) ;
 					txtEstadoNutricional.text = resultado ;
 					scResultadoFinal.visible = scResultadoFinal.includeInLayout = true ;
+					
+					formIsValid = true ;
+				} else {
+					formIsValid = false ;
 				}
 			}
 			
@@ -240,7 +259,9 @@
 				tentaCalcularTriagem();
 				tentaCalcularGlobal();
 				
-//				trace( formIsValid );
+				formIsValid = pontuacaoTriagem >= 12 ;
+				
+				trace( formIsValid );
 			}
 			
 			private function validate(validator:Validator):Boolean
@@ -250,7 +271,7 @@
 				var event:ValidationResultEvent = validator.validate(null, supressEvents)
 				var currentControlIsValid:Boolean = event.type == ValidationResultEvent.VALID;
 				
-				formIsValid = formIsValid && currentControlIsValid;
+//				formIsValid = formIsValid && currentControlIsValid;
 				return currentControlIsValid;
 			}
 			
@@ -282,8 +303,11 @@
 							letra = perguntas[i];
 						}
 						
-						a['opcao' + perguntas[i]  ] = spark.components.RadioButton( this['Pergunta' + letra].selection ).label ;
-						a['pontos' + perguntas[i] ] = int( this['Pergunta' + letra].selectedValue ) ;
+						var rb:spark.components.RadioButton = spark.components.RadioButton( this['Pergunta' + letra].selection );
+						if( rb ){
+							a['opcao' + perguntas[i]  ] = rb.label ;
+							a['pontos' + perguntas[i] ] = int( this['Pergunta' + letra].selectedValue ) ;
+						}
 					}
 					
 					General.consultaAtual.man = a ;
@@ -315,7 +339,7 @@
 			{
 				if( e.detail == Alert.YES ){
 					if( salvar() ){
-						Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						Consulta.instance.abreHistorico();
 						General.dispatcher.rebuild();
 					}
 				}
@@ -614,17 +638,17 @@
 					</s:SkinnableContainer>
 				</s:VGroup>
 				<s:HGroup gap="10">
-					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS"
+					<s:Button id="btnSalvar" x="10" y="760" width="230" label="SALVAR E VISUALIZAR DADOS"
 							  alpha="{formIsValid ? 1 : 0.5}" click="onSalvar(event)"
 							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
 					
-					<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA"
+					<s:Button id="btnFinalizar" x="270" y="760" width="230" label="FINALIZAR CONSULTA"
 							  alpha="{formIsValid ? 1 : 0.5}" click="onFinalizar(event)"
 							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
 				</s:HGroup>
 			</s:VGroup>
 			
-			<view:ConsultaImpressa id="impressao" etapa="4" x="516" y="10" visible="false" includeInLayout="false" />
+			<view:ConsultaImpressa id="impressao" etapa="4" x="525" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

@@ -7,15 +7,21 @@
 	<fx:Script>
 		<![CDATA[
 			import app.model.Consulta;
+			import app.model.DB;
+			import app.model.Paciente;
 			import app.skin.TabBar;
 			import app.skin.TabBarButtonPaciente;
 			import app.util.General;
 			
+			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.core.UIComponent;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.events.IndexChangedEvent;
+			
+			import nz.co.codec.flexorm.criteria.Criteria;
+			import nz.co.codec.flexorm.criteria.Sort;
 			
 			import spark.components.Button;
 			import spark.components.ButtonBarButton;
@@ -28,6 +34,54 @@
 			
 			[Bindable]
 			private var bindNomeSobrenomePaciente:String = General.pacienteAtual ? General.pacienteAtual.nome.toUpperCase() + ' ' + General.pacienteAtual.sobrenome.toUpperCase() : '';
+			
+			private function init():void
+			{
+				instance = this ;
+				
+				montaAbas();
+				
+				verificaTroca = false ;
+				vsPaciente.selectedIndex = 0;
+				verificaTroca = true ;
+				
+			}
+			
+			private function montaAbas():void
+			{
+				var p:Paciente = General.pacienteAtual ;
+				var cr:Criteria = DB.em.createCriteria(app.model.Consulta);
+				cr.addEqualsCondition("paciente", p.id );
+				cr.addSort("dataConsulta", Sort.DESC );
+				
+				var consultas:ArrayCollection = DB.em.fetchCriteria(cr);
+				var c:int = 0 ;
+				var pos:Array = [ 0, 3, 2, 1 ];
+//				if( consultas.length < 1 ){
+//					vsPaciente.removeElement(vHistorico);
+//					pos = [ 0, 2, 1 ];
+//				} else {
+//					vsPaciente.addElement(vHistorico);
+//				}
+				
+				
+				for (var i:int = tbPaciente.dataGroup.numChildren - 1; i >= 0 ; i--) 
+				{
+					var bt:ButtonBarButton = tbPaciente.dataGroup.getChildAt(i) as ButtonBarButton;
+					bt.height = bt.maxHeight = c == 0 ? 50 : 40 ;
+					bt.y = c == 0 ? 0 : 10 ;
+					if( c == 0 ){
+						bt.setStyle('skinClass', app.skin.TabBarButtonPaciente);
+					}
+					var l:Label = bt.labelDisplay as Label;
+					l.setStyle("fontSize", c == 0 ? 18 : 13 ) ;
+					
+					var larg:Number = ( tbPaciente.width - ( pos.length > 3 ? 15 : 30 ) ) / pos.length ; 
+					bt.width = larg + ( c == 0 ? 60 : -20 ) ;
+					bt.x = ( pos[c] * bt.width ) + ( c== 0 ? 5 : 85 ) ; 
+					c++ ;
+				}
+			}
 			
 			private function onTelaConsultaChange(event:IndexChangedEvent):void
 			{
@@ -45,39 +99,18 @@
 				}
 			}
 			
-			private function init():void
-			{
-				instance = this ;
-				
-				var c:int = 0 ;
-				var pos:Array = [ 0, 3, 2, 1 ];
-				for (var i:int = tbPaciente.dataGroup.numChildren - 1; i >= 0 ; i--) 
-				{
-					var bt:ButtonBarButton = tbPaciente.dataGroup.getChildAt(i) as ButtonBarButton;
-					bt.height = bt.maxHeight = c == 0 ? 50 : 40 ;
-					bt.y = c == 0 ? 0 : 10 ;
-					if( c == 0 ){
-						bt.setStyle('skinClass', app.skin.TabBarButtonPaciente);
-					}
-					Label( bt.labelDisplay ).setStyle("fontSize", c == 0 ? 18 : 13 ) ;
-					
-					var larg:Number = ( tbPaciente.width - 15 ) / 4 ; 
-					bt.width = larg + ( c == 0 ? 60 : -20 ) ;
-					bt.x = ( pos[c] * bt.width ) + ( c== 0 ? 5 : 85 ) ; 
-					c++ ;
-				}
-				
-				verificaTroca = false ;
-				vsPaciente.selectedIndex = 0;
-				verificaTroca = true ;
-				
-			}
-			
 			private function onAlertTrocar(e:CloseEvent):void
 			{
 				if( e.detail == Alert.NO ){
 					vsPaciente.selectedIndex = 3 ;
 				}
+			}
+			
+			public function abreHistorico():void
+			{
+				General.editandoConsulta = false ;
+//				montaAbas();
+				vsPaciente.selectedIndex = 2 ;
 			}
 			
 		]]>
@@ -114,7 +147,7 @@
 	<mx:ViewStack id="vsPaciente" x="0" y="60" width="100%" height="100%" creationPolicy="all" change="onTelaConsultaChange(event)">
 		<view:ConsultaSumario 		width="100%" height="100%" label="{bindNomeSobrenomePaciente}" />
 		<view:ConsultaDadosPaciente width="100%" height="100%" label="DADOS DO PACIENTE" />
-		<view:ConsultaHistorico 	width="100%" height="100%" label="HISTÓRICO DE CONSULTAS" />
+		<view:ConsultaHistorico 	width="100%" height="100%" label="HISTÓRICO DE CONSULTAS" id="vHistorico" />
 		<view:ConsultaNova 			width="100%" height="100%" label="NOVA CONSULTA" />
 	</mx:ViewStack>
 	

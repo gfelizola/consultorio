@@ -118,7 +118,7 @@
 				
 				var grafico:Graficos = new Graficos();
 				grafico.percentWidth = 100 ;
-				grafico.height = 500 ;
+				grafico.height = 800 ;
 				grafico.mostrarTitulos = false ;
 				
 				vgTMB.addElement( grafico );
@@ -185,6 +185,7 @@
 				if( chExames.selected ) 			impressos.push( ImpressaoUtils.EXAMES_BIOQUIMICOS );
 				if( chAlimentos.selected ) 			impressos.push( ImpressaoUtils.DADOS_ALIMENTARES );
 				if( chAtividades.selected ) 		impressos.push( ImpressaoUtils.ATIVIDADES_FISICAS );
+				if( chOrientacoes.selected ) 		impressos.push( ImpressaoUtils.ORIENTACOES );
 				
 				var cr:ConsultaResumo = new ConsultaResumo();
 				cr.impressos = impressos ;
@@ -263,11 +264,14 @@
 						</s:SkinnableContainer>
 					</s:VGroup>
 					
-					<s:VGroup width="100%">
-						<s:Label fontSize="20" styleName="bold" text="ORIENTAÇÕES NUTRICIONAIS" />
-						<s:Label text="Essa área é destinada para você escrever as orientações alimentares para seu paciente" />
-						<s:TextArea id="txtRecomendacoes" width="100%" height="100" skinClass="app.skin.TextArea" />
-					</s:VGroup>
+					<s:Group width="100%">
+						<s:CheckBox y="10" right="10" id="chOrientacoes" label="Adicionar a impressão" selected="true"/>
+						<s:VGroup width="100%">
+							<s:Label fontSize="20" styleName="bold" text="ORIENTAÇÕES NUTRICIONAIS" />
+							<s:Label text="Essa área é destinada para você escrever as orientações alimentares para seu paciente" />
+							<s:TextArea id="txtRecomendacoes" width="100%" height="100" skinClass="app.skin.TextArea" />
+						</s:VGroup>
+					</s:Group>
 				</s:VGroup>
 			</s:Group>
 		</skin:ScrollerSemBug>

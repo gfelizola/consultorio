@@ -1,5 +1,7 @@
 package app.events
 {
+	import app.util.General;
+	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	
@@ -19,6 +21,9 @@ package app.events
 		}
 		
 		public function resetForm():void{dispacha(RESET_FORM);}
-		public function rebuild():void{dispacha(REBUILD);}
+		public function rebuild():void{
+			General.editandoConsulta = false ;
+			dispacha(REBUILD);
+		}
 	}
 }

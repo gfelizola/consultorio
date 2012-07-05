@@ -50,6 +50,9 @@
 				{nome: 'Masculino', valor: 'M'},
 				{nome: 'Feminino', valor: 'F'}
 			) );
+			
+			[Bindable]
+			private var showGestante:Boolean = false ;
 
 			private var etapaVerificacao:int;
 			
@@ -76,7 +79,7 @@
 						dtUltimaMestruacao.text = General.getFormattedDate( p.dataUltimaMenstruacao );
 					}
 				
-					gpHistorico.visible = gpHistorico.includeInLayout = ! isNaN( p.id );
+//					gpHistorico.visible = gpHistorico.includeInLayout = ! isNaN( p.id );
 					cmbSexo.selectedIndex = p.sexo == 'M' ? 0 : 1 ;
 					cmbEstados.selectedItem = p.estado ;
 					cmbTipoAtendimento.selectedItem = p.tipo ;
@@ -89,6 +92,9 @@
 					onSexoChange();
 					onGestanteChange();
 					onTipoAtendimentoChange();
+					
+					atualizaPatologias( historicos, vgHistoricos );
+					atualizaPatologias( patologias, vgPatologias );
 				}
 			}
 			
@@ -132,15 +138,29 @@
 			
 			private function onSexoChange(e:IndexChangeEvent = null):void
 			{
-				trace('cmbSexo.selectedItem',cmbSexo.selectedItem);
 				if(typeof(cmbSexo.selectedItem) == 'object')
-					gpFeminino.visible = gpFeminino.includeInLayout = cmbSexo.selectedItem.valor == 'F' ;
+					dataNascimentoOut();
+					//gpFeminino.visible = gpFeminino.includeInLayout = cmbSexo.selectedItem.valor == 'F' ;
 			}
 			
 			private function onGestanteChange(e:Event = null):void
 			{
 				gpDataMestruacao.visible = gpDataMestruacao.includeInLayout = Gestante.selectedValue == 'Sim';
 				gpNutriz.visible = gpNutriz.includeInLayout = Gestante.selectedValue == 'Não';
+			}
+			
+			private function dataNascimentoOut(e:FocusEvent = null):void
+			{
+				showGestante = false ;
+				
+				if( typeof(cmbSexo.selectedItem) == 'object' ){
+					showGestante = cmbSexo.selectedItem.valor == 'F' ;
+				}
+				
+				if( txtDataNascimento.text.length == 8 || txtDataNascimento.text.length == 10 ){
+					var idade:Number = Math.floor( Helpers.idade( txtDataNascimento.text ) / 12 );
+					showGestante = showGestante && idade >= 12 ;
+				}
 			}
 			
 			private function onHistoricoChange(e:IndexChangeEvent):void
@@ -365,7 +385,7 @@
 					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbSexo" x="0" y="107" width="110" labelField="nome" dataProvider="{sexos}" skinClass="app.skin.ComboBox" change="onSexoChange(event)" />
 					
 					<s:Label x="125" y="86" text="DATA DE NASCIMENTO*"/>
-					<s:TextInput id="txtDataNascimento" x="125" y="107" width="309" skinClass="app.skin.TextInput" text="" prompt="DD/MM/AAAA" />
+					<s:TextInput id="txtDataNascimento" x="125" y="107" width="309" skinClass="app.skin.TextInput" text="" prompt="DD/MM/AAAA" focusOut="dataNascimentoOut(event)" />
 					
 					<s:Label x="480" y="86" text="ESTADO CIVIL"/>
 					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbEstadoCivil" x="480" y="107" width="155" labelField="nome" dataProvider="{Constantes.estadosCivis}" skinClass="app.skin.ComboBox" selectedItem="{paciente.estadoCivil}" />
@@ -374,7 +394,7 @@
 					<s:TextInput id="txtProfissao" x="655" y="107" width="260" skinClass="app.skin.TextInput" text="{paciente.profissao}" />
 				</s:Group>
 				
-				<s:HGroup id="gpFeminino" width="994" gap="30" visible="false" includeInLayout="false">
+				<s:HGroup id="gpFeminino" width="994" gap="30" visible="{showGestante}" includeInLayout="{showGestante}">
 					<s:Group id="gpGestante" x="0" y="0" width="145" height="57">
 						<s:Label x="0" y="0" text="É GESTANTE?"/>
 						<s:RadioButton id="gestanteSim" x="0" y="20" label="Sim" groupName="Gestante"/>
@@ -436,7 +456,7 @@
 					</s:VGroup>
 				</s:HGroup>
 				
-				<s:Group width="100%" maxWidth="965" id="gpHistorico" visible="false" includeInLayout="false">
+				<s:Group width="100%" maxWidth="965" id="gpHistorico">
 				    <s:VGroup>
 						<s:Label color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICO" />
 						<s:Label width="100%" text="Este campo deve ser utilizado para inserir informações relativas à história clínica e de saúde (uso pregresso de medicamentos, &#xd;realização de cirurgias ou procedimentos, etc.)"/>

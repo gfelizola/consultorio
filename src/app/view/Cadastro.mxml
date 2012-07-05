@@ -329,7 +329,6 @@
 		<mx:StringValidator id="valBairro" 			source="{txtBairro}" 			property="text" required="true" requiredFieldError="O campo Bairro é obrigatório" />
 		<mx:StringValidator id="valCidade" 			source="{txtCidade}" 			property="text" required="true" requiredFieldError="O campo Cidade é obrigatório" />
 		
-		
 		<s:NumberValidator id="valEstado" 			source="{cmbEstados}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Estado é obrigatório" /-->
 	</fx:Declarations>
 	

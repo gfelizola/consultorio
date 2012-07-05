@@ -3,14 +3,15 @@
 @namespace mx "library://ns.adobe.com/flex/mx";
 @namespace chartClasses "mx.charts.chartClasses.*";
 
-@font-face { src:url("../../assets/fonts/DIN Black.ttf"); 	fontFamily: DinBlack; 		embedAsCFF: true; }
-@font-face { src:url("../../assets/fonts/DIN Bold.ttf"); 	fontFamily: DinBold; 		embedAsCFF: true; }
-@font-face { src:url("../../assets/fonts/DIN Medium.ttf"); 	fontFamily: DinRegular; 	embedAsCFF: true; }
-@font-face { src:url("../../assets/fonts/DIN Light.ttf"); 	fontFamily: DinLight; 		embedAsCFF: true; }
-@font-face { src:url("../../assets/fonts/DIN Black.ttf"); 	fontFamily: DinBlackNo; 	embedAsCFF: false; }
-@font-face { src:url("../../assets/fonts/DIN Bold.ttf"); 	fontFamily: DinBoldNo; 		embedAsCFF: false; }
-@font-face { src:url("../../assets/fonts/DIN Medium.ttf"); 	fontFamily: DinRegularNo; 	embedAsCFF: false; }
-@font-face { src:url("../../assets/fonts/DIN Light.ttf"); 	fontFamily: DinLightNo; 	embedAsCFF: false; }
+@font-face { src:url("../../assets/fonts/DINPro-Black.otf"); 	fontFamily: DinBlack; 		embedAsCFF: true; }
+@font-face { src:url("../../assets/fonts/DINPro-Bold.otf"); 	fontFamily: DinBold; 		embedAsCFF: true; }
+@font-face { src:url("../../assets/fonts/DINPro-Medium.otf"); 	fontFamily: DinRegular; 	embedAsCFF: true; }
+@font-face { src:url("../../assets/fonts/DINPro-Regular.otf"); 	fontFamily: DinLight; 		embedAsCFF: true; }
+
+@font-face { src:url("../../assets/fonts/DINPro-Black.otf"); 	fontFamily: DinBlackNo; 	embedAsCFF: false; }
+@font-face { src:url("../../assets/fonts/DINPro-Bold.otf"); 	fontFamily: DinBoldNo; 		embedAsCFF: false; }
+@font-face { src:url("../../assets/fonts/DINPro-Medium.otf"); 	fontFamily: DinRegularNo; 	embedAsCFF: false; }
+@font-face { src:url("../../assets/fonts/DINPro-Regular.otf"); 	fontFamily: DinLightNo; 	embedAsCFF: false; }
 
 
 s|Application { locale: 'pt-BR'; }

@@ -28,7 +28,7 @@
 				txtNome.text = String( p.nome + " " + p.sobrenome ).toUpperCase() ;
 				txtSexo.text = p.sexo == 'M' ? 'MASCULINO' : 'FEMININO' ;
 				txtDataNascimento.text = General.getFormattedDate( p.dataNascimento );
-				txtEstadoCivil.text = p.estadoCivil.nome ;
+				txtEstadoCivil.text = p.estadoCivil ? p.estadoCivil.nome : '' ;
 				txtProfissao.text = p.profissao ;
 				
 				var endereco:String = '';

@@ -141,7 +141,7 @@
 			{
 				if( e.detail == Alert.YES ){
 					if( salvar() ){
-						Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						Consulta.instance.abreHistorico();
 						General.dispatcher.rebuild();
 					}
 				}
@@ -168,6 +168,7 @@
 				<s:Label color="#81BAEA" fontSize="20" styleName="bold" text="ATIVIDADE FÍSICA" />
 				
 				<s:Label x="10" text="Nível de atividade física" fontSize="17" />
+				<!--
 				<s:RadioButton width="450" value="1"
 							   label="Muito Ativo - aquele que cumpriu as recomendações de:&#xd;a) VIGOROSA: &gt; 5 dias/sem e &gt; 30 minutos por sessão&#xd;b) VIGOROSA: &gt; 3 dias/sem e &gt; 20 minutos por sessão + MODERADA e/ou CAMINHADA: &gt; 5 dias/sem e &gt; 30 minutos por sessão."
 							   groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
@@ -175,6 +176,14 @@
 				<s:RadioButton width="450" value="2" label="Ativo - aquele que cumpriu as recomendações de:&#xd;a) VIGOROSA:    3 dias/sem e   20 minutos por sessão; ou&#xd;b) MODERADA ou CAMINHADA: &gt; 5 dias/sem e &gt; 30 minutos por sessão; ou&#xd;c) Qualquer atividade somada: &gt; 5 dias/sem e &gt; 150 minutos/sem (caminhada&#xd;+ moderada + vigorosa)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
 				<s:RadioButton width="450" value="3" label="Pouco Ativo – faz atividades físicas de duas a três vezes por semana  (como&#xd;caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
 				<s:RadioButton width="450" value="4" label="Sedentário – não faz nenhuma atividade física ou faz apenas uma vez na&#xd;semana  (como caminhada, academia, andar de bicicleta, nadar etc)." groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
+				-->
+				
+				<s:RadioButton width="450" value="1" label="Muito Ativo" groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
+				<s:RadioButton width="450" value="2" label="Ativo" groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
+				<s:RadioButton width="450" value="3" label="Pouco Ativo" groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
+				<s:RadioButton width="450" value="4" label="Sedentário" groupName="NivelAtividade" skinClass="app.skin.RadioButtonSkin"/>
+				
+				<s:Label x="10" text="Planilha de atividades físicas" fontSize="17" />
 				
 				<s:VGroup width="435" gap="0">
 					
@@ -215,17 +224,17 @@
 				</s:VGroup>
 				
 				<s:HGroup gap="10">
-					<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS"
+					<s:Button id="btnSalvar" x="10" y="760" width="230" label="SALVAR E VISUALIZAR DADOS"
 							  alpha="{formIsValid ? 1 : 0.5}" click="onSalvar(event)"
 							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
 					
-					<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA"
+					<s:Button id="btnFinalizar" x="270" y="760" width="230" label="FINALIZAR CONSULTA"
 							  alpha="{formIsValid ? 1 : 0.5}" click="onFinalizar(event)"
 							  enabled="{formIsValid}" skinClass="app.skin.Button"/>
 				</s:HGroup>
 			</s:VGroup>
 			
-			<view:ConsultaImpressa id="impressao" etapa="1" x="516" y="10" visible="false" includeInLayout="false" />
+			<view:ConsultaImpressa id="impressao" etapa="1" x="525" y="10" visible="false" includeInLayout="false" />
 			
 		</s:Group>
 	</skin:ScrollerSemBug>

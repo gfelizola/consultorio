@@ -56,23 +56,50 @@ package app.model
 		public function set imc(value:Number):void { _imc = value; }
 		
 		[Transient]
+		private var _rcq:Number;
+		
+		[Transient]
+		public function get rcq():Number { 
+			if( ! isNaN(circunferenciaCintura) && ! isNaN(circunferenciaQuadril) )
+			{
+				_rcq = circunferenciaCintura / circunferenciaQuadril;
+			}
+			return _rcq; 
+		}
+		
+		public function set rcq(value:Number):void { _rcq = value; }
+		
+		
+		[Transient]
 		public function getCircunferenciaCinturaDescription(sexo:String):String
 		{
 			if( sexo == 'M' ){
-				return "[Homem > 94 cm (elevado)\n> 102 cm (muito elevado)]" ;
+				if( circunferenciaCintura > 94 ){
+					return " > 94 cm - Risco elevado de complicações metabólicas" ;
+				} else if( circunferenciaCintura > 102 ){
+					return " > 102 cm - Risco muito elevado de complicações metabólicas" ;
+				}
 			} else {
-				return "[Mulher > 80 cm (elevado)\n> 88 cm (muito elevado)]" ;
+				if( circunferenciaCintura > 80 ){
+					return " > 80 cm - Risco elevado de complicações metabólicas" ;
+				} else if( circunferenciaCintura > 88 ){
+					return " > 88 cm - Risco muito elevado de complicações metabólicas" ;
+				}
 			}
+			
+			return "";
 		}
 		
 		[Transient]
 		public function getRCQDescription(sexo:String):String
 		{
 			if( sexo == 'M' ){
-				return "RCQ > 1 para homens" ;
+				if( _rcq > 1 ) return " > 1 -  Risco para desenvolvimento de doenças" ;
 			} else {
-				return "RCQ > 0,85 para mulheres" ;
+				if( _rcq > 0.85 ) return " > 0.85 - Risco para desenvolvimento de doenças." ;
 			}
+			
+			return "" ;
 		}
 		
 		[Transient]

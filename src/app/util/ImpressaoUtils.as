@@ -27,6 +27,7 @@ package app.util
 		public static const ATIVIDADES_FISICAS:String 	= 'imprimirAtivida';
 		public static const EXAMES_BIOQUIMICOS:String 	= 'imprimirExamesBioquimicos';
 		public static const OBSERVACOES:String 			= 'imprimirObservacoes';
+		public static const ORIENTACOES:String 			= 'imprimirOrientacoes';
 		
 		public static function criaAntropometria( c:Consulta, container:VGroup, removeAll:Boolean = true, textoSize:uint = 10, cor:uint = 0x475766, legendaAdd:Boolean = true, legendaCor:uint = 0xbbbbbb, legendaSize:uint = 9 ):void
 		{
@@ -53,10 +54,8 @@ package app.util
 					{ nome:'IMC*', 									valor: a.imc.toFixed(2) , 				medida:a.getIMCDescription() }
 				];
 				
-				if( ! isNaN(a.circunferenciaCintura) && ! isNaN(a.circunferenciaQuadril) ){
-					if( a.circunferenciaCintura > 0 && a.circunferenciaQuadril ){
-						campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: (a.circunferenciaCintura / a.circunferenciaQuadril).toFixed(2), medida: a.getRCQDescription(c.paciente.sexo) })
-					}
+				if( ! isNaN(a.rcq) ){
+					campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: a.rcq.toFixed(2), medida: a.getRCQDescription(c.paciente.sexo) })
 				}
 				
 				if( removeAll ) container.removeAllElements();
@@ -178,40 +177,53 @@ package app.util
 				container.addElement( ImpressaoUtils.getTresColunas("Pontos da triagem:", "(subtotal máximo de 14 pontos)", sPontos(man.pontuacaoTriagem), textoSize, cor, false ) );
 				container.addElement( ImpressaoUtils.getDuasColunas("Estado nutricional:", man.estadoNutricionalTriagem, textoSize, cor ) );
 				
-				p = man.pontuacaoGlobal ;
-				var resultadoGlobal:String = '' ;
-				
-				if( p < 8 ){
-					resultadoGlobal += 'DESNUTRIDO' ;
-				} else if( p >= 8 && p < 12 ){
-					resultadoGlobal += 'SOB RISCO DE DESNUTRIÇÃO' ;
-				} else {
-					resultadoGlobal += 'NORMAL' ;
+				if( p < 13 ){
+					p = man.pontuacaoGlobal ;
+					var resultadoGlobal:String = '' ;
+					
+					if( p < 8 ){
+						resultadoGlobal += 'DESNUTRIDO' ;
+					} else if( p >= 8 && p < 12 ){
+						resultadoGlobal += 'SOB RISCO DE DESNUTRIÇÃO' ;
+					} else {
+						resultadoGlobal += 'NORMAL' ;
+					}
+					
+					container.addElement( ImpressaoUtils.getTresColunas("Avaliação global:", "(subtotal máximo de 16 pontos)", sPontos(man.pontuacaoTriagem), textoSize, cor, false ) );
+					container.addElement( ImpressaoUtils.getDuasColunas("Pontos da triagem:", sPontos(man.pontuacaoTriagem), textoSize, cor, false ) );
+					container.addElement( ImpressaoUtils.getTresColunas("Pontos total:", "(máximo 30 pontos)", sPontos( man.pontuacaoGlobal + man.pontuacaoTriagem), textoSize, cor ) );
+					container.addElement( ImpressaoUtils.getDuasColunas("Estado nutricional:", man.estadoNutricionalGlobal, textoSize, cor, false ) );
 				}
-				
-				container.addElement( ImpressaoUtils.getTresColunas("Avaliação global:", "(subtotal máximo de 16 pontos)", sPontos(man.pontuacaoTriagem), textoSize, cor, false ) );
-				container.addElement( ImpressaoUtils.getDuasColunas("Pontos da triagem:", sPontos(man.pontuacaoTriagem), textoSize, cor, false ) );
-				container.addElement( ImpressaoUtils.getTresColunas("Pontos total:", "(máximo 30 pontos)", sPontos( man.pontuacaoGlobal + man.pontuacaoTriagem), textoSize, cor ) );
-				container.addElement( ImpressaoUtils.getDuasColunas("Estado nutricional:", man.estadoNutricionalGlobal, textoSize, cor, false ) );
 			}
 		}
 		
-		public static function criaTMB( c:Consulta, container:VGroup, removeAll:Boolean = true, textoSize:uint = 10, cor:uint = 0x475766  ):void
+		public static function criaTMB( c:Consulta, container:VGroup, removeAll:Boolean = true, textoSize:uint = 10, cor:uint = 0x475766, legendaAdd:Boolean = true, legendaCor:uint = 0xbbbbbb, legendaSize:uint = 9 ):void
 		{
 			var r:ResumoConsulta = c.resumo ;
 			if( removeAll ) container.removeAllElements();
 			
 			if( r ){
-				container.addElement( ImpressaoUtils.getDuasColunas( 'Metabolismo Basal:', r.metabolismoBasal.toFixed(2) + " kcal/dia", textoSize, cor));
+				if( ! isNaN( r.metabolismoBasal ) ) container.addElement( ImpressaoUtils.getDuasColunas( 'Metabolismo Basal*:', r.metabolismoBasal.toFixed(2) + " kcal/dia", textoSize, cor));
 				if( r.necessidadeEnergetica ){
-					container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética:', r.necessidadeEnergetica.toFixed(2) + " kcal/dia", textoSize, cor));
+					container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética**:', r.necessidadeEnergetica.toFixed(2) + " kcal/dia", textoSize, cor));
 					
 					if( c.semanaGestacional > 12 ){
-						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional:', r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia", textoSize, cor));
+						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:', r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia", textoSize, cor));
 					} else {
 						if( c.semanaGestacional > 0 ){
-							container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional:', r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia  (menos de 12 semanas de gestação)", textoSize, cor));
+							container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:', r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia  (menos de 12 semanas de gestação)", textoSize, cor));
 						}
+					}
+				}
+				
+				if( legendaAdd ){
+					var textos:Array = [];
+					if( ! isNaN( r.metabolismoBasal ) )  textos.push('* Harris JA, Benedict FG. A biometric study of basal metabolism in man. Boston: Carnegie Institute of Washington; 1919. 266p.');
+					if( r.necessidadeEnergetica  ) textos.push('** Institute of Medicine. Dietary reference intakes for energy, carbohydrate, fiber, fat, fatty acids, cholesterol, protein, and amino acids. Washington (DC): National Academy Press; 2005.');
+					
+					for (var j:int = 0; j < textos.length; j++) 
+					{
+						container.addElement( ImpressaoUtils.getLabel( textos[j], 100, true, false, 'left', legendaSize, legendaCor ) ) ;
 					}
 				}
 			}

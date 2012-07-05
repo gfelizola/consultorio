@@ -78,8 +78,8 @@
 		<s:Label x="33" y="340" color="#475767" styleName="light" fontSize="11" text="Copyright © Nestlé - Todos os direitos reservados"/>
 		<s:Label id="lblResposta" x="33" y="304" width="316" height="28" color="#FF0000" fontSize="13"
 				 styleName="light"/>
-		<s:Label x="29" y="120" color="#475767" fontSize="30" text="Consultório"/>
-		<s:Label x="194" y="111" color="#475767" styleName="bold" fontSize="30" text="Nutri Saúde"/>
+		<s:Label x="29" y="122" color="#475767" fontSize="30" text="Consultório"/>
+		<s:Label x="194" y="122" color="#475767" styleName="bold" fontSize="30" text="Nutri Saúde"/>
 		<mx:HRule x="32" y="156" width="320"/>
 		
 		<s:Form id="formLogin" defaultButton="{btnEntrar}" x="21" y="162" keyUp="checkKey(event)">

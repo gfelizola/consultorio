@@ -23,8 +23,8 @@
 			public var pacientes:ArrayCollection =  new ArrayCollection();
 			
 			private var atualLetter:String = '';
-			private var atualSort:String = '';
-			private var atualDirection:String = '';
+			private var atualSort:String = 'nome';
+			private var atualDirection:String = 'asc';
 			
 			private function init(event:FlexEvent):void
 			{
@@ -101,8 +101,6 @@
 						var sortDirection:String = atualDirection == 'DESC' ? Sort.DESC : Sort.ASC ;
 						c.addSort(atualSort, sortDirection);
 					}
-					
-					trace( c.sorts );
 					
 					pacientes = DB.em.fetchCriteria(c);
 				} 

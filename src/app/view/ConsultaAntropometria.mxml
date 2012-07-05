@@ -167,7 +167,7 @@
 			{
 				if( e.detail == Alert.YES ){
 					if( salvar() ){
-						app.view.Consulta.instance.vsPaciente.selectedIndex = 2 ;
+						app.view.Consulta.instance.abreHistorico();
 						General.dispatcher.rebuild();
 					}
 				}
@@ -267,15 +267,15 @@
 			<s:TextInput id="txtDobraPanturrilha" x="279" y="700" width="175" skinClass="app.skin.TextInput" restrict="0-9.," text="" />
 			<s:Label x="459" y="715" color="#999999" styleName="light" text="(mm)"/>
 			
-			<s:Button id="btnSalvar" x="10" y="760" width="250" label="SALVAR E VISUALIZAR DADOS"
+			<s:Button id="btnSalvar" x="10" y="760" width="230" label="SALVAR E VISUALIZAR DADOS"
 					  alpha="{formIsValid ? 1 : 0.5}" click="onSalvar(event)"
 					  enabled="{formIsValid}" skinClass="app.skin.Button"/>
 			
-			<s:Button id="btnFinalizar" x="270" y="760" width="250" label="FINALIZAR CONSULTA"
+			<s:Button id="btnFinalizar" x="270" y="760" width="230" label="FINALIZAR CONSULTA"
 					  alpha="{formIsValid ? 1 : 0.5}" click="onFinalizar(event)"
 					  enabled="{formIsValid}" skinClass="app.skin.Button"/>
 			
-			<view:ConsultaImpressa id="impressao" etapa="0" x="516" y="10" visible="false" includeInLayout="false" />
+			<view:ConsultaImpressa id="impressao" etapa="0" x="525" y="10" visible="false" includeInLayout="false" />
 		</s:Group>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

@@ -17,6 +17,7 @@
 			import app.util.Helpers;
 			import app.util.ImpressaoUtils;
 			
+			import mx.charts.chartClasses.IAxis;
 			import mx.collections.ArrayCollection;
 			import mx.containers.ViewStack;
 			import mx.controls.Alert;
@@ -83,11 +84,8 @@
 					var cons:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
 					if( cons.antropometria ){
 						
-						var dataConsulta:String = General.getFormattedDate(cons.dataConsulta) ;
-						if( dataConsulta.length >= 10 ) dataConsulta = dataConsulta.substr(0,6) + dataConsulta.substr(8,2);
-						
 						o = {} ;
-						if( cons.dataConsulta ) o.dataConsulta = dataConsulta ;
+						if( cons.dataConsulta ) o.dataConsulta = cons.dataConsulta ;
 						if( cons.antropometria.peso ) o.peso = cons.antropometria.peso ;
 						if( cons.antropometria.imc ) o.imc = cons.antropometria.imc ;
 						if( cons.antropometria.estatura ) o.altura = cons.antropometria.estatura ;
@@ -181,6 +179,12 @@
 				}
 			}
 			
+			private function mostraData(labelValue:Object, previousValue:Object, axis:CategoryAxis, categoryItem:Object):String
+			{
+				var datac:String = Helpers.dateFormat(labelValue);
+				var datacu:String = datac.substr(0,6) + datac.substr(8) + '  1';
+				return datacu ;
+			}
 		]]>
 	</fx:Script>
 	
@@ -195,12 +199,12 @@
 				<s:Label width="100%" color="#81BAEA" fontSize="20" styleName="bold" text="GRÁFICO DE VARIAÇÃO DE PESO" includeInLayout="{mostrarTitulos}" />
 				<s:Label width="100%" text="Evolução do peso corporal ao longo do acompanhamento nutricional." includeInLayout="{mostrarTitulos}" />
 				
-				<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="100%" height="100%" showDataTips="true" seriesFilters="{[]}">
+				<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="100%" height="100%" showDataTips="true" seriesFilters="{[]}" gutterLeft="40">
 					<mx:horizontalAxis>
-						<mx:CategoryAxis id="haDataConsultaPeso" categoryField="dataConsulta" title="Data da consulta" padding="30" />
+						<mx:CategoryAxis id="haDataConsultaPeso" categoryField="dataConsulta" title="Data da consulta" labelFunction="mostraData" />
 					</mx:horizontalAxis>
 					<mx:horizontalAxisRenderers>
-						<mx:AxisRenderer labelRotation="45" axis="{haDataConsultaPeso}"/>
+						<mx:AxisRenderer axis="{haDataConsultaPeso}" labelAlign="center" />
 					</mx:horizontalAxisRenderers>
 					
 					<mx:verticalAxis>
@@ -265,13 +269,24 @@
 								<s:SolidColor color="0xEEEEEE" alpha="0.5" />
 							</mx:areaFill>
 						</mx:AreaSeries>
-						<mx:AreaSeries yField="imc" displayName="IMC">
+						<mx:AreaSeries yField="imc" displayName="IMC" radius="5">
 							<mx:areaStroke>
-								<mx:SolidColorStroke color="0X81BAEA" weight="7" />
+								<mx:SolidColorStroke color="0x81BAEA" weight="7" />
 							</mx:areaStroke>
 							<mx:areaFill>
 								<s:SolidColor color="0xFFFFFF" alpha="0" />
 							</mx:areaFill>
+							<mx:stroke>
+								<s:SolidColorStroke color="#81BAEA" />
+							</mx:stroke>
+							<mx:fill>
+								<s:SolidColor color="#81BAEA" />
+							</mx:fill>
+							<mx:itemRenderer>
+								<fx:Component>
+									<mx:CircleItemRenderer />
+								</fx:Component>
+							</mx:itemRenderer>
 						</mx:AreaSeries>
 					</mx:series>
 				</mx:AreaChart>

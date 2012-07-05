@@ -10,6 +10,7 @@
 			import app.util.General;
 			import app.util.Helpers;
 			
+			import mx.charts.chartClasses.IAxis;
 			import mx.charts.renderers.CircleItemRenderer;
 			import mx.charts.series.LineSeries;
 			import mx.collections.ArrayCollection;
@@ -47,8 +48,9 @@
 					lsComparado.setStyle("itemRenderer", new ClassFactory(mx.charts.renderers.CircleItemRenderer));
 					lsComparado.filterData = true ;
 					
-					axisHorizontalCrescimento.title = 'IDADE (semanas)' ;
-					axisHorizontalCrescimento.displayName = 'IDADE (semanas)' ;
+					axisHorizontalCrescimento.title = 'IDADE (meses)' ;
+					axisHorizontalCrescimento.displayName = 'IDADE (meses)' ;
+//					axisHorizontalCrescimento.labelFunction = calculaLabelMes;
 					
 					if( p.sexo == 'M' ){ 
 						if(tipo == GraficosCrescimento.TIPO_PESO){
@@ -203,7 +205,7 @@
 							ls.yField = props[i2];
 							ls.xField = tipo == GraficosCrescimento.TIPO_PESO_ESTATURA ? 'estatura' : 'idade';
 							ls.alpha = 0.7 ;
-							ls.setStyle("lineStroke", new Stroke(corLinhasCrescimento, 2, 0.5));
+//							ls.setStyle("lineStroke", new Stroke(corLinhasCrescimento, 2, 0.5));
 							
 							series.push(ls);
 						}
@@ -225,22 +227,46 @@
 				}
 			}
 			
+			private function calculaLabelMes(labelValue:Object, previousValue:Object, axis:IAxis):String
+			{
+				var ret:String = String(labelValue); ;
+				if( ! isNaN( Number( labelValue ) ) ){
+					if( int( labelValue ) % 12 == 0 ){
+						ret = '\n' + ( int( labelValue ) / 12 ).toString() ;
+					} else {
+						ret = ( int( labelValue ) % 12 ).toString();
+					}
+				} else {
+					ret = String(labelValue);
+				}
+				
+				return ret;
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	<mx:LineChart id="curvaDeCrescimento" width="100%" height="100%" showDataTips="true" seriesFilters="{[]}">
-		<mx:backgroundElements>
-			<mx:GridLines gridDirection="both" />
-		</mx:backgroundElements>
+	<s:HGroup width="100%" height="100%">
+		<mx:LineChart id="curvaDeCrescimento" width="100%" height="100%" showDataTips="true" seriesFilters="{[]}">
+			<mx:backgroundElements>
+				<mx:GridLines gridDirection="both" />
+			</mx:backgroundElements>
+			
+			<mx:horizontalAxis>
+				<mx:LinearAxis id="axisHorizontalCrescimento" title="IDADE (meses)" displayName="Idade (semanas)" alignLabelsToInterval="true" interval="2" />
+			</mx:horizontalAxis>
+			<mx:horizontalAxisRenderers>
+				<mx:AxisRenderer axis="{axisHorizontalCrescimento}" labelGap="0" labelAlign="center" height="90" />
+			</mx:horizontalAxisRenderers>
+			
+			<mx:verticalAxis>
+				<mx:LinearAxis id="axisVerticalCrescimento" title="PESO (kg)" />
+			</mx:verticalAxis>
+		</mx:LineChart>
 		
-		<mx:horizontalAxis>
-			<mx:LinearAxis id="axisHorizontalCrescimento" title="IDADE (meses)" displayName="Idade (semanas)" interval="3" />
-		</mx:horizontalAxis>
-		<mx:verticalAxis>
-			<mx:LinearAxis id="axisVerticalCrescimento" title="PESO (kg)" />
-		</mx:verticalAxis>
-	</mx:LineChart>
+		<mx:Legend dataProvider="{curvaDeCrescimento}" />
+	</s:HGroup>
 </s:NavigatorContent>

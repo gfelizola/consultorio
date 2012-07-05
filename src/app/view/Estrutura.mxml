@@ -147,8 +147,7 @@
 		
 		<!-- NOME DO USUÁRIO -->
 		<s:HGroup id="hgNome" left="10" top="5" gap="6" horizontalAlign="center">
-			<s:Label id="saudacao" maxWidth="533" color="0xffffff" styleName="bold"
-					 text="Ana Maria"/>	
+			<s:Label id="saudacao" maxWidth="533" color="0xffffff" styleName="bold" text=""/>	
 			<mx:VRule id="ruleName" height="20" width="1" chromeColor="#FFFFFF" />
 		</s:HGroup>
 		
@@ -177,7 +176,7 @@
 			
 			<!-- NOME -->
 			<s:Label x="36" y="47" color="#83BBEA" fontSize="18" text="Consultório" click="home(event)"/>
-			<s:Label x="133" y="42" color="#83BBEA" styleName="bold" fontSize="18" text="Nutri Saúde" click="home(event)"/>
+			<s:Label x="133" y="47" color="#83BBEA" styleName="bold" fontSize="18" text="Nutri Saúde" click="home(event)"/>
 			
 			<!-- BOTÕES -->
 			<s:Button id="btnMeusPacientes" x="669" y="34" width="155" height="35" label="MEUS PACIENTES" click="pacientes(event)" skinClass="app.skin.Button" />

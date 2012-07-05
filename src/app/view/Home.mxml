@@ -68,10 +68,10 @@
 			{
 				var l:Label = new Label();
 				l.text = "Você ainda não possui consultas e/ou pacientes cadastrados." ;
-				l.x = 476 ;
-				l.y = 70 ;
 				
-				addElement(l);
+				vgUltimos.addElement(l);
+				
+				dgPacientes.includeInLayout = false ;
 			}
 			
 		]]>
@@ -83,7 +83,7 @@
 			<s:Label width="100%" text="O Consultório Nutri Saúde é uma ferramenta para facilitar o armazenamento de dados de seus pacientes e o cálculo de informações úteis para a prática clínica.&#xd;&#xd;Você pode acessar de forma rápida as informações de seus pacientes, além de incluir novos acompanhamentos. &#xd;Para localizar um paciente já cadastrado, digite seu nome no campo “Buscar paciente”.&#xd;Se deseja incluir um novo atendimento, é só escolher “Cadastrar”."/>
 		</s:VGroup>
 		
-		<s:VGroup width="100%" height="100%">
+		<s:VGroup id="vgUltimos" width="100%" height="100%">
 			<s:Label width="100%" color="#83BBEA" fontSize="19" styleName="bold" text="ÚLTIMOS PACIENTES ATENDIDOS"/>
 			
 			<s:DataGrid id="dgPacientes" width="100%" height="100%" visible="false"
@@ -160,12 +160,5 @@
 			</s:DataGrid>
 		</s:VGroup>
 	</s:HGroup>
-	
-	
-	
-	
-	
-	
-	
 	
 </s:NavigatorContent>

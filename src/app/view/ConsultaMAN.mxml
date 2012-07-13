@@ -211,7 +211,7 @@
 				} else if( pK == 3 ){
 					p += 1 ;
 				}
-				
+
 				if( allSel ){
 					pontuacaoGlobal = p ;
 					
@@ -258,10 +258,6 @@
 				
 				tentaCalcularTriagem();
 				tentaCalcularGlobal();
-				
-				formIsValid = pontuacaoTriagem >= 12 ;
-				
-				trace( formIsValid );
 			}
 			
 			private function validate(validator:Validator):Boolean

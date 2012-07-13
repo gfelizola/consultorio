@@ -26,10 +26,10 @@
       <airSettings airCertificatePath="/Work/WSs/Nestle/Consultorio Nutrisaude/cert_p_123456.p12" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes>
           <pathEntry path=".DS_Store"/>
-          <pathEntry path="net"/>
           <pathEntry path="com"/>
-          <pathEntry path="de"/>
           <pathEntry path="server"/>
+          <pathEntry path="de"/>
+          <pathEntry path="net"/>
         </airExcludes>
         <anePaths/>
       </airSettings>

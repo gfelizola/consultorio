@@ -78,6 +78,10 @@
 					if( p.dataUltimaMenstruacao ){
 						dtUltimaMestruacao.text = General.getFormattedDate( p.dataUltimaMenstruacao );
 					}
+					
+					if( p.dataNascimentoBebe ){
+						dtNascimentoBebe.text = General.getFormattedDate( p.dataNascimentoBebe );
+					}
 				
 //					gpHistorico.visible = gpHistorico.includeInLayout = ! isNaN( p.id );
 					cmbSexo.selectedIndex = p.sexo == 'M' ? 0 : 1 ;
@@ -91,6 +95,7 @@
 					
 					onSexoChange();
 					onGestanteChange();
+					//onNutrizChange();
 					onTipoAtendimentoChange();
 					
 					atualizaPatologias( historicos, vgHistoricos );
@@ -147,6 +152,13 @@
 			{
 				gpDataMestruacao.visible = gpDataMestruacao.includeInLayout = Gestante.selectedValue == 'Sim';
 				gpNutriz.visible = gpNutriz.includeInLayout = Gestante.selectedValue == 'Não';
+	
+				onNutrizChange();
+			}
+			
+			private function onNutrizChange(e:Event = null):void
+			{
+				gpDataNascimentoBebe.visible = gpDataNascimentoBebe.includeInLayout = ((Gestante.selectedValue == 'Não') && (Nutriz.selectedValue == 'Sim'));
 			}
 			
 			private function dataNascimentoOut(e:FocusEvent = null):void
@@ -293,7 +305,8 @@
 				p.profissao = txtProfissao.text ;
 				p.gestante = Gestante.selectedValue == 'Sim' ;
 				p.nutriz = Nutriz.selectedValue == 'Sim' ;
-				p.dataUltimaMenstruacao = Helpers.dateStringToObject( dtUltimaMestruacao.text );
+				p.dataUltimaMenstruacao = (p.gestante) ? Helpers.dateStringToObject( dtUltimaMestruacao.text ) : '';
+				p.dataNascimentoBebe = (p.nutriz) ? Helpers.dateStringToObject( dtNascimentoBebe.text ) : '';
 				p.endereco = txtEndereco.text ;
 				p.complemento = txtComplemento.text ;
 				p.cidade = txtCidade.text ;
@@ -336,7 +349,7 @@
 	</fx:Script>
 	<fx:Declarations>
 		<s:RadioButtonGroup id="Gestante" change="onGestanteChange(event)" />
-		<s:RadioButtonGroup id="Nutriz" />
+		<s:RadioButtonGroup id="Nutriz" change="onNutrizChange(event)" />
 		
 		<mx:StringValidator id="valNome" 			source="{txtNome}" 				property="text" required="true" requiredFieldError="O campo Nome é obrigatório" />
 		<mx:StringValidator id="valSobrenome" 		source="{txtSobrenome}" 		property="text" required="true" requiredFieldError="O campo Sobrenome é obrigatório" />
@@ -410,6 +423,11 @@
 					<s:Group id="gpDataMestruacao" x="200" y="0" width="145" height="57" visible="false" includeInLayout="false">
 						<s:Label x="0" y="0" text="Data da última menstruação"/>
 						<mx:DateField id="dtUltimaMestruacao" x="0" y="20" contentBackgroundColor="#FFFFFF" text="" />
+					</s:Group>
+					
+					<s:Group id="gpDataNascimentoBebe" x="350" y="0" width="145" height="57" visible="false" includeInLayout="false">
+						<s:Label x="0" y="0" text="Data de nascimento do bebê"/>
+						<mx:DateField id="dtNascimentoBebe" x="0" y="20" contentBackgroundColor="#FFFFFF" text="" />
 					</s:Group>
 				</s:HGroup>
 				

@@ -29,6 +29,7 @@
 			import spark.events.IndexChangeEvent;
 
 			private var consultas:ArrayCollection;
+			private var ultimoTipo:int;
 			
 			[Bindable]
 			private var minIdade:Number;
@@ -157,11 +158,27 @@
 				gc.consultas = consultas ;
 				
 				gpGraficos.addElement( gc );
+				
+				ultimoTipo = tipo;
 			}
 			
 			private function onComboGraficoChange(e:IndexChangeEvent):void
 			{
 				trocaGrafico( spark.components.ComboBox(e.currentTarget).selectedIndex ) ;
+			}
+			
+			public function refresh():void
+			{
+				/*var p:Paciente = General.pacienteAtual ;
+				
+				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
+				c.addEqualsCondition("paciente", p.id );
+				c.addSort("dataConsulta", Sort.DESC );
+				
+				consultas = DB.em.fetchCriteria(c);
+				
+				trocaGrafico( ultimoTipo );*/
+				init(); 
 			}
 			
 		]]>

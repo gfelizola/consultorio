@@ -267,7 +267,7 @@
 				var event:ValidationResultEvent = validator.validate(null, supressEvents)
 				var currentControlIsValid:Boolean = event.type == ValidationResultEvent.VALID;
 				
-//				formIsValid = formIsValid && currentControlIsValid;
+				formIsValid = formIsValid && currentControlIsValid;
 				return currentControlIsValid;
 			}
 			

@@ -198,6 +198,12 @@
 				app.view.Consulta.instance.vsPaciente.selectedIndex = 3 ;
 			}
 			
+			public function refresh():void 
+			{
+				trace('refresh:' + General.consultaAtual.antropometria.peso);
+				init();
+			}
+			
 		]]>
 	</fx:Script>
 	

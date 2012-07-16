@@ -109,6 +109,16 @@ package app.model
 									eerg = eer ;
 								}
 							}
+							
+							if( paciente.nutriz ) {
+								if (paciente.idadeBebe <= 6) {
+									// 1o semestre: EER = EER + 500 – 170 (Energia da secreção do leite – perda de peso)
+									eer = eer + 500 - 170;
+								} else if (paciente.idadeBebe <= 12) {
+									// 2o semestre: EER = EER + 400 – 0 (Energia da secreção do leite – perda de peso)
+									eer = eer + 400;
+								}
+							}
 						}
 						resumo.necessidadeEnergetica = eer ;
 						resumo.necessidadeEnergeticaGestacional = eerg ;

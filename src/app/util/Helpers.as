@@ -22,6 +22,7 @@ package app.util
 			return new Date(arr[2], arr[1] - 1, arr[0]);
 		}
 		
+		// retorna o valor em meses
 		static public function idade( bd:*, t:Date = null ):Number
 		{
 			var today:Date = (t != null) ? t : new Date();

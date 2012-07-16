@@ -127,6 +127,17 @@ package app.model
 			}
 		}
 		
+		private var _dataNascimentoBebe:Date;
+		
+		public function get dataNascimentoBebe():Date { return _dataNascimentoBebe; }
+		public function set dataNascimentoBebe(value:*):void { 
+			if( value is Date ){
+				_dataNascimentoBebe = value;
+			} else if (value is String) {
+				if( value != '' ) _dataNascimentoBebe = new Date(value);
+			}
+		}
+
 		private var _dataUltimaConsulta:Date;
 		
 		public function get dataUltimaConsulta():Date { return _dataUltimaConsulta; }
@@ -149,6 +160,15 @@ package app.model
 		{
 			if( dataNascimento ){
 				return Helpers.idade(dataNascimento);
+			} 
+			return 0;
+		}
+		
+		[Transient]
+		public function get idadeBebe():Number
+		{
+			if( dataNascimentoBebe ){
+				return Helpers.idade(dataNascimentoBebe);
 			} 
 			return 0;
 		}

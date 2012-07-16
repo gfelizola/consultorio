@@ -96,6 +96,9 @@
 					if( General.consultaAtual != null && ! General.editandoConsulta ){
 						General.consultaAtual = new app.model.Consulta();
 					}
+				} else if ( (event.newIndex == 0) || (event.newIndex == 2) ) {
+					var obj:Object = vsPaciente.getChildAt(event.newIndex);
+					obj.refresh();
 				}
 			}
 			

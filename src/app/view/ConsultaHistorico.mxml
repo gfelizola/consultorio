@@ -17,6 +17,13 @@
 				}
 			}
 			
+			public function refresh():void 
+			{
+				if (vsHistoricoConsulta.selectedIndex == 1) {
+					var obj:Object = vsHistoricoConsulta.getChildAt(1);
+					obj.refresh();
+				}
+			}
 		]]>
 	</fx:Script>
 	

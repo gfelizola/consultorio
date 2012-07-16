@@ -10,9 +10,8 @@ package app.util
 	import app.model.MAN;
 	import app.model.Refeicao;
 	import app.model.ResumoConsulta;
-	
+		
 	import mx.controls.HRule;
-	import mx.core.UIComponent;
 	
 	import spark.components.Group;
 	import spark.components.HGroup;
@@ -33,29 +32,57 @@ package app.util
 		{
 			if( c.antropometria ){
 				var a:Antropometria = c.antropometria ;
-				var campos:Array = [
-					{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
-					{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
-					{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
-					{ nome:'CIRCUNFERÊNCIA DA CINTURA***', 			valor: a.circunferenciaCintura, 		medida:'cm ' + a.getCircunferenciaCinturaDescription(c.paciente.sexo) },
-					{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
-					{ nome:'CIRCUNFERÊNCIA DO BRAÇO', 				valor: a.circunferenciaTriceps, 		medida:'cm' },
-					{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
-					{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
-					{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
-					{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
-					{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
-					{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
-					{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
-					{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
-					{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
-					{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
-					{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
-					{ nome:'IMC*', 									valor: a.imc.toFixed(2) , 				medida:a.getIMCDescription() }
-				];
+				var campos:Array;
+				if (c.paciente.idade >= (19 * 12)) {
+					campos = [
+						{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
+						{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
+						{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DA CINTURA***', 			valor: a.circunferenciaCintura, 		medida:'cm ' + a.getCircunferenciaCinturaDescription(c.paciente.sexo) },
+						{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DO BRAÇO', 				valor: a.circunferenciaTriceps, 		medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
+						{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
+						{ nome:'IMC*', 									valor: a.imc.toFixed(2) , 				medida:a.getIMCDescription() }
+					];
 				
-				if( ! isNaN(a.rcq) ){
-					campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: a.rcq.toFixed(2), medida: a.getRCQDescription(c.paciente.sexo) })
+					if( ! isNaN(a.rcq) ){
+						campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: a.rcq.toFixed(2), medida: a.getRCQDescription(c.paciente.sexo) })
+					}
+				} else {
+					campos = [
+						{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
+						{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
+						{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DA CINTURA***', 			valor: a.circunferenciaCintura, 		medida:'cm '},
+						{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DO BRAÇO', 				valor: a.circunferenciaTriceps, 		medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
+						{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
+						{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
+						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
+						{ nome:'IMC*', 									valor: a.imc.toFixed(2) , 				medida:'' }
+					];
+					
+					if( ! isNaN(a.rcq) ){
+						campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: a.rcq.toFixed(2), medida: ''})
+					}
 				}
 				
 				if( removeAll ) container.removeAllElements();
@@ -203,16 +230,24 @@ package app.util
 			if( removeAll ) container.removeAllElements();
 			
 			if( r ){
-				if( ! isNaN( r.metabolismoBasal ) ) container.addElement( ImpressaoUtils.getDuasColunas( 'Metabolismo Basal*:', r.metabolismoBasal.toFixed(2) + " kcal/dia", textoSize, cor));
+				if( ! isNaN( r.metabolismoBasal ) ) container.addElement( ImpressaoUtils.getDuasColunas( 'Metabolismo Basal*:', Math.round( r.metabolismoBasal ) + " kcal/dia", textoSize, cor));
 				if( r.necessidadeEnergetica ){
-					container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética**:', r.necessidadeEnergetica.toFixed(2) + " kcal/dia", textoSize, cor));
+					container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética**:', Math.round( r.necessidadeEnergetica ) + " kcal/dia", textoSize, cor));
 					
 					if( c.semanaGestacional > 12 ){
-						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:', r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia", textoSize, cor));
+						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:', Math.round( r.necessidadeEnergeticaGestacional ) + " kcal/dia", textoSize, cor));
 					} else {
 						if( c.semanaGestacional > 0 ){
-							container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:', r.necessidadeEnergeticaGestacional.toFixed(2) + " kcal/dia  (menos de 12 semanas de gestação)", textoSize, cor));
+							container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:',Math.round( r.necessidadeEnergeticaGestacional ) + " kcal/dia  (menos de 12 semanas de gestação)", textoSize, cor));
 						}
+					}
+					
+					if ( ( c.antropometria.imc >= 25 ) || ( c.antropometria.imc <= 18.5 ) ) {
+						var texto : String = 'Importante: o valor da TMB foi calculado com o peso atual (e não ideal) do paciente. Como o IMC está fora da faixa ideal, certifique-se se este é mesmo o valor que você gostaria de ter utilizado na fórmula.\n\n';
+						texto += 'Segundo preconizado pelas DRIs (IOM, 2005), a estimativa das Necessidades Energéticas (EERs=Estimated Energy Requirement) destinam-se a pessoas saudáveis e eutróficas e visam à manutenção do peso corporal. Dessa maneira, os valores de EER aqui calculados não se destinam a indivíduos com sobrepeso, obesidade, baixo peso ou para aqueles que desejam perder ou ganhar peso.\n\n';
+						texto += 'Isso procede nos desvios de peso em todos os ciclos da vida (ex. infância, adolescência, gestação, lactação).\n\n';
+						texto += 'Para o entendimento do que as DRIs preconizam em programas de restrição ou incremento calórico, sugerimos a leitura do capítulo 5 do seguinte documento: http://www.nap.edu/catalog/10490.html';
+						container.addElement( ImpressaoUtils.getUmaLinha( texto, false, textoSize, cor));	
 					}
 				}
 				

@@ -72,7 +72,7 @@
 					verificaResumo(consulta);
 					buidlAll(consulta);
 				}
-				
+							
 				var grafico:Graficos = new Graficos();
 				grafico.height = 420 ;
 				
@@ -94,16 +94,16 @@
 			{
 				var r:ResumoConsulta = c.resumo ;
 				if( r ){
-					txtTMB.text = r.metabolismoBasal.toFixed(2) + ' kcal/dia' ;
+					txtTMB.text = Math.round( r.metabolismoBasal ) + ' kcal/dia' ;
 					if( c.semanaGestacional > 0 ){
 						if( ! isNaN(r.necessidadeEnergeticaGestacional) ){
-							txtEER.text = r.necessidadeEnergeticaGestacional.toFixed(2) + ' kcal/dia' ;
+							txtEER.text = Math.round ( r.necessidadeEnergeticaGestacional ) + ' kcal/dia' ;
 						} else {
 							vgEER.visible = vgEER.includeInLayout = false ;
 						}
 					} else {
 						if( ! isNaN(r.necessidadeEnergetica) ){
-							txtEER.text = r.necessidadeEnergetica.toFixed(2) + ' kcal/dia' ;
+							txtEER.text = Math.round( r.necessidadeEnergetica ) + ' kcal/dia' ;
 						} else {
 							vgEER.visible = vgEER.includeInLayout = false ;
 						}
@@ -173,6 +173,8 @@
 				d2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreation);
 				e1.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreation);
 				e2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreation);
+				
+				gpObs.visible = (( c.resumo.necessidadeEnergetica ) && ( c.antropometria.imc >= 25 ) || ( c.antropometria.imc <= 18.5 ) );
 			}
 			
 			private function criaTitulo(titulo:String):Label
@@ -387,6 +389,13 @@
 							<s:Label width="100%" fontSize="9" color="#BBBBBB" text="Institute of Medicine. Dietary reference intakes: applications in dietary planning. Washington, DC: National Academies Press, 2002." textAlign="center"/>
 						</s:VGroup>
 					</s:HGroup>
+					
+					<s:Group id="gpObs" visible="false">
+						<s:Label id="txtInfo1" x="0" y="5" width="980" fontSize="12"
+								 styleName="light" text="Importante: o valor da TMB foi calculado com o peso atual (e não ideal) do paciente. Como o IMC está fora" textAlign="center"/>
+						<s:Label id="txtInfo2" x="0" y="20" width="980" height="25" fontSize="12"
+								 styleName="light" text="da faixa ideal, certifique-se se este é mesmo o valor que você gostaria de ter utilizado na fórmula." textAlign="center"/>
+					</s:Group>
 					
 					<s:Group id="gpGraficos" width="100%" />
 					

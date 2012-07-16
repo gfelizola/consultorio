@@ -122,6 +122,8 @@
 						vsGraficos.selectedIndex = 1 ;
 						cmbTipoGrafico.selectedIndex = 2 ;
 						trocaGrafico( GraficosCrescimento.TIPO_IMC );
+					} else {
+						vGraficos.init();
 					}
 				}
 				else
@@ -221,7 +223,7 @@
 			</s:Rect>
 			
 			<mx:ViewStack id="vsGraficos" top="10" bottom="10" left="10" right="10">
-				<view:Graficos width="100%" height="100%" />
+				<view:Graficos id="vGraficos" width="100%" height="100%" />
 				
 				<s:NavigatorContent width="100%" height="100%">
 					<s:VGroup width="100%" height="100%">

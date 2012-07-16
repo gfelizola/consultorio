@@ -49,7 +49,7 @@
 			[Bindable]
 			private var faixas:ArrayCollection;
 			
-			private function init():void
+			public function init():void
 			{
 				var p:Paciente = General.pacienteAtual ;
 				if( p == null ) return ;

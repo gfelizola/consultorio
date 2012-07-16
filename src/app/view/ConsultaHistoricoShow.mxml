@@ -200,7 +200,6 @@
 			
 			public function refresh():void 
 			{
-				trace('refresh:' + General.consultaAtual.antropometria.peso);
 				init();
 			}
 			

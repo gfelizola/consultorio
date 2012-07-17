@@ -1,5 +1,6 @@
 package app.model
 {
+	import app.enums.EIdades;
 	import app.util.General;
 	import app.util.Helpers;
 	import app.util.TimeSpan;
@@ -90,7 +91,11 @@ package app.model
 								case AtividadeFisica.SEDENTARIO: 	coeficiente = 1 ;   	break;
 							}
 							
-							eer = ( 662 - ( 9.53 * idade ) + ( coeficiente * ( ( 15.91 * antropometria.peso ) + ( 539.6 * ( antropometria.estatura / 100 ) ) ) ) );
+							if( idade > EIdades.CRIANCA ){
+								eer = ( 662 - ( 9.53 * idade ) + ( coeficiente * ( ( 15.91 * antropometria.peso ) + ( 539.6 * ( antropometria.estatura / 100 ) ) ) ) );
+							} else {
+								eer = ( 88.5 - ( 61.9 * idade ) + ( coeficiente * ( ( 26.7 * antropometria.peso ) + ( 903 * ( antropometria.estatura / 100 ) ) ) ) ) + 20 ;
+							}
 						} else {
 							switch(atividadeFisica.nivel)
 							{
@@ -100,7 +105,11 @@ package app.model
 								case AtividadeFisica.SEDENTARIO: 	coeficiente = 1 ;  		break;
 							}
 							
-							eer = 354 - ( 6.91 * idade ) + coeficiente * ( (9.36 * antropometria.peso ) + ( 726 * ( antropometria.estatura / 100 ) ) ) ;
+							if( idade > EIdades.CRIANCA ){
+								eer = 354 - ( 6.91 * idade ) + coeficiente * ( (9.36 * antropometria.peso ) + ( 726 * ( antropometria.estatura / 100 ) ) ) ;
+							} else {
+								eer = ( 135.3 - ( 30.8 * idade ) + coeficiente * ( ( 10 * antropometria.peso ) + ( 934 * ( antropometria.estatura / 100 ) ) ) ) + 25 ;
+							}
 							
 							if( paciente.gestante ){
 								if( semanaGestacional > 12 ) {

@@ -32,57 +32,29 @@ package app.util
 		{
 			if( c.antropometria ){
 				var a:Antropometria = c.antropometria ;
-				var campos:Array;
-				if (c.paciente.idade >= (19 * 12)) {
-					campos = [
-						{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
-						{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
-						{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA CINTURA***', 			valor: a.circunferenciaCintura, 		medida:'cm ' + a.getCircunferenciaCinturaDescription(c.paciente.sexo) },
-						{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DO BRAÇO', 				valor: a.circunferenciaTriceps, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
-						{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
-						{ nome:'IMC*', 									valor: a.imc.toFixed(2) , 				medida:a.getIMCDescription(c) }
-					];
-				
-					if( ! isNaN(a.rcq) ){
-						campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: a.rcq.toFixed(2), medida: a.getRCQDescription(c.paciente.sexo) })
-					}
-				} else {
-					campos = [
-						{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
-						{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
-						{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA CINTURA***', 			valor: a.circunferenciaCintura, 		medida:'cm '},
-						{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DO BRAÇO', 				valor: a.circunferenciaTriceps, 		medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
-						{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
-						{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
-						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
-						{ nome:'IMC*', 									valor: a.imc.toFixed(2) , 				medida:'' }
-					];
-					
-					if( ! isNaN(a.rcq) ){
-						campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: a.rcq.toFixed(2), medida: ''})
-					}
+				var campos:Array = [
+					{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
+					{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
+					{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
+					{ nome:'CIRCUNFERÊNCIA DA CINTURA***', 			valor: a.circunferenciaCintura, 		medida:'cm ' + a.getCircunferenciaCinturaDescription(c.paciente.sexo) },
+					{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
+					{ nome:'CIRCUNFERÊNCIA DO BRAÇO', 				valor: a.circunferenciaTriceps, 		medida:'cm' },
+					{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
+					{ nome:'CIRCUNFERÊNCIA DA PANTURRILHA', 		valor: a.circunferenciaPanturrilha, 	medida:'cm' },
+					{ nome:'DOBRA CUTÂNEA TRICIPTAL', 				valor: a.dobraCutaneaTriciptal, 		medida:'mm' },
+					{ nome:'DOBRA CUTÂNEA BICIPTAL', 				valor: a.dobraCutaneaBiciptal, 			medida:'mm' },
+					{ nome:'DOBRA CUTÂNEA SUBESCAPULAR', 			valor: a.dobraCutaneaSubescapular, 		medida:'mm' },
+					{ nome:'DOBRA CUTÂNEA AXILAR MÉDIA', 			valor: a.dobraCutaneaAxilarMedia, 		medida:'mm' },
+					{ nome:'DOBRA CUTÂNEA SUPRA-ILÍACA', 			valor: a.dobraCutaneaSupraIliaca, 		medida:'mm' },
+					{ nome:'DOBRA CUTÂNEA TORÁCICA', 				valor: a.dobraCutaneaToracica, 			medida:'mm' },
+					{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
+					{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
+					{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
+					{ nome:'IMC*', 									valor: a.imc.toFixed(2) , 				medida:a.getIMCDescription(c) }
+				];
+			
+				if( ! isNaN(a.rcq) ){
+					campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: a.rcq.toFixed(2), medida: a.getRCQDescription(c.paciente.sexo) })
 				}
 				
 				if( removeAll ) container.removeAllElements();

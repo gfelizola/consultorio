@@ -123,13 +123,21 @@ package app.model
 				
 				for (var i:int = 0; i < dados.length; i++) {
 					if( dados[i][0] == idade ) {
-						for (var j:int = 1; j < 9; j++) {
-							var inicio:Number = dados[i][j] ;
-							var fim:Number = dados[i][j+1] ;
-							
-							if( imc > inicio && imc <= fim ){
-								
-							}
+						var p03:Number = dados[i][2] ; 
+						var p15:Number = dados[i][3] ; 
+						var p85:Number = dados[i][7] ; 
+						var p97:Number = dados[i][8] ;
+						
+						if( imc < p03 ){
+							imcDescricao = 'Baixo peso extremo' ;
+						} else if( imc >= p03 && imc < p15 ){
+							imcDescricao = 'Baixo peso' ;
+						} else if( imc >= p15 && imc < p85 ){
+							imcDescricao = 'Eutrófico' ;
+						} else if( imc >= p85 && imc < p97 ){
+							imcDescricao = 'Sobrepeso' ;
+						} else {
+							imcDescricao = 'Obesidade' ;
 						}
 					}
 				}

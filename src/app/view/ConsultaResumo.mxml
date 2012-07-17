@@ -12,6 +12,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import app.enums.EIdades;
 			import app.model.Antropometria;
 			import app.model.Consulta;
 			import app.model.DB;
@@ -76,7 +77,7 @@
 				var grafico:Graficos = new Graficos();
 				grafico.height = 420 ;
 				
-				if( p.idade / 12 < 20 ){ 
+				if( p.idade / 12 <= EIdades.CRIANCA ){ 
 					grafico.percentWidth = 100 ;
 					grafico.height = 800 ;
 					
@@ -139,7 +140,7 @@
 					
 					if( ! isNaN( a.imc ) ){
 						if( a.imc > 0 ) txtIMC.text = a.imc.toFixed(2);
-						txtIMCDescricao.text = a.getIMCDescription() ;
+						txtIMCDescricao.text = a.getIMCDescription( c ) ;
 					} else {
 						gpIMC.visible = false ;
 					}

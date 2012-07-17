@@ -52,7 +52,7 @@ package app.util
 						{ nome:'DOBRA CUTÂNEA ABDOMINAL', 				valor: a.dobraCutaneaAbdominal, 		medida:'mm' },
 						{ nome:'DOBRA CUTÂNEA DA COXA', 				valor: a.dobraCutaneaCoxa, 				medida:'mm' },
 						{ nome:'DOBRA CUTÂNEA DA PANTURRILHA MEDIAL', 	valor: a.dobraCutaneaPanturrilhaMedial, medida:'mm' },
-						{ nome:'IMC*', 									valor: a.imc.toFixed(2) , 				medida:a.getIMCDescription() }
+						{ nome:'IMC*', 									valor: a.imc.toFixed(2) , 				medida:a.getIMCDescription(c) }
 					];
 				
 					if( ! isNaN(a.rcq) ){

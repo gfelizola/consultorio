@@ -8,6 +8,7 @@
 		<![CDATA[
 			import app.controller.Navigation;
 			import app.enums.EAreas;
+			import app.enums.EIdades;
 			import app.model.AtividadeFisica;
 			import app.model.Consulta;
 			import app.model.DB;
@@ -55,9 +56,9 @@
 				var perfil:String = "";
 				txtSemanaGestacional.visible = false ;
 				
-				if( idade > 60 ) {
+				if( idade >= EIdades.IDOSO ) {
 					perfil = "IDOSO" ;
-				} else if( idade < 20 ) {
+				} else if( idade <= EIdades.CRIANCA ) {
 					perfil = "CRIANÇA" ;
 				} else {
 					if( p.gestante )
@@ -88,7 +89,7 @@
 					txtUltimaConsulta.text = Helpers.dateFormat(consulta.dataConsulta);
 					
 					if( consulta.antropometria ){
-						txtUltimoIMC.text = consulta.antropometria.imc.toFixed(2) + '\n' + consulta.antropometria.getIMCDescription() ;
+						txtUltimoIMC.text = consulta.antropometria.imc.toFixed(2) + '\n' + consulta.antropometria.getIMCDescription(consulta) ;
 					} else {
 						txtUltimoIMC.text = "N/A" ;
 					}

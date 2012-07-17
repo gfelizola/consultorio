@@ -7,6 +7,8 @@
 					creationComplete="init(event)" show="init(event)">
 	<fx:Script>
 		<![CDATA[
+			import app.enums.EDadosGraficos;
+			import app.enums.EIdades;
 			import app.model.Antropometria;
 			import app.model.Consulta;
 			import app.model.DB;

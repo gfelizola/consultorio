@@ -1,5 +1,8 @@
 package app.model
 {
+	import app.enums.EDadosGraficos;
+	import app.enums.EIdades;
+
 	[Bindable]
 	[Table(name="ANTROPROMETRIAS")]
 	public class Antropometria
@@ -103,21 +106,47 @@ package app.model
 		}
 		
 		[Transient]
-		public function getIMCDescription():String
+		public function getIMCDescription(c:Consulta):String
 		{
 			var imcDescricao:String = '' ;
-			if( imc < 18.5 ){
-				imcDescricao = 'Baixo Peso' ;
-			} else if( imc >= 18.5 && imc < 25 ){
-				imcDescricao = 'Adequado ou Eutrófico' ;
-			} else if( imc >= 25 && imc < 30 ){
-				imcDescricao = 'Sobrepeso' ;
-			} else if( imc >= 30 && imc < 35 ){
-				imcDescricao = 'Obesidade grau I' ;
-			} else if( imc >= 35 && imc < 40 ){
-				imcDescricao = 'Obesidade grau II' ;
+			if( c.idadeNaConsulta() / 12 >= EIdades.IDOSO ){
+				if( imc < 22 ){
+					imcDescricao = 'Desnutrição' ;
+				} else if( imc >= 22 && imc < 27 ){
+					imcDescricao = 'Eutrófia' ;
+				} else {
+					imcDescricao = 'Obesidade' ;
+				}
+			} else if( c.idadeNaConsulta() / 12 <= EIdades.CRIANCA ){
+				var idade:Number = c.idadeNaConsulta() ;
+				var dados:Array = c.paciente.sexo == 'M' ? EDadosGraficos.CRESCIMENTO_MASCULINO_IMC_IDADE : EDadosGraficos.CRESCIMENTO_FEMININO_IMC_IDADE ;
+				
+				for (var i:int = 0; i < dados.length; i++) {
+					if( dados[i][0] == idade ) {
+						for (var j:int = 1; j < 9; j++) {
+							var inicio:Number = dados[i][j] ;
+							var fim:Number = dados[i][j+1] ;
+							
+							if( imc > inicio && imc <= fim ){
+								
+							}
+						}
+					}
+				}
 			} else {
-				imcDescricao = 'Obesidade grau III' ;
+				if( imc < 18.5 ){
+					imcDescricao = 'Baixo Peso' ;
+				} else if( imc >= 18.5 && imc < 25 ){
+					imcDescricao = 'Adequado ou Eutrófico' ;
+				} else if( imc >= 25 && imc < 30 ){
+					imcDescricao = 'Sobrepeso' ;
+				} else if( imc >= 30 && imc < 35 ){
+					imcDescricao = 'Obesidade grau I' ;
+				} else if( imc >= 35 && imc < 40 ){
+					imcDescricao = 'Obesidade grau II' ;
+				} else {
+					imcDescricao = 'Obesidade grau III' ;
+				}
 			}
 			
 			return imcDescricao ;

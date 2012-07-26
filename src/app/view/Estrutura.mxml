@@ -155,8 +155,8 @@
 		<s:HGroup id="hgBotoes" right="2" top="2" gap="1">
 			<mx:LinkButton id="btnEditarDados" label="Alterar Dados" color="#ffffff" icon="@Embed('assets/images/icoAlterarDados.png')" click="alterarDados(event)" />
 			<mx:VRule height="20" width="1" chromeColor="#FFFFFF" />
-			<mx:LinkButton id="btnManualUso" label="Manual de uso" color="#ffffff" icon="@Embed('assets/images/icoManualUso.png')" click="manualDeUso(event)" />
-			<mx:VRule height="20" width="1" chromeColor="#FFFFFF" />
+			<mx:LinkButton id="btnManualUso" label="Manual de uso" color="#ffffff" icon="@Embed('assets/images/icoManualUso.png')" click="manualDeUso(event)" includeInLayout="false" visible="false" alpha="0" />
+			<mx:VRule height="20" width="1" chromeColor="#FFFFFF" includeInLayout="false" />
 			<mx:LinkButton id="btnRequisitos" label="Requisitos de sistema" color="#ffffff" icon="@Embed('assets/images/icoRequisitos.png')" click="requisitos(event)" />
 			<mx:VRule height="20" width="1" chromeColor="#FFFFFF" />
 			

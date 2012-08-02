@@ -36,7 +36,7 @@ package app.util
 					{ nome:'PESO', 									valor: a.peso, 							medida:'kg' },
 					{ nome:'PESO PRÉ-GESTACIONAL', 					valor: a.pesoPreGestacional, 			medida:'kg' },
 					{ nome:'ESTATURA', 								valor: a.estatura, 						medida:'cm' },
-					{ nome:'CIRCUNFERÊNCIA DA CINTURA***', 			valor: a.circunferenciaCintura, 		medida:'cm ' + a.getCircunferenciaCinturaDescription(c.paciente.sexo) },
+					{ nome:'CIRCUNFERÊNCIA DA CINTURA***', 			valor: a.circunferenciaCintura, 		medida:'cm ' + a.getCircunferenciaCinturaDescription(c.paciente) },
 					{ nome:'CIRCUNFERÊNCIA DO QUADRIL', 			valor: a.circunferenciaQuadril, 		medida:'cm' },
 					{ nome:'CIRCUNFERÊNCIA DO BRAÇO', 				valor: a.circunferenciaTriceps, 		medida:'cm' },
 					{ nome:'CIRCUNFERÊNCIA DA COXA', 				valor: a.circunferenciaCoxa, 			medida:'cm' },
@@ -54,7 +54,7 @@ package app.util
 				];
 			
 				if( ! isNaN(a.rcq) ){
-					campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: a.rcq.toFixed(2), medida: a.getRCQDescription(c.paciente.sexo) })
+					campos.push({ nome:'RELAÇÃO CINTURA X QUADRIL**', valor: a.rcq.toFixed(2), medida: a.getRCQDescription(c.paciente) })
 				}
 				
 				if( removeAll ) container.removeAllElements();
@@ -99,13 +99,18 @@ package app.util
 				}
 				
 				container.addElement( ImpressaoUtils.getUmaColuna( "Nível de atividade física: ", txtNivel, textoSize, cor) );
-				container.addElement( ImpressaoUtils.getTresColunas("ATIVIDADE FÍSICA", "DIAS DA SEMANA", "HORÁRIO", textoSize, cor) );
 				
-				for (var i:int = 0; i < af.atividades.length; i++) 
+				if (af.atividades.length > 0) 
 				{
-					var at:Atividade = af.atividades[i] ;
-					container.addElement( ImpressaoUtils.getTresColunas(at.nome, at.dias, at.horario, textoSize, cor) );
+					container.addElement( ImpressaoUtils.getTresColunas("ATIVIDADE FÍSICA", "DIAS DA SEMANA", "HORÁRIO", textoSize, cor) );
+					
+					for (var i:int = 0; i < af.atividades.length; i++) 
+					{
+						var at:Atividade = af.atividades[i] ;
+						container.addElement( ImpressaoUtils.getTresColunas(at.nome, at.dias, at.horario, textoSize, cor) );
+					}
 				}
+				
 				
 				if( af.observacao != '' ) container.addElement( ImpressaoUtils.getUmaColuna( "Observações: ", af.observacao, textoSize, cor) );
 			}

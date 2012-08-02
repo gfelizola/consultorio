@@ -2,7 +2,7 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx"
-					width="750" height="460" show="init()" creationComplete="init()">
+					width="750" height="460" creationComplete="init()">
 	
 	<fx:Script>
 		<![CDATA[
@@ -60,20 +60,11 @@
 				
 				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
 				c.addEqualsCondition("paciente", p.id );
-				c.addSort("dataConsulta", Sort.DESC );
+				c.addSort("dataConsulta", Sort.ASC );
 				
 				consultas = DB.em.fetchCriteria(c);
 				var consulta:app.model.Consulta = General.consultaAtual != null ? General.consultaAtual : consultas.length > 0 ? consultas.getItemAt(0) as app.model.Consulta : null ;
 				
-				if( consulta )
-				{
-					if( consulta.man ){
-						resultadoMAN.text = consulta.man.estadoNutricionalGlobal.toString() ;
-						ImpressaoUtils.criaMAN( consulta, containerMAN, false, 14 );
-					}
-				}
-				
-				consultas.source.reverse();
 				pesos = new ArrayCollection();
 				
 				minIdade = 0 ;
@@ -98,17 +89,11 @@
 					}
 				}
 				
-//				if( idade > 60 ) {
-//					vsGraficos.selectedIndex = 3 ;
-//				} else 
-				
 				if( idade < 20 ) {
 					vsGraficos.selectedIndex = 1 ;
-//					montaCrescimento();
 				} else {
 					if( p.gestante ) {
 						vsGraficos.selectedIndex = 2 ;
-//						montaAtalah();
 					}
 				}
 			}

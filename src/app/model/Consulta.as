@@ -124,7 +124,7 @@ package app.model
 				tmb = 655.1 + (9.56 * antropometria.peso ) + ( 1.85 * antropometria.estatura ) - ( 4.68 * idade );
 			}
 			
-			trace("Consulta.getTMB()", paciente.sexo, idade, tmb, formula);
+//			trace("Consulta.getTMB()", paciente.sexo, idade, tmb, formula);
 			
 			return tmb ;
 		}
@@ -184,9 +184,7 @@ package app.model
 				}
 			}
 			
-			trace("Consulta.getEER()", paciente.sexo, idade, anos, coeficiente, eer, formula );
-			
-			
+//			trace("Consulta.getEER()", paciente.sexo, idade, anos, coeficiente, eer, formula );
 			
 			return eer ;
 		}

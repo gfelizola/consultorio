@@ -117,8 +117,8 @@
 				}
 				
 				var grafico:Graficos = new Graficos();
-				grafico.percentWidth = 100 ;
-				grafico.height = 800 ;
+				grafico.width = 700 ;
+				grafico.height = 400 ;
 				grafico.mostrarTitulos = false ;
 				
 				vgTMB.addElement( grafico );
@@ -181,11 +181,12 @@
 				}
 				
 				var impressos:Array = [];
-				if( chAntropometria.selected ) 		impressos.push( ImpressaoUtils.ANTROPOMETRIA );
-				if( chExames.selected ) 			impressos.push( ImpressaoUtils.EXAMES_BIOQUIMICOS );
-				if( chAlimentos.selected ) 			impressos.push( ImpressaoUtils.DADOS_ALIMENTARES );
-				if( chAtividades.selected ) 		impressos.push( ImpressaoUtils.ATIVIDADES_FISICAS );
-				if( chOrientacoes.selected ) 		impressos.push( ImpressaoUtils.ORIENTACOES );
+				if( chAntropometria.selected ) 				impressos.push( ImpressaoUtils.ANTROPOMETRIA );
+				if( chExames.selected ) 					impressos.push( ImpressaoUtils.EXAMES_BIOQUIMICOS );
+				if( chAlimentos.selected ) 					impressos.push( ImpressaoUtils.DADOS_ALIMENTARES );
+				if( chAtividades.selected ) 				impressos.push( ImpressaoUtils.ATIVIDADES_FISICAS );
+				if( chOrientacoes.selected ) 				impressos.push( ImpressaoUtils.ORIENTACOES );
+				if( chMan.selected && scMAN.visible ) 		impressos.push( ImpressaoUtils.MAN );
 				
 				var cr:ConsultaResumo = new ConsultaResumo();
 				cr.impressos = impressos ;
@@ -234,6 +235,7 @@
 						</s:SkinnableContainer>
 						
 						<s:SkinnableContainer id="scMAN" width="100%" backgroundColor="#FCFDFF">
+							<s:CheckBox y="10" right="10" id="chMan" label="Adicionar a impressão" selected="true" />
 							<s:VGroup id="vgMAN" width="100%" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
 								<s:Label text="MAN" fontSize="20" styleName="bold" />
 							</s:VGroup>

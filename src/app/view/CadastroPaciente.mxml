@@ -118,6 +118,11 @@
 				dtUltimaMestruacao.firstDayOfWeek = 0 ;
 				dtUltimaMestruacao.formatString = 'DD/MM/YYYY' ;
 				
+				dtNascimentoBebe.dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+				dtNascimentoBebe.monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+				dtNascimentoBebe.firstDayOfWeek = 0 ;
+				dtNascimentoBebe.formatString = 'DD/MM/YYYY' ;
+				
 				validators = new Array();
 				validators.push(valNome);
 				validators.push(valSobrenome);
@@ -364,7 +369,7 @@
 	</fx:Declarations>
 	
 	
-	<skin:ScrollerSemBug id="formScroller" top="20" bottom="10" left="0" right="0" horizontalCenter="0" verticalCenter="0">
+	<skin:ScrollerSemBug id="formScroller" top="20" bottom="20" left="0" right="0">
 		<s:Group id="formContainer" width="100%" height="100%">
 			<s:VGroup width="100%" height="100%" gap="20" paddingLeft="20">
 				<s:Label color="#83BBEA" fontSize="19" styleName="bold" text="DADOS DA CONSULTA" />
@@ -407,7 +412,7 @@
 					<s:TextInput id="txtProfissao" x="655" y="107" width="260" skinClass="app.skin.TextInput" text="{paciente.profissao}" />
 				</s:Group>
 				
-				<s:HGroup id="gpFeminino" width="994" gap="30" visible="{showGestante}" includeInLayout="{showGestante}">
+				<s:HGroup id="gpFeminino" width="100%" gap="30" visible="{showGestante}" includeInLayout="{showGestante}">
 					<s:Group id="gpGestante" x="0" y="0" width="145" height="57">
 						<s:Label x="0" y="0" text="É GESTANTE?"/>
 						<s:RadioButton id="gestanteSim" x="0" y="20" label="Sim" groupName="Gestante"/>

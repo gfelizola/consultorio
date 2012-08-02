@@ -32,9 +32,6 @@
 			
 			private function init(e:FlexEvent):void
 			{
-				// Scroller Listener
-//				if(!scroller.hasEventListener(MouseEvent.MOUSE_WHEEL))scroller.addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel, true);
-				
 				for each( var validator:Validator in validators )
 					UIComponent(validator.source).addEventListener(Event.CHANGE, validateForm);
 					
@@ -75,7 +72,7 @@
 						var co:app.model.Consulta = consultas.getItemAt(0) as app.model.Consulta ;
 						if( co.antropometria ){
 							// if( co.antropometria.peso ) txtPeso.text = co.antropometria.peso.toString() ;
-							// if( co.antropometria.pesoPreGestacional ) txtPesoGestacional.text = co.antropometria.pesoPreGestacional.toString() ;
+							if( co.antropometria.pesoPreGestacional ) txtPesoGestacional.text = co.antropometria.pesoPreGestacional.toString() ;
 							if( co.antropometria.estatura && General.pacienteAtual.idade / 12 > 20 ) txtEstatura.text = co.antropometria.estatura.toString() ;
 							
 							validateForm();
@@ -86,7 +83,6 @@
 			
 			private function validateForm(e:Event = null):void
 			{
-//				focusedFormControl = e.target as DisplayObject;
 				formIsValid = true;
 				
 				for each( var validator:Validator in validators )
@@ -174,12 +170,6 @@
 					}
 				}
 			}
-			
-			private function onMouseWheel(e:MouseEvent):void
-			{
-				e.delta = e.delta > 0 ? 10 : -10;
-			}
-			
 		]]>
 	</fx:Script>
 	<fx:Declarations>

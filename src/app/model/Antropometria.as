@@ -63,9 +63,13 @@ package app.model
 		
 		[Transient]
 		public function get rcq():Number { 
+//			trace("Antropometria.rcq()", circunferenciaCintura, circunferenciaQuadril, circunferenciaCintura / circunferenciaQuadril);
+			
 			if( ! isNaN(circunferenciaCintura) && ! isNaN(circunferenciaQuadril) )
 			{
-				_rcq = circunferenciaCintura / circunferenciaQuadril;
+				if( circunferenciaCintura > 0 && circunferenciaQuadril > 0 ){
+					_rcq = circunferenciaCintura / circunferenciaQuadril;
+				}
 			}
 			return _rcq; 
 		}
@@ -74,9 +78,11 @@ package app.model
 		
 		
 		[Transient]
-		public function getCircunferenciaCinturaDescription(sexo:String):String
+		public function getCircunferenciaCinturaDescription(paciente:Paciente):String
 		{
-			if( sexo == 'M' ){
+			if( paciente.gestante ) return '';
+			
+			if( paciente.sexo == 'M' ){
 				if( circunferenciaCintura > 94 ){
 					return " > 94 cm - Risco elevado de complicações metabólicas" ;
 				} else if( circunferenciaCintura > 102 ){
@@ -94,9 +100,11 @@ package app.model
 		}
 		
 		[Transient]
-		public function getRCQDescription(sexo:String):String
+		public function getRCQDescription(paciente:Paciente):String
 		{
-			if( sexo == 'M' ){
+			if( paciente.gestante ) return '';
+			
+			if( paciente.sexo == 'M' ){
 				if( _rcq > 1 ) return " > 1 -  Risco para desenvolvimento de doenças" ;
 			} else {
 				if( _rcq > 0.85 ) return " > 0.85 - Risco para desenvolvimento de doenças." ;

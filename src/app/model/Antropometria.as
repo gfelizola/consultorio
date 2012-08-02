@@ -149,6 +149,29 @@ package app.model
 						}
 					}
 				}
+			} else if( c.paciente.gestante ){
+				
+				var idade:Number = c.semanaGestacional ;
+				var dados:Array = EDadosGraficos.ATALAH ;
+				
+				for (var i:int = 0; i < dados.length; i++) {
+					if( dados[i][0] == idade ) {
+						var fraca:Number = dados[i][1] ; 
+						var normal:Number = dados[i][3] ; 
+						var sobrepeso:Number = dados[i][5] ; 
+						
+						if( imc < fraca ){
+							imcDescricao = 'Enfraquecida' ;
+						} else if( imc >= fraca && imc < normal ){
+							imcDescricao = 'Normal' ;
+						} else if( imc >= normal && imc < sobrepeso ){
+							imcDescricao = 'Sobrepeso' ;
+						} else {
+							imcDescricao = 'Obesidade' ;
+						}
+					}
+				}
+				
 			} else {
 				if( imc < 18.5 ){
 					imcDescricao = 'Baixo Peso' ;

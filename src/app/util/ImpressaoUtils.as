@@ -1,5 +1,6 @@
 package app.util
 {
+	import app.enums.EIdades;
 	import app.model.Antropometria;
 	import app.model.Atividade;
 	import app.model.AtividadeFisica;
@@ -10,7 +11,7 @@ package app.util
 	import app.model.MAN;
 	import app.model.Refeicao;
 	import app.model.ResumoConsulta;
-		
+	
 	import mx.controls.HRule;
 	
 	import spark.components.Group;
@@ -209,14 +210,12 @@ package app.util
 			if( r ){
 				if( ! isNaN( r.metabolismoBasal ) ) container.addElement( ImpressaoUtils.getDuasColunas( 'Metabolismo Basal*:', Math.round( r.metabolismoBasal ) + " kcal/dia", textoSize, cor));
 				if( r.necessidadeEnergetica ){
-					container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética**:', Math.round( r.necessidadeEnergetica ) + " kcal/dia", textoSize, cor));
-					
 					if( c.semanaGestacional > 12 ){
 						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:', Math.round( r.necessidadeEnergeticaGestacional ) + " kcal/dia", textoSize, cor));
+					} else if( c.semanaGestacional > 0 ){
+						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:',Math.round( r.necessidadeEnergeticaGestacional ) + " kcal/dia  (menos de 12 semanas de gestação)", textoSize, cor));
 					} else {
-						if( c.semanaGestacional > 0 ){
-							container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:',Math.round( r.necessidadeEnergeticaGestacional ) + " kcal/dia  (menos de 12 semanas de gestação)", textoSize, cor));
-						}
+						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética**:', Math.round( r.necessidadeEnergetica ) + " kcal/dia", textoSize, cor));
 					}
 					
 					if ( ( c.antropometria.imc >= 25 ) || ( c.antropometria.imc <= 18.5 ) ) {
@@ -230,7 +229,16 @@ package app.util
 				
 				if( legendaAdd ){
 					var textos:Array = [];
-					if( ! isNaN( r.metabolismoBasal ) )  textos.push('* Harris JA, Benedict FG. A biometric study of basal metabolism in man. Boston: Carnegie Institute of Washington; 1919. 266p.');
+					if( ! isNaN( r.metabolismoBasal ) ){
+						if( c.idadeNaConsulta() / 12 < EIdades.IDOSO && c.idadeNaConsulta() / 12 >= EIdades.CRIANCA )
+						{
+							textos.push('* Harris JA, Benedict FG. A biometric study of basal metabolism in man. Boston: Carnegie Institute of Washington; 1919. 266p.');
+						}
+						else
+						{
+							textos.push('* FAO (Food and Agriculture Organization)/WHO (World Health Organization)/UNU (United Nations University), 1985. Energy and Protein Requirements. WHO Technical Report Series 724, Geneva: WHO');
+						}
+					}
 					if( r.necessidadeEnergetica  ) textos.push('** Institute of Medicine. Dietary reference intakes for energy, carbohydrate, fiber, fat, fatty acids, cholesterol, protein, and amino acids. Washington (DC): National Academy Press; 2005.');
 					
 					for (var j:int = 0; j < textos.length; j++) 

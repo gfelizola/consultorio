@@ -121,7 +121,6 @@
 	</fx:Script>
 	
 	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
 		.nomePaciente {
 			chromeColor: #663366;
 			color: #9999CC;

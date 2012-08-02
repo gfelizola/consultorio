@@ -98,6 +98,15 @@
 				}
 			}
 			
+			public function verificaIndice():void
+			{
+				if( vsGraficos.selectedIndex == 1 ){
+					montaCrescimento();
+				} else if ( vsGraficos.selectedIndex == 2 ){
+					montaAtalah();
+				}
+			}
+			
 			private function montaAtalah():void
 			{
 				var atalah:ArrayCollection = new ArrayCollection();
@@ -157,11 +166,7 @@
 			
 			private function vsChange(e:IndexChangedEvent):void
 			{
-				if( e.newIndex == 1 ){
-					montaCrescimento();
-				} else if ( e.newIndex == 2 ){
-					montaAtalah();
-				}
+				verificaIndice();
 			}
 			
 			private function mostraData(labelValue:Object, previousValue:Object, axis:CategoryAxis, categoryItem:Object):String
@@ -231,51 +236,65 @@
 				<s:Label width="100%" includeInLayout="{mostrarTitulos}" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE ATALAH"/>
 				<s:Label width="100%" includeInLayout="{mostrarTitulos}" text="Trata-se da ferramenta preconizada pela Organização Mundial da Saúde e Ministério da Saúde para avaliar a evolução do Índice de Massa Corporal (IMC) segundo a semana gestacional." />
 				
-				<mx:AreaChart id="curvaDeAtalah" width="100%" height="100%" showDataTips="true">
-					<mx:horizontalAxis>
-						<mx:CategoryAxis categoryField="semana" displayName="SEMANAS DE GESTAÇÃO" />
-					</mx:horizontalAxis>
-					<mx:verticalAxis>
-						<mx:LinearAxis title="IMC" minimum="15" maximum="40" />
-					</mx:verticalAxis>
-					<mx:series>
-						<mx:AreaSeries yField="baixo" displayName="Baixo Peso">
-							<mx:areaFill>
-								<s:SolidColor color="0xCCCCCC" alpha="0.5" />
-							</mx:areaFill>
-						</mx:AreaSeries>
-						<mx:AreaSeries yField="ideal" displayName="Peso Adequado">
-							<mx:areaFill>
-								<s:SolidColor color="0xDDDDDD" alpha="0.5"  />
-							</mx:areaFill>
-						</mx:AreaSeries>
-						<mx:AreaSeries yField="sobre" displayName="Sobrepeso">
-							<mx:areaFill>
-								<s:SolidColor color="0xEEEEEE" alpha="0.5" />
-							</mx:areaFill>
-						</mx:AreaSeries>
-						<mx:AreaSeries yField="imc" displayName="IMC" radius="5">
-							<mx:areaStroke>
-								<mx:SolidColorStroke color="0x81BAEA" weight="7" />
-							</mx:areaStroke>
-							<mx:areaFill>
-								<s:SolidColor color="0xFFFFFF" alpha="0" />
-							</mx:areaFill>
-							<mx:stroke>
-								<s:SolidColorStroke color="#81BAEA" />
-							</mx:stroke>
-							<mx:fill>
-								<s:SolidColor color="#81BAEA" />
-							</mx:fill>
-							<mx:itemRenderer>
-								<fx:Component>
-									<mx:CircleItemRenderer />
-								</fx:Component>
-							</mx:itemRenderer>
-						</mx:AreaSeries>
-					</mx:series>
-				</mx:AreaChart>
-				<mx:Legend dataProvider="{curvaDeAtalah}" direction="horizontal" />
+				<s:Group width="100%" height="100%">
+					<mx:AreaChart id="curvaDeAtalah" width="100%" height="100%" showDataTips="true">
+						<mx:horizontalAxis>
+							<mx:CategoryAxis categoryField="semana" displayName="SEMANAS DE GESTAÇÃO" />
+						</mx:horizontalAxis>
+						<mx:verticalAxis>
+							<mx:LinearAxis title="IMC" minimum="15" maximum="40" />
+						</mx:verticalAxis>
+						<mx:series>
+							<mx:AreaSeries yField="baixo" displayName="Baixo Peso">
+								<mx:areaFill>
+									<s:SolidColor color="0xCCCCCC" alpha="0.5" />
+								</mx:areaFill>
+							</mx:AreaSeries>
+							<mx:AreaSeries yField="ideal" displayName="Peso Adequado">
+								<mx:areaFill>
+									<s:SolidColor color="0xDDDDDD" alpha="0.5"  />
+								</mx:areaFill>
+							</mx:AreaSeries>
+							<mx:AreaSeries yField="sobre" displayName="Sobrepeso">
+								<mx:areaFill>
+									<s:SolidColor color="0xEEEEEE" alpha="0.5" />
+								</mx:areaFill>
+							</mx:AreaSeries>
+							<mx:AreaSeries yField="imc" displayName="IMC" radius="5">
+								<mx:areaStroke>
+									<mx:SolidColorStroke color="0x81BAEA" weight="7" />
+								</mx:areaStroke>
+								<mx:areaFill>
+									<s:SolidColor color="0xFFFFFF" alpha="0" />
+								</mx:areaFill>
+								<mx:stroke>
+									<s:SolidColorStroke color="#81BAEA" />
+								</mx:stroke>
+								<mx:fill>
+									<s:SolidColor color="#81BAEA" />
+								</mx:fill>
+								<mx:itemRenderer>
+									<fx:Component>
+										<mx:CircleItemRenderer />
+									</fx:Component>
+								</mx:itemRenderer>
+							</mx:AreaSeries>
+						</mx:series>
+						
+						<mx:annotationElements>
+							<s:BorderContainer width="100%" height="100%" borderAlpha="0" backgroundAlpha="0">
+								<s:Label text="OBESA" 			width="100%" height="30%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
+								<s:Label text="SOBREPESO" 		width="100%" height="45%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
+								<s:Label text="NORMAL" 			width="100%" height="65%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
+								<s:Label text="ENFRAQUECIDA" 	width="100%" height="90%" verticalAlign="bottom" textAlign="center" alpha="0.5" />	
+							</s:BorderContainer>
+						</mx:annotationElements>
+						
+					</mx:AreaChart>
+					
+					
+				</s:Group>
+				
 			</s:VGroup>
 		</s:NavigatorContent>
 		

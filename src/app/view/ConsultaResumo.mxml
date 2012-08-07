@@ -33,6 +33,8 @@
 			
 			import org.casalib.util.ArrayUtil;
 			
+			import spark.components.TileGroup;
+			
 			public var impressos:Array = [];
 			
 			private var consultas:ArrayCollection;
@@ -48,7 +50,7 @@
 			private function init():void
 			{
 				var p:Paciente = General.pacienteAtual ;
-				var idade:Number = Helpers.idade(p.dataNascimento);
+				var idade:Number = Helpers.idade(p.dataNascimento) / 12;
 //				var endereco:String = '';
 				
 				txtNomePaciente.text = p.nomeCompleto ;
@@ -79,22 +81,66 @@
 					verificaResumo(consulta);
 					buidlAll(consulta);
 				}
-							
-				var grafico:Graficos = new Graficos();
-				grafico.height = 420 ;
 				
-				if( p.idade / 12 <= EIdades.CRIANCA ){ 
-					grafico.percentWidth = 100 ;
-					grafico.height = 800 ;
+				var grafico:Graficos;
+				if( idade <= EIdades.CRIANCA ){ 
+					var disponiveis:Array = [ GraficosCrescimento.TIPO_IMC ];
 					
-					var container:VGroup = pagina2.getChildByName('container') as VGroup;
-					container.addElement( gpDietas );
+					if( idade > 0 && idade >= 5  ) disponiveis.push( GraficosCrescimento.TIPO_ESTATURA );
+					if( idade > 0 && idade <= 10  ) disponiveis.push( GraficosCrescimento.TIPO_PESO );
+					if( idade > 0 && idade <= 5  ) disponiveis.push( GraficosCrescimento.TIPO_PESO_ESTATURA );
+					
+					if( disponiveis.length == 1 )
+					{
+						grafico = new Graficos();
+						grafico.width = 650 ;
+						grafico.height = 450 ;
+						grafico.x = 175 ;
+						grafico.mostrarCombos = false ;
+						grafico.tipoForcado = disponiveis[0] ;
+						
+						gpGraficos.addElement( grafico );
+					} 
+					else if( disponiveis.length > 1 )
+					{
+						var pagina4:Group = criaPagina();
+						var container:VGroup = pagina4.getChildByName('container') as VGroup ;
+						var colunas:HGroup = container.getChildByName('colunas') as HGroup ;
+						container.removeElement( colunas );
+						
+						var grupo:VGroup = new VGroup();
+						grupo.percentWidth = 100 ;
+						grupo.height = 1000 ;
+						grupo.paddingLeft = 175 ;
+						
+						for (var i:int = 0; i < disponiveis.length; i++) 
+						{
+							grafico = new Graficos();
+							grafico.mostrarCombos = false ;
+							grafico.width = 650 ;
+							grafico.height = 450 ;
+							grafico.tipoForcado = disponiveis[i] ;
+							if( i == 0 ){
+								grafico.x = 175
+								gpGraficos.addElement( grafico );
+							} else {
+								grupo.addElement( grafico );
+							}
+						}
+						
+						container.addElement( grupo );
+					}
 				} else {
+					grafico = new Graficos();
 					grafico.width = 720 ;
+					grafico.height = 420 ;
 					grafico.x = 140 ;
+					grafico.mostrarCombos = false ;
+					
+					gpGraficos.addElement( grafico );
 				}
 				
-				gpGraficos.addElement( grafico );
+				
 			}
 			
 			private function verificaResumo(c:app.model.Consulta):void
@@ -229,7 +275,11 @@
 				d2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
 				e2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
 				
-				gpObs.visible = (( c.resumo.necessidadeEnergetica ) && ( c.antropometria.imc >= 25 ) || ( c.antropometria.imc <= 18.5 ) );
+				if( c.resumo != null && c.antropometria != null ){
+					gpObs.visible = (( c.resumo.necessidadeEnergetica ) && ( c.antropometria.imc >= 25 ) || ( c.antropometria.imc <= 18.5 ) );
+				} else {
+					gpObs.visible = false ;
+				}
 			}
 			
 			private function onContainerCreationComplete(e:FlexEvent):void

@@ -118,7 +118,7 @@
 				
 				var grafico:Graficos = new Graficos();
 				grafico.width = 700 ;
-				grafico.height = 400 ;
+				grafico.height = 500 ;
 				grafico.mostrarTitulos = false ;
 				
 				vgTMB.addElement( grafico );

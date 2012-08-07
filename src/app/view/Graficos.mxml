@@ -9,6 +9,7 @@
 			import app.controller.Navigation;
 			import app.enums.EAreas;
 			import app.enums.EDadosGraficos;
+			import app.enums.EIdades;
 			import app.model.AtividadeFisica;
 			import app.model.Consulta;
 			import app.model.DB;
@@ -35,6 +36,11 @@
 			[Bindable]
 			public var mostrarTitulos:Boolean = true ;
 			
+			[Bindable]
+			public var mostrarCombos:Boolean = true ;
+			
+			public var tipoForcado:int = GraficosCrescimento.TIPO_IMC ;
+			
 			private var consultas:ArrayCollection;
 			
 			[Bindable]
@@ -49,13 +55,17 @@
 			[Bindable]
 			private var faixas:ArrayCollection;
 			
+			private var _currentTipo:int = GraficosCrescimento.TIPO_IMC;
+			private var _currentIdade:Array = [];
+			
 			public function init():void
 			{
 				var p:Paciente = General.pacienteAtual ;
 				if( p == null ) return ;
 				
+				var idade:Number = 0 ;
 				if( p.dataNascimento ){
-					var idade:Number = Math.floor( Helpers.idade(p.dataNascimento) / 12 );
+					idade = Math.floor( Helpers.idade(p.dataNascimento) / 12 );
 				}
 				
 				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
@@ -89,7 +99,7 @@
 					}
 				}
 				
-				if( idade < 20 ) {
+				if( idade < EIdades.CRIANCA ) {
 					vsGraficos.selectedIndex = 1 ;
 				} else {
 					if( p.gestante ) {
@@ -137,36 +147,93 @@
 			
 			private function montaCrescimento():void
 			{
-				var linha1:HGroup = new HGroup();
-				var linha2:HGroup = new HGroup();
-				linha1.percentWidth = linha2.percentWidth = 100 ;
-				linha1.percentHeight = linha2.percentHeight = 100 ;
-				linha1.gap = linha2.gap = 20 ;
+				var idade:Number = Math.ceil( Helpers.idade(General.pacienteAtual.dataNascimento) / 12 );
 				
-				for (var i:int = 0; i < 4; i++) 
-				{
-					var gc:GraficosCrescimento = new GraficosCrescimento();
-					gc.consultas = consultas ;
-					gc.tipo = i;
-					gc.percentWidth = 100 ;
-					gc.percentHeight = 100 ;
+				var provider:ArrayCollection = new ArrayCollection();
+				provider.addItem( { label:'IMC x IDADE', value:GraficosCrescimento.TIPO_IMC } );
+				
+				if( idade > 0 && idade >= 5  ) provider.addItem( { label:'ESTATURA x IDADE', value:GraficosCrescimento.TIPO_ESTATURA } );
+				if( idade > 0 && idade <= 10 ) provider.addItem( { label:'PESO x IDADE', value:GraficosCrescimento.TIPO_PESO } );
+				if( idade > 0 && idade <= 5  ) provider.addItem( { label:'PESO x ESTATURA', value:GraficosCrescimento.TIPO_PESO_ESTATURA } );
+				
+				cmbTipoGrafico.dataProvider = provider ;
+				cmbTipoGrafico.selectedItem = provider.getItemAt(0);
+				
+				_currentIdade = getIdadesDisponiveis( tipoForcado, idade );
+				if( _currentIdade.length == 2 ) trocaGrafico( tipoForcado, _currentIdade[0], _currentIdade[1] );
+			}
+			
+			public function trocaGrafico( tipo:int, minIdade:Number = 0, maxIdade:Number = 0 ):void
+			{
+				gpGraficos.removeAllElements();
 					
-					if( i < 2 ){
-						linha1.addElement(gc);
-					} else {
-						linha2.addElement(gc);
-					}
-				}
+				var gc:GraficosCrescimento = new GraficosCrescimento();
+				gc.width = 800 ;
+				gc.height = 500 ;
+				gc.tipo = tipo ;
+				gc.consultas = consultas ;
+				gc.minIdade = minIdade ;
+				gc.maxIdade = maxIdade ;
 				
-				if( gCrescimento ){
-					gCrescimento.addElement(linha1);
-					gCrescimento.addElement(linha2);
-				}
+				var tipoTitulo:String = '';
+				if( tipo == GraficosCrescimento.TIPO_PESO ) tipoTitulo = 'PESO x IDADE' ;
+				if( tipo == GraficosCrescimento.TIPO_PESO_ESTATURA ) tipoTitulo = 'PESO x ESTATURA' ;
+				if( tipo == GraficosCrescimento.TIPO_ESTATURA ) tipoTitulo = 'ESTATURA x IDADE' ;
+				if( tipo == GraficosCrescimento.TIPO_IMC ) tipoTitulo = 'IMC x IDADE' ;
+				
+				txtTituloCrescimento.text = 'CURVA DE CRESCIMENTO - ' + tipoTitulo + ' (' + minIdade + ' a ' + maxIdade + ' ANOS)' ;
+				gpGraficos.addElement( gc );
 			}
 			
 			private function vsChange(e:IndexChangedEvent):void
 			{
 				verificaIndice();
+			}
+			
+			private function onComboTipoGraficoChange(e:IndexChangeEvent):void
+			{
+				var idade:Number = Math.ceil( Helpers.idade( General.pacienteAtual.dataNascimento ) / 12 );
+				var provider:ArrayCollection = new ArrayCollection();
+				
+				_currentTipo = cmbTipoGrafico.selectedItem.value ;
+				_currentIdade = getIdadesDisponiveis( _currentTipo, idade );
+				
+				if( _currentIdade.length == 2 ) trocaGrafico( _currentTipo, _currentIdade[0], _currentIdade[1] );
+			}
+			
+			private function getIdadesDisponiveis( tipo:int, idade:Number ):Array
+			{
+				var novasIdades:Array = [];
+				
+				switch( tipo )
+				{
+					case GraficosCrescimento.TIPO_PESO:
+						if( idade <= 5 ) novasIdades = [0,5];
+						else if( idade > 5 && idade <= 10 ) novasIdades = [5, 10];
+						//						if( idade <= 5 ) provider.addItem( { label:'NASCIMENTO AOS 5 ANOS', 		value:[0,5] } );
+						//						if( idade >= 5 ) provider.addItem( { label:'5 AOS 10 ANOS', 				value:[5,10] } );
+						break;
+					case GraficosCrescimento.TIPO_ESTATURA:
+						if( idade >= 5 ) novasIdades = [ 5, 19 ];
+						//						if( idade >= 5 ) provider.addItem( { label:'5 AOS 10 ANOS', 				value:[5,10] } );
+						break;
+					case GraficosCrescimento.TIPO_IMC:
+						if( idade <= 5 ) novasIdades = [0,5];
+						else if( idade > 5 ) novasIdades = [5, 19];
+						//						if( idade <= 5 ) provider.addItem( { label:'NASCIMENTO AOS 5 ANOS', 		value:[0,5] } );
+						//						if( idade >= 5 ) provider.addItem( { label:'5 AOS 19 ANOS', 				value:[5,19] } );
+						break;
+					case GraficosCrescimento.TIPO_PESO_ESTATURA:
+						if( idade <= 2 ) novasIdades = [0,2];
+						else if( idade > 2 && idade <= 5 ) novasIdades = [2, 5];
+						//						if( idade <= 2 ) provider.addItem( { label:'NASCIMENTO AOS 2 ANOS', 		value:[0,2] } );
+						//						if( idade >= 2 && idade <= 5 ) provider.addItem( { label:'2 AOS 5 ANOS', 	value:[2,5] } );
+						break;
+				}
+				
+				if( novasIdades.length == 2 && ( novasIdades[0] > 0 || novasIdades[1] > 0 ) ) return novasIdades ;
+				
+				return [];
 			}
 			
 			private function mostraData(labelValue:Object, previousValue:Object, axis:CategoryAxis, categoryItem:Object):String
@@ -224,10 +291,15 @@
 		</s:NavigatorContent>
 		
 		<s:NavigatorContent width="100%" height="100%" label="Crescimento">
-			<s:VGroup gap="5" width="100%" height="100%" paddingLeft="10" paddingRight="10">
-				<s:Label width="100%" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO" includeInLayout="{mostrarTitulos}"/>
-				<s:Label width="100%" includeInLayout="{mostrarTitulos}" text="As novas curvas de acompanhamento estabelecem, internacionalmente, um padrão para avaliar o crescimento e estado nutricional de crianças e adolescentes. São preconizadas pela Organização Mundial da Saúde e Ministério da Saúde." />
-				<s:VGroup id="gCrescimento" width="100%" height="100%" gap="20" />
+			<s:VGroup id="gCrescimento" gap="5" width="100%" height="100%" paddingLeft="10" paddingRight="10">
+				<s:HGroup width="90%" gap="10" verticalAlign="middle">
+					<s:Label text="TIPO:" includeInLayout="{mostrarCombos}" />
+					<s:ComboBox id="cmbTipoGrafico" width="150" skinClass="app.skin.ComboBox" change="onComboTipoGraficoChange(event)" visible="{mostrarCombos}" includeInLayout="{mostrarCombos}" />
+					<s:Label id="txtTituloCrescimento" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO" includeInLayout="{mostrarTitulos}"/>
+					<!-- s:Label text="IDADE:" />
+					<s:ComboBox id="cmbIdadeGrafico" width="300" skinClass="app.skin.ComboBox" change="onComboGraficoChange(event)" / -->
+				</s:HGroup>
+				<s:VGroup id="gpGraficos" width="100%" height="100%" />
 			</s:VGroup>
 		</s:NavigatorContent>
 		

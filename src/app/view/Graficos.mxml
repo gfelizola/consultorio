@@ -167,8 +167,6 @@
 						posX = NumberUtil.map( c.semanaGestacional, minValorX, maxValorX, limites.x, limites.width ) ;
 						posY = NumberUtil.map( c.antropometria.imc, minValorY, maxValorY, limites.height, limites.y ) ;
 						
-						trace( c.semanaGestacional, c.antropometria.imc, posX, posY );
-						
 						if( posX > limites.x && posX < limites.width && posY > limites.y && posY < limites.height )
 						{
 							g.drawCircle( posX, posY, raio );

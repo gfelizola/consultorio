@@ -450,7 +450,7 @@
 					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbEstados" x="480" y="91" width="155" dataProvider="{bindEstadoArrayCollection}" skinClass="app.skin.ComboBox" selectedItem="{bindEstado}" />
 					
 					<s:Label x="655" y="70" text="CEP"/>
-					<s:TextInput id="txtCEP" x="655" y="91" width="260" skinClass="app.skin.TextInput" text="{paciente.CEP}" />
+					<s:TextInput id="txtCEP" x="655" y="91" width="260" skinClass="app.skin.TextInput" restrict="\-0-9" maxChars="9" text="{paciente.CEP}" />
 					
 					<s:Label x="0" y="142" text="TELEFONE RESIDENCIAL"/>
 					<s:TextInput id="txtTelResidencial" x="0" y="163" width="280" skinClass="app.skin.TextInput" text="{paciente.telefone}" />

@@ -385,7 +385,7 @@
 					<s:TextInput id="txtBairro" x="11" y="102" width="435" skinClass="app.skin.TextInput" text="{usuario.bairro}" />
 		
 					<s:Label x="491" y="81" text="CEP"/>
-					<s:TextInput id="txtCEP" x="491" y="102" width="435" skinClass="app.skin.TextInput" text="{usuario.CEP}" />
+					<s:TextInput id="txtCEP" x="491" y="102" width="435" skinClass="app.skin.TextInput" restrict="\-0-9" maxChars="9" text="{usuario.CEP}" />
 					
 					<s:Label x="11" y="146" text="CIDADE"/>
 					<s:TextInput id="txtCidade" x="11" y="167" width="435" skinClass="app.skin.TextInput" text="{usuario.cidade}" />

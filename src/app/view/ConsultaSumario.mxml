@@ -42,11 +42,18 @@
 					return ;
 				}
 				
-				var idade:Number = 0;
+				var idade:Number = 0 ;
+				var meses:Number = 0 ;
 				
 				if( p.dataNascimento ){
-					idade = Math.floor( Helpers.idade(p.dataNascimento) / 12 );
+					meses = Helpers.idade( p.dataNascimento );
+					idade = Math.floor( meses / 12 );
 					txtIdade.text = idade + " ANOS" ;
+					
+					if( idade < 20 ) {
+						var idadeMod:Number = meses % 12 ;
+						if( idadeMod ) txtIdade.text += " E " + idadeMod +" MESES";
+					}
 				} else {
 					txtIdade.visible = txtIdade.includeInLayout = false ;
 				}
@@ -58,6 +65,7 @@
 					perfil = "IDOSO" ;
 				} else if( idade <= EIdades.CRIANCA ) {
 					perfil = "CRIANÇA" ;
+					if( idade >= 10 ) perfil = "ADOLESCENTE" ;
 				} else {
 					if( p.gestante )
 					{
@@ -112,10 +120,6 @@
 						txtAtividade.text = nivelAtividade ;
 					} else {
 						txtAtividade.visible = txtAtividade.includeInLayout = false ;
-					}
-					
-					if( idade < EIdades.CRIANCA ) {
-						perfil = "CRIANÇA" ;
 					}
 					
 					txtPerfil.text = perfil ;

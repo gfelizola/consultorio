@@ -218,13 +218,13 @@ package app.util
 						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética**:', Math.round( r.necessidadeEnergetica ) + " kcal/dia", textoSize, cor));
 					}
 					
-					if ( ( c.antropometria.imc >= 25 ) || ( c.antropometria.imc <= 18.5 ) ) {
+					if( c.antropometria.getIMCDescription(c) != 'Eutrófia' ){
 						var texto : String = 'Importante: o valor da TMB foi calculado com o peso atual (e não ideal) do paciente. Como o IMC está fora da faixa ideal, certifique-se se este é mesmo o valor que você gostaria de ter utilizado na fórmula.\n\n';
 						texto += 'Segundo preconizado pelas DRIs (IOM, 2005), a estimativa das Necessidades Energéticas (EERs=Estimated Energy Requirement) destinam-se a pessoas saudáveis e eutróficas e visam à manutenção do peso corporal. Dessa maneira, os valores de EER aqui calculados não se destinam a indivíduos com sobrepeso, obesidade, baixo peso ou para aqueles que desejam perder ou ganhar peso.\n\n';
 						texto += 'Isso procede nos desvios de peso em todos os ciclos da vida (ex. infância, adolescência, gestação, lactação).\n\n';
 						texto += 'Para o entendimento do que as DRIs preconizam em programas de restrição ou incremento calórico, sugerimos a leitura do capítulo 5 do seguinte documento: http://www.nap.edu/catalog/10490.html';
-						container.addElement( ImpressaoUtils.getUmaLinha( texto, false, textoSize, cor));	
-					}
+						container.addElement( ImpressaoUtils.getUmaLinha( texto, false, textoSize, cor));
+					}	
 				}
 				
 				if( legendaAdd ){

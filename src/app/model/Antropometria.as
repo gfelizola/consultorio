@@ -141,7 +141,7 @@ package app.model
 						} else if( imc >= p03 && imc < p15 ){
 							imcDescricao = 'Baixo peso' ;
 						} else if( imc >= p15 && imc < p85 ){
-							imcDescricao = 'Eutrófico' ;
+							imcDescricao = 'Eutrófia' ;
 						} else if( imc >= p85 && imc < p97 ){
 							imcDescricao = 'Sobrepeso' ;
 						} else {
@@ -163,7 +163,7 @@ package app.model
 						if( imc < fraca ){
 							imcDescricao = 'Enfraquecida' ;
 						} else if( imc >= fraca && imc < normal ){
-							imcDescricao = 'Normal' ;
+							imcDescricao = 'Eutrófia' ;
 						} else if( imc >= normal && imc < sobrepeso ){
 							imcDescricao = 'Sobrepeso' ;
 						} else {

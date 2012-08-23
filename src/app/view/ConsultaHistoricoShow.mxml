@@ -6,6 +6,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import app.enums.EIdades;
 			import app.model.Antropometria;
 			import app.model.Atividade;
 			import app.model.AtividadeFisica;
@@ -118,7 +119,9 @@
 				
 				var grafico:Graficos = new Graficos();
 				grafico.width = 700 ;
-				grafico.height = 500 ;
+				grafico.height = 300 ;
+				if( General.consultaAtual.idadeNaConsulta() / 12 < EIdades.CRIANCA ) grafico.height = 500 ; 
+				
 				grafico.mostrarTitulos = false ;
 				
 				vgTMB.addElement( grafico );

@@ -151,12 +151,19 @@
 				var maxValorX:Number = maxMeses ;
 				var minValorY:Number = minValor ;
 				var maxValorY:Number = maxValor ;
-				var limites:Rectangle = new Rectangle( 55, 17, 550 + 55, 348 + 17 );
+				var limites:Rectangle = new Rectangle( 55, 17, 525 + 55, 348 + 17 );
 				var raio:int = 5 ;
 				var posicoes:Array = [] ;
 				var pontos:SkinnableContainer = new SkinnableContainer();
 				var g:Graphics = pontos.graphics ;
 				g.clear();
+				
+				/* AREA DE DESENHO DO GRÁFICO
+				g.beginFill(0xff0000, 0.2);
+				g.drawRect( limites.x, limites.y, limites.width - limites.x, limites.height - limites.y );
+				g.endFill();
+				*/
+				
 				g.beginFill( corLinhasCrescimento );
 				
 				if( consultas != null )

@@ -120,7 +120,8 @@
 				var grafico:Graficos = new Graficos();
 				grafico.width = 700 ;
 				grafico.height = 300 ;
-				if( General.consultaAtual.idadeNaConsulta() / 12 < EIdades.CRIANCA ) grafico.height = 500 ; 
+				if( General.consultaAtual.idadeNaConsulta() / 12 < EIdades.CRIANCA ) grafico.height = 500 ;
+				if( General.consultaAtual.semanaGestacional > 0 ) grafico.height = 660 ;
 				
 				grafico.mostrarTitulos = false ;
 				

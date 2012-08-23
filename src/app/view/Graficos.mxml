@@ -2,7 +2,7 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx"
-					width="750" height="460" creationComplete="init()">
+					width="750" height="460" creationComplete="init()" xmlns:skin="app.skin.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -30,8 +30,12 @@
 			import nz.co.codec.flexorm.criteria.Criteria;
 			import nz.co.codec.flexorm.criteria.Sort;
 			
+			import org.casalib.util.NumberUtil;
+			
 			import spark.components.HGroup;
+			import spark.components.SkinnableContainer;
 			import spark.events.IndexChangeEvent;
+			import spark.primitives.BitmapImage;
 			
 			[Bindable]
 			public var mostrarTitulos:Boolean = true ;
@@ -57,6 +61,9 @@
 			
 			private var _currentTipo:int = GraficosCrescimento.TIPO_IMC;
 			private var _currentIdade:Array = [];
+			
+			[Embed(source="assets/images/curvas/curva_gestacional.jpg")]
+			public var curvaGestacional:Class;
 			
 			public function init():void
 			{
@@ -119,30 +126,73 @@
 			
 			private function montaAtalah():void
 			{
-				var atalah:ArrayCollection = new ArrayCollection();
-				var tabelaAtalah:Array = EDadosGraficos.ATALAH ;
+				var curvaSource:Bitmap = new curvaGestacional();
+				curvaSource.smoothing = true ;
 				
-				for (var j:int = 0; j < tabelaAtalah.length; j++) 
+				var curva:BitmapImage = new BitmapImage();
+				curva.width = 455;
+				curva.height = 648;
+				curva.source = curvaSource;
+				
+				gpGestacional.removeAllElements();
+				gpGestacional.addElement( curva );
+				
+				var minValorX:Number = 6 ;
+				var maxValorX:Number = 40 ;
+				var minValorY:Number = 17 ;
+				var maxValorY:Number = 40 ;
+				var limites:Rectangle = new Rectangle( 49, 30, 353 + 49, 506 + 30 );
+				var raio:int = 10 ;
+				var posicoes:Array = [] ;
+				var pontos:SkinnableContainer = new SkinnableContainer();
+				var g:Graphics = pontos.graphics ;
+				g.clear();
+				
+				/* //AREA DE DESENHO DO GRÁFICO
+				g.beginFill(0xff0000, 0.2);
+				g.drawRect( limites.x, limites.y, limites.width - limites.x, limites.height - limites.y );
+				g.endFill();
+				*/
+				
+				g.beginFill( 0x81BAEA );
+				
+				if( consultas != null )
 				{
-					var o:Object = {};
-					o.semana = tabelaAtalah[j][0];
-					o.baixo = tabelaAtalah[j][1];
-					o.ideal = tabelaAtalah[j][3];
-					o.sobre = tabelaAtalah[j][5];
-					o.imc = 0 ;
-					
-					for ( var i:int = 0; i < consultas.length; i++) 
+					for (var i:int = 0; i < consultas.length; i++) 
 					{
-						var cons:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
-						if( cons.semanaGestacional ){
-							if( cons.semanaGestacional == o.semana ) o.imc = Number( cons.antropometria.imc.toFixed(2) ) ;
+						var c:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
+						var posX:Number = 0 ;
+						var posY:Number = 0 ;
+						
+						posX = NumberUtil.map( c.semanaGestacional, minValorX, maxValorX, limites.x, limites.width ) ;
+						posY = NumberUtil.map( c.antropometria.imc, minValorY, maxValorY, limites.height, limites.y ) ;
+						
+						trace( c.semanaGestacional, c.antropometria.imc, posX, posY );
+						
+						if( posX > limites.x && posX < limites.width && posY > limites.y && posY < limites.height )
+						{
+							g.drawCircle( posX, posY, raio );
+							posicoes.push( new Point( posX, posY ) ) ;
 						}
 					}
-					
-					atalah.addItem(o);
 				}
 				
-				if( curvaDeAtalah ) curvaDeAtalah.dataProvider = atalah ;
+				g.endFill();
+				
+				if( posicoes.length > 1 )
+				{
+					g.lineStyle( 3, 0x81BAEA );
+					g.moveTo( posicoes[0].x, posicoes[0].y );
+					for (var j:int = 1; j < posicoes.length; j++) 
+					{
+						g.lineTo( posicoes[j].x, posicoes[j].y );
+					}
+					
+				}
+				
+				gpGestacional.addElement( pontos );
+				
+//				if( curvaDeAtalah ) curvaDeAtalah.dataProvider = atalah ;
 			}
 			
 			private function montaCrescimento():void
@@ -304,69 +354,68 @@
 		</s:NavigatorContent>
 		
 		<s:NavigatorContent width="100%" height="100%" label="Atalah">
-			<s:VGroup gap="5" width="100%" height="100%" paddingRight="30">
+			<s:VGroup gap="5" width="100%" height="100%" paddingRight="0">
 				<s:Label width="100%" includeInLayout="{mostrarTitulos}" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE ATALAH"/>
 				<s:Label width="100%" includeInLayout="{mostrarTitulos}" text="Trata-se da ferramenta preconizada pela Organização Mundial da Saúde e Ministério da Saúde para avaliar a evolução do Índice de Massa Corporal (IMC) segundo a semana gestacional." />
 				
-				<s:Group width="100%" height="100%">
-					<mx:AreaChart id="curvaDeAtalah" width="100%" height="100%" showDataTips="true">
-						<mx:horizontalAxis>
-							<mx:CategoryAxis categoryField="semana" displayName="SEMANAS DE GESTAÇÃO" />
-						</mx:horizontalAxis>
-						<mx:verticalAxis>
-							<mx:LinearAxis title="IMC" minimum="15" maximum="40" />
-						</mx:verticalAxis>
-						<mx:series>
-							<mx:AreaSeries yField="baixo" displayName="Baixo Peso">
-								<mx:areaFill>
-									<s:SolidColor color="0xCCCCCC" alpha="0.5" />
-								</mx:areaFill>
-							</mx:AreaSeries>
-							<mx:AreaSeries yField="ideal" displayName="Peso Adequado">
-								<mx:areaFill>
-									<s:SolidColor color="0xDDDDDD" alpha="0.5"  />
-								</mx:areaFill>
-							</mx:AreaSeries>
-							<mx:AreaSeries yField="sobre" displayName="Sobrepeso">
-								<mx:areaFill>
-									<s:SolidColor color="0xEEEEEE" alpha="0.5" />
-								</mx:areaFill>
-							</mx:AreaSeries>
-							<mx:AreaSeries yField="imc" displayName="IMC" radius="5">
-								<mx:areaStroke>
-									<mx:SolidColorStroke color="0x81BAEA" weight="7" />
-								</mx:areaStroke>
-								<mx:areaFill>
-									<s:SolidColor color="0xFFFFFF" alpha="0" />
-								</mx:areaFill>
-								<mx:stroke>
-									<s:SolidColorStroke color="#81BAEA" />
-								</mx:stroke>
-								<mx:fill>
-									<s:SolidColor color="#81BAEA" />
-								</mx:fill>
-								<mx:itemRenderer>
-									<fx:Component>
-										<mx:CircleItemRenderer />
-									</fx:Component>
-								</mx:itemRenderer>
-							</mx:AreaSeries>
-						</mx:series>
-						
-						<mx:annotationElements>
-							<s:BorderContainer width="100%" height="100%" borderAlpha="0" backgroundAlpha="0">
-								<s:Label text="OBESA" 			width="100%" height="30%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
-								<s:Label text="SOBREPESO" 		width="100%" height="45%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
-								<s:Label text="NORMAL" 			width="100%" height="65%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
-								<s:Label text="ENFRAQUECIDA" 	width="100%" height="90%" verticalAlign="bottom" textAlign="center" alpha="0.5" />	
-							</s:BorderContainer>
-						</mx:annotationElements>
-						
-					</mx:AreaChart>
-					
-					
-				</s:Group>
-				
+				<skin:ScrollerSemBug width="100%" height="100%">
+					<s:Group id="gpGestacional" width="100%" height="100%">
+						<!-- mx:AreaChart id="curvaDeAtalah" width="100%" height="100%" showDataTips="true">
+							<mx:horizontalAxis>
+								<mx:CategoryAxis categoryField="semana" displayName="SEMANAS DE GESTAÇÃO" />
+							</mx:horizontalAxis>
+							<mx:verticalAxis>
+								<mx:LinearAxis title="IMC" minimum="15" maximum="40" />
+							</mx:verticalAxis>
+							<mx:series>
+								<mx:AreaSeries yField="baixo" displayName="Baixo Peso">
+									<mx:areaFill>
+										<s:SolidColor color="0xCCCCCC" alpha="0.5" />
+									</mx:areaFill>
+								</mx:AreaSeries>
+								<mx:AreaSeries yField="ideal" displayName="Peso Adequado">
+									<mx:areaFill>
+										<s:SolidColor color="0xDDDDDD" alpha="0.5"  />
+									</mx:areaFill>
+								</mx:AreaSeries>
+								<mx:AreaSeries yField="sobre" displayName="Sobrepeso">
+									<mx:areaFill>
+										<s:SolidColor color="0xEEEEEE" alpha="0.5" />
+									</mx:areaFill>
+								</mx:AreaSeries>
+								<mx:AreaSeries yField="imc" displayName="IMC" radius="5">
+									<mx:areaStroke>
+										<mx:SolidColorStroke color="0x81BAEA" weight="7" />
+									</mx:areaStroke>
+									<mx:areaFill>
+										<s:SolidColor color="0xFFFFFF" alpha="0" />
+									</mx:areaFill>
+									<mx:stroke>
+										<s:SolidColorStroke color="#81BAEA" />
+									</mx:stroke>
+									<mx:fill>
+										<s:SolidColor color="#81BAEA" />
+									</mx:fill>
+									<mx:itemRenderer>
+										<fx:Component>
+											<mx:CircleItemRenderer />
+										</fx:Component>
+									</mx:itemRenderer>
+								</mx:AreaSeries>
+							</mx:series>
+							
+							<mx:annotationElements>
+								<s:BorderContainer width="100%" height="100%" borderAlpha="0" backgroundAlpha="0">
+									<s:Label text="OBESA" 			width="100%" height="30%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
+									<s:Label text="SOBREPESO" 		width="100%" height="45%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
+									<s:Label text="NORMAL" 			width="100%" height="65%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
+									<s:Label text="ENFRAQUECIDA" 	width="100%" height="90%" verticalAlign="bottom" textAlign="center" alpha="0.5" />	
+								</s:BorderContainer>
+							</mx:annotationElements>
+							
+						</mx:AreaChart -->
+					</s:Group>
+				</skin:ScrollerSemBug>
 			</s:VGroup>
 		</s:NavigatorContent>
 		

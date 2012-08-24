@@ -107,11 +107,13 @@
 				}
 				
 				if( idade < EIdades.CRIANCA ) {
-					vsGraficos.selectedIndex = 1 ;
-				} else {
-					if( p.gestante ) {
-						vsGraficos.selectedIndex = 2 ;
-					}
+					if( vsGraficos.selectedIndex != 1 ) vsGraficos.selectedIndex = 1 ;
+					else verificaIndice();
+				}
+				
+				if( p.gestante ) {
+					if( vsGraficos.selectedIndex != 2 ) vsGraficos.selectedIndex = 2 ;
+					else verificaIndice();
 				}
 			}
 			
@@ -189,8 +191,6 @@
 				}
 				
 				gpGestacional.addElement( pontos );
-				
-//				if( curvaDeAtalah ) curvaDeAtalah.dataProvider = atalah ;
 			}
 			
 			private function montaCrescimento():void
@@ -344,8 +344,6 @@
 					<s:Label text="TIPO:" includeInLayout="{mostrarCombos}" />
 					<s:ComboBox id="cmbTipoGrafico" width="150" skinClass="app.skin.ComboBox" change="onComboTipoGraficoChange(event)" visible="{mostrarCombos}" includeInLayout="{mostrarCombos}" />
 					<s:Label id="txtTituloCrescimento" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO" includeInLayout="{mostrarTitulos}"/>
-					<!-- s:Label text="IDADE:" />
-					<s:ComboBox id="cmbIdadeGrafico" width="300" skinClass="app.skin.ComboBox" change="onComboGraficoChange(event)" / -->
 				</s:HGroup>
 				<s:VGroup id="gpGraficos" width="100%" height="100%" />
 			</s:VGroup>
@@ -357,62 +355,7 @@
 				<s:Label width="100%" includeInLayout="{mostrarTitulos}" text="Trata-se da ferramenta preconizada pela Organização Mundial da Saúde e Ministério da Saúde para avaliar a evolução do Índice de Massa Corporal (IMC) segundo a semana gestacional." />
 				
 				<skin:ScrollerSemBug width="100%" height="100%">
-					<s:Group id="gpGestacional" width="100%" height="100%">
-						<!-- mx:AreaChart id="curvaDeAtalah" width="100%" height="100%" showDataTips="true">
-							<mx:horizontalAxis>
-								<mx:CategoryAxis categoryField="semana" displayName="SEMANAS DE GESTAÇÃO" />
-							</mx:horizontalAxis>
-							<mx:verticalAxis>
-								<mx:LinearAxis title="IMC" minimum="15" maximum="40" />
-							</mx:verticalAxis>
-							<mx:series>
-								<mx:AreaSeries yField="baixo" displayName="Baixo Peso">
-									<mx:areaFill>
-										<s:SolidColor color="0xCCCCCC" alpha="0.5" />
-									</mx:areaFill>
-								</mx:AreaSeries>
-								<mx:AreaSeries yField="ideal" displayName="Peso Adequado">
-									<mx:areaFill>
-										<s:SolidColor color="0xDDDDDD" alpha="0.5"  />
-									</mx:areaFill>
-								</mx:AreaSeries>
-								<mx:AreaSeries yField="sobre" displayName="Sobrepeso">
-									<mx:areaFill>
-										<s:SolidColor color="0xEEEEEE" alpha="0.5" />
-									</mx:areaFill>
-								</mx:AreaSeries>
-								<mx:AreaSeries yField="imc" displayName="IMC" radius="5">
-									<mx:areaStroke>
-										<mx:SolidColorStroke color="0x81BAEA" weight="7" />
-									</mx:areaStroke>
-									<mx:areaFill>
-										<s:SolidColor color="0xFFFFFF" alpha="0" />
-									</mx:areaFill>
-									<mx:stroke>
-										<s:SolidColorStroke color="#81BAEA" />
-									</mx:stroke>
-									<mx:fill>
-										<s:SolidColor color="#81BAEA" />
-									</mx:fill>
-									<mx:itemRenderer>
-										<fx:Component>
-											<mx:CircleItemRenderer />
-										</fx:Component>
-									</mx:itemRenderer>
-								</mx:AreaSeries>
-							</mx:series>
-							
-							<mx:annotationElements>
-								<s:BorderContainer width="100%" height="100%" borderAlpha="0" backgroundAlpha="0">
-									<s:Label text="OBESA" 			width="100%" height="30%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
-									<s:Label text="SOBREPESO" 		width="100%" height="45%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
-									<s:Label text="NORMAL" 			width="100%" height="65%" verticalAlign="bottom" textAlign="center" alpha="0.5" />
-									<s:Label text="ENFRAQUECIDA" 	width="100%" height="90%" verticalAlign="bottom" textAlign="center" alpha="0.5" />	
-								</s:BorderContainer>
-							</mx:annotationElements>
-							
-						</mx:AreaChart -->
-					</s:Group>
+					<s:Group id="gpGestacional" width="100%" height="100%" />
 				</skin:ScrollerSemBug>
 			</s:VGroup>
 		</s:NavigatorContent>

@@ -211,6 +211,8 @@
 				vazios = [d1,e1,d2,e2];
 				verMan = false ;
 				
+				var verAntropo:Boolean = false ;
+				
 				gpDietas.visible = gpDietas.includeInLayout = false ;
 				
 				for (var i:int = 0; i < impressos.length; i++) 
@@ -233,6 +235,8 @@
 							d1.addElement( criaTitulo('antropometria') );
 							buildAntropometria(	c, d1 );
 							ArrayUtil.removeItem( vazios, d1 );
+							
+							verAntropo = true ;
 						}
 						
 					}
@@ -270,10 +274,19 @@
 					}
 				}
 				
-				d1.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
-				e1.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
-				d2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
-				e2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
+				if( vazios.length < 4 ){ 
+					d1.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
+					e1.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
+					d2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
+					e2.addEventListener(FlexEvent.CREATION_COMPLETE, onContainerCreationComplete);
+				} else {
+					paginas[1].visible = paginas[1].includeInLayout = false ;
+					paginas[2].visible = paginas[2].includeInLayout = false ;
+					scrolado.removeElement( paginas[1] );
+					scrolado.removeElement( paginas[2] );
+				}
+				
+				gpFinais.visible = gpFinais.includeInLayout = verAntropo;
 				
 				if( c.resumo != null && c.antropometria != null ){
 					gpObs.visible = (( c.resumo.necessidadeEnergetica ) && ( c.antropometria.imc >= 25 ) || ( c.antropometria.imc <= 18.5 ) );
@@ -455,18 +468,19 @@
 			{
 				btnImprimir.visible = false ;
 				
-				var pj:FlexPrintJob = new FlexPrintJob();
-				pj.start();
+//				var pj:FlexPrintJob = new FlexPrintJob();
+//				pj.start();
 				
 				for (var i:int = 0; i < paginas.length; i++) 
 				{
-					if( paginas[i].visible ) pj.addObject( paginas[i], FlexPrintJobScaleType.MATCH_HEIGHT );
+//					if( paginas[i].visible ) pj.addObject( paginas[i], FlexPrintJobScaleType.MATCH_HEIGHT );
+					trace( i, paginas[i].visible );
 				}
 				
-				pj.send();
+//				pj.send();
 				
 				btnImprimir.visible = true ;
-				this.close();
+//				this.close();
 			}
 		]]>
 	</fx:Script>

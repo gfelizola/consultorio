@@ -150,6 +150,7 @@
 			public function refresh():void
 			{
 				init(); 
+				vGrafico.init();
 			}
 			
 		]]>
@@ -197,7 +198,7 @@
 				</s:fill>
 			</s:Rect>
 			
-			<view:Graficos top="10" bottom="10" left="10" right="10" />
+			<view:Graficos id="vGrafico" top="10" bottom="10" left="10" right="10" />
 		</s:Group>	
 	</s:HGroup>
 </s:NavigatorContent>

@@ -87,12 +87,16 @@ package app.model
 					return " > 94 cm - Risco elevado de complicações metabólicas" ;
 				} else if( circunferenciaCintura > 102 ){
 					return " > 102 cm - Risco muito elevado de complicações metabólicas" ;
+				} else {
+					return " < 94 cm  - Sem riscos"
 				}
 			} else {
 				if( circunferenciaCintura > 80 ){
 					return " > 80 cm - Risco elevado de complicações metabólicas" ;
 				} else if( circunferenciaCintura > 88 ){
 					return " > 88 cm - Risco muito elevado de complicações metabólicas" ;
+				} else {
+					return " < 80 cm  - Sem riscos"
 				}
 			}
 			
@@ -105,9 +109,11 @@ package app.model
 			if( paciente.gestante ) return '';
 			
 			if( paciente.sexo == 'M' ){
-				if( _rcq > 1 ) return " > 1 -  Risco para desenvolvimento de doenças" ;
+				if( _rcq > 1 ) return " > 1 - Risco para desenvolvimento de doenças" ;
+				else return " < 1 - Sem riscos"
 			} else {
 				if( _rcq > 0.85 ) return " > 0.85 - Risco para desenvolvimento de doenças." ;
+				else return " < 0.85 - Sem riscos"
 			}
 			
 			return "" ;

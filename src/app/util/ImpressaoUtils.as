@@ -76,6 +76,11 @@ package app.util
 						'*** BRASIL. Ministério da Saúde. Vigilância Alimentar e Nutricional – SISVAN. Orientações básicas para a coleta, o processamento, a analise de dados e a informação em serviços de saúde. Diário Oficial da União Brasília, 2004.'
 					];
 					
+					if( c.idadeNaConsulta() / 12 >= EIdades.IDOSO )
+					{
+						textos[0] = '* Lipschitz DA. Screening for nutritional status in the elderly. Primary Care. 1994; 21(1):55-67.';
+					}
+					
 					for (var j:int = 0; j < textos.length; j++) 
 					{
 						container.addElement( ImpressaoUtils.getLabel( textos[j], 100, true, false, 'left', legendaSize, legendaCor ) ) ;
@@ -208,14 +213,14 @@ package app.util
 			if( removeAll ) container.removeAllElements();
 			
 			if( r ){
-				if( ! isNaN( r.metabolismoBasal ) ) container.addElement( ImpressaoUtils.getDuasColunas( 'Metabolismo Basal*:', Math.round( r.metabolismoBasal ) + " kcal/dia", textoSize, cor));
+				if( ! isNaN( r.metabolismoBasal ) ) container.addElement( ImpressaoUtils.getDuasColunas( 'Metabolismo Basal (TMB)*:', Math.round( r.metabolismoBasal ) + " kcal/dia", textoSize, cor));
 				if( r.necessidadeEnergetica ){
 					if( c.semanaGestacional > 12 ){
-						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:', Math.round( r.necessidadeEnergeticaGestacional ) + " kcal/dia", textoSize, cor));
+						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional (EER)**:', Math.round( r.necessidadeEnergeticaGestacional ) + " kcal/dia", textoSize, cor));
 					} else if( c.semanaGestacional > 0 ){
-						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional**:',Math.round( r.necessidadeEnergeticaGestacional ) + " kcal/dia  (menos de 12 semanas de gestação)", textoSize, cor));
+						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética gestacional (EER)**:',Math.round( r.necessidadeEnergeticaGestacional ) + " kcal/dia  (menos de 12 semanas de gestação)", textoSize, cor));
 					} else {
-						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética**:', Math.round( r.necessidadeEnergetica ) + " kcal/dia", textoSize, cor));
+						container.addElement( ImpressaoUtils.getDuasColunas( 'Necessidade energética (EER)**:', Math.round( r.necessidadeEnergetica ) + " kcal/dia", textoSize, cor));
 					}
 					
 					if( c.antropometria.getIMCDescription(c) != 'Eutrófia' ){
@@ -230,7 +235,7 @@ package app.util
 				if( legendaAdd ){
 					var textos:Array = [];
 					if( ! isNaN( r.metabolismoBasal ) ){
-						if( c.idadeNaConsulta() / 12 < EIdades.IDOSO && c.idadeNaConsulta() / 12 >= EIdades.CRIANCA )
+						if( c.idadeNaConsulta() / 12 >= EIdades.CRIANCA )
 						{
 							textos.push('* Harris JA, Benedict FG. A biometric study of basal metabolism in man. Boston: Carnegie Institute of Washington; 1919. 266p.');
 						}

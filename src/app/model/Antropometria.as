@@ -127,7 +127,7 @@ package app.model
 				if( imc < 22 ){
 					imcDescricao = 'Desnutrição' ;
 				} else if( imc >= 22 && imc < 27 ){
-					imcDescricao = 'Eutrófia' ;
+					imcDescricao = 'Eutrofia' ;
 				} else {
 					imcDescricao = 'Obesidade' ;
 				}
@@ -147,7 +147,7 @@ package app.model
 						} else if( imc >= p03 && imc < p15 ){
 							imcDescricao = 'Baixo peso' ;
 						} else if( imc >= p15 && imc < p85 ){
-							imcDescricao = 'Eutrófia' ;
+							imcDescricao = 'Eutrofia' ;
 						} else if( imc >= p85 && imc < p97 ){
 							imcDescricao = 'Sobrepeso' ;
 						} else {
@@ -169,7 +169,7 @@ package app.model
 						if( imc < fraca ){
 							imcDescricao = 'Enfraquecida' ;
 						} else if( imc >= fraca && imc < normal ){
-							imcDescricao = 'Eutrófia' ;
+							imcDescricao = 'Eutrofia' ;
 						} else if( imc >= normal && imc < sobrepeso ){
 							imcDescricao = 'Sobrepeso' ;
 						} else {

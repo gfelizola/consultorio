@@ -144,7 +144,7 @@
 				var minValorY:Number = 17 ;
 				var maxValorY:Number = 40 ;
 				var limites:Rectangle = new Rectangle( 49, 30, 353 + 49, 506 + 30 );
-				var raio:int = 10 ;
+				var raio:int = 5 ;
 				var posicoes:Array = [] ;
 				var pontos:SkinnableContainer = new SkinnableContainer();
 				var g:Graphics = pontos.graphics ;
@@ -317,9 +317,9 @@
 					</mx:verticalAxis>
 					
 					<mx:series>
-						<mx:LineSeries displayName="Peso" form="curve" yField="peso" radius="7">
+						<mx:LineSeries displayName="Peso" form="curve" yField="peso" radius="5">
 							<mx:lineStroke>
-								<mx:SolidColorStroke color="#81BAEA" weight="5" />
+								<mx:SolidColorStroke color="#81BAEA" weight="3" />
 							</mx:lineStroke>
 							<mx:stroke>
 								<s:SolidColorStroke color="#81BAEA" />

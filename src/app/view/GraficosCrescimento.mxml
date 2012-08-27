@@ -152,7 +152,7 @@
 				var minValorY:Number = minValor ;
 				var maxValorY:Number = maxValor ;
 				var limites:Rectangle = new Rectangle( 55, 17, 525 + 55, 348 + 17 );
-				var raio:int = 5 ;
+				var raio:int = 3 ;
 				var posicoes:Array = [] ;
 				var pontos:SkinnableContainer = new SkinnableContainer();
 				var g:Graphics = pontos.graphics ;
@@ -173,6 +173,7 @@
 						var c:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
 						var posX:Number = 0 ;
 						var posY:Number = 0 ;
+						var valorX:Number = c.idadeNaConsulta();
 						
 						if ( tipo == GraficosCrescimento.TIPO_IMC ) 
 						{
@@ -199,12 +200,13 @@
 									minValorX = minIdade == 0 ? 45 : 65 ;
 									maxValorX = minIdade == 0 ? 110 : 120 ;
 									
-									posY = NumberUtil.map( c.antropometria.estatura, minValorY, maxValorY, limites.height, limites.y ) ;
+									posY = NumberUtil.map( c.antropometria.peso, minValorY, maxValorY, limites.height, limites.y ) ;
+									valorX = c.antropometria.estatura ;
 								}
 							}
 						}
 						
-						posX = NumberUtil.map( c.idadeNaConsulta(), minValorX, maxValorX, limites.x, limites.width ) ;
+						posX = NumberUtil.map( valorX, minValorX, maxValorX, limites.x, limites.width ) ;
 						
 						if( posX > limites.x && posX < limites.width && posY > limites.y && posY < limites.height )
 						{

@@ -24,7 +24,7 @@ package app.model
 	import org.casalib.util.ArrayUtil;
 	
 	import spark.components.Application;
-
+	
 	public class Constantes
 	{
 		//PUBLICS
@@ -94,11 +94,11 @@ package app.model
 		
 		/* --------------- SE PRECISAR ATUALIZAR CONSTANTES - ADICINAR ITENS MODIFICADOS/NOVOS NOS VETORES COMO MOSTRADO ABAIXO.
 		private static var novosNessaVersao:Array = [
-			null, null, null, [ redesSociais[5] ], null
+		null, null, null, [ redesSociais[5] ], null
 		];
 		
 		private static var atualizadosNessaVersao:Array = [
-			null, [ tiposAtendimentos[0] ], [ patologias[0] ], null, [ exames[8], exames[10] ]
+		null, [ tiposAtendimentos[0] ], [ patologias[0] ], null, [ exames[8], exames[10] ]
 		];
 		*/
 		private static var objetosCarregados:Boolean = false ;
@@ -120,13 +120,15 @@ package app.model
 				{
 					adicionaItens( full[i], tipos[i] );
 				}
-				
+				/*
 				if( ! DB.first ){
-					zeraBanco();
+				zeraBanco();
 				} else {
-					trace("primeira instalação");
-					atualizaVersao(versaoAtual);
-				}
+				trace("primeira instalação");
+				atualizaVersao(versaoAtual);
+				}*/
+				trace("primeira instalação");
+				atualizaVersao(versaoAtual);
 			} else {
 				if( versaoAtual != ultimaVersao.nome ) //atualização de versão
 				{
@@ -155,12 +157,17 @@ package app.model
 						}
 					}
 					
+					/*
 					if( ! DB.first ){
-						zeraBanco();
+					zeraBanco();
 					} else {
-						atualizaVersao(versaoAtual);
-						trace("aplicação atualizada para a versao:", versaoAtual);
+					atualizaVersao(versaoAtual);
+					trace("aplicação atualizada para a versao:", versaoAtual);
 					}
+					*/
+					
+					atualizaVersao(versaoAtual);
+					trace("aplicação atualizada para a versao:", versaoAtual);
 				}
 				else
 				{

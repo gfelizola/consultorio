@@ -123,6 +123,10 @@ package app.model
 		public function getIMCDescription(c:Consulta):String
 		{
 			var imcDescricao:String = '' ;
+			var idade:Number = 0;
+			var dados:Array;
+			var i:int = 0;
+			
 			if( c.idadeNaConsulta() / 12 >= EIdades.IDOSO ){
 				if( imc < 22 ){
 					imcDescricao = 'Desnutrição' ;
@@ -132,10 +136,10 @@ package app.model
 					imcDescricao = 'Obesidade' ;
 				}
 			} else if( c.idadeNaConsulta() / 12 <= EIdades.CRIANCA ){
-				var idade:Number = c.idadeNaConsulta() ;
-				var dados:Array = c.paciente.sexo == 'M' ? EDadosGraficos.CRESCIMENTO_MASCULINO_IMC_IDADE : EDadosGraficos.CRESCIMENTO_FEMININO_IMC_IDADE ;
+				idade = c.idadeNaConsulta() ;
+				dados = c.paciente.sexo == 'M' ? EDadosGraficos.CRESCIMENTO_MASCULINO_IMC_IDADE : EDadosGraficos.CRESCIMENTO_FEMININO_IMC_IDADE ;
 				
-				for (var i:int = 0; i < dados.length; i++) {
+				for (i = 0; i < dados.length; i++) {
 					if( dados[i][0] == idade ) {
 						var p03:Number = dados[i][2] ; 
 						var p15:Number = dados[i][3] ; 
@@ -156,11 +160,10 @@ package app.model
 					}
 				}
 			} else if( c.paciente.gestante ){
+				idade = c.semanaGestacional ;
+				dados = EDadosGraficos.ATALAH ;
 				
-				var idade:Number = c.semanaGestacional ;
-				var dados:Array = EDadosGraficos.ATALAH ;
-				
-				for (var i:int = 0; i < dados.length; i++) {
+				for (i = 0; i < dados.length; i++) {
 					if( dados[i][0] == idade ) {
 						var fraca:Number = dados[i][1] ; 
 						var normal:Number = dados[i][3] ; 

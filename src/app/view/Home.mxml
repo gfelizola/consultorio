@@ -18,7 +18,7 @@
 			import nz.co.codec.flexorm.criteria.Criteria;
 			import nz.co.codec.flexorm.criteria.Sort;
 			
-			[Bindable]
+//			[Bindable]
 //			public var pacientes:ArrayCollection =  new ArrayCollection();
 			
 			public function init():void

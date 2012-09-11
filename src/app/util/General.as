@@ -76,7 +76,7 @@ package app.util
 		public static function verificaAtualizacao():void 
 		{
 			appUpdater = new ApplicationUpdaterUI();
-			appUpdater.updateURL = "http://www.myappurl.com/update.xml";
+			appUpdater.updateURL = "http://www.nestle.com.br/nestlenutrisaude/conteudo/ferramentas/consultorio_update.xml";
 			appUpdater.addEventListener(UpdateEvent.INITIALIZED, onUpdate);
 			appUpdater.addEventListener(ErrorEvent.ERROR, onUpdaterError);
 			appUpdater.isCheckForUpdateVisible = false;

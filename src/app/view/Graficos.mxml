@@ -6,36 +6,24 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import app.controller.Navigation;
-			import app.enums.EAreas;
-			import app.enums.EDadosGraficos;
+			import mx.collections.ArrayCollection;
+			import mx.events.IndexChangedEvent;
+			
+			import spark.components.SkinnableContainer;
+			import spark.events.IndexChangeEvent;
+			import spark.primitives.BitmapImage;
+			
 			import app.enums.EIdades;
-			import app.model.AtividadeFisica;
 			import app.model.Consulta;
 			import app.model.DB;
 			import app.model.Paciente;
 			import app.util.General;
 			import app.util.Helpers;
-			import app.util.ImpressaoUtils;
-			
-			import mx.charts.chartClasses.IAxis;
-			import mx.collections.ArrayCollection;
-			import mx.containers.ViewStack;
-			import mx.controls.Alert;
-			import mx.events.CloseEvent;
-			import mx.events.IndexChangedEvent;
-			import mx.formatters.DateFormatter;
-			import mx.graphics.Stroke;
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			import nz.co.codec.flexorm.criteria.Sort;
 			
 			import org.casalib.util.NumberUtil;
-			
-			import spark.components.HGroup;
-			import spark.components.SkinnableContainer;
-			import spark.events.IndexChangeEvent;
-			import spark.primitives.BitmapImage;
 			
 			[Bindable]
 			public var mostrarTitulos:Boolean = true ;
@@ -200,9 +188,9 @@
 				var provider:ArrayCollection = new ArrayCollection();
 				provider.addItem( { label:'IMC x IDADE', value:GraficosCrescimento.TIPO_IMC } );
 				
-				if( idade > 0 && idade >= 5  ) provider.addItem( { label:'ESTATURA x IDADE', value:GraficosCrescimento.TIPO_ESTATURA } );
-				if( idade > 0 && idade <= 10 ) provider.addItem( { label:'PESO x IDADE', value:GraficosCrescimento.TIPO_PESO } );
-				if( idade > 0 && idade <= 5  ) provider.addItem( { label:'PESO x ESTATURA', value:GraficosCrescimento.TIPO_PESO_ESTATURA } );
+				if( idade > 0 ) 				provider.addItem( { label:'ESTATURA x IDADE', value:GraficosCrescimento.TIPO_ESTATURA } );
+				if( idade > 0 && idade <= 10 ) 	provider.addItem( { label:'PESO x IDADE', value:GraficosCrescimento.TIPO_PESO } );
+				if( idade > 0 && idade <= 5  ) 	provider.addItem( { label:'PESO x ESTATURA', value:GraficosCrescimento.TIPO_PESO_ESTATURA } );
 				
 				cmbTipoGrafico.dataProvider = provider ;
 				cmbTipoGrafico.selectedItem = provider.getItemAt(0);
@@ -262,7 +250,8 @@
 						//						if( idade >= 5 ) provider.addItem( { label:'5 AOS 10 ANOS', 				value:[5,10] } );
 						break;
 					case GraficosCrescimento.TIPO_ESTATURA:
-						if( idade >= 5 ) novasIdades = [ 5, 19 ];
+						if( idade > 5 ) novasIdades = [ 5, 19 ];
+						else novasIdades = [ 0, 5 ];
 						//						if( idade >= 5 ) provider.addItem( { label:'5 AOS 10 ANOS', 				value:[5,10] } );
 						break;
 					case GraficosCrescimento.TIPO_IMC:

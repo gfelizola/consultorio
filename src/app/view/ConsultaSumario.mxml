@@ -6,6 +6,11 @@
 					width="1004" height="500" creationComplete="init()" show="init()">
 	<fx:Script>
 		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.containers.ViewStack;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			
 			import app.controller.Navigation;
 			import app.enums.EAreas;
 			import app.enums.EIdades;
@@ -13,21 +18,11 @@
 			import app.model.Consulta;
 			import app.model.DB;
 			import app.model.Paciente;
-			import app.skin.ComboBox;
 			import app.util.General;
 			import app.util.Helpers;
 			
-			import mx.charts.Legend;
-			import mx.collections.ArrayCollection;
-			import mx.containers.ViewStack;
-			import mx.controls.Alert;
-			import mx.events.CloseEvent;
-			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			import nz.co.codec.flexorm.criteria.Sort;
-			
-			import spark.components.ComboBox;
-			import spark.events.IndexChangeEvent;
 
 			private var consultas:ArrayCollection;
 			

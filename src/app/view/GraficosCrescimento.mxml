@@ -36,6 +36,9 @@
 			public var minIdade:Number;
 			public var maxIdade:Number;
 			
+			[Embed(source="assets/images/curvas/estatura_idade_menino_0_5.jpg")]
+			public var estatura_idade_menino_0_5:Class;
+			
 			[Embed(source="assets/images/curvas/estatura_idade_menino_5_19.jpg")]
 			public var estatura_idade_menino_5_19:Class;
 			
@@ -56,6 +59,9 @@
 			
 			[Embed(source="assets/images/curvas/peso_idade_menino_5_10.jpg")]
 			public var peso_idade_menino_5_10:Class;
+			
+			[Embed(source="assets/images/curvas/estatura_idade_menina_0_5.jpg")]
+			public var estatura_idade_menina_0_5:Class;
 			
 			[Embed(source="assets/images/curvas/estatura_idade_menina_5_19.jpg")]
 			public var estatura_idade_menina_5_19:Class;
@@ -109,8 +115,14 @@
 				else if(tipo == GraficosCrescimento.TIPO_ESTATURA)
 				{
 					nomeComplete = 'estatura_idade_' + sexo + '_' + minIdade  + '_' + maxIdade ;
-					minValor = sexo == 'menino' ? 100 : 95 ;
-					maxValor = sexo == 'menino' ? 195 : 180 ;
+					if( minIdade == 0 ) {
+						minValor = 43 ;
+						maxValor = 122 ;
+					} else {
+						minValor = sexo == 'menino' ? 100 : 95 ;
+						maxValor = sexo == 'menino' ? 195 : 180 ;
+					}
+					
 				}
 				else if(tipo == GraficosCrescimento.TIPO_IMC)
 				{

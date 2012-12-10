@@ -76,9 +76,13 @@
 					if( usuario.logo != "" )
 					{
 						logo = File.applicationStorageDirectory.resolvePath("images/" + usuario.logo );
-						if( logo.exists ) imgLogo.source = logo.url ;
+						if( logo.exists ){
+							imgLogo.source = logo.url ;
+							trace( logo.nativePath );
+						} else {
+							logo = null ;
+						}
 						
-						trace( logo.nativePath );
 					}
 					
 					cmbSexo.selectedIndex = u.sexo == 'M' ? 0 : 1 ;
@@ -226,7 +230,9 @@
 				{
 					var logoName:String = "logo_" + u.id + "." + logo.extension ;
 					u.logo = logoName ;
-					logo.copyToAsync( File.applicationStorageDirectory.resolvePath("images/" + u.logo ), true );	
+					if( logo.nativePath.indexOf( File.applicationStorageDirectory.nativePath ) < 0 ){
+						logo.copyToAsync( File.applicationStorageDirectory.resolvePath("images/" + u.logo ), true );
+					}
 				}
 				
 				DB.em.save(u);

@@ -266,7 +266,7 @@ package app.model
 		
 		private static function atualizaVersao(v:Versao):void
 		{
-			var novaVersao = v ;
+			var novaVersao:Versao = v ;
 			novaVersao.dataAtualizacao = new Date();
 			DB.em.save(novaVersao);
 			

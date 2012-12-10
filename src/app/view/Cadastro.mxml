@@ -7,7 +7,6 @@
 		<![CDATA[
 			import app.controller.Navigation;
 			import app.enums.EAreas;
-			import app.events.AppEvent;
 			import app.model.Constantes;
 			import app.model.DB;
 			import app.model.Usuario;
@@ -19,22 +18,13 @@
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.controls.LinkButton;
-			import mx.core.IVisualElement;
-			import mx.core.UIComponent;
-			import mx.events.CloseEvent;
-			import mx.events.FlexEvent;
-			import mx.events.ValidationResultEvent;
-			import mx.managers.IFocusManagerComponent;
 			import mx.validators.Validator;
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			
 			import org.casalib.util.ArrayUtil;
 			
-			import spark.components.FormItem;
-			import spark.events.IndexChangeEvent;
-			import spark.layouts.BasicLayout;
-			import spark.layouts.VerticalLayout;
+			import spark.components.Label;
 			
 			[Bindable]
 			private var usuario:Usuario = new Usuario();
@@ -62,6 +52,17 @@
 			private var sexos:ArrayCollection = new ArrayCollection( new Array(
 				{nome: 'Masculino', valor: 'M'},
 				{nome: 'Feminino', valor: 'F'}
+			) );
+			
+			[Bindable]
+			private var perguntas:ArrayCollection = new ArrayCollection( new Array(
+				'Qual o nome da sua cidade natal?',
+				'Qual o nome do seu primeiro emprego?',
+				'Qual o nome do seu animal de estimação favorito?',
+				'Qual o nome do seu primo mais velho?',
+				'Qual o nome da sua primeira escola?',
+				'Qual é o seu número da sorte?',
+				'Qual o nome do seu(sua) melhor amigo(a) de infância?'
 			) );
 			
 			public function atualizaUsuario(u:Usuario):void
@@ -97,6 +98,8 @@
 				validators.push(valConfirmaSenha);
 				validators.push(valNome);
 				validators.push(valSobrenome);
+				validators.push(valPergunta);
+				validators.push(valResposta);
 				validators.push(valCRN);
 				validators.push(valRegional);
 				validators.push(valTelefone);
@@ -193,6 +196,8 @@
 				u.senha = txtSenha.text != '' ? txtSenha.text : usuario.senha ;
 				u.nome = txtNome.text ;
 				u.sobrenome = txtSobrenome.text ;
+				u.perguntaChave = cmbPergunta.selectedItem ;
+				u.respostaChave = txtResposta.text ;
 				u.CRN = txtCrn.text ;
 				u.regional = cmbRegional.selectedItem ;
 				u.sexo = cmbSexo.selectedItem.valor ;
@@ -225,6 +230,9 @@
 				}
 				
 				DB.em.save(u);
+				
+				//atualiza versão atual marcando cadastro atualizado:
+				Constantes.acaoDeVersaoRealizada();
 				
 				General.usuario = u ;
 				Navigation.reinitEstrutura();
@@ -318,11 +326,13 @@
 		<mx:StringValidator id="valSobrenome" 		source="{txtSobrenome}" 		property="text" required="true" requiredFieldError="O campo Sobrenome é obrigatório" />
 		<mx:StringValidator id="valLogin" 			source="{txtLogin}" 			property="text" required="true" requiredFieldError="O campo Nome de usuário é obrigatório" />
 		<mx:StringValidator id="valSenha" 			source="{txtSenha}" 			property="text" required="true" requiredFieldError="O campo Senha é obrigatório" />
+		<mx:StringValidator id="valResposta" 		source="{txtResposta}" 			property="text" required="true" requiredFieldError="O campo Resposta é obrigatório" />
 		<mx:StringValidator id="valConfirmaSenha" 	source="{txtConfirmaSenha}" 	property="text" required="true" requiredFieldError="O campo Confirmação de Senha é obrigatório" />
 		<mx:StringValidator id="valCRN" 			source="{txtCrn}" 				property="text" required="true" requiredFieldError="O campo CRN é obrigatório" />
 		<mx:StringValidator id="valTelefone" 		source="{txtTelefone}" 			property="text" required="true" requiredFieldError="O campo Telefone é obrigatório" />
 		<s:NumberValidator id="valSexo" 			source="{cmbSexo}" 				property="selectedIndex" minValue="0" lessThanMinError="O campo Sexo é obrigatório" />
 		<s:NumberValidator id="valRegional" 		source="{cmbRegional}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Regional é obrigatório" />
+		<s:NumberValidator id="valPergunta" 		source="{cmbPergunta}" 			property="selectedIndex" minValue="0" lessThanMinError="O campo Pergunta é obrigatório" />
 		
 		<!-- mx:StringValidator id="valEmail" 			source="{txtEmail}" 			property="text" required="true" requiredFieldError="O campo Email é obrigatório" />
 		<mx:StringValidator id="valEndereco" 		source="{txtEndereco}" 			property="text" required="true" requiredFieldError="O campo Endereco é obrigatório" />
@@ -333,7 +343,7 @@
 	</fx:Declarations>
 	
 	
-	<skin:ScrollerSemBug id="formScroller" top="20" bottom="10" left="0" right="0" mouseFocusEnabled="false" mouseChildren="true" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
+	<skin:ScrollerSemBug id="formScroller" top="20" bottom="20" left="0" right="0" mouseFocusEnabled="false" mouseChildren="true" focusEnabled="false" hasFocusableChildren="true" horizontalCenter="0" verticalCenter="0">
 		<s:Group id="formContainer" width="100%" height="100%">
 			<s:VGroup id="vg" gap="15" y="10" paddingLeft="20">
 				<s:Label text="Neste etapa inicial você deverá realizar o cadastro para acessar o aplicativo e incluir os dados adicionais que &#xd;aparecerão na geração dos formulários e relatórios para os pacientes."/>
@@ -347,12 +357,20 @@
 					<s:Label x="9" y="81" text="SENHA*"/>
 					<s:TextInput id="txtSenha" x="9" y="102" width="435" displayAsPassword="true" skinClass="app.skin.TextInput"/>
 					
+					
 					<s:Label x="489" y="81" text="CONFIRMAÇÃO DA SENHA*"/>
-					<s:TextInput id="txtConfirmaSenha" x="489" y="102" width="435" displayAsPassword="true" skinClass="app.skin.TextInput"/>		
+					<s:TextInput id="txtConfirmaSenha" x="489" y="102" width="435" displayAsPassword="true" skinClass="app.skin.TextInput"/>
+					
+					<s:Label x="9" y="151" text="PERGUNTA*"/>
+					<s:Label x="9" y="168" text="Escolha uma pergunta. Sua resposta será solicitada caso precise recuperar a senha."/>
+					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbPergunta" x="9" y="192" width="915" dataProvider="{perguntas}" selectedItem="{usuario.perguntaChave}" skinClass="app.skin.ComboBox"/>
+					
+					<s:Label x="9" y="243" text="RESPOSTA*"/>
+					<s:TextInput id="txtResposta" x="9" y="264" width="915" text="{usuario.respostaChave}" skinClass="app.skin.TextInput"/>
 				</s:Group>
 
-				<s:Label x="9" y="287" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS PROFISSIONAIS"/>
-				<s:Label x="10" y="323" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos."/>
+				<s:Label x="9" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS PROFISSIONAIS"/>
+				<s:Label x="10" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos."/>
 				
 				<s:Group>
 					<s:Label x="9" y="16" text="NOME*"/>

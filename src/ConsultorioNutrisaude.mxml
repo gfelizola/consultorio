@@ -51,6 +51,8 @@
 				loginView.visible = false ;
 				estruturaView.visible = true ;
 				estruturaView.init();
+				
+				Constantes.verificaEntradaVersao();
 			}
 			
 			private function onCadastrar(e:Event):void

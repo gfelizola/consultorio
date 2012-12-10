@@ -1,5 +1,7 @@
 package app.model
 {
+	import app.controller.Navigation;
+	import app.enums.EAreas;
 	import app.util.General;
 	
 	import flash.desktop.NativeApplication;
@@ -28,6 +30,9 @@ package app.model
 	public class Constantes
 	{
 		//PUBLICS
+		public static var versaoAtual:Versao;
+		
+		
 		[Bindable]
 		public static var estadosCivis:ArrayCollection;
 		
@@ -91,6 +96,10 @@ package app.model
 		private static var novosNessaVersao:Array 		= [ null, null, null, null, null, null ];
 		private static var atualizadosNessaVersao:Array = [ null, null, null, null, null, null ];
 		
+		private static var avisosPorVersao:Array 		= [
+			{ versao: '1.1.0', aviso:'É necessário uma atualização no seu cadastro. Isso deve ser feito, para permitir a recuperação da sua senha no futuro. Deseja atualizar agora?', callback:atualizaCadastro }
+		];
+		
 		
 		/* --------------- SE PRECISAR ATUALIZAR CONSTANTES - ADICINAR ITENS MODIFICADOS/NOVOS NOS VETORES COMO MOSTRADO ABAIXO.
 		private static var novosNessaVersao:Array = [
@@ -102,11 +111,13 @@ package app.model
 		];
 		*/
 		private static var objetosCarregados:Boolean = false ;
+		private static var avisoCallback:Function;
 		
 		public static function verificarValoresPadrao():void
 		{
 			var i:int = 0
-			var versaoAtual:String = General.getAppVersion();
+			versaoAtual = new Versao(); 
+			versaoAtual.nome = General.getAppVersion();
 			
 			var c:Criteria = DB.em.createCriteria(Versao);
 			c.addSort("dataAtualizacao", Sort.DESC);
@@ -115,22 +126,16 @@ package app.model
 			
 			if( ultimaVersao == null ) //primeira instalação - adiciona todas as contastantes
 			{
-				
 				for (i = 0; i < tipos.length; i++) 
 				{
 					adicionaItens( full[i], tipos[i] );
 				}
-				/*
-				if( ! DB.first ){
-				zeraBanco();
-				} else {
+				
 				trace("primeira instalação");
 				atualizaVersao(versaoAtual);
-				}*/
-				trace("primeira instalação");
-				atualizaVersao(versaoAtual);
+				
 			} else {
-				if( versaoAtual != ultimaVersao.nome ) //atualização de versão
+				if( versaoAtual.nome != ultimaVersao.nome ) //atualização de versão
 				{
 					//adiciona novos
 					for (i = 0; i < tipos.length; i++) 
@@ -157,25 +162,38 @@ package app.model
 						}
 					}
 					
-					/*
-					if( ! DB.first ){
-					zeraBanco();
-					} else {
-					atualizaVersao(versaoAtual);
-					trace("aplicação atualizada para a versao:", versaoAtual);
-					}
-					*/
-					
 					atualizaVersao(versaoAtual);
 					trace("aplicação atualizada para a versao:", versaoAtual);
 				}
 				else
 				{
+					versaoAtual = ultimaVersao ;
 					trace("aplicação atualizada");
 				}
 			}
 			
 			if( DB.em.sqlConnection.connected ) getObjectFromDatabase();
+		}
+		
+		public static function verificaEntradaVersao():void
+		{
+			if( ! versaoAtual.acaoDaVersaoRealizada ){
+				for (var i:int = 0; i < avisosPorVersao.length; i++) 
+				{
+					if( versaoAtual.nome == avisosPorVersao[i].versao ){
+						avisoCallback = avisosPorVersao[i].callback ;
+						Alert.yesLabel = 'Sim' ;
+						Alert.noLabel = 'Não' ;
+						Alert.show(avisosPorVersao[i].aviso, "Aviso", Alert.YES|Alert.NO, null, onAvisoClose);
+					}
+				}
+			}
+		}
+		
+		public static function acaoDeVersaoRealizada():void
+		{
+			versaoAtual.acaoDaVersaoRealizada = true ;
+			DB.em.save(versaoAtual);
 		}
 		
 		private static function zeraBanco():void
@@ -246,13 +264,22 @@ package app.model
 			var ts:Array = new Array( Antropometria, Atividade, AtividadeFisica, Consulta, DadosAlimentares, EstadoCivil, Exame, ExameAdicional, ExameBioquimico, Historico, MAN, Paciente, Patologia, Refeicao, RedeSocial, TipoAtendimento, Usuario, UsuarioRedeSocial, Versao );
 		}
 		
-		private static function atualizaVersao(v:String):void
+		private static function atualizaVersao(v:Versao):void
 		{
-			var novaVersao:Versao = new Versao();
+			var novaVersao = v ;
 			novaVersao.dataAtualizacao = new Date();
-			novaVersao.nome = v ;
-			
 			DB.em.save(novaVersao);
+			
+			versaoAtual = novaVersao ;
+		}
+		
+		private static function onAvisoClose(e:CloseEvent):void
+		{
+			if( e.detail == Alert.YES && avisoCallback != null ){
+				avisoCallback.call();
+				avisoCallback = null ;
+				trace( 'ID da versao', versaoAtual.id );
+			}
 		}
 		
 		private static function adicionaItens( a:Array, c:Class ):void
@@ -298,5 +325,10 @@ package app.model
 			return null ;
 		}
 		
+		//----------------- CALLBACKS DE MENSAGENS DE VERSAO ----------------------
+		private static function atualizaCadastro():void
+		{
+			Navigation.navega(EAreas.CADASTRO);
+		}
 	}
 }

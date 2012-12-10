@@ -1,0 +1,9 @@
+<update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">  
+  <version>1.0.3</version>
+  <url>http://www.nestle.com.br/nestlenutrisaude/conteudo/ferramentas/ConsultorioNutrisaude.air</url>
+  <description>
+  	1.0.3 - Acertos de textos.
+  	1.0.2 - Atualização do Manual de Uso.
+  	1.0.1 - Acerto de curva de crescimento de Estatura por Peso para todas as idades.
+  </description>
+</update>

@@ -44,6 +44,10 @@ package app.model
 		
 		public var email:String;
 		
+		public var perguntaChave:String;
+		
+		public var respostaChave:String;
+		
 		[OneToMany(type="app.model.UsuarioRedeSocial", cascade="all")]
 		public var redesSociais:ArrayCollection = new ArrayCollection();
 		

@@ -7,6 +7,7 @@
 	<fx:Declarations>
 		<mx:StringValidator id="valLogin" required="true" source="{txtLogin}" property="text" requiredFieldError="O campo de login é obrigatório" />
 		<mx:StringValidator id="valSenha" required="true" source="{txtSenha}" property="text" requiredFieldError="O campo de senha é obrigatório" />
+		<mx:StringValidator id="valResposta" required="true" source="{txtResposta}" property="text" requiredFieldError="O campo de Resposta é obrigatório" />
 	</fx:Declarations>
 	
 	<fx:Script>
@@ -16,10 +17,13 @@
 			import app.model.Usuario;
 			import app.util.General;
 			
+			import mx.events.ValidationResultEvent;
 			import mx.validators.Validator;
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
+			
 			private var validators:Array;
+			private var usuarioEsqueceu:Usuario;
 			
 			protected function init():void
 			{
@@ -34,6 +38,22 @@
 				}
 			}
 			
+			private function mostrarUsuarioSenha():void
+			{
+				lblResposta.text = "" ;
+				btnEntrar.label = "ENTRAR" ;
+				gpSenha.visible = gpSenha.includeInLayout = true ;
+				gpPergunta.visible = gpPergunta.includeInLayout = false ;
+			}
+			
+			private function mostrarEsqueciSenha():void
+			{
+				lblResposta.text = "" ;
+				btnValidar.label = "VERIFICAR" ;
+				gpSenha.visible = gpSenha.includeInLayout = false ;
+				gpPergunta.visible = gpPergunta.includeInLayout = true ;
+			}
+			
 			private function onNovoEvent(e:MouseEvent):void
 			{
 				if( e.type == MouseEvent.ROLL_OVER || e.type == MouseEvent.ROLL_OUT )
@@ -41,6 +61,39 @@
 					lblNovoUsuario.setStyle("textDecoration", e.type == MouseEvent.ROLL_OUT ? "underline" : "start");
 				} else {
 					dispatchEvent( new AppEvent(AppEvent.CADASTRAR_USUARIO_NOVO) );
+				}
+			}
+			
+			private function onEsqueciEvent(e:MouseEvent):void
+			{
+				if( e.type == MouseEvent.ROLL_OVER || e.type == MouseEvent.ROLL_OUT )
+				{
+					lblEsqueciSenha.setStyle("textDecoration", e.type == MouseEvent.ROLL_OUT ? "underline" : "start");
+				} else {
+					var hasLogin:ValidationResultEvent = valLogin.validate();
+					if( hasLogin.type == ValidationResultEvent.VALID ){
+						btnEntrar.label = "AGUARDE" ;
+						
+						var c:Criteria = DB.em.createCriteria(Usuario);
+						c.addEqualsCondition("login", txtLogin.text);
+						
+						usuarioEsqueceu = DB.em.fetchCriteriaFirstResult(c) as Usuario;
+						if( usuarioEsqueceu )
+						{
+							mostrarEsqueciSenha();
+							
+							lblPergunta.text = usuarioEsqueceu.perguntaChave ;
+							txtResposta.text = "" ;
+						} 
+						else 
+						{
+							mostrarUsuarioSenha();
+							
+							lblResposta.text = 'Não foi possível encontrar um usuário com este login. Confirme os dados e clique em Esqueci a Senha.';
+							btnEntrar.label = "ENTRAR" ;
+							focusManager.setFocus( txtLogin );
+						}
+					}
 				}
 			}
 			
@@ -70,26 +123,65 @@
 			{
 				if(e.charCode == 13) onEntrar();
 			}
+			
+			private function onVoltarClick(e:MouseEvent):void
+			{
+				lblPergunta.text = "" ;
+				txtResposta.text = "" ;
+				mostrarUsuarioSenha();
+			}
+			
+			private function onVerificarRespostaClick(e:MouseEvent):void
+			{
+				btnValidar.label = "AGUARDE" ;
+				
+				var hasResposta:ValidationResultEvent = valResposta.validate();
+				if( hasResposta.type == ValidationResultEvent.VALID ){
+					if( usuarioEsqueceu.respostaChave.toLowerCase() == txtResposta.text.toLowerCase() ){
+						mostrarUsuarioSenha();
+						lblResposta.text = "A sua senha cadastrada é:\n" + usuarioEsqueceu.senha ;
+					} else {
+						lblResposta.text = "A resposta informada não confere com a que foi cadastrada. Confirme os dados e clique em Verificar." ;
+						btnValidar.label = "VERIFICAR" ;
+						focusManager.setFocus(txtResposta);
+					}
+				}
+			}
+			
 		]]>
 	</fx:Script>
 	<s:Group verticalCenter="1" horizontalCenter="1">
 		<s:Image x="0" y="0" source="assets/images/LoginBg.png" />
 		<s:Label x="59" y="80" color="#475767" styleName="light" fontSize="30" text="Seja bem-vindo ao"/>
 		<s:Label x="33" y="340" color="#475767" styleName="light" fontSize="11" text="Copyright © Nestlé - Todos os direitos reservados"/>
-		<s:Label id="lblResposta" x="33" y="304" width="316" height="28" color="#FF0000" fontSize="13"
-				 styleName="light"/>
 		<s:Label x="29" y="122" color="#475767" fontSize="30" text="Consultório"/>
 		<s:Label x="194" y="122" color="#475767" styleName="bold" fontSize="30" text="Nutri Saúde"/>
 		<mx:HRule x="32" y="156" width="320"/>
 		
 		<s:Form id="formLogin" defaultButton="{btnEntrar}" x="21" y="162" keyUp="checkKey(event)">
-			<s:TextInput id="txtLogin" x="0" y="162" width="321" prompt="LOGIN" text="" skinClass="app.skin.LoginTextInput"/>
-			<s:TextInput id="txtSenha" x="0" y="203" width="321" prompt="SENHA" text="" skinClass="app.skin.LoginTextInput" displayAsPassword="true" />
-			<s:Button id="btnEntrar" x="0" y="244" label="ENTRAR" skinClass="app.skin.Button" click="onEntrar(event)" />
+			<s:Group id="gpSenha" x="0" y="162" width="321">
+				<s:TextInput id="txtLogin" x="0" y="0" width="321" prompt="LOGIN" text="" skinClass="app.skin.LoginTextInput"/>
+				<s:TextInput id="txtSenha" x="0" y="40" width="321" prompt="SENHA" text="" skinClass="app.skin.LoginTextInput" displayAsPassword="true" />
+				<s:Button id="btnEntrar" x="0" y="80" label="ENTRAR" skinClass="app.skin.Button" click="onEntrar(event)" />
+				
+				<s:Label id="lblNovoUsuario" y="80" right="0" color="#474747" text="CRIAR NOVO USUÁRIO"
+						 textAlign="right" textDecoration="underline" click="onNovoEvent(event)" buttonMode="true" rollOver="onNovoEvent(event)" rollOut="onNovoEvent(event)" />
+				
+				<s:Label id="lblEsqueciSenha" y="100" right="0" color="#474747" text="ESQUECI A SENHA"
+						 textAlign="right" textDecoration="underline" click="onEsqueciEvent(event)" buttonMode="true" rollOver="onEsqueciEvent(event)" rollOut="onEsqueciEvent(event)" />
+			</s:Group>
+			
+			<s:Group id="gpPergunta" x="0" y="162" width="321" visible="false" includeInLayout="false">
+				<s:Label x="0" y="0" width="321" height="42" styleName="light" color="#474747" text="Responda a seguinte pergunta:"/>
+				<s:Label id="lblPergunta" x="0" y="20" width="321" height="42" color="#474747"  text=""/>
+				<s:TextInput id="txtResposta" x="0" y="50" width="321" prompt="resposta" text="" skinClass="app.skin.LoginTextInput"/>
+				<s:Button id="btnValidar" x="0" y="90" label="VERIFICAR" skinClass="app.skin.Button" click="onVerificarRespostaClick(event)" />
+				<s:Button id="btnVoltar" y="90" right="0" label="VOLTAR" skinClass="app.skin.Button" click="onVoltarClick(event)" />
+			</s:Group>
+			
 		</s:Form>
 		
-		<s:Label id="lblNovoUsuario" x="218" y="266" color="#474747" text="CRIAR NOVO USUÁRIO"
-				 textAlign="right" textDecoration="underline" click="onNovoEvent(event)" buttonMode="true" rollOver="onNovoEvent(event)" rollOut="onNovoEvent(event)" />
+		<s:Label id="lblResposta" x="33" y="304" width="316" height="28" color="#FF0000" fontSize="13" styleName="light"/>
 	</s:Group>
 	
 </s:NavigatorContent>

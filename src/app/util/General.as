@@ -85,6 +85,7 @@ package app.util
 		
 		private static function onUpdate(event:UpdateEvent):void 
 		{
+			trace("Verificando atualização");
 			appUpdater.checkNow();
 		}
 		

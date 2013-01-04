@@ -31,11 +31,7 @@
 				validators.push( valLogin );
 				validators.push( valSenha );
 				
-				if( Capabilities.isDebugger ){
-					txtLogin.text = "gustavo" ;
-					txtSenha.text = "123" ;
-					focusManager.setFocus(txtLogin);
-				}
+				focusManager.setFocus(txtLogin);
 			}
 			
 			private function mostrarUsuarioSenha():void
@@ -44,6 +40,8 @@
 				btnEntrar.label = "ENTRAR" ;
 				gpSenha.visible = gpSenha.includeInLayout = true ;
 				gpPergunta.visible = gpPergunta.includeInLayout = false ;
+				
+				formLogin.defaultButton = btnEntrar ;
 			}
 			
 			private function mostrarEsqueciSenha():void
@@ -52,12 +50,13 @@
 				btnValidar.label = "VERIFICAR" ;
 				gpSenha.visible = gpSenha.includeInLayout = false ;
 				gpPergunta.visible = gpPergunta.includeInLayout = true ;
+				
+				formLogin.defaultButton = btnValidar ;
 			}
 			
 			private function onNovoEvent(e:MouseEvent):void
 			{
-				if( e.type == MouseEvent.ROLL_OVER || e.type == MouseEvent.ROLL_OUT )
-				{
+				if( e.type == MouseEvent.ROLL_OVER || e.type == MouseEvent.ROLL_OUT ) {
 					lblNovoUsuario.setStyle("textDecoration", e.type == MouseEvent.ROLL_OUT ? "underline" : "start");
 				} else {
 					dispatchEvent( new AppEvent(AppEvent.CADASTRAR_USUARIO_NOVO) );
@@ -78,12 +77,14 @@
 						c.addEqualsCondition("login", txtLogin.text);
 						
 						usuarioEsqueceu = DB.em.fetchCriteriaFirstResult(c) as Usuario;
+						
 						if( usuarioEsqueceu )
 						{
 							mostrarEsqueciSenha();
 							
 							lblPergunta.text = usuarioEsqueceu.perguntaChave ;
 							txtResposta.text = "" ;
+							btnEntrar.label = "ENTRAR" ;
 						} 
 						else 
 						{

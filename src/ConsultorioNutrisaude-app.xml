@@ -2,7 +2,7 @@
   <id>ConsultorioNutriSaude</id>
   <filename>ConsultorioNutrisaude</filename>
   <name>Consultorio Nutri Saúde</name>
-  <versionNumber>1.1.0</versionNumber>
+  <versionNumber>1.1.1</versionNumber>
   <initialWindow>
     <content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
     <title>Consultório Nutri Saúde</title>

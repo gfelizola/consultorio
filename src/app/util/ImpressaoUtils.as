@@ -136,7 +136,7 @@ package app.util
 				}
 				
 				if( da.qtdeAgua 				!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'QUANTIDADE DE ÁGUA POR DIA', da.qtdeAgua, textoSize, cor ) ) ;
-				if( da.funcionamentoIntestinal 	!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'FUNCIONALIDADE INTESTINAL', da.funcionamentoIntestinal, textoSize, cor ) ) ;
+				if( da.funcionamentoIntestinal 	!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'FUNCIONAMENTO INTESTINAL', da.funcionamentoIntestinal, textoSize, cor ) ) ;
 				if( da.preferenciasAlimentares 	!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'PREFERÊNCIAS ALIMENTARES', da.preferenciasAlimentares, textoSize, cor ) ) ;
 				if( da.aversoesAlimentares 		!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'AVERSÕES ALIMENTARES', da.aversoesAlimentares, textoSize, cor ) ) ;
 				if( da.observacoes 				!= '' ) container.addElement( ImpressaoUtils.getUmaColuna( 'OUTRAS INFORMAÇÕES / OBSERVAÇÕES', da.observacoes, textoSize, cor ) ) ;

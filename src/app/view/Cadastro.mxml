@@ -70,7 +70,7 @@
 				if( u )
 				{
 					usuario = u;
-					redesSociais = u.redesSociais ;
+//					redesSociais = u.redesSociais ;
 					atualizarRedesSociais();
 					
 					if( usuario.logo != "" )
@@ -215,7 +215,7 @@
 					usr.usuario = u ;
 				}
 				
-				u.redesSociais = redesSociais ;
+//				u.redesSociais = redesSociais ;
 				
 				if(logo != null)
 				{
@@ -239,18 +239,18 @@
 			
 			private function onAdicionar(e:MouseEvent):void
 			{
-				if( cmbRedeSocial.selectedIndex >= 0 && txtEndRedeSocial.text.length > 0 )
-				{
-					var urs:UsuarioRedeSocial = new UsuarioRedeSocial();
-					urs.rede = cmbRedeSocial.selectedItem ;
-					urs.endereco = txtEndRedeSocial.text;
-					
-					txtEndRedeSocial.text = "" ;
-					cmbRedeSocial.selectedIndex = -1 ;
-					
-					redesSociais.addItem(urs);
-					atualizarRedesSociais()
-				}
+//				if( cmbRedeSocial.selectedIndex >= 0 && txtEndRedeSocial.text.length > 0 )
+//				{
+//					var urs:UsuarioRedeSocial = new UsuarioRedeSocial();
+//					urs.rede = cmbRedeSocial.selectedItem ;
+//					urs.endereco = txtEndRedeSocial.text;
+//					
+//					txtEndRedeSocial.text = "" ;
+//					cmbRedeSocial.selectedIndex = -1 ;
+//					
+//					redesSociais.addItem(urs);
+//					atualizarRedesSociais()
+//				}
 			}
 			
 			private function atualizarRedesSociais():void
@@ -420,14 +420,14 @@
 				<s:Label x="10" y="904" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
 				<s:Label x="10" y="556" width="925" text="Os dados profissionais disponibilizados abaixo serão os mesmos que aparecerão nos relatórios impressos, que você pode entregar aos seus pacientes.&#xd;O preenchimento deles é opcional."/>
 			
-				<s:Group x="10">
+				<!-- s:Group x="10">
 					<s:Label x="10" y="0" text="REDE SOCIAL"/>
 					<s:ComboBox requireSelection="true" openOnInput="true" id="cmbRedeSocial" x="10" y="20" width="435" labelField="nome" dataProvider="{Constantes.redesSociais}" skinClass="app.skin.ComboBox" />
 					
 					<s:Label x="485" y="0" text="ENDEREÇO"/>
 					<s:TextInput id="txtEndRedeSocial" x="485" y="20" width="301" skinClass="app.skin.TextInput"/>
 					<s:Button id="btnAdicionar" x="800" y="17" width="122" label="ADICIONAR" click="onAdicionar(event)" skinClass="app.skin.Button"/>
-				</s:Group>
+				</s:Group -->
 				
 				<s:Group id="rsContainer" x="10" visible="false"></s:Group>
 				

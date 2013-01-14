@@ -31,11 +31,15 @@ package app.model
 		
 		private static function openConn():void
 		{
+		
 			var db:File = File.applicationStorageDirectory.resolvePath("nutrisaude_co.db");
 			trace(db.nativePath, db.exists); // Imprime o caminho do DB
+			
 			_con = new SQLConnection();
 			
-			if( db.exists ) _first = false ;
+			if( db.exists ){
+				_first = false ;
+			} 
 			
 //			var generator:EncryptionKeyGenerator = new EncryptionKeyGenerator();
 //			var key:ByteArray = generator.getEncryptionKey("NutriSaudePass@2012");
@@ -43,7 +47,7 @@ package app.model
 			_con.open(db);//, SQLMode.CREATE, false, 1024, key);
 			
 			_em = EntityManager.instance ;
-//			_em.debugLevel = 1 ;
+			_em.debugLevel = 1 ;
 			_em.sqlConnection = _con ;
 		}
 	}

@@ -17,6 +17,7 @@
 			import app.model.Usuario;
 			import app.util.General;
 			
+			import mx.controls.Alert;
 			import mx.events.ValidationResultEvent;
 			import mx.validators.Validator;
 			
@@ -94,6 +95,8 @@
 							btnEntrar.label = "ENTRAR" ;
 							focusManager.setFocus( txtLogin );
 						}
+					} else {
+						lblResposta.text = "Preencha o campo de login para poder lembrar sua senha.";
 					}
 				}
 			}
@@ -102,21 +105,29 @@
 			{
 				var erros:Array = Validator.validateAll(validators);
 				if (erros.length == 0) {
-					var c:Criteria = DB.em.createCriteria(Usuario);
-					c.addEqualsCondition("login", txtLogin.text);
-					c.addEqualsCondition("senha", txtSenha.text );
-					
-					btnEntrar.label = "AGUARDE" ;
-					
-					var usuario:Usuario = DB.em.fetchCriteriaFirstResult(c) as Usuario;
-					if( usuario ){
-						General.usuario = usuario ;
-						dispatchEvent( new AppEvent(AppEvent.LOGIN_SUCESSO) );
-					} else {
-						lblResposta.text = "Login e/ou senha inválido(s)." ;
-						btnEntrar.label = "ENTRAR" ;
-						focusManager.setFocus( txtLogin );
+					try
+					{
+						var c:Criteria = DB.em.createCriteria(Usuario);
+						c.addEqualsCondition("login", txtLogin.text);
+						c.addEqualsCondition("senha", txtSenha.text );
+						
+						btnEntrar.label = "AGUARDE" ;
+						
+						var usuario:Usuario = DB.em.fetchCriteriaFirstResult(c) as Usuario;
+						if( usuario ){
+							General.usuario = usuario ;
+							dispatchEvent( new AppEvent(AppEvent.LOGIN_SUCESSO) );
+						} else {
+							lblResposta.text = "Login e/ou senha inválido(s)." ;
+							btnEntrar.label = "ENTRAR" ;
+							focusManager.setFocus( txtLogin );
+						}
+					} 
+					catch(err:SQLError) 
+					{
+						Alert.show("Houve um erro na hora de efetuar o login.\n\n" + err.details + " | " + err.message + " | " + err.detailArguments + " | " + err.toString() , "Erro - " + err.detailID);
 					}
+					
 				}
 			}
 			

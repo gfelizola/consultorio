@@ -20,17 +20,17 @@
 				endereco += u.cidade + ', ' + u.estado ;
 				if( u.telefone ) endereco += ' | Tel.: ' + u.telefone ;
 				endereco += '\nE-mail: ' + u.email ;
-				if( u.redesSociais ){
-					if( u.redesSociais.length > 0 ){
-						endereco += ' | ' ;
-						for (var j:int = 0; j < u.redesSociais.length; j++) 
-						{
-							var usr:UsuarioRedeSocial = u.redesSociais[j] ;
-							endereco += usr.rede.nome + ': ' + usr.endereco + ' | ' ;
-						}
-						endereco = endereco.substr( 0, endereco.length - 3 );
-					}
-				}
+//				if( u.redesSociais ){
+//					if( u.redesSociais.length > 0 ){
+//						endereco += ' | ' ;
+//						for (var j:int = 0; j < u.redesSociais.length; j++) 
+//						{
+//							var usr:UsuarioRedeSocial = u.redesSociais[j] ;
+//							endereco += usr.rede.nome + ': ' + usr.endereco + ' | ' ;
+//						}
+//						endereco = endereco.substr( 0, endereco.length - 3 );
+//					}
+//				}
 				if( u.site != '' ) endereco += '\nSite: ' + u.site ;
 				
 				txtEndereco.text = endereco ;

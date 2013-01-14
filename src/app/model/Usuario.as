@@ -48,8 +48,8 @@ package app.model
 		
 		public var respostaChave:String;
 		
-		[OneToMany(type="app.model.UsuarioRedeSocial", cascade="all")]
-		public var redesSociais:ArrayCollection = new ArrayCollection();
+//		[OneToMany(type="app.model.UsuarioRedeSocial", cascade="all")]
+//		public var redesSociais:ArrayCollection = new ArrayCollection();
 		
 		public function Usuario(){
 			this.id = 0 ;

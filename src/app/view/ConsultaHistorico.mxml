@@ -34,7 +34,7 @@
 	
 	<mx:ViewStack id="vsHistoricoConsulta" x="0" y="0" width="100%" height="100%">
 		<view:ConsultaHistoricoLista width="100%" height="100%" id="vLista"></view:ConsultaHistoricoLista>
-		<view:ConsultaHistoricoShow width="100%" height="100%"></view:ConsultaHistoricoShow>
+		<view:ConsultaHistoricoShow id="vHistoricoShow" width="100%" height="100%"></view:ConsultaHistoricoShow>
 	</mx:ViewStack>
 	
 	

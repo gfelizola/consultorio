@@ -17,6 +17,7 @@
 			
 			import flash.net.navigateToURL;
 			
+			import mx.controls.Alert;
 			import mx.core.UIComponent;
 			import mx.formatters.DateFormatter;
 			
@@ -133,7 +134,16 @@
 			
 			private function manualDeUso(e:MouseEvent):void
 			{
-				Navigation.navega( EAreas.MANUAL_DE_USO );
+//				Navigation.navega( EAreas.MANUAL_DE_USO );
+				
+				var manual:File = File.applicationDirectory.resolvePath('assets/Manual_Uso.pdf');
+				var manualToOpen:File = File.documentsDirectory.resolvePath('Manual_Uso.pdf');
+				
+				if( ! manualToOpen.exists ){
+					manual.copyTo( File.documentsDirectory.resolvePath( 'Manual_Uso.pdf') );
+				}
+				
+				manualToOpen.openWithDefaultApplication();
 			}
 			
 		]]>

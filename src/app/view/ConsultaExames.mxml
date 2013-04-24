@@ -85,6 +85,7 @@
 				var eNome:String = '';
 				var eRef:String = '';
 				var eValor:String = '';
+				var i:int = 0;
 				
 				if( General.editandoConsulta ){
 					var e:ExameBioquimico = General.consultaAtual.exameBioquimico ;
@@ -92,14 +93,15 @@
 						dataDoExame = Helpers.dateFormat( e.dataDoExame );
 						exs = e.exames ;
 						
-						for (var i:int = 0; i < exs.length; i++) 
+						for (i = 0; i < exs.length; i++) 
 						{
-							var ea:ExameAdicional = exs.getItemAt(i) as ExameAdicional;
+							ea = exs.getItemAt(i) as ExameAdicional;
 							if( ! ea.exame ) exsAds.addItem( ea );
 						}
 					}
 				} else {
 					dataDoExame = '' ;
+					new Mask( txtDateExame, "99/99/9999");
 				}
 				
 				// Build
@@ -114,7 +116,7 @@
 					o['hg'].paddingTop = o['hg'].paddingRight = o['hg'].paddingBottom = o['hg'].paddingLeft = 5;
 					o['hg'].gap = 10;
 					
-					for (var i:int = 0; i < exs.length; i++) 
+					for (i = 0; i < exs.length; i++) 
 					{
 						ea = exs.getItemAt(i) as ExameAdicional;
 						if( ea.exame ){

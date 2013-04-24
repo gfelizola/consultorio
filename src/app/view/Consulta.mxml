@@ -112,15 +112,15 @@
 			public function abreHistorico():void
 			{
 				General.editandoConsulta = false ;
-//				montaAbas();
 				vsPaciente.selectedIndex = 2 ;
+				vSumario.refresh();
+				vHistorico.refresh();
 			}
 			
 		]]>
 	</fx:Script>
 	
 	<fx:Style>
-		@namespace s "library://ns.adobe.com/flex/spark";
 		.nomePaciente {
 			chromeColor: #663366;
 			color: #9999CC;
@@ -148,10 +148,10 @@
 	</s:Rect>
 	
 	<mx:ViewStack id="vsPaciente" x="0" y="60" width="100%" height="100%" creationPolicy="all" change="onTelaConsultaChange(event)">
-		<view:ConsultaSumario 		width="100%" height="100%" label="{bindNomeSobrenomePaciente}" />
-		<view:ConsultaDadosPaciente width="100%" height="100%" label="DADOS DO PACIENTE" />
-		<view:ConsultaHistorico 	width="100%" height="100%" label="HISTÓRICO DE CONSULTAS" id="vHistorico" />
-		<view:ConsultaNova 			width="100%" height="100%" label="NOVA CONSULTA" />
+		<view:ConsultaSumario 		id="vSumario" 		width="100%" height="100%" label="{bindNomeSobrenomePaciente}" />
+		<view:ConsultaDadosPaciente id="vDadosPaciente" width="100%" height="100%" label="DADOS DO PACIENTE" />
+		<view:ConsultaHistorico 	id="vHistorico" 	width="100%" height="100%" label="HISTÓRICO DE CONSULTAS" />
+		<view:ConsultaNova 			id="vNovaConsulta" 	width="100%" height="100%" label="NOVA CONSULTA" />
 	</mx:ViewStack>
 	
 </s:NavigatorContent>

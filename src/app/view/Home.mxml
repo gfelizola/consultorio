@@ -18,7 +18,7 @@
 			import nz.co.codec.flexorm.criteria.Criteria;
 			import nz.co.codec.flexorm.criteria.Sort;
 			
-			[Bindable]
+//			[Bindable]
 //			public var pacientes:ArrayCollection =  new ArrayCollection();
 			
 			public function init():void
@@ -111,12 +111,12 @@
 											]]>
 										</fx:Script>
 										
-										<s:Button y="4" label="{data.nome.toUpperCase() + ' ' + data.sobrenome.toUpperCase()}" skinClass="app.skin.TextButton" buttonMode="true" click="goPaciente(event)" />
+										<s:Button y="4" label="{( data.nome.toUpperCase() + ' ' + data.sobrenome.toUpperCase() ).substr(0, 25)}" skinClass="app.skin.TextButton" buttonMode="true" click="goPaciente(event)" />
 									</s:GridItemRenderer>
 								</fx:Component>
 							</s:itemRenderer>
 						</s:GridColumn>
-						<s:GridColumn dataField="nome" headerText="Data" width="150">
+						<s:GridColumn dataField="nome" headerText="Data" width="100">
 							<s:itemRenderer>
 								<fx:Component>
 									<s:GridItemRenderer>
@@ -130,7 +130,7 @@
 								</fx:Component>
 							</s:itemRenderer>
 						</s:GridColumn>
-						<s:GridColumn  headerText="Editar" width="150">
+						<s:GridColumn  headerText="Editar" width="140">
 							<s:itemRenderer>
 								<fx:Component>
 									<s:GridItemRenderer>

@@ -2,38 +2,36 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx"
-					width="750" height="460" show="init()" creationComplete="init()">
+					width="750" height="460" creationComplete="init()" xmlns:skin="app.skin.*">
 	
 	<fx:Script>
 		<![CDATA[
-			import app.controller.Navigation;
-			import app.enums.EAreas;
-			import app.enums.EDadosGraficos;
-			import app.model.AtividadeFisica;
+			import mx.collections.ArrayCollection;
+			import mx.events.IndexChangedEvent;
+			
+			import spark.components.SkinnableContainer;
+			import spark.events.IndexChangeEvent;
+			import spark.primitives.BitmapImage;
+			
+			import app.enums.EIdades;
 			import app.model.Consulta;
 			import app.model.DB;
 			import app.model.Paciente;
 			import app.util.General;
 			import app.util.Helpers;
-			import app.util.ImpressaoUtils;
-			
-			import mx.charts.chartClasses.IAxis;
-			import mx.collections.ArrayCollection;
-			import mx.containers.ViewStack;
-			import mx.controls.Alert;
-			import mx.events.CloseEvent;
-			import mx.events.IndexChangedEvent;
-			import mx.formatters.DateFormatter;
-			import mx.graphics.Stroke;
 			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			import nz.co.codec.flexorm.criteria.Sort;
 			
-			import spark.components.HGroup;
-			import spark.events.IndexChangeEvent;
+			import org.casalib.util.NumberUtil;
 			
 			[Bindable]
 			public var mostrarTitulos:Boolean = true ;
+			
+			[Bindable]
+			public var mostrarCombos:Boolean = true ;
+			
+			public var tipoForcado:int = GraficosCrescimento.TIPO_IMC ;
 			
 			private var consultas:ArrayCollection;
 			
@@ -49,31 +47,29 @@
 			[Bindable]
 			private var faixas:ArrayCollection;
 			
-			private function init():void
+			private var _currentTipo:int = GraficosCrescimento.TIPO_IMC;
+			private var _currentIdade:Array = [];
+			
+			[Embed(source="assets/images/curvas/curva_gestacional.jpg")]
+			public var curvaGestacional:Class;
+			
+			public function init():void
 			{
 				var p:Paciente = General.pacienteAtual ;
 				if( p == null ) return ;
 				
+				var idade:Number = 0 ;
 				if( p.dataNascimento ){
-					var idade:Number = Math.floor( Helpers.idade(p.dataNascimento) / 12 );
+					idade = Math.floor( Helpers.idade(p.dataNascimento) / 12 );
 				}
 				
 				var c:Criteria = DB.em.createCriteria(app.model.Consulta);
 				c.addEqualsCondition("paciente", p.id );
-				c.addSort("dataConsulta", Sort.DESC );
+				c.addSort("dataConsulta", Sort.ASC );
 				
 				consultas = DB.em.fetchCriteria(c);
 				var consulta:app.model.Consulta = General.consultaAtual != null ? General.consultaAtual : consultas.length > 0 ? consultas.getItemAt(0) as app.model.Consulta : null ;
 				
-				if( consulta )
-				{
-					if( consulta.man ){
-						resultadoMAN.text = consulta.man.estadoNutricionalGlobal.toString() ;
-						ImpressaoUtils.criaMAN( consulta, containerMAN, false, 14 );
-					}
-				}
-				
-				consultas.source.reverse();
 				pesos = new ArrayCollection();
 				
 				minIdade = 0 ;
@@ -98,85 +94,183 @@
 					}
 				}
 				
-//				if( idade > 60 ) {
-//					vsGraficos.selectedIndex = 3 ;
-//				} else 
+				if( idade < EIdades.CRIANCA ) {
+					if( vsGraficos.selectedIndex != 1 ) vsGraficos.selectedIndex = 1 ;
+					else verificaIndice();
+				}
 				
-				if( idade < 20 ) {
-					vsGraficos.selectedIndex = 1 ;
-//					montaCrescimento();
-				} else {
-					if( p.gestante ) {
-						vsGraficos.selectedIndex = 2 ;
-//						montaAtalah();
-					}
+				if( p.gestante ) {
+					if( vsGraficos.selectedIndex != 2 ) vsGraficos.selectedIndex = 2 ;
+					else verificaIndice();
+				}
+			}
+			
+			public function verificaIndice():void
+			{
+				if( vsGraficos.selectedIndex == 1 ){
+					montaCrescimento();
+				} else if ( vsGraficos.selectedIndex == 2 ){
+					montaAtalah();
 				}
 			}
 			
 			private function montaAtalah():void
 			{
-				var atalah:ArrayCollection = new ArrayCollection();
-				var tabelaAtalah:Array = EDadosGraficos.ATALAH ;
+				var curvaSource:Bitmap = new curvaGestacional();
+				curvaSource.smoothing = true ;
 				
-				for (var j:int = 0; j < tabelaAtalah.length; j++) 
+				var curva:BitmapImage = new BitmapImage();
+				curva.width = 455;
+				curva.height = 648;
+				curva.source = curvaSource;
+				
+				gpGestacional.removeAllElements();
+				gpGestacional.addElement( curva );
+				
+				var minValorX:Number = 6 ;
+				var maxValorX:Number = 40 ;
+				var minValorY:Number = 17 ;
+				var maxValorY:Number = 40 ;
+				var limites:Rectangle = new Rectangle( 49, 30, 353 + 49, 506 + 30 );
+				var raio:int = 5 ;
+				var posicoes:Array = [] ;
+				var pontos:SkinnableContainer = new SkinnableContainer();
+				var g:Graphics = pontos.graphics ;
+				g.clear();
+				
+				/* //AREA DE DESENHO DO GRÁFICO
+				g.beginFill(0xff0000, 0.2);
+				g.drawRect( limites.x, limites.y, limites.width - limites.x, limites.height - limites.y );
+				g.endFill();
+				*/
+				
+				g.beginFill( 0x81BAEA );
+				
+				if( consultas != null )
 				{
-					var o:Object = {};
-					o.semana = tabelaAtalah[j][0];
-					o.baixo = tabelaAtalah[j][1];
-					o.ideal = tabelaAtalah[j][3];
-					o.sobre = tabelaAtalah[j][5];
-					o.imc = 0 ;
-					
-					for ( var i:int = 0; i < consultas.length; i++) 
+					for (var i:int = 0; i < consultas.length; i++) 
 					{
-						var cons:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
-						if( cons.semanaGestacional ){
-							if( cons.semanaGestacional == o.semana ) o.imc = Number( cons.antropometria.imc.toFixed(2) ) ;
+						var c:app.model.Consulta = consultas.getItemAt(i) as app.model.Consulta ;
+						var posX:Number = 0 ;
+						var posY:Number = 0 ;
+						
+						posX = NumberUtil.map( c.semanaGestacional, minValorX, maxValorX, limites.x, limites.width ) ;
+						posY = NumberUtil.map( c.antropometria.imc, minValorY, maxValorY, limites.height, limites.y ) ;
+						
+						if( posX > limites.x && posX < limites.width && posY > limites.y && posY < limites.height )
+						{
+							g.drawCircle( posX, posY, raio );
+							posicoes.push( new Point( posX, posY ) ) ;
 						}
 					}
-					
-					atalah.addItem(o);
 				}
 				
-				if( curvaDeAtalah ) curvaDeAtalah.dataProvider = atalah ;
+				g.endFill();
+				
+				if( posicoes.length > 1 )
+				{
+					g.lineStyle( 3, 0x81BAEA );
+					g.moveTo( posicoes[0].x, posicoes[0].y );
+					for (var j:int = 1; j < posicoes.length; j++) 
+					{
+						g.lineTo( posicoes[j].x, posicoes[j].y );
+					}
+					
+				}
+				
+				gpGestacional.addElement( pontos );
 			}
 			
 			private function montaCrescimento():void
 			{
-				var linha1:HGroup = new HGroup();
-				var linha2:HGroup = new HGroup();
-				linha1.percentWidth = linha2.percentWidth = 100 ;
-				linha1.percentHeight = linha2.percentHeight = 100 ;
-				linha1.gap = linha2.gap = 20 ;
+				var idade:Number = Math.ceil( Helpers.idade(General.pacienteAtual.dataNascimento) / 12 );
 				
-				for (var i:int = 0; i < 4; i++) 
-				{
-					var gc:GraficosCrescimento = new GraficosCrescimento();
-					gc.consultas = consultas ;
-					gc.tipo = i;
-					gc.percentWidth = 100 ;
-					gc.percentHeight = 100 ;
+				var provider:ArrayCollection = new ArrayCollection();
+				provider.addItem( { label:'IMC x IDADE', value:GraficosCrescimento.TIPO_IMC } );
+				
+				if( idade > 0 ) 				provider.addItem( { label:'ESTATURA x IDADE', value:GraficosCrescimento.TIPO_ESTATURA } );
+				if( idade > 0 && idade <= 10 ) 	provider.addItem( { label:'PESO x IDADE', value:GraficosCrescimento.TIPO_PESO } );
+				if( idade > 0 && idade <= 5  ) 	provider.addItem( { label:'PESO x ESTATURA', value:GraficosCrescimento.TIPO_PESO_ESTATURA } );
+				
+				cmbTipoGrafico.dataProvider = provider ;
+				cmbTipoGrafico.selectedItem = provider.getItemAt(0);
+				
+				_currentIdade = getIdadesDisponiveis( tipoForcado, idade );
+				if( _currentIdade.length == 2 ) trocaGrafico( tipoForcado, _currentIdade[0], _currentIdade[1] );
+			}
+			
+			public function trocaGrafico( tipo:int, minIdade:Number = 0, maxIdade:Number = 0 ):void
+			{
+				gpGraficos.removeAllElements();
 					
-					if( i < 2 ){
-						linha1.addElement(gc);
-					} else {
-						linha2.addElement(gc);
-					}
-				}
+				var gc:GraficosCrescimento = new GraficosCrescimento();
+				gc.width = 800 ;
+				gc.height = 500 ;
+				gc.tipo = tipo ;
+				gc.consultas = consultas ;
+				gc.minIdade = minIdade ;
+				gc.maxIdade = maxIdade ;
 				
-				if( gCrescimento ){
-					gCrescimento.addElement(linha1);
-					gCrescimento.addElement(linha2);
-				}
+				var tipoTitulo:String = '';
+				if( tipo == GraficosCrescimento.TIPO_PESO ) tipoTitulo = 'PESO x IDADE' ;
+				if( tipo == GraficosCrescimento.TIPO_PESO_ESTATURA ) tipoTitulo = 'PESO x ESTATURA' ;
+				if( tipo == GraficosCrescimento.TIPO_ESTATURA ) tipoTitulo = 'ESTATURA x IDADE' ;
+				if( tipo == GraficosCrescimento.TIPO_IMC ) tipoTitulo = 'IMC x IDADE' ;
+				
+				txtTituloCrescimento.text = 'CURVA DE CRESCIMENTO - ' + tipoTitulo + ' (' + minIdade + ' a ' + maxIdade + ' ANOS)' ;
+				gpGraficos.addElement( gc );
 			}
 			
 			private function vsChange(e:IndexChangedEvent):void
 			{
-				if( e.newIndex == 1 ){
-					montaCrescimento();
-				} else if ( e.newIndex == 2 ){
-					montaAtalah();
+				verificaIndice();
+			}
+			
+			private function onComboTipoGraficoChange(e:IndexChangeEvent):void
+			{
+				var idade:Number = Math.ceil( Helpers.idade( General.pacienteAtual.dataNascimento ) / 12 );
+				var provider:ArrayCollection = new ArrayCollection();
+				
+				_currentTipo = cmbTipoGrafico.selectedItem.value ;
+				_currentIdade = getIdadesDisponiveis( _currentTipo, idade );
+				
+				if( _currentIdade.length == 2 ) trocaGrafico( _currentTipo, _currentIdade[0], _currentIdade[1] );
+			}
+			
+			private function getIdadesDisponiveis( tipo:int, idade:Number ):Array
+			{
+				var novasIdades:Array = [];
+				
+				switch( tipo )
+				{
+					case GraficosCrescimento.TIPO_PESO:
+						if( idade <= 5 ) novasIdades = [0,5];
+						else if( idade > 5 && idade <= 10 ) novasIdades = [5, 10];
+						//						if( idade <= 5 ) provider.addItem( { label:'NASCIMENTO AOS 5 ANOS', 		value:[0,5] } );
+						//						if( idade >= 5 ) provider.addItem( { label:'5 AOS 10 ANOS', 				value:[5,10] } );
+						break;
+					case GraficosCrescimento.TIPO_ESTATURA:
+						if( idade > 5 ) novasIdades = [ 5, 19 ];
+						else novasIdades = [ 0, 5 ];
+						//						if( idade >= 5 ) provider.addItem( { label:'5 AOS 10 ANOS', 				value:[5,10] } );
+						break;
+					case GraficosCrescimento.TIPO_IMC:
+						if( idade <= 5 ) novasIdades = [0,5];
+						else if( idade > 5 ) novasIdades = [5, 19];
+						//						if( idade <= 5 ) provider.addItem( { label:'NASCIMENTO AOS 5 ANOS', 		value:[0,5] } );
+						//						if( idade >= 5 ) provider.addItem( { label:'5 AOS 19 ANOS', 				value:[5,19] } );
+						break;
+					case GraficosCrescimento.TIPO_PESO_ESTATURA:
+						if( idade <= 2 ) novasIdades = [0,2];
+						else if( idade > 2 && idade <= 5 ) novasIdades = [2, 5];
+						//						if( idade <= 2 ) provider.addItem( { label:'NASCIMENTO AOS 2 ANOS', 		value:[0,2] } );
+						//						if( idade >= 2 && idade <= 5 ) provider.addItem( { label:'2 AOS 5 ANOS', 	value:[2,5] } );
+						break;
 				}
+				
+				if( novasIdades.length == 2 && ( novasIdades[0] > 0 || novasIdades[1] > 0 ) ) return novasIdades ;
+				
+				return [];
 			}
 			
 			private function mostraData(labelValue:Object, previousValue:Object, axis:CategoryAxis, categoryItem:Object):String
@@ -212,9 +306,9 @@
 					</mx:verticalAxis>
 					
 					<mx:series>
-						<mx:LineSeries displayName="Peso" form="curve" yField="peso" radius="7">
+						<mx:LineSeries displayName="Peso" form="curve" yField="peso" radius="5">
 							<mx:lineStroke>
-								<mx:SolidColorStroke color="#81BAEA" weight="5" />
+								<mx:SolidColorStroke color="#81BAEA" weight="3" />
 							</mx:lineStroke>
 							<mx:stroke>
 								<s:SolidColorStroke color="#81BAEA" />
@@ -234,63 +328,24 @@
 		</s:NavigatorContent>
 		
 		<s:NavigatorContent width="100%" height="100%" label="Crescimento">
-			<s:VGroup gap="5" width="100%" height="100%" paddingLeft="10" paddingRight="10">
-				<s:Label width="100%" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO" includeInLayout="{mostrarTitulos}"/>
-				<s:Label width="100%" includeInLayout="{mostrarTitulos}" text="As novas curvas de acompanhamento estabelecem, internacionalmente, um padrão para avaliar o crescimento e estado nutricional de crianças e adolescentes. São preconizadas pela Organização Mundial da Saúde e Ministério da Saúde." />
-				<s:VGroup id="gCrescimento" width="100%" height="100%" gap="20" />
+			<s:VGroup id="gCrescimento" gap="5" width="100%" height="100%" paddingLeft="10" paddingRight="10">
+				<s:HGroup width="90%" gap="10" verticalAlign="middle">
+					<s:Label text="TIPO:" includeInLayout="{mostrarCombos}" />
+					<s:ComboBox id="cmbTipoGrafico" width="150" skinClass="app.skin.ComboBox" change="onComboTipoGraficoChange(event)" visible="{mostrarCombos}" includeInLayout="{mostrarCombos}" />
+					<s:Label id="txtTituloCrescimento" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE CRESCIMENTO" includeInLayout="{mostrarTitulos}"/>
+				</s:HGroup>
+				<s:VGroup id="gpGraficos" width="100%" height="100%" />
 			</s:VGroup>
 		</s:NavigatorContent>
 		
 		<s:NavigatorContent width="100%" height="100%" label="Atalah">
-			<s:VGroup gap="5" width="100%" height="100%" paddingRight="30">
+			<s:VGroup gap="5" width="100%" height="100%" paddingRight="0">
 				<s:Label width="100%" includeInLayout="{mostrarTitulos}" color="#81BAEA" fontSize="20" styleName="bold" text="CURVA DE ATALAH"/>
 				<s:Label width="100%" includeInLayout="{mostrarTitulos}" text="Trata-se da ferramenta preconizada pela Organização Mundial da Saúde e Ministério da Saúde para avaliar a evolução do Índice de Massa Corporal (IMC) segundo a semana gestacional." />
 				
-				<mx:AreaChart id="curvaDeAtalah" width="100%" height="100%" showDataTips="true">
-					<mx:horizontalAxis>
-						<mx:CategoryAxis categoryField="semana" displayName="SEMANAS DE GESTAÇÃO" />
-					</mx:horizontalAxis>
-					<mx:verticalAxis>
-						<mx:LinearAxis title="IMC" minimum="15" maximum="40" />
-					</mx:verticalAxis>
-					<mx:series>
-						<mx:AreaSeries yField="baixo" displayName="Baixo Peso">
-							<mx:areaFill>
-								<s:SolidColor color="0xCCCCCC" alpha="0.5" />
-							</mx:areaFill>
-						</mx:AreaSeries>
-						<mx:AreaSeries yField="ideal" displayName="Peso Adequado">
-							<mx:areaFill>
-								<s:SolidColor color="0xDDDDDD" alpha="0.5"  />
-							</mx:areaFill>
-						</mx:AreaSeries>
-						<mx:AreaSeries yField="sobre" displayName="Sobrepeso">
-							<mx:areaFill>
-								<s:SolidColor color="0xEEEEEE" alpha="0.5" />
-							</mx:areaFill>
-						</mx:AreaSeries>
-						<mx:AreaSeries yField="imc" displayName="IMC" radius="5">
-							<mx:areaStroke>
-								<mx:SolidColorStroke color="0x81BAEA" weight="7" />
-							</mx:areaStroke>
-							<mx:areaFill>
-								<s:SolidColor color="0xFFFFFF" alpha="0" />
-							</mx:areaFill>
-							<mx:stroke>
-								<s:SolidColorStroke color="#81BAEA" />
-							</mx:stroke>
-							<mx:fill>
-								<s:SolidColor color="#81BAEA" />
-							</mx:fill>
-							<mx:itemRenderer>
-								<fx:Component>
-									<mx:CircleItemRenderer />
-								</fx:Component>
-							</mx:itemRenderer>
-						</mx:AreaSeries>
-					</mx:series>
-				</mx:AreaChart>
-				<mx:Legend dataProvider="{curvaDeAtalah}" direction="horizontal" />
+				<skin:ScrollerSemBug width="100%" height="100%">
+					<s:Group id="gpGestacional" width="100%" height="100%" />
+				</skin:ScrollerSemBug>
 			</s:VGroup>
 		</s:NavigatorContent>
 		

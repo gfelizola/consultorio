@@ -87,7 +87,17 @@
 				if( General.pacienteAtual != null ) {
 					var p:Paciente = General.pacienteAtual ;
 					impNomePaciente.text = p.nomeCompleto.toUpperCase() ;
-					impIdadePaciente.text = Math.floor( p.idade / 12 ) + ' ANOS' ;
+					
+					var idade:Number = Math.floor( p.idade / 12 );
+					var strIdade:String = idade + ' ANOS' ; 
+					
+					if( idade < 20 ) {
+						var idadeMod:Number = p.idade % 12 ;
+						if( idadeMod ) strIdade += " E " + idadeMod +" MESES";
+					}
+					
+					impIdadePaciente.text = strIdade ;
+					
 					impSexoPaciente.text = p.sexo == 'M' ? 'MASCULINO' : 'FEMININO' ;
 					antropometria.visible = true ;
 				} else {
@@ -173,7 +183,7 @@
 	</fx:Declarations>
 	<s:SkinnableContainer id="scImpressao" x="0" y="0" width="100%" height="100%" backgroundColor="#F6FAFE">
 		<s:VGroup width="100%">
-			<s:Group>
+			<s:Group height="150">
 				<s:Image id="imgLogo" x="10" y="10" width="326" height="60" scaleMode="letterbox" horizontalAlign="left" />
 				<s:Button id="btnImprimir" x="344" y="10" label="IMPRIMIR" icon="assets/images/icoImprimir.png" skinClass="app.skin.Button" click="onImprimir(event)"/>
 				
@@ -181,10 +191,10 @@
 				<s:Label id="impData" right="10" y="75" width="145" styleName="bold" text="" textAlign="right"/>
 				
 				<s:Label x="10" y="100" styleName="bold" text="NOME:"/>
-				<s:Label id="impNomePaciente" x="53" y="100" width="156" styleName="light" text=""/>
+				<s:Label id="impNomePaciente" x="53" y="100" width="259" styleName="light" text=""/>
 				
-				<s:Label x="217" y="100" styleName="bold" text="IDADE:"/>
-				<s:Label id="impIdadePaciente" x="263" y="100" width="56" styleName="light" text=""/>
+				<s:Label x="10" y="125" styleName="bold" text="IDADE:"/>
+				<s:Label id="impIdadePaciente" x="53" y="124" width="260" styleName="light" text=""/>
 				
 				<s:HGroup right="10" y="100">
 					<s:Label styleName="bold" text="SEXO:"/>
@@ -192,9 +202,9 @@
 				</s:HGroup>
 			</s:Group>
 
-			<mx:ViewStack id="conteudos" x="0" y="134" width="460" height="573" selectedIndex="{etapa}">
+			<mx:ViewStack id="conteudos" x="0" y="151" width="460" height="549" selectedIndex="{etapa}">
 				<s:NavigatorContent id="antropometria">
-					<s:VGroup id="containerDadosAntropometria" width="440" x="10" y="0" gap="5" />
+					<s:VGroup id="containerDadosAntropometria" width="440" x="10" y="7" gap="5" />
 				</s:NavigatorContent>
 				
 				<s:NavigatorContent id="atividadeFisica">

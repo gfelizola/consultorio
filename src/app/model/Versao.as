@@ -11,6 +11,8 @@ package app.model
 		
 		public var dataAtualizacao:Date;
 		
+		public var acaoDaVersaoRealizada:Boolean;
+		
 		public function Versao()
 		{
 		}

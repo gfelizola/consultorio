@@ -3,3 +3,5 @@
 /bin-release-temp/*
 /bin
 *.air
+.actionScriptProperties
+.flexProperties

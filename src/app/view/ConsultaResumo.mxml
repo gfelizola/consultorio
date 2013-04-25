@@ -468,19 +468,21 @@
 			{
 				btnImprimir.visible = false ;
 				
-//				var pj:FlexPrintJob = new FlexPrintJob();
-//				pj.start();
+				var pj:FlexPrintJob = new FlexPrintJob();
+				pj.start();
 				
 				for (var i:int = 0; i < paginas.length; i++) 
 				{
+//					if( paginas[i].visible ) pj.addObject( paginas[i], FlexPrintJobScaleType.FILL_PAGE );
 //					if( paginas[i].visible ) pj.addObject( paginas[i], FlexPrintJobScaleType.MATCH_HEIGHT );
+					if( paginas[i].visible ) pj.addObject( paginas[i], FlexPrintJobScaleType.SHOW_ALL );					
 					trace( i, paginas[i].visible );
 				}
 				
-//				pj.send();
+				pj.send();
 				
 				btnImprimir.visible = true ;
-//				this.close();
+				this.close();
 			}
 		]]>
 	</fx:Script>

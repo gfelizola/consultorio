@@ -164,7 +164,9 @@
 				var pj:FlexPrintJob = new FlexPrintJob();
 				pj.start();
 				
-				pj.addObject( scImpressao, FlexPrintJobScaleType.MATCH_HEIGHT );
+				pj.addObject( scImpressao, FlexPrintJobScaleType.SHOW_ALL );
+				//pj.addObject( scImpressao, FlexPrintJobScaleType.MATCH_HEIGHT );
+				//pj.addObject( scImpressao, FlexPrintJobScaleType.SHOW_ALL );
 				pj.send();
 				
 				btnImprimir.visible = true ;

@@ -203,8 +203,8 @@
 			private function atualizaPatologias( lista:ArrayCollection, container:VGroup ):void
 			{
 				container.removeAllElements();
-				if( lista.length > 0 )
-				{
+				/*if( lista.length > 0 )
+				{*/
 					for (var i:int = 0; i < lista.length; i++) 
 					{
 						var p:Object = lista.getItemAt(i) ;
@@ -230,10 +230,10 @@
 					}
 					
 					container.visible = true ;
-				} else {
+				/*} else {
 					container.height = 0 ;
 					container.visible = container.includeInLayout = false ;
-				}
+				}*/
 			}
 			
 			private function onRemoverClick(e:MouseEvent):void

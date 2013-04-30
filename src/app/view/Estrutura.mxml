@@ -214,7 +214,7 @@
 	<!-- FOOTER -->
 	<s:SkinnableContainer x="0" bottom="0" width="100%" height="37" backgroundColor="#81B9EA" contentBackgroundColor="#81B9EA">
 		<s:Label x="19" y="13" color="0xffffff" text="Copyright © Nestlé - Todos os direitos reservados - " />
-		<s:Label x="324" y="14" color="0xffffff" text="Acesse www.nestle.com.br/nutrisaude" click="{navigateToURL(new URLRequest('http://www.nestle.com.br/nutrisaude'))}" buttonMode="true" />
+		<s:Label x="324" y="14" color="0xffffff" text="Acesse www.nestle.com.br/nestlenutrisaude" click="{navigateToURL(new URLRequest('http://www.nestle.com.br/nestlenutrisaude'))}" buttonMode="true" />
 		<s:Image right="5" y="-1" source="assets/images/logo_nestle_branco.png"/>
 	</s:SkinnableContainer>
 	

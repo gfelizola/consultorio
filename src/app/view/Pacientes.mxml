@@ -103,6 +103,7 @@
 					}
 					
 					pacientes = DB.em.fetchCriteria(c);
+					trace('listaPacientes: '+ c);
 				} 
 				catch(error:Error) 
 				{

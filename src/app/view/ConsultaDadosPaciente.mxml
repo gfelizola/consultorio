@@ -62,8 +62,11 @@
 					hf += Patologia(p.patologias[i]).nome.toUpperCase() + ', ' ;
 				}
 				txtPatologias.text = hf.substr(0, hf.length - 2 );
-				
-				txtConvenio.text = p.tipo.nome.indexOf('Part') > -1 ? 'PARTICULAR' : p.convenio ;
+					
+				//txtConvenio.text = p.tipo.nome.indexOf('Part') > -1 ? 'PARTICULAR' : p.convenio ;
+				txtAtendimento.text = p.tipo.nome.indexOf('Part') > -1 ? 'PARTICULAR' : 'CONVÊNIO';
+				gpDadosConvenio.visible = (txtAtendimento.text == 'CONVÊNIO');
+				txtConvenio.text = p.convenio ;
 				txtNCarteira.text = p.carteira ;
 				txtIndicacao.text = p.indicacao ;
 				txtObjetivo.text = p.objetivo ;
@@ -127,41 +130,82 @@
 			</s:Group>
 			
 			<s:Group id="gpHistorico" width="100%">
-				<s:Label x="0" y="0" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICOS E PATOLOGIAS"/>
+				<s:layout>
+					<s:VerticalLayout />
+				</s:layout>
+				<s:Label width="352" color="#83BBEA" fontSize="19" styleName="bold" text="HISTÓRICOS E PATOLOGIAS" paddingBottom="10" />
 				
-				<s:Label x="0" y="30" width="138" height="20" text="HISTÓRICO FAMILIAR:" />
-				<s:Label id="txtHistoricoFamiliar" x="137" y="29" width="812" height="20" styleName="light" text=""/>
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout />
+					</s:layout>
+					<s:Label width="138" height="20" text="HISTÓRICO FAMILIAR:" />
+					<s:Label id="txtHistoricoFamiliar" width="812" styleName="light" text=""/>					
+				</s:Group>
 				
-				<s:Label x="0" y="50" width="82" height="20" text="PATOLOGIAS:" />
-				<s:Label id="txtPatologias" x="90" y="49" width="859" height="20" styleName="light" text="" />
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout />
+					</s:layout>
+					<s:Label width="82" height="20" text="PATOLOGIAS:" />
+					<s:Label id="txtPatologias" width="859" styleName="light" text="" />
+				</s:Group>
 				
-				<s:Label x="0" y="70" width="82" height="20" text="HISTÓRICO:" />
-				<s:Label id="txtHistorico" x="80" y="69" width="869" height="20" styleName="light" text="" />
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout paddingBottom="10" />
+					</s:layout>
+					<s:Label width="82" height="20" text="HISTÓRICO:" />
+					<s:Label id="txtHistorico" width="869" styleName="light" text="" />
+				</s:Group>
 				
-				<mx:HRule x="0" y="101" width="100%"/>
+				<mx:HRule width="100%" />
 			</s:Group>
 			
 			<s:Group id="gpDadosAdicionais" width="100%">
-				<s:Label x="0" y="0" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS"/>
+				<s:layout>
+					<s:VerticalLayout paddingTop="10" />
+				</s:layout>
 				
-				<s:Label x="0" y="38" width="72" height="20" text="CONVÊNIO:" />
-				<s:Label id="txtConvenio" x="80" y="37" width="303" height="20" styleName="light" text="" />
+				<s:Label x="0" y="0" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS" paddingBottom="10" />
+
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout />
+					</s:layout>
+					<s:Label width="172" height="20" text="TIPO DE ATENDIMENTO:" />
+					<s:Label id="txtAtendimento" width="303" height="20" styleName="light" text="" />				
+				</s:Group>
+
+				<s:Group id="gpDadosConvenio">
+					<s:layout>
+						<s:HorizontalLayout />
+					</s:layout>
+					<s:Label width="72" height="20" text="CONVÊNIO:" />
+					<s:Label id="txtConvenio" width="303" height="20" styleName="light" text="" paddingRight="20" />
+					
+					<s:Label width="110" height="20" text="Nº DA CARTEIRA:" />
+					<s:Label id="txtNCarteira" width="250" height="20" styleName="light" text="" paddingRight="20" />
+				</s:Group>
 				
-				<s:Label x="594" y="37" width="110" height="20" text="Nº DA CARTEIRA:" />
-				<s:Label id="txtNCarteira" x="707" y="36" width="250" height="20" styleName="light" text="" />
-				
-				<s:Label x="314" y="37" width="80" height="20" text="INDICAÇÃO:" />
-				<s:Label id="txtIndicacao" x="392" y="36" width="250" height="20" styleName="light" text="" />
-				
-				<s:Label x="0" y="58" width="159" height="20" text="OBJETIVO DA CONSULTA:" />
-				<s:Label id="txtObjetivo" x="167" y="57" width="782" height="20" styleName="light" text="" />
+				<s:Group>
+					<s:layout>
+						<s:HorizontalLayout />
+					</s:layout>				
+					<s:Label width="80" height="20" text="INDICAÇÃO:" />
+					<s:Label id="txtIndicacao" width="250" height="20" styleName="light" text="" paddingRight="20" />
+					
+					<s:Label width="159" height="20" text="OBJETIVO DA CONSULTA:" />
+					<s:Label id="txtObjetivo" width="400" height="20" styleName="light" text="" />
+				</s:Group>
 			</s:Group>
 			
-			<s:Group id="gpBtnEditar" width="100%">
+			<s:Group width="100%">
+				<s:layout>
+					<s:HorizontalLayout paddingBottom="10" />
+				</s:layout>	
 				<s:Button right="0" y="0" label="EDITAR DADOS PESSOAIS" skinClass="app.skin.Button" click="onEditar(event)" />
 			</s:Group>
-			
-			
 		</s:VGroup>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

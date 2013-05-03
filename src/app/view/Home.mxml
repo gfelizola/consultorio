@@ -26,12 +26,13 @@
 				txtBemVindo.text = "Bem-vind" + ( General.usuario.sexo == "M" ? "o" : "a" ) ;
 				txtNome.text = General.usuario.nome ;
 				
+				var c:Criteria;
 				try {
-					var c:Criteria = DB.em.createCriteria( Paciente );
+					c = DB.em.createCriteria(Paciente);
 					c.addEqualsCondition("usuario_id", General.usuario.id );
 	
 					var result:Object = DB.em.fetchCriteria(c);
-					trace('Home.init result: ' + result);
+//					trace('Home.init result: ' + result);
 				} catch (error:Error) {
 					trace('Home.init error: ', error.message, error.getStackTrace(), ' (usuario.id: '+ General.usuario.id + ')');
 				}

@@ -32,6 +32,11 @@
 				validators.push( valLogin );
 				validators.push( valSenha );
 				
+				if( Capabilities.isDebugger ){
+					txtLogin.text = "gustavo";
+					txtSenha.text = "123";
+				}
+				
 				focusManager.setFocus(txtLogin);
 			}
 			

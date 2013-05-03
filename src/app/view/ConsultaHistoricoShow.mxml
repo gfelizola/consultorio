@@ -165,6 +165,8 @@
 			
 			private function criaTitulo(titulo:String):Label
 			{
+				trace("ConsultaHistoricoShow.criaTitulo(titulo)", titulo);
+				
 				var l:Label = new Label();
 				l.styleName = 'bold' ;
 				l.text = titulo.toUpperCase() ;

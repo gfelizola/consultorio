@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties analytics="false" mainApplicationPath="ConsultorioNutrisaude.mxml" projectUUID="952b7e11-ccc3-4e6c-be75-afd6105d0040" version="11">
-  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" useFlashSDK="false" verifyDigests="true" warn="true">
+<actionScriptProperties analytics="false" mainApplicationPath="ConsultorioNutrisaude.mxml" projectUUID="952b7e11-ccc3-4e6c-be75-afd6105d0040" version="10">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" flex3CompatMode="false" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="externalClasses"/>
     </compilerSourcePath>
@@ -19,12 +19,11 @@
     </application>
   </applications>
   <modules/>
-  <workers/>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
-    <buildTarget buildTargetName="default" platformId="default">
-      <airSettings airCertificatePath="C:/Users/celina/Documents/jobs/Nestle/consultorio/cert_p_123456.p12" airTimestamp="true" anePathSet="true" version="1">
+    <buildTarget buildTargetName="default">
+      <airSettings airCertificatePath="/Work/WSs/Full/Consultorio Nutrisaude/cert_p_123456.p12" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes>
           <pathEntry path=".DS_Store"/>
           <pathEntry path="com"/>
@@ -32,10 +31,6 @@
           <pathEntry path="net"/>
         </airExcludes>
         <anePaths/>
-        <newLaunchParams/>
-        <modifiedLaunchParams/>
-        <newPackagingParams/>
-        <modifiedPackagingParams/>
       </airSettings>
       <actionScriptSettings version="1"/>
     </buildTarget>

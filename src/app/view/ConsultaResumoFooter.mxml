@@ -15,11 +15,24 @@
 			{
 				var u:Usuario = General.usuario ;
 				
-				var endereco:String = u.endereco + ' - ' ;
-				if( u.complemento != '' ) endereco += u.complemento + ' - ' ;
-				endereco += u.cidade + ', ' + u.estado ;
-				if( u.telefone ) endereco += ' | Tel.: ' + u.telefone ;
-				endereco += '\nE-mail: ' + u.email ;
+				var endereco:String = "" ;
+				if( u.endereco != '' ){
+					u.endereco + ' - ' ;
+					if( u.complemento != '' ) endereco += u.complemento + ' - ' ;
+				}
+				
+				if( u.cidade != '' && u.estado != '' ){
+					endereco += u.cidade + ', ' + u.estado ;
+				} else {
+					if( u.cidade != '' ) endereco += u.cidade ;
+				}
+				
+				if( u.telefone ){
+					if( endereco != '' ) endereco += ' | ';
+					endereco += 'Tel.: ' + u.telefone ;
+				}
+				
+				if( u.email != '') endereco += '\nE-mail: ' + u.email ;
 //				if( u.redesSociais ){
 //					if( u.redesSociais.length > 0 ){
 //						endereco += ' | ' ;

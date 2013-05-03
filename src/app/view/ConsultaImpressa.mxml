@@ -158,19 +158,20 @@
 			
 			private function onImprimir(e:MouseEvent):void
 			{
+				var pj:FlexPrintJob = new FlexPrintJob();
+				if (pj.start() != true) return;
+				
 				btnImprimir.visible = false ;
 				scImpressao.setStyle('backgroundColor', '0xffffff');
 				
-				var pj:FlexPrintJob = new FlexPrintJob();
-				pj.start();
-				
 				pj.addObject( scImpressao, FlexPrintJobScaleType.SHOW_ALL );
-				//pj.addObject( scImpressao, FlexPrintJobScaleType.MATCH_HEIGHT );
-				//pj.addObject( scImpressao, FlexPrintJobScaleType.SHOW_ALL );
+//				pj.addObject( scImpressao, FlexPrintJobScaleType.MATCH_HEIGHT );
 				pj.send();
 				
 				btnImprimir.visible = true ;
 				scImpressao.setStyle('backgroundColor', '0xF6FAFE');
+				
+				init();
 			}
 			
 			private function sPontos(p:int):String

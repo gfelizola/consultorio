@@ -47,7 +47,7 @@ package app.model
 			_con.open(db);//, SQLMode.CREATE, false, 1024, key);
 			
 			_em = EntityManager.instance ;
-			_em.debugLevel = 1 ;
+//			_em.debugLevel = 1 ;
 			_em.sqlConnection = _con ;
 		}
 	}

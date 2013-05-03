@@ -65,7 +65,7 @@
 					
 				//txtConvenio.text = p.tipo.nome.indexOf('Part') > -1 ? 'PARTICULAR' : p.convenio ;
 				txtAtendimento.text = p.tipo.nome.indexOf('Part') > -1 ? 'PARTICULAR' : 'CONVÊNIO';
-				gpDadosConvenio.visible = (txtAtendimento.text == 'CONVÊNIO');
+				gpDadosConvenio.visible = gpDadosConvenio.includeInLayout = (txtAtendimento.text == 'CONVÊNIO');
 				txtConvenio.text = p.convenio ;
 				txtNCarteira.text = p.carteira ;
 				txtIndicacao.text = p.indicacao ;
@@ -162,48 +162,32 @@
 				<mx:HRule width="100%" />
 			</s:Group>
 			
-			<s:Group id="gpDadosAdicionais" width="100%">
-				<s:layout>
-					<s:VerticalLayout paddingTop="10" />
-				</s:layout>
-				
+			<s:VGroup id="gpDadosAdicionais" width="100%">
 				<s:Label x="0" y="0" width="352" color="#83BBEA" fontSize="19" styleName="bold" text="DADOS ADICIONAIS" paddingBottom="10" />
 
-				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout />
-					</s:layout>
+				<s:HGroup>
 					<s:Label width="172" height="20" text="TIPO DE ATENDIMENTO:" />
 					<s:Label id="txtAtendimento" width="303" height="20" styleName="light" text="" />				
-				</s:Group>
+				</s:HGroup>
 
-				<s:Group id="gpDadosConvenio">
-					<s:layout>
-						<s:HorizontalLayout />
-					</s:layout>
+				<s:HGroup id="gpDadosConvenio">
 					<s:Label width="72" height="20" text="CONVÊNIO:" />
 					<s:Label id="txtConvenio" width="303" height="20" styleName="light" text="" paddingRight="20" />
 					
 					<s:Label width="110" height="20" text="Nº DA CARTEIRA:" />
 					<s:Label id="txtNCarteira" width="250" height="20" styleName="light" text="" paddingRight="20" />
-				</s:Group>
+				</s:HGroup>
 				
-				<s:Group>
-					<s:layout>
-						<s:HorizontalLayout />
-					</s:layout>				
+				<s:HGroup>
 					<s:Label width="80" height="20" text="INDICAÇÃO:" />
 					<s:Label id="txtIndicacao" width="250" height="20" styleName="light" text="" paddingRight="20" />
 					
 					<s:Label width="159" height="20" text="OBJETIVO DA CONSULTA:" />
 					<s:Label id="txtObjetivo" width="400" height="20" styleName="light" text="" />
-				</s:Group>
-			</s:Group>
+				</s:HGroup>
+			</s:VGroup>
 			
 			<s:Group width="100%">
-				<s:layout>
-					<s:HorizontalLayout paddingBottom="10" />
-				</s:layout>	
 				<s:Button right="0" y="0" label="EDITAR DADOS PESSOAIS" skinClass="app.skin.Button" click="onEditar(event)" />
 			</s:Group>
 		</s:VGroup>

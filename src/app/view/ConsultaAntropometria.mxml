@@ -139,11 +139,17 @@
 					General.consultaAtual.antropometria = a ;
 					General.salvaConsulta();
 					
-					if( ! impressao.visible ){
-						impressao.visible = impressao.includeInLayout = true ;
-					} else {
-						impressao.init();
-					}
+					var impressao:ConsultaImpressa = new ConsultaImpressa();
+					impressao.etapa = 0;
+					gImpressao.addElement( impressao );
+					
+//					trace( impressao.visible, impressao.includeInLayout );
+//					
+//					if( ! impressao.visible ){
+//						impressao.visible = impressao.includeInLayout = true ;
+//					} else {
+//						impressao.init();
+//					}
 				}
 				
 				return true ;
@@ -267,7 +273,8 @@
 					  alpha="{formIsValid ? 1 : 0.5}" click="onFinalizar(event)"
 					  enabled="{formIsValid}" skinClass="app.skin.Button"/>
 			
-			<view:ConsultaImpressa id="impressao" etapa="0" x="525" y="10" visible="false" includeInLayout="false" />
+			<s:Group id="gImpressao" x="525" y="10"></s:Group>
+			<!-- view:ConsultaImpressa id="impressao" etapa="0" x="525" y="10" visible="false" includeInLayout="false" / -->
 		</s:Group>
 	</skin:ScrollerSemBug>
 </s:NavigatorContent>

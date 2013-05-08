@@ -3,7 +3,7 @@
   <id>ConsultorioNutriSaude</id>
   <filename>ConsultorioNutrisaude</filename>
   <name>Consultorio Nutri Saúde</name>
-  <versionNumber>1.1.3</versionNumber>
+  <versionNumber>1.1.4</versionNumber>
   <initialWindow>
     <content>ConsultorioNutrisaude.swf</content>
     <title>Consultório Nutri Saúde</title>

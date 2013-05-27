@@ -293,7 +293,7 @@
 				<s:Label width="100%" color="#81BAEA" fontSize="20" styleName="bold" text="GRÁFICO DE VARIAÇÃO DE PESO" includeInLayout="{mostrarTitulos}" />
 				<s:Label width="100%" text="Evolução do peso corporal ao longo do acompanhamento nutricional." includeInLayout="{mostrarTitulos}" />
 				
-				<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="100%" height="100%" showDataTips="true" seriesFilters="{[]}" gutterLeft="40">
+				<mx:LineChart id="curvaDePeso" dataProvider="{pesos}" width="100%" height="100%" showDataTips="true" seriesFilters="{[]}" gutterLeft="60">
 					<mx:horizontalAxis>
 						<mx:CategoryAxis id="haDataConsultaPeso" categoryField="dataConsulta" title="Data da consulta" labelFunction="mostraData" />
 					</mx:horizontalAxis>
@@ -302,8 +302,11 @@
 					</mx:horizontalAxisRenderers>
 					
 					<mx:verticalAxis>
-						<mx:LinearAxis title="Peso" />
+						<mx:LinearAxis id="haPesoConsulta" alignLabelsToInterval="true" title="Peso" />
 					</mx:verticalAxis>
+					<mx:verticalAxisRenderers>
+						<mx:AxisRenderer axis="{haPesoConsulta}" labelAlign="center" canDropLabels="false" canStagger="false" />
+					</mx:verticalAxisRenderers>
 					
 					<mx:series>
 						<mx:LineSeries displayName="Peso" form="curve" yField="peso" radius="5">
@@ -344,7 +347,7 @@
 				<s:Label width="100%" includeInLayout="{mostrarTitulos}" text="Trata-se da ferramenta preconizada pela Organização Mundial da Saúde e Ministério da Saúde para avaliar a evolução do Índice de Massa Corporal (IMC) segundo a semana gestacional." />
 				
 				<skin:ScrollerSemBug width="100%" height="100%">
-					<s:Group id="gpGestacional" width="100%" height="100%" />
+					<s:Group id="gpGestacional" width="500" height="100%" left="150" />
 				</skin:ScrollerSemBug>
 			</s:VGroup>
 		</s:NavigatorContent>

@@ -12,6 +12,17 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.controls.HRule;
+			import mx.events.FlexEvent;
+			import mx.printing.FlexPrintJob;
+			import mx.printing.FlexPrintJobScaleType;
+			
+			import spark.components.Group;
+			import spark.components.HGroup;
+			import spark.components.Label;
+			import spark.components.VGroup;
+			
 			import app.enums.EIdades;
 			import app.model.Antropometria;
 			import app.model.Consulta;
@@ -22,18 +33,9 @@
 			import app.util.Helpers;
 			import app.util.ImpressaoUtils;
 			
-			import mx.collections.ArrayCollection;
-			import mx.controls.HRule;
-			import mx.core.UIComponent;
-			import mx.events.FlexEvent;
-			import mx.printing.FlexPrintJob;
-			import mx.printing.FlexPrintJobScaleType;
-			
 			import nz.co.codec.flexorm.criteria.Criteria;
 			
 			import org.casalib.util.ArrayUtil;
-			
-			import spark.components.TileGroup;
 			
 			public var impressos:Array = [];
 			
@@ -136,6 +138,11 @@
 					grafico.height = 420 ;
 					grafico.x = 140 ;
 					grafico.mostrarCombos = false ;
+					
+					if( p.gestante ) {
+						grafico.height = 710;
+//						grafico.x = 250;
+					}
 					
 					gpGraficos.addElement( grafico );
 				}
